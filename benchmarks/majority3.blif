@@ -1,0 +1,23 @@
+.model majority3
+.inputs a b c
+.outputs y
+
+# 3-input majority function.
+# y = 1 when at least two inputs are 1.
+# This gives a small cone with several internal nodes that can be merged/restructured.
+
+.names a b n_ab
+11 1
+
+.names a c n_ac
+11 1
+
+.names b c n_bc
+11 1
+
+.names n_ab n_ac n_bc y
+1-- 1
+-1- 1
+--1 1
+
+.end

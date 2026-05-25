@@ -1,0 +1,18 @@
+.model toy_and_or
+.inputs a b c d
+.outputs y
+
+# y = (a & b) | (c & d)
+# I use this one first because it is very easy to understand by hand.
+
+.names a b n1
+11 1
+
+.names c d n2
+11 1
+
+.names n1 n2 y
+1- 1
+-1 1
+
+.end

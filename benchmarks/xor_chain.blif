@@ -1,0 +1,20 @@
+.model xor_chain
+.inputs a b c d
+.outputs y
+
+# y = a xor b xor c xor d
+# XOR logic is a nice stress test because simple AND/OR decompositions can change shape.
+
+.names a b n_ab
+01 1
+10 1
+
+.names n_ab c n_abc
+01 1
+10 1
+
+.names n_abc d y
+01 1
+10 1
+
+.end

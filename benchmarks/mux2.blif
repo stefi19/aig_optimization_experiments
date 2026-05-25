@@ -1,0 +1,19 @@
+.model mux2
+.inputs s a b
+.outputs y
+
+# A small 2:1 multiplexer.
+# y = a when s = 0, and y = b when s = 1.
+# This is useful because synthesis tools often rewrite mux-like logic.
+
+.names s a n_not_s_and_a
+01 1
+
+.names s b n_s_and_b
+11 1
+
+.names n_not_s_and_a n_s_and_b y
+1- 1
+-1 1
+
+.end
