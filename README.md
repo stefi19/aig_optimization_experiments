@@ -1,6 +1,5 @@
-````markdown
 AIG Optimization Experiments — Full README
-=======================================
+=========================================
 
 Overview
 --------
@@ -137,6 +136,7 @@ Files added to the repo
 - `results/summary_metrics.csv` — final metrics (committed)
 - `results/top_candidates.csv` — top-K candidate rankings (committed)
 - `results/plots/*` — generated PNG plots
+ 
 - `visualize_results.py` — plotting script
 
 How to reproduce locally
