@@ -22,15 +22,32 @@ for bench in benchmarks/*.blif; do
 
     # I avoid using only aliases like resyn2 here, because some ABC builds do not load abc.rc
     # in exactly the same way. These are explicit enough to be reproducible.
-    declare -A cmds
-    cmds[original]="strash"
-    cmds[balance]="strash; balance"
-    cmds[rewrite]="strash; rewrite"
-    cmds[refactor]="strash; refactor"
-    cmds[resub]="strash; resub"
-    cmds[resyn2_like]="strash; balance; rewrite; refactor; balance; rewrite -z; refactor -z; balance"
 
     for opt in original balance rewrite refactor resub resyn2_like; do
+        case "$opt" in
+            original)
+                cmd="strash"
+                ;;
+            balance)
+                cmd="strash; balance"
+                ;;
+            rewrite)
+                cmd="strash; rewrite"
+                ;;
+            refactor)
+                cmd="strash; refactor"
+                ;;
+            resub)
+                cmd="strash; resub"
+                ;;
+            resyn2_like)
+                cmd="strash; balance; rewrite; refactor; balance; rewrite -z; refactor -z; balance"
+                ;;
+            *)
+                cmd="strash"
+                ;;
+        esac
+
         out="variants/${base}_${opt}.blif"
         log="logs/${base}_${opt}.log"
 
@@ -38,7 +55,7 @@ for bench in benchmarks/*.blif; do
 
         # print_stats is saved in logs, because later I may want to compare ABC's own stats
         # with the metrics computed by the Python script.
-        $ABC -c "read_blif $bench; ${cmds[$opt]}; print_stats; write_blif $out" > "$log"
+        $ABC -c "read_blif $bench; $cmd; print_stats; write_blif $out" > "$log"
     done
 
 done
