@@ -1,0 +1,11 @@
+# Benchmark "mux2" written by ABC on Mon May 25 11:28:43 2026
+.model mux2
+.inputs s a b
+.outputs y
+.names s a new_n5
+01 1
+.names s b new_n6
+11 1
+.names new_n5 new_n6 y
+00 0
+.end

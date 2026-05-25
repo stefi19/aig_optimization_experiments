@@ -1,0 +1,23 @@
+# Benchmark "xor_chain" written by ABC on Mon May 25 11:28:44 2026
+.model xor_chain
+.inputs a b c d
+.outputs y
+.names a b new_n6
+00 1
+.names a b new_n7
+11 1
+.names new_n6 new_n7 new_n8
+00 1
+.names c d new_n9
+00 1
+.names c d new_n10
+11 1
+.names new_n9 new_n10 new_n11
+00 1
+.names new_n8 new_n11 new_n12
+00 1
+.names new_n8 new_n11 new_n13
+11 1
+.names new_n12 new_n13 y
+00 1
+.end

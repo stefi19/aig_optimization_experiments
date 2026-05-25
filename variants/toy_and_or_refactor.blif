@@ -1,0 +1,11 @@
+# Benchmark "toy_and_or" written by ABC on Mon May 25 11:28:43 2026
+.model toy_and_or
+.inputs a b c d
+.outputs y
+.names a b new_n6
+11 1
+.names c d new_n7
+11 1
+.names new_n6 new_n7 y
+00 0
+.end

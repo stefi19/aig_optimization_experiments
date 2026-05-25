@@ -1,0 +1,2 @@
+======== ABC command line "read_blif benchmarks/xor_chain.blif; strash; print_stats; write_blif variants/xor_chain_original.blif"
+[1;37mxor_chain                     :[0m i/o =    4/    1  lat =    0  and =      9  lev =  6
