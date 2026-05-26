@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+env/
+*.egg
+
+# pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ABC build (built locally, not tracked)
+.abc_build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Generated outputs that can be reproduced
+# (keep results/ committed so the repo is self-contained for review)
+# variants/ and logs/ are committed intentionally

@@ -1,7 +1,7 @@
 ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 
-.PHONY: all build-abc generate-variants analyze plot clean
+.PHONY: all build-abc generate-variants analyze plot test clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -28,6 +28,16 @@ plot:
 	@echo "Generating plots"
 	@python3 visualize_results.py
 
+test:
+	@echo "Running unit tests"
+	@python3 -m pytest tests/ -v
+
 clean:
-	@echo "Cleaning generated files (does NOT remove variants/logs/results by default)"
+	@echo "Cleaning ABC build (does NOT remove variants/logs/results)"
 	@rm -rf $(ABC_DIR)
+
+clean-results:
+	@echo "Removing generated results, variants, and logs (keeps benchmarks and scripts)"
+	@rm -rf results/summary_metrics.csv results/top_candidates.csv \
+		results/sat_refinement_candidates.csv results/plots \
+		variants/ logs/
