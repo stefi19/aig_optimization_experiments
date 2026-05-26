@@ -140,7 +140,9 @@ using simple heuristics, and does any formal verification step help?*
 
 ## 5. Benchmark circuits
 
-We use four hand-written toy circuits. "Toy" means they are small enough to understand
+### 5.1 Core toy circuits
+
+The primary experiments use four hand-written toy circuits small enough to understand
 completely — the goal is to measure the approach precisely, not to handle large real-world
 chips yet.
 
@@ -158,6 +160,50 @@ An XOR gate cannot be built from a single AND or OR gate — it requires a more 
 sub-circuit. Different synthesis algorithms decompose XOR differently, which means strong
 optimizations can completely restructure the internal nodes while still computing the correct
 XOR function. This makes `xor_chain` the most challenging benchmark.
+
+### 5.2 Real-style benchmark suite (`benchmarks/real/`)
+
+The `benchmarks/real/` directory contains additional circuits designed to resemble real
+digital components:
+
+**Hand-written BLIFs** (`benchmarks/real/hand_written/`) — manually authored and validated:
+
+| File | What it computes |
+|---|---|
+| `full_adder.blif` | 1-bit full adder (sum + carry) |
+| `priority_enc_4.blif` | 4-to-2 priority encoder |
+| `mux_4to1.blif` | 4-to-1 multiplexer |
+| `comparator_4.blif` | 4-bit equality comparator |
+| `parity_8.blif` | 8-bit XOR parity tree |
+
+**Verilog sources** (`benchmarks/real/verilog_examples/`) — require Yosys for BLIF conversion:
+
+| File | What it computes |
+|---|---|
+| `adder_8.v` | 8-bit ripple-carry adder |
+| `popcount_8.v` | 8-bit population count (number of set bits) |
+| `priority_encoder_8.v` | 8-input priority encoder (3-bit grant + valid) |
+| `comparator_8.v` | 8-bit magnitude comparator (lt / eq / gt) |
+| `alu_small.v` | 4-bit ALU (ADD / SUB / AND / OR + zero flag) |
+| `mux_tree_8.v` | 8-to-1 balanced mux tree (3-level hierarchy) |
+
+Convert Verilog to BLIF with:
+```bash
+make real-benchmarks    # runs Yosys on all verilog_examples/ sources
+```
+Yosys must be installed (`brew install yosys` on macOS).
+
+**ISCAS-85 / EPFL benchmarks** — not included; must be imported locally:
+```bash
+# After downloading ISCAS-85 BLIFs to ~/iscas85/:
+python3 scripts/import_real_benchmarks.py \
+    --source iscas85 \
+    --input-dir ~/iscas85/ \
+    --output-dir benchmarks/real/iscas85/
+```
+`import_real_benchmarks.py` validates each file (checks for `.model`, `.inputs`,
+`.outputs`, `.end`) before copying.  No ISCAS-85 or EPFL results are present in this
+repository — all published numbers come from the four toy circuits only.
 
 ---
 
@@ -578,7 +624,7 @@ They are saved to `results/plots/`.
 
 | Limitation | Details |
 |---|---|
-| **Toy benchmarks only** | The four circuits have 2–8 internal nodes. Real chips have millions. Results on ISCAS-85 or EPFL benchmarks may differ significantly. |
+| **Small-scale benchmark coverage** | All published results use the four toy circuits (2–8 internal nodes). The `benchmarks/real/` directory adds hand-written and Verilog-based circuits, but no results on large industrial circuits (ISCAS-85, EPFL) are present — performance on those is unknown. |
 | **BLIF only** | The parser handles `.names`-style gates only. RTL (Verilog/VHDL) is not supported. |
 | **Node name instability** | ABC renames internal nodes during optimization. This causes 16.9% of SAT checks to be inconclusive because the node cannot be found by name. |
 | **Weights are not tuned** | The 0.55 / 0.35 / 0.10 weights are a rough starting point — not learned from data. |
@@ -599,9 +645,6 @@ make full-research-pipeline
 This runs all steps in order: build ABC → generate variants → analyze → SAT → top-K →
 ablation → region → CEGAR → research plots → tests.
 
-> **Note:** You need to add the `full-research-pipeline` target to the Makefile if it is not
-> already there, or run the individual steps below in order.
-
 ### Individual steps
 
 ```bash
@@ -615,7 +658,9 @@ make ablation            # ablation study (6 scoring configs)
 make region              # region/fanin-cone correspondence
 make cegar-refine        # CEGAR-style penalty pass
 make research-plots      # generate all 8 research PNG plots
-make test                # run all 370 unit tests
+make real-benchmarks     # convert verilog_examples/ to BLIF via Yosys (requires Yosys)
+make generate-all-benchmarks  # synthetic + real benchmarks
+make test                # run all 414 unit tests
 ```
 
 ### If ABC is not on your PATH
@@ -631,7 +676,7 @@ ABC=/path/to/abc make sat-pipeline
 python3 -m pytest tests/ -v
 ```
 
-Expected: **370 tests, all passing**.
+Expected: **414 tests, all passing**.
 
 ### Clean generated outputs (keeps benchmarks and scripts)
 
@@ -660,7 +705,11 @@ aig_optimization_experiments/
 │       │   └── parity_8.blif          8-bit XOR parity tree
 │       ├── verilog_examples/      Verilog sources (convert with Yosys)
 │       │   ├── adder_8.v              8-bit ripple-carry adder
-│       │   └── popcount_8.v           8-bit population count
+│       │   ├── popcount_8.v           8-bit population count
+│       │   ├── priority_encoder_8.v   8-input priority encoder (3-bit grant + valid)
+│       │   ├── comparator_8.v         8-bit magnitude comparator (lt/eq/gt)
+│       │   ├── alu_small.v            4-bit ALU (ADD/SUB/AND/OR + zero flag)
+│       │   └── mux_tree_8.v           8-to-1 balanced mux tree (3-level hierarchy)
 │       └── README.md              Benchmark descriptions + conversion instructions
 │
 ├── variants/                      ABC-optimized BLIFs (generated, not committed)
@@ -692,17 +741,19 @@ aig_optimization_experiments/
 │       ├── ablation_comparison.png
 │       └── region_scores.png
 │
-├── tests/                         pytest unit tests (393 total, all passing)
+├── tests/                         pytest unit tests (414 total, all passing)
 │   ├── test_topk_recovery.py
 │   ├── test_ablation_study.py
 │   ├── test_region_correspondence.py
 │   ├── test_cegar_refinement.py
 │   ├── test_research_plots.py
 │   ├── test_select_sat_candidates.py
-│   └── test_import_real_benchmarks.py
+│   ├── test_import_real_benchmarks.py
+│   └── test_benchmark_id.py
 │
 ├── scripts/
 │   ├── generate_synthetic_benchmarks.py   Synthetic BLIF generator
+│   ├── benchmark_id.py                    Collision-free benchmark ID from BLIF path
 │   └── import_real_benchmarks.py          Lists/imports real benchmarks; Yosys converter
 │
 ├── analyze_blif_matches.py        Main analysis: parse BLIF, simulate, compare, rank

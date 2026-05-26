@@ -1,66 +1,66 @@
-benchmark,optimization,optimized_node,original_candidate,combined_score,sat_status,abc_result,notes
-majority3,balance,new_n5,new_n7,1.0,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n7"") and in network 2 (""new_n5"")."
-majority3,balance,new_n6,new_n5,1.0,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n5"") and in network 2 (""new_n6"")."
-majority3,balance,new_n7,new_n6,1.0,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n6"") and in network 2 (""new_n7"")."
-majority3,balance,new_n8,new_n8,0.8624999999999999,rejected,Networks are NOT EQUIVALENT.  Time =     0.01 sec,
-majority3,refactor,new_n5,new_n7,1.0,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n7"") and in network 2 (""new_n5"")."
-majority3,resub,new_n5,new_n7,1.0,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n7"") and in network 2 (""new_n5"")."
-majority3,resub,new_n6,new_n5,1.0,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n5"") and in network 2 (""new_n6"")."
-majority3,resub,new_n7,new_n6,1.0,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n6"") and in network 2 (""new_n7"")."
-majority3,resub,new_n8,new_n8,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-majority3,resyn2_like,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-majority3,resyn2_like,new_n7,new_n8,0.8624999999999999,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n8"") and in network 2 (""new_n7"")."
-majority3,rewrite,new_n5,new_n7,1.0,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n7"") and in network 2 (""new_n5"")."
-majority3,rewrite,new_n6,new_n5,1.0,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n5"") and in network 2 (""new_n6"")."
-majority3,rewrite,new_n7,new_n6,1.0,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n6"") and in network 2 (""new_n7"")."
-majority3,rewrite,new_n8,new_n8,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-mux2,balance,new_n5,new_n5,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-mux2,balance,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-mux2,refactor,new_n5,new_n5,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-mux2,refactor,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-mux2,resub,new_n5,new_n5,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-mux2,resub,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-mux2,rewrite,new_n5,new_n5,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-mux2,rewrite,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-toy_and_or,balance,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-toy_and_or,balance,new_n7,new_n7,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-toy_and_or,refactor,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-toy_and_or,refactor,new_n7,new_n7,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-toy_and_or,resub,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-toy_and_or,resub,new_n7,new_n7,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-toy_and_or,resyn2_like,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-toy_and_or,resyn2_like,new_n7,new_n7,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-toy_and_or,rewrite,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-toy_and_or,rewrite,new_n7,new_n7,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,balance,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,balance,new_n7,new_n7,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,balance,new_n8,new_n8,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,balance,new_n9,new_n9,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,balance,new_n10,new_n10,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,balance,new_n11,new_n11,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,balance,new_n12,new_n12,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,balance,new_n13,new_n13,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,refactor,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,refactor,new_n7,new_n7,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,refactor,new_n8,new_n8,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,refactor,new_n9,new_n9,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,refactor,new_n10,new_n10,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,refactor,new_n11,new_n11,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,refactor,new_n12,new_n12,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,refactor,new_n13,new_n13,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,resub,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,resub,new_n7,new_n7,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,resub,new_n8,new_n8,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,resub,new_n9,new_n9,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,resub,new_n10,new_n10,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,resub,new_n11,new_n11,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,resub,new_n12,new_n12,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,resub,new_n13,new_n13,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,rewrite,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,rewrite,new_n7,new_n7,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,rewrite,new_n8,new_n8,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,rewrite,new_n9,new_n9,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,rewrite,new_n10,new_n10,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,rewrite,new_n11,new_n11,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,rewrite,new_n12,new_n12,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
-xor_chain,rewrite,new_n13,new_n13,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,
+benchmark,optimization,optimized_node,original_candidate,combined_score,sat_status,abc_result,notes,recovery_method
+majority3,balance,new_n5,new_n7,1.0,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n7"") and in network 2 (""new_n5"").",inconclusive
+majority3,balance,new_n6,new_n5,1.0,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n5"") and in network 2 (""new_n6"").",inconclusive
+majority3,balance,new_n7,new_n6,1.0,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n6"") and in network 2 (""new_n7"").",inconclusive
+majority3,balance,new_n8,new_n8,0.8624999999999999,rejected,Networks are NOT EQUIVALENT.  Time =     0.01 sec,,direct
+majority3,refactor,new_n5,new_n7,1.0,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n7"") and in network 2 (""new_n5"").",inconclusive
+majority3,resub,new_n5,new_n7,1.0,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n7"") and in network 2 (""new_n5"").",inconclusive
+majority3,resub,new_n6,new_n5,1.0,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n5"") and in network 2 (""new_n6"").",inconclusive
+majority3,resub,new_n7,new_n6,1.0,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n6"") and in network 2 (""new_n7"").",inconclusive
+majority3,resub,new_n8,new_n8,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+majority3,resyn2_like,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+majority3,resyn2_like,new_n7,new_n8,0.8624999999999999,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n8"") and in network 2 (""new_n7"").",inconclusive
+majority3,rewrite,new_n5,new_n7,1.0,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n7"") and in network 2 (""new_n5"").",inconclusive
+majority3,rewrite,new_n6,new_n5,1.0,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n5"") and in network 2 (""new_n6"").",inconclusive
+majority3,rewrite,new_n7,new_n6,1.0,inconclusive,***EOF***,"Primary output #0 is different in network 1 ( ""new_n6"") and in network 2 (""new_n7"").",inconclusive
+majority3,rewrite,new_n8,new_n8,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+mux2,balance,new_n5,new_n5,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+mux2,balance,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+mux2,refactor,new_n5,new_n5,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+mux2,refactor,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+mux2,resub,new_n5,new_n5,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+mux2,resub,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+mux2,rewrite,new_n5,new_n5,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+mux2,rewrite,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+toy_and_or,balance,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+toy_and_or,balance,new_n7,new_n7,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+toy_and_or,refactor,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+toy_and_or,refactor,new_n7,new_n7,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+toy_and_or,resub,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+toy_and_or,resub,new_n7,new_n7,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+toy_and_or,resyn2_like,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+toy_and_or,resyn2_like,new_n7,new_n7,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+toy_and_or,rewrite,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+toy_and_or,rewrite,new_n7,new_n7,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,balance,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,balance,new_n7,new_n7,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,balance,new_n8,new_n8,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,balance,new_n9,new_n9,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,balance,new_n10,new_n10,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,balance,new_n11,new_n11,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,balance,new_n12,new_n12,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,balance,new_n13,new_n13,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,refactor,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,refactor,new_n7,new_n7,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,refactor,new_n8,new_n8,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,refactor,new_n9,new_n9,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,refactor,new_n10,new_n10,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,refactor,new_n11,new_n11,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,refactor,new_n12,new_n12,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,refactor,new_n13,new_n13,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,resub,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,resub,new_n7,new_n7,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,resub,new_n8,new_n8,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,resub,new_n9,new_n9,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,resub,new_n10,new_n10,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,resub,new_n11,new_n11,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,resub,new_n12,new_n12,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,resub,new_n13,new_n13,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,rewrite,new_n6,new_n6,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,rewrite,new_n7,new_n7,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,rewrite,new_n8,new_n8,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,rewrite,new_n9,new_n9,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,rewrite,new_n10,new_n10,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,rewrite,new_n11,new_n11,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,rewrite,new_n12,new_n12,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct
+xor_chain,rewrite,new_n13,new_n13,1.0,verified,Networks are equivalent after structural hashing.  Time =     0.00 sec,,direct

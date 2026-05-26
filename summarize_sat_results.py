@@ -71,6 +71,10 @@ def load_verified(path: str) -> pd.DataFrame:
         df["recovery_method"] = df["sat_status"].map(
             lambda s: "inconclusive" if s == "inconclusive" else "direct"
         )
+        # Write back the enriched file so downstream tools (evaluate_topk_recovery)
+        # see a consistent schema without needing to re-run sat_refinement_abc.py.
+        df.to_csv(path, index=False)
+        print(f"  Back-filled recovery_method column in {path}")
 
     return df
 

@@ -190,6 +190,7 @@ echo -e "${BOLD}Pipeline complete. Output files:${RESET}"
 for f in \
     results/summary_metrics.csv \
     results/top_candidates.csv \
+    results/node_fingerprints.csv \
     results/sat_refinement_candidates.csv \
     results/sat_verified_candidates.csv \
     results/sat_summary.csv \
@@ -198,9 +199,10 @@ for f in \
     results/topk_recovery.md \
     results/ablation_summary.csv \
     results/ablation_summary.md \
-    results/region_correspondence.csv \
+    results/region_candidates.csv \
+    results/region_summary.csv \
     results/region_summary.md \
-    results/cegar_refinement.csv \
+    results/cegar_refined_candidates.csv \
     results/cegar_summary.md \
     results/plots; do
     if [ -e "$f" ]; then

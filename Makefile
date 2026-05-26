@@ -92,12 +92,13 @@ clean:
 clean-results:
 	@echo "Removing generated results, variants, and logs (keeps benchmarks and scripts)"
 	@rm -rf results/summary_metrics.csv results/top_candidates.csv \
+		results/node_fingerprints.csv \
 		results/sat_refinement_candidates.csv results/sat_verified_candidates.csv \
 		results/sat_summary.csv results/sat_summary.md \
 		results/topk_recovery.csv results/topk_recovery.md \
 		results/ablation_summary.csv results/ablation_summary.md \
-		results/region_correspondence.csv results/region_summary.md \
-		results/cegar_refinement.csv results/cegar_summary.md \
+		results/region_candidates.csv results/region_summary.csv results/region_summary.md \
+		results/cegar_refined_candidates.csv results/cegar_summary.md \
 		results/plots \
 		variants/ logs/ benchmarks/generated/ benchmarks/real/converted_blif/
 

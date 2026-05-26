@@ -5,10 +5,8 @@
 ## Data availability
 
 - `top_candidates.csv`: ✅ loaded
-- `sat_verified_candidates.csv`: ❌ missing — run `sat_refinement_abc.py`
-- Rejected pairs used as penalty sources: **0**
-
-> No rejected candidates available.  All CEGAR penalties are zero — refined scores equal original scores.  Re-run after ABC equivalence checking produces at least one rejection.
+- `sat_verified_candidates.csv`: ✅ loaded
+- Rejected pairs used as penalty sources: **1**
 
 ## Configuration
 
@@ -22,7 +20,7 @@
 
 | benchmark | optimization | total_nodes | nodes_with_penalty | nodes_rank1_changed | n_rejected_pairs | avg_original_rank1 | avg_refined_rank1 | avg_penalty_rank1 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| majority3 | balance | 4 | 0 | 0 | 0 | 0.9656 | 0.9656 | 0.0000 |
+| majority3 | balance | 4 | 1 | 0 | 1 | 0.9656 | 0.9156 | 0.0500 |
 | majority3 | refactor | 3 | 0 | 0 | 0 | 0.8299 | 0.8299 | 0.0000 |
 | majority3 | resub | 4 | 0 | 0 | 0 | 1.0000 | 1.0000 | 0.0000 |
 | majority3 | resyn2_like | 3 | 0 | 0 | 0 | 0.8625 | 0.8625 | 0.0000 |
@@ -47,7 +45,7 @@
 
 | total_nodes | nodes_with_penalty | pct_penalized | nodes_rank1_changed | pct_rank1_changed | n_rejected_pairs | avg_original_rank1 | avg_refined_rank1 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 78 | 0 | 0.0% | 0 | 0.0% | 0 | 0.9546 | 0.9546 |
+| 78 | 1 | 1.3% | 0 | 0.0% | 1 | 0.9546 | 0.9521 |
 
 ## Rank changes
 

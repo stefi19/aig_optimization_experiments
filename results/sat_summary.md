@@ -8,34 +8,42 @@
 - **Inconclusive:** 11
 - **Verification rate:** 81.5%
 
+## Recovery method breakdown
+
+Each completed check is tagged with the method used to locate the node in the BLIF file:
+
+- **direct** (54): node name found in the BLIF without any fallback
+- **fingerprint** (0): node name was missing; recovered via a unique SHA-256 fingerprint match
+- **still inconclusive** (11): node could not be resolved (name missing and fingerprint ambiguous/absent, missing BLIF, ABC timeout, etc.)
+
 ## Summary by benchmark and optimization
 
-| benchmark | optimization | verified | rejected | inconclusive | total | verification_rate | rejection_rate | inconclusive_rate | avg_combined_score |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| majority3 | balance | 0 | 1 | 3 | 4 | 0.00% | 25.00% | 75.00% | 0.9656 |
-| majority3 | refactor | 0 | 0 | 1 | 1 | 0.00% | 0.00% | 100.00% | 1.0000 |
-| majority3 | resub | 1 | 0 | 3 | 4 | 25.00% | 0.00% | 75.00% | 1.0000 |
-| majority3 | resyn2_like | 1 | 0 | 1 | 2 | 50.00% | 0.00% | 50.00% | 0.9312 |
-| majority3 | rewrite | 1 | 0 | 3 | 4 | 25.00% | 0.00% | 75.00% | 1.0000 |
-| mux2 | balance | 2 | 0 | 0 | 2 | 100.00% | 0.00% | 0.00% | 1.0000 |
-| mux2 | refactor | 2 | 0 | 0 | 2 | 100.00% | 0.00% | 0.00% | 1.0000 |
-| mux2 | resub | 2 | 0 | 0 | 2 | 100.00% | 0.00% | 0.00% | 1.0000 |
-| mux2 | rewrite | 2 | 0 | 0 | 2 | 100.00% | 0.00% | 0.00% | 1.0000 |
-| toy_and_or | balance | 2 | 0 | 0 | 2 | 100.00% | 0.00% | 0.00% | 1.0000 |
-| toy_and_or | refactor | 2 | 0 | 0 | 2 | 100.00% | 0.00% | 0.00% | 1.0000 |
-| toy_and_or | resub | 2 | 0 | 0 | 2 | 100.00% | 0.00% | 0.00% | 1.0000 |
-| toy_and_or | resyn2_like | 2 | 0 | 0 | 2 | 100.00% | 0.00% | 0.00% | 1.0000 |
-| toy_and_or | rewrite | 2 | 0 | 0 | 2 | 100.00% | 0.00% | 0.00% | 1.0000 |
-| xor_chain | balance | 8 | 0 | 0 | 8 | 100.00% | 0.00% | 0.00% | 1.0000 |
-| xor_chain | refactor | 8 | 0 | 0 | 8 | 100.00% | 0.00% | 0.00% | 1.0000 |
-| xor_chain | resub | 8 | 0 | 0 | 8 | 100.00% | 0.00% | 0.00% | 1.0000 |
-| xor_chain | rewrite | 8 | 0 | 0 | 8 | 100.00% | 0.00% | 0.00% | 1.0000 |
+| benchmark | optimization | verified | rejected | inconclusive | total | verification_rate | rejection_rate | inconclusive_rate | avg_combined_score | direct_name_count | fingerprint_recovered | still_inconclusive |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| majority3 | balance | 0 | 1 | 3 | 4 | 0.00% | 25.00% | 75.00% | 0.9656 | 1 | 0 | 3 |
+| majority3 | refactor | 0 | 0 | 1 | 1 | 0.00% | 0.00% | 100.00% | 1.0000 | 0 | 0 | 1 |
+| majority3 | resub | 1 | 0 | 3 | 4 | 25.00% | 0.00% | 75.00% | 1.0000 | 1 | 0 | 3 |
+| majority3 | resyn2_like | 1 | 0 | 1 | 2 | 50.00% | 0.00% | 50.00% | 0.9312 | 1 | 0 | 1 |
+| majority3 | rewrite | 1 | 0 | 3 | 4 | 25.00% | 0.00% | 75.00% | 1.0000 | 1 | 0 | 3 |
+| mux2 | balance | 2 | 0 | 0 | 2 | 100.00% | 0.00% | 0.00% | 1.0000 | 2 | 0 | 0 |
+| mux2 | refactor | 2 | 0 | 0 | 2 | 100.00% | 0.00% | 0.00% | 1.0000 | 2 | 0 | 0 |
+| mux2 | resub | 2 | 0 | 0 | 2 | 100.00% | 0.00% | 0.00% | 1.0000 | 2 | 0 | 0 |
+| mux2 | rewrite | 2 | 0 | 0 | 2 | 100.00% | 0.00% | 0.00% | 1.0000 | 2 | 0 | 0 |
+| toy_and_or | balance | 2 | 0 | 0 | 2 | 100.00% | 0.00% | 0.00% | 1.0000 | 2 | 0 | 0 |
+| toy_and_or | refactor | 2 | 0 | 0 | 2 | 100.00% | 0.00% | 0.00% | 1.0000 | 2 | 0 | 0 |
+| toy_and_or | resub | 2 | 0 | 0 | 2 | 100.00% | 0.00% | 0.00% | 1.0000 | 2 | 0 | 0 |
+| toy_and_or | resyn2_like | 2 | 0 | 0 | 2 | 100.00% | 0.00% | 0.00% | 1.0000 | 2 | 0 | 0 |
+| toy_and_or | rewrite | 2 | 0 | 0 | 2 | 100.00% | 0.00% | 0.00% | 1.0000 | 2 | 0 | 0 |
+| xor_chain | balance | 8 | 0 | 0 | 8 | 100.00% | 0.00% | 0.00% | 1.0000 | 8 | 0 | 0 |
+| xor_chain | refactor | 8 | 0 | 0 | 8 | 100.00% | 0.00% | 0.00% | 1.0000 | 8 | 0 | 0 |
+| xor_chain | resub | 8 | 0 | 0 | 8 | 100.00% | 0.00% | 0.00% | 1.0000 | 8 | 0 | 0 |
+| xor_chain | rewrite | 8 | 0 | 0 | 8 | 100.00% | 0.00% | 0.00% | 1.0000 | 8 | 0 | 0 |
 
 **Global totals:**
 
-| benchmark | optimization | verified | rejected | inconclusive | total | verification_rate | rejection_rate | inconclusive_rate | avg_combined_score |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| ALL | ALL | 53 | 1 | 11 | 65 | 81.54% | 1.54% | 16.92% | 0.9958 |
+| benchmark | optimization | verified | rejected | inconclusive | total | verification_rate | rejection_rate | inconclusive_rate | avg_combined_score | direct_name_count | fingerprint_recovered | still_inconclusive |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| ALL | ALL | 53 | 1 | 11 | 65 | 81.54% | 1.54% | 16.92% | 0.9958 | 54 | 0 | 11 |
 
 ## Rejected candidates
 

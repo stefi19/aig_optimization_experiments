@@ -115,9 +115,12 @@ run_extended_variant() {
 # ── Main loop ─────────────────────────────────────────────────────────────────
 
 for bench in "${BENCH_FILES[@]}"; do
-    base=$(basename "$bench" .blif)
+    # Compute a safe, collision-free ID from the relative path.
+    # e.g. benchmarks/real/hand_written/full_adder.blif → real_hand_written_full_adder
+    # e.g. benchmarks/majority3.blif → majority3
+    base=$(python3 scripts/benchmark_id.py "$bench")
     echo "============================================================"
-    echo "Benchmark: $base"
+    echo "Benchmark: $base  ($bench)"
     echo "============================================================"
 
     for opt in original balance rewrite refactor resub resyn2_like; do
