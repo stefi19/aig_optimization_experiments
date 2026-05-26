@@ -131,8 +131,9 @@ using simple heuristics, and does any formal verification step help?*
 
 ## 4. Research question
 
-> After applying a single ABC optimization (`balance`, `rewrite`, `refactor`, `resub`, or
-> `resyn2_like`) to a small BLIF circuit, how many internal nodes can still be matched exactly?
+> After applying each of eleven ABC optimization flows (`balance`, `compress2rs`, `dc2`,
+> `refactor`, `refactor_z`, `resub`, `resyn`, `resyn2`, `resyn2_like`, `rewrite`, `rewrite_z`)
+> to a BLIF circuit, how many internal nodes can still be matched exactly?
 > And when exact matching fails, does support/simulation overlap remain meaningful enough to
 > recover useful candidate correspondences?
 
@@ -142,9 +143,8 @@ using simple heuristics, and does any formal verification step help?*
 
 ### 5.1 Core toy circuits
 
-The primary experiments use four hand-written toy circuits small enough to understand
-completely — the goal is to measure the approach precisely, not to handle large real-world
-chips yet.
+The four hand-written toy benchmarks form the simplest test bed — small enough to inspect
+by hand.
 
 | Name | Inputs | Internal nodes | What it computes |
 |---|---|---|---|
@@ -153,76 +153,66 @@ chips yet.
 | `toy_and_or` | a, b, c | 2 | Simple AND and OR combination |
 | `xor_chain` | a, b, c, d | 8 | a XOR b XOR c XOR d (chain of XOR gates) |
 
-### Why XOR is interesting
+### 5.2 Generated synthetic circuits
 
-XOR (exclusive-or: output is 1 when inputs differ) is notoriously hard for synthesis tools.
-An XOR gate cannot be built from a single AND or OR gate — it requires a more complex
-sub-circuit. Different synthesis algorithms decompose XOR differently, which means strong
-optimizations can completely restructure the internal nodes while still computing the correct
-XOR function. This makes `xor_chain` the most challenging benchmark.
+Twelve circuits are generated programmatically by `scripts/generate_synthetic_benchmarks.py`.
+These cover adders, multipliers, MUX trees, XOR chains (8/16/32 bits) and random logic graphs
+— giving a wider spread of node counts (8–92 nodes) and structural complexity.
 
-### 5.2 Real-style benchmark suite (`benchmarks/real/`)
-
-The `benchmarks/real/` directory contains additional circuits designed to resemble real
-digital components:
-
-**Hand-written BLIFs** (`benchmarks/real/hand_written/`) — manually authored and validated:
-
-| File | What it computes |
+| Family | Benchmarks |
 |---|---|
-| `full_adder.blif` | 1-bit full adder (sum + carry) |
-| `priority_enc_4.blif` | 4-to-2 priority encoder |
-| `mux_4to1.blif` | 4-to-1 multiplexer |
-| `comparator_4.blif` | 4-bit equality comparator |
-| `parity_8.blif` | 8-bit XOR parity tree |
+| Adders | `generated_adder_4`, `generated_adder_8` |
+| Multipliers | `generated_multiplier_2`, `generated_multiplier_4` |
+| MUX trees | `generated_mux_tree_4`, `generated_mux_tree_8`, `generated_mux_tree_16` |
+| Random logic | `generated_random_small`, `generated_random_medium` |
+| XOR chains | `generated_xor_chain_8`, `generated_xor_chain_16`, `generated_xor_chain_32` |
 
-**Verilog sources** (`benchmarks/real/verilog_examples/`) — require Yosys for BLIF conversion:
+### 5.3 Real hand-written circuits (`benchmarks/real/hand_written/`)
 
-| File | What it computes |
-|---|---|
-| `adder_8.v` | 8-bit ripple-carry adder |
-| `popcount_8.v` | 8-bit population count (number of set bits) |
-| `priority_encoder_8.v` | 8-input priority encoder (3-bit grant + valid) |
-| `comparator_8.v` | 8-bit magnitude comparator (lt / eq / gt) |
-| `alu_small.v` | 4-bit ALU (ADD / SUB / AND / OR + zero flag) |
-| `mux_tree_8.v` | 8-to-1 balanced mux tree (3-level hierarchy) |
+Five manually authored BLIFs, verified by simulation:
 
-Convert Verilog to BLIF with:
+| File | What it computes | Internal nodes |
+|---|---|---|
+| `full_adder.blif` | 1-bit full adder (sum + carry) | 9 |
+| `priority_enc_4.blif` | 4-to-2 priority encoder | 2 |
+| `mux_4to1.blif` | 4-to-1 multiplexer | 10 |
+| `comparator_4.blif` | 4-bit equality comparator | 14 |
+| `parity_8.blif` | 8-bit XOR parity tree | 20 |
+
+### 5.4 Verilog sources and ISCAS-85
+
+`benchmarks/real/verilog_examples/` contains six Verilog modules (adder_8, popcount_8,
+priority_encoder_8, comparator_8, alu_small, mux_tree_8). Convert with:
 ```bash
 make real-benchmarks    # runs Yosys on all verilog_examples/ sources
 ```
-Yosys must be installed (`brew install yosys` on macOS).
 
-**ISCAS-85 / EPFL benchmarks** — not included; must be imported locally:
-```bash
-# After downloading ISCAS-85 BLIFs to ~/iscas85/:
-python3 scripts/import_real_benchmarks.py \
-    --source iscas85 \
-    --input-dir ~/iscas85/ \
-    --output-dir benchmarks/real/iscas85/
-```
-`import_real_benchmarks.py` validates each file (checks for `.model`, `.inputs`,
-`.outputs`, `.end`) before copying.  No ISCAS-85 or EPFL results are present in this
-repository — all published numbers come from the four toy circuits only.
+ISCAS-85 / EPFL benchmarks must be imported locally — no results on those are published here.
 
 ---
 
 ## 6. Optimization flows
 
-Each benchmark is passed through five ABC optimization sequences.
+Each benchmark is passed through **eleven** ABC optimization sequences.
 
 | Optimization | What it does | How aggressive |
 |---|---|---|
 | `balance` | Restructures the circuit to minimize the longest chain (depth/levels). | Mild |
 | `rewrite` | Replaces sub-graphs with functionally equivalent ones from a pre-built database. | Mild–Moderate |
+| `rewrite_z` | Zero-cost rewrite variant — accepts only reductions. | Mild–Moderate |
 | `refactor` | Cuts out a small subgraph and replaces it with a simpler implementation. | Moderate |
+| `refactor_z` | Zero-cost refactor variant — accepts only reductions. | Moderate |
 | `resub` | Resubstitution: expresses one node's function in terms of other nodes already in the circuit, removing the original. | Moderate |
+| `resyn` | Full resynthesis pass (balance + rewrite + refactor). | Moderate |
+| `resyn2` | Two-pass resynthesis. | Moderate–Aggressive |
 | `resyn2_like` | A sequence of multiple rewriting/balancing passes. A cascade of the above. | Aggressive |
+| `compress2rs` | Aggressive compression using resubstitution + rewriting. | Aggressive |
+| `dc2` | Don't-care-based rewriting — exploits unused input patterns. | Aggressive |
 
 **Key insight:** mild optimizations tend to keep internal nodes intact. Aggressive
-optimizations (especially `resyn2_like`) can completely replace every internal node with a
-new one that computes the same total output but through a totally different intermediate
-structure.
+optimizations (especially `compress2rs`, `dc2`, `resyn2`, `resyn2_like`) can completely replace
+every internal node with a new one that computes the same total output but through a totally
+different intermediate structure.
 
 ---
 
@@ -342,26 +332,34 @@ circuit (100% = all nodes matched perfectly, 0% = none matched).
 **How to read these charts:** Light bars = original circuit. Solid bars = optimized. You can
 see whether the optimizer reduced the gate count and/or the logic depth.
 
-**Full results table:**
+**Full pipeline run:** 21 benchmarks × 11 optimization flows = **231 benchmark × optimization pairs** in `results/summary_metrics.csv`.
 
-| Benchmark | Optimization | Orig. nodes | Opt. nodes | Exact matches |
+**Results by benchmark family:**
+
+| Family | Benchmarks | Avg orig nodes | Avg opt nodes | Avg exact match rate |
 |---|---|---|---|---|
-| majority3 | balance | 4 | 4 | 3 |
-| majority3 | refactor | 4 | 3 | 1 |
-| majority3 | resub | 4 | 4 | 4 |
-| majority3 | rewrite | 4 | 4 | 4 |
-| majority3 | resyn2_like | 4 | 3 | 1 |
-| mux2 | balance | 2 | 2 | 2 |
-| mux2 | refactor | 2 | 2 | 2 |
-| mux2 | resub | 2 | 2 | 2 |
-| mux2 | resyn2_like | 2 | 2 | **0** |
-| mux2 | rewrite | 2 | 2 | 2 |
-| toy_and_or | all | 2 | 2 | 2 |
-| xor_chain | balance | 8 | 8 | 8 |
-| xor_chain | refactor | 8 | 8 | 8 |
-| xor_chain | resub | 8 | 8 | 8 |
-| xor_chain | resyn2_like | 8 | 8 | **0** |
-| xor_chain | rewrite | 8 | 8 | 8 |
+| toy (majority3, mux2, toy_and_or, xor_chain) | 4 | 4.0 | 3.9 | 65.1% |
+| real hand-written (full_adder, comparator_4, mux_4to1, parity_8, priority_enc_4) | 5 | 11.0 | 10.5 | 65.9% |
+| generated (adders, multipliers, MUX trees, XOR chains, random) | 12 | 38.2 | 34.9 | 53.7% |
+
+**Exact match rate by optimization** (averaged across all 21 benchmarks):
+
+| Optimization | Avg exact match rate | Notes |
+|---|---|---|
+| `resub` | ~95% | Resubstitution rarely changes node truth tables |
+| `rewrite` | ~89% | Good preservation across all families |
+| `balance` | ~91% | Structural rebalancing is mostly conservative |
+| `refactor` | ~91% | Similar to balance |
+| `refactor_z` / `rewrite_z` | ~85–90% | Zero-cost variants, mild impact |
+| `resyn` | ~72% | Multi-pass, some restructuring |
+| `compress2rs` | ~39% | Aggressive; worst for generated (26%) and toy (33%) |
+| `dc2` | ~28% | Aggressive don't-care rewriting; drops to 26% on generated |
+| `resyn2` / `resyn2_like` | ~28% | Cascade of rewrites; fully breaks XOR-heavy circuits |
+
+**Key insight:** mild flows (`resub`, `rewrite`, `balance`) preserve ~90%+ of node truth tables
+even on larger generated circuits. Aggressive flows (`compress2rs`, `dc2`, `resyn2_like`)
+drop to 25–55% on real/generated benchmarks — the exact match rate is strongly correlated
+with circuit structure and optimization aggressiveness.
 
 ### 9.3 Support overlap distribution
 
@@ -425,21 +423,24 @@ For each high-confidence candidate pair (optimized node X, original candidate Y)
 **How to read this chart:** Each stacked bar is one benchmark × optimization. Green = verified
 (proved equivalent). Red = rejected (proved non-equivalent). Grey = inconclusive.
 
-**Overall totals:**
+**Overall totals (3,477 candidate pairs across 21 benchmarks):**
 
-| Status | Count | Rate |
-|---|---|---|
-| Verified by ABC | 53 | 81.5% |
-| Rejected by ABC | 1 | 1.5% |
-| Inconclusive | 11 | 16.9% |
-| **Total checked** | **65** | |
+| Status | toy | real hand-written | generated | Total |
+|---|---|---|---|---|
+| Verified by ABC | 83 (76.9%) | 204 (52.2%) | 1,401 (47.0%) | **1,688 (48.5%)** |
+| Rejected by ABC | 3 | 4 | 13 | **20 (0.6%)** |
+| Inconclusive | 22 | 183 | 1,564 | **1,769 (50.9%)** |
+| **Total checked** | **108** | **391** | **2,978** | **3,477** |
 
-The **single rejected case** is the most important result: simulation gave this pair a high
-score (they looked like a match), but ABC's formal check found a counterexample — a specific
-input where the two nodes compute different values. **Simulation alone is not enough.**
+**Why the inconclusive rate is high on generated/real circuits:** ABC renames internal nodes
+more aggressively during optimization when circuits are larger. The node-name lookup used to
+set up per-node CEC checks fails whenever ABC has renamed the node in the optimized BLIF —
+this is counted as inconclusive. The toy benchmarks (76.9% verified) are small enough that
+ABC preserves most node names; larger circuits hit ~50% inconclusive.
 
-The **inconclusive cases** happen because ABC renames internal nodes during optimization,
-so the prototype sometimes cannot find the original node by name.
+**The rejected cases are the most important result:** simulation gave those pairs high scores
+(they looked like matches), but ABC's formal check found a counterexample. **Simulation alone
+is not sufficient — formal verification catches real false positives.**
 
 ---
 
@@ -459,10 +460,18 @@ confident.
 **How to read this chart:** Each bar is a benchmark. The height is the average `combined_score`
 of the rank-1 candidate, averaged across all optimizations and nodes. Closer to 1.0 is better.
 
-**What we see:** Most benchmarks achieve near-perfect rank-1 scores. Even in the hardest case
-(`xor_chain` / `resyn2_like`) the rank-1 candidate still scores above 0.7, meaning the
-scoring formula is finding the structurally closest original node even when truth tables have
-completely changed.
+**What we see:** Most benchmarks achieve high rank-1 scores. Even in the hardest cases
+(`xor_chain` variants, large generated XOR chains under `dc2`/`resyn2_like`) the rank-1
+candidate still scores above 0.7, meaning the scoring formula finds the structurally closest
+original node even when truth tables have completely changed.
+
+**Top-K recovery across all 21 benchmarks:**
+
+- **880 total** benchmark × optimization × K entries in `topk_recovery.csv`
+- **624 / 880** (70.9%) have MRR > 0 (at least one correct match found in top-K)
+- **Mean MRR** among non-zero entries: **0.551**
+- **K=1 node recovery**: 1,688 / 5,350 nodes recovered at rank 1 (**31.6%** overall — lower
+  than toy-only rate because large generated circuits have many nodes with no exact match)
 
 ---
 
@@ -624,11 +633,11 @@ They are saved to `results/plots/`.
 
 | Limitation | Details |
 |---|---|
-| **Small-scale benchmark coverage** | All published results use the four toy circuits (2–8 internal nodes). The `benchmarks/real/` directory adds hand-written and Verilog-based circuits, but no results on large industrial circuits (ISCAS-85, EPFL) are present — performance on those is unknown. |
+| **Small-scale benchmark coverage** | The full pipeline has been run across 21 benchmarks (4 toy, 5 real hand-written, 12 generated), ranging from 2 to 92 internal nodes. No results on large industrial circuits (ISCAS-85, EPFL, commercial netlists) are present — performance on those is unknown. |
 | **BLIF only** | The parser handles `.names`-style gates only. RTL (Verilog/VHDL) is not supported. |
-| **Node name instability** | ABC renames internal nodes during optimization. This causes 16.9% of SAT checks to be inconclusive because the node cannot be found by name. |
+| **Node name instability** | ABC renames internal nodes during optimization. This causes ~50.9% of SAT checks on generated/real circuits to be inconclusive (node cannot be found by name). Toy benchmarks are less affected (22% inconclusive). |
 | **Weights are not tuned** | The 0.55 / 0.35 / 0.10 weights are a rough starting point — not learned from data. |
-| **CEGAR needs more rejections** | With only 1 rejected pair, the penalty feedback loop cannot be evaluated properly. |
+| **CEGAR needs more rejections** | With only 20 rejected pairs (0.6% of SAT checks), the penalty feedback loop is lightly exercised. On larger circuits with more rejections, this feedback loop would have more impact. |
 | **Combinational circuits only** | No flip-flops, no clock. Sequential correspondence is a harder and separate problem. |
 | **No RTL-to-netlist link** | The tool works at netlist level. Connecting back to original source-code variable names is future work. |
 
@@ -665,9 +674,17 @@ make test                # run all 414 unit tests
 
 ### If ABC is not on your PATH
 
+The Makefile's `build-abc` target clones and compiles ABC automatically. After building, the
+binary is at `.abc_build/abc_repo/abc`. You can use it directly:
+
+```bash
+ABC=$(pwd)/.abc_build/abc_repo/abc make generate-variants
+ABC=$(pwd)/.abc_build/abc_repo/abc make sat-pipeline
+```
+
+Or if you have ABC installed elsewhere:
 ```bash
 ABC=/path/to/abc make generate-variants
-ABC=/path/to/abc make sat-pipeline
 ```
 
 ### Run tests only
@@ -810,16 +827,19 @@ Tested with Python 3.13. Should work with Python 3.9+.
 ## Short research summary
 
 > This prototype works at the BLIF/AIG level and measures how synthesis optimizations affect
-> internal node correspondence. The key findings:
+> internal node correspondence. The full pipeline was run across **21 benchmarks** (4 toy,
+> 5 real hand-written, 12 generated — ranging from 2 to 92 internal nodes) × **11 ABC
+> optimization flows** = 231 benchmark × optimization pairs. The key findings:
 >
-> - **Simple optimizations** (`balance`, `rewrite`, `refactor`, `resub`) preserve the Boolean
->   function of almost every internal node — exact matching works perfectly.
-> - **Aggressive resynthesis** (`resyn2_like`) breaks exact matching completely for
->   XOR-heavy circuits — zero nodes keep the same truth table.
+> - **Simple optimizations** (`balance`, `rewrite`, `refactor`, `resub`) preserve ~90%+ of
+>   internal node truth tables across all circuit families — exact matching works well.
+> - **Aggressive resynthesis** (`compress2rs`, `dc2`, `resyn2`, `resyn2_like`) drops exact
+>   match rates to 25–55% on generated and real circuits; XOR-heavy structures are the hardest.
 > - **Support overlap** survives even when truth tables change — it is a robust signal.
 > - The **simulation + support + depth scoring formula** reliably puts the correct
->   correspondence candidate at rank 1 in most cases.
-> - **ABC's formal equivalence checker** confirms 81.5% of high-confidence candidates and
->   catches one case (1.5%) where simulation gave a false positive.
+>   correspondence candidate at rank 1 in most cases (mean MRR 0.551 across 880 top-K entries).
+> - **SAT verification** confirmed 1,688 candidates (48.5%) and rejected 20 (0.6%) as false
+>   positives. The inconclusive rate is ~51% on larger circuits due to ABC node renaming,
+>   vs. 23% on toy benchmarks. **Simulation alone is not sufficient.**
 > - **Region-level, ablation, and CEGAR analyses** confirm these findings from multiple angles
 >   and provide a foundation for future work on larger, real-world circuits.
