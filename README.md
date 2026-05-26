@@ -440,7 +440,9 @@ functions), they are much more likely to be true correspondences.
 
 For each optimized node and each original candidate, the region score combines:
 
-- **cone_sim_score**: how similar the simulation signatures are across the whole cone
+- **root_sim_score**: bit-similarity of the root node's simulation signature (the same
+  global simulation used in `analyze_blif_matches.py` — it reflects the root's function,
+  not a re-simulation of the isolated cone)
 - **cone_support_jaccard**: Jaccard similarity of the full support sets of the two cones
 - **cone_size_sim**: 1 − |size_A − size_B| / max_size (penalizes very different-sized cones)
 
@@ -644,11 +646,22 @@ make clean-results
 ```
 aig_optimization_experiments/
 │
-├── benchmarks/                    Hand-written BLIF circuits (inputs to the pipeline)
+├── benchmarks/
 │   ├── majority3.blif             3-input majority function
 │   ├── mux2.blif                  2-to-1 multiplexer
 │   ├── toy_and_or.blif            Simple AND/OR circuit
-│   └── xor_chain.blif             4-input XOR chain (hardest benchmark)
+│   ├── xor_chain.blif             4-input XOR chain (hardest benchmark)
+│   └── real/                      Real-circuit benchmark suite
+│       ├── hand_written/          Small BLIFs verified by hand
+│       │   ├── full_adder.blif        1-bit full adder
+│       │   ├── priority_enc_4.blif    4→2 priority encoder
+│       │   ├── mux_4to1.blif          4-to-1 multiplexer
+│       │   ├── comparator_4.blif      4-bit equality comparator
+│       │   └── parity_8.blif          8-bit XOR parity tree
+│       ├── verilog_examples/      Verilog sources (convert with Yosys)
+│       │   ├── adder_8.v              8-bit ripple-carry adder
+│       │   └── popcount_8.v           8-bit population count
+│       └── README.md              Benchmark descriptions + conversion instructions
 │
 ├── variants/                      ABC-optimized BLIFs (generated, not committed)
 ├── logs/                          ABC stdout logs per run (generated)
@@ -664,7 +677,7 @@ aig_optimization_experiments/
 │   ├── topk_recovery.md               Human-readable top-K report
 │   ├── ablation_summary.csv           Ablation study results
 │   ├── ablation_summary.md            Human-readable ablation report
-│   ├── region_candidates.csv          Fanin-cone candidate scores
+│   ├── region_candidates.csv          Fanin-cone candidate scores (root_sim_score col)
 │   ├── region_summary.csv             Per-depth region score summaries
 │   ├── region_summary.md              Human-readable region report
 │   ├── cegar_refined_candidates.csv   CEGAR-penalised candidate scores
@@ -679,24 +692,30 @@ aig_optimization_experiments/
 │       ├── ablation_comparison.png
 │       └── region_scores.png
 │
-├── tests/                         pytest unit tests (370 total, all passing)
-│   ├── test_topk_recovery.py      31 tests
-│   ├── test_ablation_study.py     31 tests
-│   ├── test_region_correspondence.py   44 tests
-│   ├── test_cegar_refinement.py   43 tests
-│   └── test_research_plots.py     43 tests
+├── tests/                         pytest unit tests (393 total, all passing)
+│   ├── test_topk_recovery.py
+│   ├── test_ablation_study.py
+│   ├── test_region_correspondence.py
+│   ├── test_cegar_refinement.py
+│   ├── test_research_plots.py
+│   ├── test_select_sat_candidates.py
+│   └── test_import_real_benchmarks.py
+│
+├── scripts/
+│   ├── generate_synthetic_benchmarks.py   Synthetic BLIF generator
+│   └── import_real_benchmarks.py          Lists/imports real benchmarks; Yosys converter
 │
 ├── analyze_blif_matches.py        Main analysis: parse BLIF, simulate, compare, rank
 ├── visualize_results.py           Legacy per-benchmark node-count plots
 ├── research_plots.py              Research-quality plots (8 PNGs)
-├── sat_refinement_placeholder.py  Filter: keeps candidates with score ≥ 0.85
+├── select_sat_candidates.py       Filter: keeps rank-1 candidates with score ≥ 0.85
 ├── sat_refinement_abc.py          ABC CEC on filtered candidates
 ├── summarize_sat_results.py       CSV + Markdown SAT summary
 ├── evaluate_topk_recovery.py      Top-K recovery metrics
 ├── ablation_study.py              Six scoring-weight configurations
-├── region_correspondence.py       Fanin-cone region matching
+├── region_correspondence.py       Fanin-cone region matching (root_sim_score)
 ├── counterexample_guided_refinement.py  CEGAR-style penalty pass
-├── run_abc_variants.sh            Shell driver for ABC
+├── run_abc_variants.sh            Shell driver for ABC (discovers all benchmarks/**/*)
 ├── start.sh                       One-shot bootstrap script
 ├── Makefile                       All pipeline targets
 └── requirements.txt               Python dependencies (pandas, matplotlib, pytest)

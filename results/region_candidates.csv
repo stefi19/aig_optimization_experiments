@@ -1,4 +1,4 @@
-benchmark,optimization,depth,optimized_node,rank,original_candidate,region_score,cone_sim_score,cone_support_jaccard,cone_size_sim,opt_cone_size,orig_cone_size,opt_cone_pis,orig_cone_pis
+benchmark,optimization,depth,optimized_node,rank,original_candidate,region_score,root_sim_score,cone_support_jaccard,cone_size_sim,opt_cone_size,orig_cone_size,opt_cone_pis,orig_cone_pis
 majority3,balance,1,new_n5,1,new_n7,1.0,1.0,1.0,1.0,1,1,2,2
 majority3,balance,1,new_n5,2,new_n5,0.6083333333333333,0.75,0.3333333333333333,1.0,1,1,2,2
 majority3,balance,1,new_n5,3,new_n6,0.6083333333333333,0.75,0.3333333333333333,1.0,1,1,2,2

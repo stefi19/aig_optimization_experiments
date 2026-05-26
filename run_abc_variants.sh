@@ -34,6 +34,11 @@ else
     echo ""
 fi
 
+# Real benchmarks (hand-written + any converted Verilog / ISCAS-85)
+while IFS= read -r -d '' bf; do
+    BENCH_FILES+=( "$bf" )
+done < <(find benchmarks/real -name "*.blif" -print0 2>/dev/null)
+
 if [ ${#BENCH_FILES[@]} -eq 0 ]; then
     echo "ERROR: No .blif files found in benchmarks/. Aborting."
     exit 1

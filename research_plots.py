@@ -4,6 +4,8 @@ optimization experiments.
 
 Plots produced (all written to results/plots/):
   1. exact_match_rate.png        — exact internal match rate per benchmark/opt
+                                   (denominator = optimized_nodes, consistent with
+                                   analyze_blif_matches.py)
   2. support_overlap_dist.png    — distribution of avg_best_support_overlap
   3. node_reduction.png          — original vs optimised node counts (grouped bar)
   4. level_reduction.png         — original vs optimised level counts (grouped bar)
@@ -98,13 +100,29 @@ def _opt_labels(optimizations: list[str]) -> list[str]:
 # ---------------------------------------------------------------------------
 
 def plot_exact_match_rate() -> Optional[str]:
-    """Bar chart of exact_internal_matches / original_nodes per benchmark × opt."""
+    """Bar chart of exact internal match rate per benchmark × opt.
+
+    Uses the pre-computed 'exact_match_rate' column from summary_metrics.csv if
+    present (it is computed as exact_internal_matches / optimized_nodes by
+    analyze_blif_matches.py).  Falls back to recomputing with the same denominator
+    (optimized_nodes) so the chart is always consistent with the analysis script.
+    We deliberately do NOT divide by original_nodes because the denominator should
+    be the set of nodes we are trying to match — the optimized ones.
+    """
     df = _load("summary")
     if df is None:
         return None
 
     df = df.copy()
-    df["exact_match_rate"] = df["exact_internal_matches"] / df["original_nodes"].replace(0, float("nan"))
+    if "exact_match_rate" in df.columns:
+        # Use the pre-computed column — already exact_internal_matches / optimized_nodes
+        pass
+    else:
+        # Fallback: compute on the fly with the same denominator
+        df["exact_match_rate"] = (
+            df["exact_internal_matches"]
+            / df["optimized_nodes"].replace(0, float("nan"))
+        )
 
     benchmarks = _benchmarks(df)
     opts = _opt_labels(df["optimization"].unique().tolist())

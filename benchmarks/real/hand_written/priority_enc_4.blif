@@ -1,0 +1,50 @@
+# priority_enc_4.blif
+#
+# 4-input priority encoder (4-to-2 with valid).
+# Inputs:  i0, i1, i2, i3  (i3 has highest priority)
+# Outputs: y1, y0, valid
+#
+# Priority encoding (highest priority wins):
+#   i3=1          → y1=1, y0=1
+#   i3=0, i2=1    → y1=1, y0=0
+#   i3=0, i2=0, i1=1 → y1=0, y0=1
+#   i3=0, i2=0, i1=0, i0=1 → y1=0, y0=0
+#   all zero      → valid=0
+#
+# Equations:
+#   y1    = i3 OR i2
+#   y0    = i3 OR (NOT i2 AND i1)
+#   valid = i3 OR i2 OR i1 OR i0
+#
+# Internal nodes: 5
+
+.model priority_enc_4
+.inputs i0 i1 i2 i3
+.outputs y1 y0 valid
+
+# y1 = i3 OR i2
+.names i3 i2 y1
+1- 1
+-1 1
+
+# NOT i2
+.names i2 not_i2
+0 1
+
+# NOT i2 AND i1
+.names not_i2 i1 masked_i1
+11 1
+
+# y0 = i3 OR masked_i1
+.names i3 masked_i1 y0
+1- 1
+-1 1
+
+# valid = i3 OR i2 OR i1 OR i0
+.names i3 i2 i1 i0 valid
+1--- 1
+-1-- 1
+--1- 1
+---1 1
+
+.end

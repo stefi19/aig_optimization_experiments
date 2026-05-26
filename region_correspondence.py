@@ -17,15 +17,19 @@ This script adds a complementary region-level view:
 
   For each internal node, extract its *fanin cone* to depth D (D = 1, 2, 3).
   Score node pairs by how similar their local cones are, using three signals:
-    - cone_sim_score      : bit-similarity of the cone's output signature
-                             under patterns restricted to shared primary inputs
+    - root_sim_score      : bit-similarity of the ROOT NODE's simulation signature
+                             (the same signature used by analyze_blif_matches.py).
+                             Note: this is the global simulation of the root node, not
+                             a local re-simulation of the cone in isolation.  The name
+                             reflects this: it is the *root* node's similarity score,
+                             used as a proxy for how similar the cone's function is.
     - cone_support_jaccard: Jaccard overlap of the sets of primary inputs that
                              actually reach each cone
     - cone_size_sim       : 1 / (1 + |size_a - size_b|)  — penalises
                              cones of very different internal complexity
 
   The combined region score is:
-    0.50 * cone_sim_score + 0.40 * cone_support_jaccard + 0.10 * cone_size_sim
+    0.50 * root_sim_score + 0.40 * cone_support_jaccard + 0.10 * cone_size_sim
 
   For each (benchmark, optimization, optimized_node, depth) tuple we keep
   the TOP_K_REGION best original-node candidates.
@@ -438,7 +442,7 @@ def _score_pairs(
                     "optimized_node":     opt_node,
                     "original_candidate": orig_node,
                     "region_score":       r_score,
-                    "cone_sim_score":     c_sim,
+                    "root_sim_score":     c_sim,
                     "cone_support_jaccard": c_sup,
                     "cone_size_sim":      c_sz,
                     "opt_cone_size":      opt_size,
@@ -466,7 +470,7 @@ def _compute_summary(candidate_rows: list[dict]) -> list[dict]:
     Metrics:
       total_opt_nodes          — distinct optimized nodes at this depth
       avg_rank1_region_score   — mean region_score of the rank-1 candidate
-      avg_rank1_cone_sim       — mean cone_sim_score of the rank-1 candidate
+      avg_rank1_cone_sim       — mean root_sim_score of the rank-1 candidate
       avg_rank1_cone_support   — mean cone_support_jaccard at rank 1
       avg_rank1_cone_size_sim  — mean cone_size_sim at rank 1
       pct_rank1_above_0_8      — fraction of rank-1 region_scores ≥ 0.8
@@ -481,7 +485,7 @@ def _compute_summary(candidate_rows: list[dict]) -> list[dict]:
     summary: list[dict] = []
     for (bench, opt, depth), r1_rows in sorted(groups.items()):
         scores    = [r["region_score"]         for r in r1_rows]
-        sims      = [r["cone_sim_score"]        for r in r1_rows]
+        sims      = [r["root_sim_score"]        for r in r1_rows]
         supports  = [r["cone_support_jaccard"]  for r in r1_rows]
         size_sims = [r["cone_size_sim"]         for r in r1_rows]
 
@@ -609,7 +613,7 @@ def build_markdown(
     # ── Interpretation ────────────────────────────────────────────────────────
     lines.append("## Interpretation\n")
     lines.append(
-        "**cone_sim_score** — bit-similarity of the root node's output under the global "
+        "**root_sim_score** — bit-similarity of the root node's output under the global "
         "simulation patterns. Identical to the simulation similarity in `top_candidates.csv`; "
         "included here for direct comparison with the region-specific signals.\n"
     )
@@ -682,7 +686,7 @@ def _group_variant_files() -> dict[str, dict[str, str]]:
 CANDIDATE_FIELDS = [
     "benchmark", "optimization", "depth",
     "optimized_node", "rank", "original_candidate",
-    "region_score", "cone_sim_score", "cone_support_jaccard", "cone_size_sim",
+    "region_score", "root_sim_score", "cone_support_jaccard", "cone_size_sim",
     "opt_cone_size", "orig_cone_size", "opt_cone_pis", "orig_cone_pis",
 ]
 

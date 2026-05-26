@@ -1,0 +1,59 @@
+# mux_4to1.blif
+#
+# 4-to-1 multiplexer.
+# Inputs:  d0, d1, d2, d3  (data inputs)
+#          s0, s1           (2-bit select: s1 is MSB)
+# Output:  y
+#
+# y = d0  if s1=0, s0=0
+# y = d1  if s1=0, s0=1
+# y = d2  if s1=1, s0=0
+# y = d3  if s1=1, s0=1
+#
+# Internal nodes: 10
+
+.model mux_4to1
+.inputs d0 d1 d2 d3 s0 s1
+.outputs y
+
+# Invert select lines
+.names s0 not_s0
+0 1
+
+.names s1 not_s1
+0 1
+
+# Decode select combinations
+.names not_s1 not_s0 sel_00
+11 1
+
+.names not_s1 s0 sel_01
+11 1
+
+.names s1 not_s0 sel_10
+11 1
+
+.names s1 s0 sel_11
+11 1
+
+# Gate each data input with its select
+.names sel_00 d0 t0
+11 1
+
+.names sel_01 d1 t1
+11 1
+
+.names sel_10 d2 t2
+11 1
+
+.names sel_11 d3 t3
+11 1
+
+# Output is the OR of gated terms (exactly one is active at a time)
+.names t0 t1 t2 t3 y
+1--- 1
+-1-- 1
+--1- 1
+---1 1
+
+.end

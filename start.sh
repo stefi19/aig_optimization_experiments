@@ -6,13 +6,18 @@
 #   2. Locates the ABC binary (or builds it if missing).
 #   3. Creates output directories.
 #   4. Runs the full pipeline in order:
-#        run_abc_variants.sh        → variants/ and logs/
-#        analyze_blif_matches.py    → results/summary_metrics.csv, top_candidates.csv
-#        visualize_results.py       → results/plots/
-#        sat_refinement_placeholder.py → results/sat_refinement_candidates.csv
-#        sat_refinement_abc.py      → results/sat_verified_candidates.csv
-#        summarize_sat_results.py   → results/sat_summary.csv, sat_summary.md
-#        pytest tests/              → test report
+#        run_abc_variants.sh          → variants/ and logs/
+#        analyze_blif_matches.py      → results/summary_metrics.csv, top_candidates.csv
+#        visualize_results.py         → results/plots/
+#        select_sat_candidates.py     → results/sat_refinement_candidates.csv
+#        sat_refinement_abc.py        → results/sat_verified_candidates.csv
+#        summarize_sat_results.py     → results/sat_summary.csv, sat_summary.md
+#        evaluate_topk_recovery.py    → results/topk_recovery.*
+#        ablation_study.py            → results/ablation_summary.*
+#        region_correspondence.py     → results/region_*
+#        counterexample_guided_refinement.py → results/cegar_*
+#        research_plots.py            → results/plots/
+#        pytest tests/                → test report
 #   5. Prints a summary of all output files.
 #
 # Usage:
@@ -114,12 +119,12 @@ export ABC="$ABC_BIN"
 # ── 3. Verify benchmarks exist ────────────────────────────────────────────────
 step "Checking benchmarks"
 
-if [ ! -d benchmarks ] || [ -z "$(ls benchmarks/*.blif 2>/dev/null)" ]; then
-    fail "No .blif files found in benchmarks/. Ensure the benchmarks directory is populated."
+if [ ! -d benchmarks ] || [ -z "$(find benchmarks -name '*.blif' 2>/dev/null | head -1)" ]; then
+    fail "No .blif files found under benchmarks/. Ensure the benchmarks directory is populated."
 fi
 
-BENCH_COUNT=$(ls benchmarks/*.blif | wc -l | tr -d ' ')
-ok "$BENCH_COUNT benchmark(s) found in benchmarks/"
+BENCH_COUNT=$(find benchmarks -name "*.blif" | wc -l | tr -d ' ')
+ok "$BENCH_COUNT benchmark(s) found under benchmarks/"
 
 # ── 4. Create output directories ──────────────────────────────────────────────
 mkdir -p variants logs results results/plots
@@ -140,8 +145,8 @@ python3 visualize_results.py
 ok "Plots saved to results/plots/"
 
 # ── 8. SAT pipeline ───────────────────────────────────────────────────────────
-step "Filtering SAT candidates  (sat_refinement_placeholder.py)"
-python3 sat_refinement_placeholder.py
+step "Filtering SAT candidates  (select_sat_candidates.py)"
+python3 select_sat_candidates.py
 ok "High-confidence candidates → results/sat_refinement_candidates.csv"
 
 step "Running ABC equivalence checks  (sat_refinement_abc.py)"
@@ -152,12 +157,33 @@ step "Summarising SAT results  (summarize_sat_results.py)"
 python3 summarize_sat_results.py
 ok "Summary → results/sat_summary.csv and results/sat_summary.md"
 
-# ── 9. Tests ──────────────────────────────────────────────────────────────────
+# ── 9. Top-K / ablation / region / CEGAR ──────────────────────────────────────
+step "Evaluating top-K recovery  (evaluate_topk_recovery.py)"
+python3 evaluate_topk_recovery.py
+ok "Results → results/topk_recovery.*"
+
+step "Running ablation study  (ablation_study.py)"
+python3 ablation_study.py
+ok "Results → results/ablation_summary.*"
+
+step "Running region correspondence baseline  (region_correspondence.py)"
+python3 region_correspondence.py
+ok "Results → results/region_*"
+
+step "Running CEGAR refinement  (counterexample_guided_refinement.py)"
+python3 counterexample_guided_refinement.py
+ok "Results → results/cegar_*"
+
+step "Generating research plots  (research_plots.py)"
+python3 research_plots.py
+ok "Plots → results/plots/"
+
+# ── 10. Tests ─────────────────────────────────────────────────────────────────
 step "Running tests  (pytest)"
 python3 -m pytest tests/ -v
 ok "All tests passed"
 
-# ── 10. Summary of outputs ────────────────────────────────────────────────────
+# ── 11. Summary of outputs ────────────────────────────────────────────────────
 echo ""
 echo -e "${BOLD}Pipeline complete. Output files:${RESET}"
 
@@ -168,6 +194,14 @@ for f in \
     results/sat_verified_candidates.csv \
     results/sat_summary.csv \
     results/sat_summary.md \
+    results/topk_recovery.csv \
+    results/topk_recovery.md \
+    results/ablation_summary.csv \
+    results/ablation_summary.md \
+    results/region_correspondence.csv \
+    results/region_summary.md \
+    results/cegar_refinement.csv \
+    results/cegar_summary.md \
     results/plots; do
     if [ -e "$f" ]; then
         echo -e "  ${GREEN}✓${RESET}  $f"

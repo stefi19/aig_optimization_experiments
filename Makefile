@@ -1,7 +1,7 @@
 ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 
-.PHONY: all build-abc generate-benchmarks generate-variants analyze plot test sat-refine sat-summary sat-pipeline topk-eval ablation region cegar-refine research-plots full-research-pipeline start clean clean-results
+.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze plot test sat-refine sat-summary sat-pipeline topk-eval ablation region cegar-refine research-plots full-research-pipeline start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -19,6 +19,14 @@ build-abc:
 generate-benchmarks:
 	@echo "Generating synthetic benchmarks → benchmarks/generated/"
 	@python3 scripts/generate_synthetic_benchmarks.py
+
+# List/import real benchmarks; convert Verilog if Yosys is available
+real-benchmarks:
+	@echo "Importing real benchmarks (benchmarks/real/)"
+	@python3 scripts/import_real_benchmarks.py
+
+# Both synthetic and real benchmarks in one shot
+generate-all-benchmarks: generate-benchmarks real-benchmarks
 
 # Generate optimized BLIF variants using the built ABC
 generate-variants: build-abc
@@ -47,7 +55,7 @@ sat-summary:
 
 sat-pipeline:
 	@echo "Running full SAT pipeline: filter → ABC CEC → summary"
-	@python3 sat_refinement_placeholder.py
+	@python3 select_sat_candidates.py
 	@python3 sat_refinement_abc.py
 	@python3 summarize_sat_results.py
 
@@ -74,8 +82,8 @@ research-plots:
 full-research-pipeline: generate-variants analyze sat-pipeline topk-eval ablation region cegar-refine research-plots test
 	@echo ""
 	@echo "Full research pipeline complete."
-	@echo "Plots : results/plots/"
-	@echo "Tests : 370 passed"
+	@echo "Plots  : results/plots/"
+	@echo "Tables : results/*.csv  results/*.md"
 
 clean:
 	@echo "Cleaning ABC build (does NOT remove variants/logs/results)"
@@ -84,8 +92,14 @@ clean:
 clean-results:
 	@echo "Removing generated results, variants, and logs (keeps benchmarks and scripts)"
 	@rm -rf results/summary_metrics.csv results/top_candidates.csv \
-		results/sat_refinement_candidates.csv results/plots \
-		variants/ logs/ benchmarks/generated/
+		results/sat_refinement_candidates.csv results/sat_verified_candidates.csv \
+		results/sat_summary.csv results/sat_summary.md \
+		results/topk_recovery.csv results/topk_recovery.md \
+		results/ablation_summary.csv results/ablation_summary.md \
+		results/region_correspondence.csv results/region_summary.md \
+		results/cegar_refinement.csv results/cegar_summary.md \
+		results/plots \
+		variants/ logs/ benchmarks/generated/ benchmarks/real/converted_blif/
 
 # One-command bootstrap: checks prerequisites, then runs the full pipeline.
 # Equivalent to running start.sh but usable as a make target.

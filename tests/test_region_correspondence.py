@@ -270,7 +270,7 @@ class TestScorePairs:
         result = _score_pairs(self._orig(), self._opt(), "toy", "balance")
         for col in ("benchmark", "optimization", "depth", "optimized_node",
                     "rank", "original_candidate", "region_score",
-                    "cone_sim_score", "cone_support_jaccard", "cone_size_sim",
+                    "root_sim_score", "cone_support_jaccard", "cone_size_sim",
                     "opt_cone_size", "orig_cone_size"):
             assert col in result[0], f"missing column: {col}"
 

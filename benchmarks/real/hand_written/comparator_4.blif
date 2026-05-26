@@ -1,0 +1,51 @@
+# comparator_4.blif
+#
+# 4-bit equality comparator.
+# Inputs:  a0, a1, a2, a3  (first 4-bit number, a0 = LSB)
+#          b0, b1, b2, b3  (second 4-bit number, b0 = LSB)
+# Output:  eq  (1 if a == b, 0 otherwise)
+#
+# eq = XNOR(a0,b0) AND XNOR(a1,b1) AND XNOR(a2,b2) AND XNOR(a3,b3)
+# XNOR(x,y) = NOT(XOR(x,y))  = 1 when x == y
+#
+# Internal nodes: 9
+
+.model comparator_4
+.inputs a0 a1 a2 a3 b0 b1 b2 b3
+.outputs eq
+
+# XOR per bit pair
+.names a0 b0 xor0
+01 1
+10 1
+
+.names a1 b1 xor1
+01 1
+10 1
+
+.names a2 b2 xor2
+01 1
+10 1
+
+.names a3 b3 xor3
+01 1
+10 1
+
+# XNOR: invert each XOR (1 when bits are equal)
+.names xor0 eq0
+0 1
+
+.names xor1 eq1
+0 1
+
+.names xor2 eq2
+0 1
+
+.names xor3 eq3
+0 1
+
+# eq = all four XNOR outputs must be 1
+.names eq0 eq1 eq2 eq3 eq
+1111 1
+
+.end

@@ -1,0 +1,49 @@
+# parity_8.blif
+#
+# 8-bit even parity checker.
+# Inputs:  d0, d1, d2, d3, d4, d5, d6, d7
+# Output:  parity  (1 if an odd number of inputs are 1, i.e., XOR reduction)
+#
+# parity = d0 XOR d1 XOR d2 XOR d3 XOR d4 XOR d5 XOR d6 XOR d7
+#
+# This is a balanced XOR tree (depth 3), similar to xor_chain but wider.
+# Interesting because it tests how ABC handles wide XOR structures.
+#
+# Internal nodes: 7 (binary tree of XOR gates)
+
+.model parity_8
+.inputs d0 d1 d2 d3 d4 d5 d6 d7
+.outputs parity
+
+# Level 1: 4 pairwise XORs
+.names d0 d1 x01
+01 1
+10 1
+
+.names d2 d3 x23
+01 1
+10 1
+
+.names d4 d5 x45
+01 1
+10 1
+
+.names d6 d7 x67
+01 1
+10 1
+
+# Level 2: 2 XORs
+.names x01 x23 x0123
+01 1
+10 1
+
+.names x45 x67 x4567
+01 1
+10 1
+
+# Level 3: final XOR
+.names x0123 x4567 parity
+01 1
+10 1
+
+.end

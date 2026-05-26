@@ -1,18 +1,17 @@
 """
-sat_refinement_placeholder.py
+select_sat_candidates.py
 
-Filters the top-K candidate matches produced by analyze_blif_matches.py and writes
-a CSV of high-confidence candidates that would be submitted to a SAT solver in a
-full implementation.
+Selects high-confidence rank-1 candidates from top_candidates.csv and writes
+the filtered set to sat_refinement_candidates.csv for the ABC CEC verification step.
 
-NOTE: This script does NOT call any SAT solver. The actual SAT-based verification step
-is not yet implemented. This placeholder marks where that step belongs in the pipeline
-and produces the input file it would consume.
+Pipeline position:
+  analyze_blif_matches.py  →  results/top_candidates.csv
+  [this script]            →  results/sat_refinement_candidates.csv
+  sat_refinement_abc.py    →  results/sat_verified_candidates.csv
+  summarize_sat_results.py →  results/sat_summary.csv / sat_summary.md
 
-Intended future pipeline:
-  analyze_blif_matches.py  →  top_candidates.csv
-                           →  [this script]  →  sat_refinement_candidates.csv
-                           →  [SAT solver]   →  verified correspondences
+This script does NOT call any SAT solver itself.  It only filters candidates
+and annotates them with the BLIF file paths that sat_refinement_abc.py will use.
 """
 
 import os
@@ -105,19 +104,12 @@ def main():
 
     # Summary by benchmark
     print("\nCandidates by benchmark/optimization:")
-    cols = [c for c in ["benchmark", "optimization", "combined_score", "needs_sat_check"]
-            if c in annotated.columns]
     summary = (
         annotated.groupby(["benchmark", "optimization"])
         .size()
         .reset_index(name="candidate_count")
     )
     print(summary.to_string(index=False))
-
-    print(
-        "\nNOTE: SAT verification is NOT implemented. "
-        "sat_refinement_candidates.csv marks candidates for a future SAT step."
-    )
 
 
 if __name__ == "__main__":

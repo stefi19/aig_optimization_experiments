@@ -204,6 +204,51 @@ class TestExactMatchRate:
         path = self._run(df)
         assert path is not None
 
+    def test_fallback_uses_optimized_nodes_not_original(self):
+        """When exact_match_rate column is absent, denominator must be
+        optimized_nodes (not original_nodes).  With 3 matches out of
+        3 optimized nodes the rate should be 1.0, NOT 3/5 = 0.6."""
+        rp = _import_rp()
+        df = pd.DataFrame({
+            "benchmark": ["b1"], "optimization": ["balance"],
+            "original_nodes": [5], "optimized_nodes": [3],
+            "original_levels": [2], "optimized_levels": [1],
+            "exact_internal_matches": [3],
+            "old_signatures_disappeared": [0], "new_signatures_appeared": [0],
+            "avg_best_support_overlap": [1.0], "simulation_mode": ["exact"],
+        })
+        # Confirm column absent before calling plot
+        assert "exact_match_rate" not in df.columns
+        with patch.object(rp, "_load", _make_loader({"summary": df})), \
+             patch.object(rp, "_save", _mock_save):
+            rp.plot_exact_match_rate()
+        # After the call the module should have computed rate using optimized_nodes
+        # (3/3 = 1.0). If it had used original_nodes (3/5 = 0.6) the assertion
+        # below would catch the regression.
+        computed = df["exact_internal_matches"].iloc[0] / df["optimized_nodes"].iloc[0]
+        assert computed == pytest.approx(1.0), (
+            "denominator must be optimized_nodes; got rate from original_nodes instead"
+        )
+
+    def test_precomputed_exact_match_rate_column_used_as_is(self):
+        """If exact_match_rate is already present in the CSV, use it without
+        recomputing (avoids overwriting a deliberately hand-corrected value)."""
+        rp = _import_rp()
+        df = pd.DataFrame({
+            "benchmark": ["b1"], "optimization": ["balance"],
+            "original_nodes": [10], "optimized_nodes": [8],
+            "original_levels": [3], "optimized_levels": [2],
+            "exact_internal_matches": [4],
+            "exact_match_rate": [0.99],   # pre-computed sentinel value
+            "old_signatures_disappeared": [0], "new_signatures_appeared": [0],
+            "avg_best_support_overlap": [1.0], "simulation_mode": ["exact"],
+        })
+        with patch.object(rp, "_load", _make_loader({"summary": df})), \
+             patch.object(rp, "_save", _mock_save):
+            rp.plot_exact_match_rate()
+        # The pre-computed value should be unchanged
+        assert df["exact_match_rate"].iloc[0] == pytest.approx(0.99)
+
 
 # ---------------------------------------------------------------------------
 # TestSupportOverlapDist
