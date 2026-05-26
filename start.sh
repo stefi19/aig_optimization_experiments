@@ -20,6 +20,11 @@
 #        pytest tests/                → test report
 #   5. Prints a summary of all output files.
 #
+# Note: this script runs the classic full research pipeline.
+# The hybrid ABC SAT sweep validation is intentionally separate.
+# Run it with:  make hybrid-validate
+#   or:  ABC=.abc_build/abc_repo/abc python3 hybrid_validation.py
+#
 # Usage:
 #   bash ./start.sh
 #

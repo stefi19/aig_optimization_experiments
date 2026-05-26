@@ -2,7 +2,7 @@
 sat_refinement_abc.py
 
 Uses Berkeley ABC as a formal equivalence-checking backend to verify the
-high-confidence node-level candidates produced by sat_refinement_placeholder.py.
+high-confidence node-level candidates produced by select_sat_candidates.py.
 
 This is still a prototype. It does NOT implement a SAT solver from scratch —
 it shells out to the `abc` binary and parses its output. Some candidates will be
@@ -32,7 +32,7 @@ Pipeline position:
   analyze_blif_matches.py
       → results/top_candidates.csv
       → results/node_fingerprints.csv
-  sat_refinement_placeholder.py
+  sat_refinement_placeholder.py  (now: select_sat_candidates.py)
       → results/sat_refinement_candidates.csv
   sat_refinement_abc.py  (this script)
       → results/sat_verified_candidates.csv
@@ -468,7 +468,7 @@ def main():
     if not os.path.exists(INPUT_CSV):
         print(
             f"ERROR: {INPUT_CSV} not found.\n"
-            "Run sat_refinement_placeholder.py first.",
+            "Run select_sat_candidates.py first.",
             file=sys.stderr,
         )
         sys.exit(1)

@@ -356,6 +356,17 @@ def safe_rate(numerator: int | float, denominator: int | float) -> float:
 # Ordered list of (prefix, family) pairs.
 # The first matching prefix wins, so longer prefixes should come first.
 _FAMILY_PREFIXES = [
+    # Generated benchmarks use the "generated_<name>" convention from benchmark_id.py.
+    ("generated_xor_chain",  "xor_chain"),
+    ("generated_mux_tree",   "mux_tree"),
+    ("generated_adder",      "adder"),
+    ("generated_multiplier", "multiplier"),
+    ("generated_random",     "random"),
+    # Real benchmarks imported from hand-written BLIFs or Verilog.
+    ("real_hand_written",    "real"),
+    ("real_verilog",         "real"),
+    ("real_iscas85",         "real"),
+    # Bare names (toy benchmarks and un-prefixed generated benchmarks).
     ("xor_chain",  "xor_chain"),
     ("mux_tree",   "mux_tree"),
     ("adder",      "adder"),
@@ -572,7 +583,7 @@ def rank_candidates(original, optimized, benchmark, optimization):
     For every optimized internal node, rank original internal nodes as possible matches.
 
     Only the top-TOP_K candidates per optimized node are kept.  The downstream
-    sat_refinement_placeholder.py then narrows this further to rank-1 entries
+    sat_refinement_placeholder.py  (now: select_sat_candidates.py) then narrows this further to rank-1 entries
     above the SAT threshold — those are the pairs that get submitted to ABC CEC.
 
     New columns added (beyond the original set):

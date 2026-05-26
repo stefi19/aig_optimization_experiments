@@ -17,6 +17,11 @@
 
 set -e
 
+# nullglob prevents globs from expanding to literal strings when no files match.
+# Without this, BENCH_FILES=(benchmarks/*.blif) would contain the literal
+# string "benchmarks/*.blif" when the directory has no .blif files.
+shopt -s nullglob
+
 ABC=${ABC:-abc}
 
 mkdir -p variants logs results

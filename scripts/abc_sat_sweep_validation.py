@@ -149,11 +149,14 @@ def find_abc(hint: Optional[str] = None) -> str:
 
 def read_internal_nodes(blif_path: str) -> set[str]:
     """
-    Return the set of internal node names from a BLIF file.
+    Return all .names-defined non-input nodes from a BLIF file.
 
-    Internal nodes are those defined by a .names line that are NOT in the
-    .inputs or .outputs declarations.  We need this to decide which nodes in
-    a dump_equiv class belong to the original vs the optimised network.
+    This includes primary outputs if they are defined by a .names line, because
+    dump_equiv may report output equivalences too and we want to capture those.
+    Formally: returns (nodes defined by .names) minus (primary inputs).
+
+    We need this to decide which nodes in a dump_equiv equivalence class belong
+    to the original vs the optimised network.
     """
     inputs:  set[str] = set()
     outputs: set[str] = set()
@@ -309,14 +312,19 @@ def parse_dump_equiv_file(
                 orig_members.append((node, is_comp))
             elif only_opt:
                 opt_members.append((node, is_comp))
-            else:
-                # Node exists in both (or neither) — use position heuristic.
-                # First time we see this name → original; second → optimised.
+            elif (node in orig_nodes) and (node in opt_nodes):
+                # Same node name exists in both networks (e.g. a preserved output).
+                # First occurrence goes to original, second to optimised.
                 if node not in seen_in_orig:
                     orig_members.append((node, is_comp))
                     seen_in_orig.add(node)
                 else:
                     opt_members.append((node, is_comp))
+            else:
+                # Node appears in neither BLIF — it is a synthetic/internal name
+                # introduced by ABC's FRAIG merge (e.g. "const0", temp nodes).
+                # We cannot safely attribute it to either network, so skip it.
+                continue
 
         # Pair up every original member with every optimised member in this class.
         # In practice most classes have exactly one node from each network.
@@ -354,7 +362,9 @@ def run_dump_equiv(
     FRAIG uses internally — we're just asking ABC to expose the results
     at the node level instead of silently merging them.
 
-    The ABC binary is invoked with -c so we don't need an interactive session.
+    The ABC script is passed via stdin (not -c) so that long paths with
+    spaces are handled safely by the shell.  The script is also saved as
+    dump_equiv.abc in outdir for reproducibility.
     """
     os.makedirs(outdir, exist_ok=True)
 

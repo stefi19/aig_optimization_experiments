@@ -55,7 +55,12 @@ PALETTE = [
     "#0072B2", "#D55E00", "#CC79A7", "#999999",
 ]
 
-OPT_ORDER = ["balance", "refactor", "resub", "resyn2_like", "rewrite"]
+OPT_ORDER = [
+    "balance", "rewrite", "rewrite_z",
+    "refactor", "refactor_z",
+    "resub", "resyn", "resyn2", "resyn2_like",
+    "compress2rs", "dc2",
+]
 
 # ---------------------------------------------------------------------------
 # Helpers

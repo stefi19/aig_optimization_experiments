@@ -357,7 +357,7 @@ def build_markdown(
         lines.append(
             "> To compute recovery_at_k and MRR, first run the SAT pipeline:\n"
             "> ```\n"
-            "> python3 sat_refinement_placeholder.py\n"
+            "> python3 select_sat_candidates.py\n"
             "> ABC=/path/to/abc python3 sat_refinement_abc.py\n"
             "> ```\n"
         )

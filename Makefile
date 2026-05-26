@@ -75,7 +75,7 @@ cegar-refine:
 	@echo "Running CEGAR-style candidate refinement [prototype] (CSV + Markdown → results/cegar_*)"
 	@python3 counterexample_guided_refinement.py
 
-hybrid-validate:
+hybrid-validate: build-abc generate-variants analyze
 	@echo "Running hybrid ABC SAT sweep validation (Python ranking + ABC dump_equiv/FRAIG)"
 	@ABC=$(PWD)/$(ABC_BIN) python3 hybrid_validation.py --top-k-validate 20
 
@@ -104,6 +104,7 @@ clean-results:
 		results/region_candidates.csv results/region_summary.csv results/region_summary.md \
 		results/cegar_refined_candidates.csv results/cegar_summary.md \
 		results/plots \
+		results/hybrid \
 		variants/ logs/ benchmarks/generated/ benchmarks/real/converted_blif/
 
 # One-command bootstrap: checks prerequisites, then runs the full pipeline.

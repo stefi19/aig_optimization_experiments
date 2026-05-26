@@ -53,16 +53,16 @@ diverge.
 
 Limitations (known, by design)
 -------------------------------
-- The penalty is additive across multiple rejections for the same node.  If
-  there are many rejected candidates, total penalties can exceed the original
-  score even for clearly good candidates.  REJECTION_WEIGHT is set
-  conservatively (0.20) to limit this.
+- The penalty uses the **maximum** similarity to any rejected vector, not the sum.
+  This avoids over-penalising a candidate when several rejected pairs are very similar —
+  the penalty cannot grow beyond what a single highly-similar rejection already implies.
+  REJECTION_WEIGHT is set conservatively (0.20) to keep scores interpretable.
 - This prototype never re-queries ABC.  A real CEGAR loop would verify the
   new rank-1 candidate, potentially generating another rejection, and iterate.
   That extension is left for a future script (cegar_loop.py).
 - Inconclusive candidates are treated as neutral (no penalty, no bonus).
 - Only rank-1 rejections from the SAT stage are currently available (because
-  sat_refinement_placeholder.py forwards only rank == 1 above the score
+  select_sat_candidates.py forwards only rank == 1 above the score
   threshold).  Rejected rank-2/3 candidates would further improve the
   penalty signal.
 
