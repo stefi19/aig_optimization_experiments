@@ -821,12 +821,6 @@ aig_optimization_experiments/
 
 ### Motivation
 
-During a mentor review, the following feedback was given:
-
-> *"Another thing to look into is directly using the SAT sweeping tool inside ABC in order
-> to identify exact matches and to get already simulations that have been used by this tool.
-> [...] it would make sense to re-use already what is present in ABC."*
-
 The existing `sat_refinement_abc.py` script calls ABC's **combinational equivalence
 checking (CEC)** command once per candidate pair — meaning one ABC subprocess per row in
 `sat_refinement_candidates.csv`.  This is correct but inefficient: for a benchmark with
