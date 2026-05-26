@@ -58,14 +58,17 @@ aig_optimization_experiments/
     summary_metrics.csv          per-benchmark/optimization metric summary
     top_candidates.csv           top-K candidate matches for every optimized node
     sat_refinement_candidates.csv    high-scoring candidates flagged for SAT check
-    sat_verified_candidates.csv      ABC equivalence check results
+    sat_verified_candidates.csv      ABC CEC results (verified/rejected/inconclusive)
+    sat_summary.csv                  summary counts and rates by benchmark/optimization
+    sat_summary.md                   human-readable Markdown report of SAT results
     plots/                       PNG visualizations
-  tests/                     pytest unit tests for metric helper functions
+  tests/                     pytest unit tests for metric and summary helper functions
   run_abc_variants.sh        shell script that drives ABC for all benchmarks
   analyze_blif_matches.py    main analysis script: parse, simulate, compare, rank
   visualize_results.py       produces plots from results/summary_metrics.csv
-  sat_refinement_placeholder.py    filters top candidates for ABC verification
-  sat_refinement_abc.py            runs ABC equivalence check on those candidates
+  sat_refinement_placeholder.py    filters top candidates (combined_score >= 0.85)
+  sat_refinement_abc.py            runs ABC CEC on those candidates
+  summarize_sat_results.py         generates CSV + Markdown summary of CEC results
   Makefile                   one-command pipeline entrypoint
   requirements.txt           Python dependencies
 ```
@@ -107,7 +110,21 @@ make generate-variants # runs run_abc_variants.sh with the built abc
 make analyze           # python3 analyze_blif_matches.py
 make plot              # python3 visualize_results.py
 make test              # python3 -m pytest tests/
-make sat-refine        # python3 sat_refinement_abc.py
+```
+
+### SAT refinement pipeline:
+
+```bash
+make sat-refine        # ABC CEC on high-confidence candidates (needs ABC)
+make sat-summary       # generate sat_summary.csv and sat_summary.md
+make sat-pipeline      # all three SAT steps in sequence
+```
+
+If ABC is not on your PATH:
+
+```bash
+ABC=/path/to/abc make sat-refine
+ABC=/path/to/abc make sat-pipeline
 ```
 
 ### Clean generated outputs (keeps benchmarks and scripts):
@@ -116,13 +133,14 @@ make sat-refine        # python3 sat_refinement_abc.py
 make clean-results
 ```
 
-### If you already have ABC installed:
+### Manual run (if you already have ABC installed):
 
 ```bash
 ABC=/path/to/abc ./run_abc_variants.sh
 python3 analyze_blif_matches.py
 python3 sat_refinement_placeholder.py
 ABC=/path/to/abc python3 sat_refinement_abc.py
+python3 summarize_sat_results.py
 ```
 
 ---
@@ -195,8 +213,9 @@ The full pipeline is:
 
 ```
 simulation ranking
-    → high-confidence filtering  (sat_refinement_placeholder.py)
-    → ABC equivalence check      (sat_refinement_abc.py)
+    → high-confidence filtering   (sat_refinement_placeholder.py)
+    → ABC equivalence check       (sat_refinement_abc.py)
+    → summary report              (summarize_sat_results.py)
     → verified / rejected / inconclusive candidates
 ```
 
@@ -219,23 +238,40 @@ with `combined_score >= 0.85`. It writes `results/sat_refinement_candidates.csv`
 
 Output: `results/sat_verified_candidates.csv`
 
-If ABC is not on your PATH, run:
+If ABC is not on your PATH:
 
 ```bash
 ABC=/path/to/abc python3 sat_refinement_abc.py
 ```
 
-Or via Make:
+**Important limitation:** Node names can differ between the original and optimized BLIFs
+(ABC renames nodes during optimization). When a node name is not found in the BLIF, the
+candidate is marked `inconclusive` rather than silently giving a wrong answer.
 
-```bash
-ABC=/path/to/abc make sat-refine
-```
+### Step 3 — summary report
 
-**Important limitation:** This checks whether the two exposed nodes compute the same Boolean
-function over the circuit's primary inputs. It is a formal check, but node names can differ
-between the original and optimized BLIFs (ABC renames nodes during optimization). When a
-node name is not found in the BLIF, the candidate is marked `inconclusive` rather than
-silently giving a wrong answer.
+`summarize_sat_results.py` reads `results/sat_verified_candidates.csv` and writes:
+
+- `results/sat_summary.csv` — per benchmark/optimization counts, rates, and a global row
+- `results/sat_summary.md` — human-readable Markdown report
+
+### Current results (from toy benchmarks)
+
+| Metric | Value |
+|---|---|
+| Candidates checked | 65 |
+| Verified by ABC | 53 (81.5%) |
+| Rejected by ABC | 1 (1.5%) |
+| Inconclusive | 11 (16.9%) |
+
+The single rejected case (`majority3/balance`, node `new_n8`) is the most informative result:
+two nodes with the same name in original and optimized variants compute different Boolean
+functions. A high simulation similarity score is not a proof of equivalence — the ABC CEC
+check is necessary to catch this. The 11 inconclusive cases are caused by node-name
+instability: ABC assigns different names to corresponding nodes in different optimization runs,
+so the prototype cannot always locate the original node to expose.
+
+Full report: `results/sat_summary.md`
 
 ---
 
@@ -267,5 +303,6 @@ silently giving a wrong answer.
 > determine whether exact node matching remains meaningful after balancing, rewriting, refactoring,
 > and resubstitution. The key finding is that exact internal-node matching is preserved for simple
 > optimizations but breaks under stronger resynthesis flows (resyn2_like). However, support overlap
-> and simulation similarity remain high enough to suggest useful candidate correspondences, which
-> motivates a region-based matching approach and ABC-based formal verification as the next steps.
+> and simulation similarity remain high enough to suggest useful candidate correspondences, and
+> ABC's formal equivalence checker confirms most high-confidence candidates — while catching one
+> rejected case that simulation alone would have missed.
