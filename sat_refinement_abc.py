@@ -63,6 +63,8 @@ OUT_COLS = [
     "benchmark", "optimization",
     "optimized_node", "original_candidate",
     "combined_score",
+    "is_exact_signature_match",  # 1 if already an exact Boolean match, 0 otherwise
+    "match_category",            # "exact_anchor" | "non_exact_candidate"
     "sat_status",        # verified | rejected | inconclusive
     "abc_result",        # raw summary line from ABC
     "recovery_method",   # direct | fingerprint | inconclusive
@@ -293,15 +295,18 @@ def check_candidate(abc_bin: str, row: dict, fp_index: dict | None = None) -> di
                     missing file, ABC timeout, etc.)
     """
     base = {
-        "benchmark":          row["benchmark"],
-        "optimization":       row["optimization"],
-        "optimized_node":     row["optimized_node"],
-        "original_candidate": row["original_candidate"],
-        "combined_score":     row["combined_score"],
-        "sat_status":         "inconclusive",
-        "abc_result":         "",
-        "recovery_method":    "inconclusive",
-        "notes":              "",
+        "benchmark":                row["benchmark"],
+        "optimization":             row["optimization"],
+        "optimized_node":           row["optimized_node"],
+        "original_candidate":       row["original_candidate"],
+        "combined_score":           row["combined_score"],
+        # pass through exact-match metadata from select_sat_candidates.py
+        "is_exact_signature_match": int(row.get("is_exact_signature_match", 0)),
+        "match_category":           row.get("match_category", "non_exact_candidate"),
+        "sat_status":               "inconclusive",
+        "abc_result":               "",
+        "recovery_method":          "inconclusive",
+        "notes":                    "",
     }
 
     orig_blif = row["orig_blif"]

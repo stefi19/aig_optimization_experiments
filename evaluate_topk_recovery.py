@@ -92,12 +92,34 @@ def load_verified(path: str) -> pd.DataFrame | None:
 def build_verified_set(verified_df: pd.DataFrame) -> set[tuple[str, str, str, str]]:
     """
     Return the set of (benchmark, optimization, optimized_node, original_candidate)
-    tuples where sat_status == 'verified'.
+    tuples where sat_status == 'verified' AND match_category == 'non_exact_candidate'.
+
+    Exact-anchor rows (where the candidate was already an exact signature match)
+    are excluded by default.  ABC confirming an exact anchor is a sanity check,
+    not a recovery of a missed correspondence.  Top-K recovery metrics should
+    only count genuinely new discoveries.
+
+    If the match_category column is absent (old result file), all verified rows
+    are included with a warning.
     """
     mask = verified_df["sat_status"] == "verified"
-    rows = verified_df[mask][
-        ["benchmark", "optimization", "optimized_node", "original_candidate"]
-    ]
+    vdf = verified_df[mask].copy()
+
+    if "match_category" in vdf.columns:
+        n_anchors = int((vdf["match_category"] == "exact_anchor").sum())
+        vdf = vdf[vdf["match_category"] == "non_exact_candidate"]
+        if n_anchors:
+            print(
+                f"  Top-K: excluded {n_anchors} exact_anchor verified rows from "
+                "recovery metrics (they are already-known matches, not new discoveries)."
+            )
+    else:
+        print(
+            "  WARNING: match_category column missing from SAT results. "
+            "All verified rows included (re-run pipeline for accurate results)."
+        )
+
+    rows = vdf[["benchmark", "optimization", "optimized_node", "original_candidate"]]
     return set(map(tuple, rows.values))
 
 
@@ -303,6 +325,15 @@ def build_markdown(
 
     # ── Interpretation ────────────────────────────────────────────────────────
     lines.append("## Interpretation\n")
+    lines.append(
+        "**Note on exact anchors:** The verified set used for these metrics "
+        "excludes `exact_anchor` rows (candidates that were already confirmed as "
+        "exact Boolean signature matches before the SAT step). "
+        "Only `non_exact_candidate` verified rows are counted here, because those "
+        "represent correspondences that SAT refinement genuinely recovered beyond "
+        "what exact matching found. "
+        "Re-run with the full SAT results to see anchor counts separately.\n"
+    )
     lines.append(
         "**verified_at_k** is the number of optimized nodes for which the "
         "ABC-verified match appears within the top-K simulation-ranked candidates.\n"

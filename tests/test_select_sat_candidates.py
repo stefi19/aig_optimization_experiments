@@ -41,6 +41,24 @@ def _make_df(**overrides):
         "opt_node": ["x1", "x2", "x3"],
         "combined_score": [0.90, 0.70, 0.88],
         "rank": [1, 2, 1],
+        "is_exact_signature_match": [0, 0, 0],
+        "match_category": ["non_exact_candidate", "non_exact_candidate", "non_exact_candidate"],
+    }
+    base.update(overrides)
+    return pd.DataFrame(base)
+
+
+def _make_df_with_exact(**overrides):
+    """DataFrame that has a mix of exact and non-exact candidates (all rank-1, high score)."""
+    base = {
+        "benchmark": ["b1", "b1", "b2"],
+        "optimization": ["balance", "balance", "balance"],
+        "orig_node": ["n1", "n2", "n3"],
+        "opt_node": ["x1", "x2", "x3"],
+        "combined_score": [0.92, 0.91, 0.90],
+        "rank": [1, 1, 1],
+        "is_exact_signature_match": [1, 0, 1],   # b1/n1 and b2/n3 are exact
+        "match_category": ["exact_anchor", "non_exact_candidate", "exact_anchor"],
     }
     base.update(overrides)
     return pd.DataFrame(base)
@@ -159,3 +177,102 @@ class TestRealBenchmarkDiscovery:
             text = bf.read_text()
             assert ".inputs" in text, f"{bf.name} missing .inputs"
             assert ".outputs" in text, f"{bf.name} missing .outputs"
+
+
+# ── Tests: exact-match filtering (Carmine's methodology fix) ─────────────────
+
+class TestExactMatchFiltering:
+    """
+    Verify that filter_for_sat() excludes exact-signature-match candidates
+    by default, and that annotate() writes the correct match_category and
+    sat_reason for each row.
+    """
+
+    def test_exact_matches_excluded_by_default(self):
+        """Rows with is_exact_signature_match==1 must not reach the SAT queue."""
+        ssc = _import_ssc()
+        df = _make_df_with_exact()
+        out = ssc.filter_for_sat(df)
+        assert 1 not in out["is_exact_signature_match"].tolist(), (
+            "Exact-match rows should be excluded when INCLUDE_EXACT_ANCHORS=False"
+        )
+
+    def test_non_exact_candidates_retained(self):
+        """Rows with is_exact_signature_match==0 must survive the filter."""
+        ssc = _import_ssc()
+        df = _make_df_with_exact()
+        out = ssc.filter_for_sat(df)
+        assert len(out) == 1
+        assert out.iloc[0]["is_exact_signature_match"] == 0
+
+    def test_missing_column_treated_as_non_exact(self):
+        """
+        If is_exact_signature_match is absent (old CSV), the function should
+        emit a warning and treat all rows as non-exact (conservative path).
+        """
+        ssc = _import_ssc()
+        df = _make_df_with_exact().drop(columns=["is_exact_signature_match", "match_category"])
+        # Should not raise; all rank-1 high-score rows survive
+        out = ssc.filter_for_sat(df)
+        assert len(out) >= 1
+
+    def test_annotate_adds_match_category_column(self):
+        """annotate() must always produce a match_category column."""
+        ssc = _import_ssc()
+        df = _make_df().iloc[:1].copy()   # single non-exact row
+        out = ssc.annotate(df)
+        assert "match_category" in out.columns
+
+    def test_annotate_non_exact_category_value(self):
+        """A non-exact row gets match_category == 'non_exact_candidate'."""
+        ssc = _import_ssc()
+        df = _make_df().iloc[:1].copy()
+        out = ssc.annotate(df)
+        assert out["match_category"].iloc[0] == "non_exact_candidate"
+
+    def test_annotate_exact_anchor_sat_reason(self):
+        """
+        If an exact-anchor row passes through (INCLUDE_EXACT_ANCHORS=True
+        scenario), annotate() should write a sat_reason that mentions 'anchor'
+        or 'sanity'.
+        """
+        ssc = _import_ssc()
+        # Build a single-row DataFrame that looks like an exact-anchor row
+        df = pd.DataFrame({
+            "benchmark": ["b1"],
+            "optimization": ["balance"],
+            "orig_node": ["n1"],
+            "opt_node": ["x1"],
+            "combined_score": [0.95],
+            "rank": [1],
+            "is_exact_signature_match": [1],
+            "match_category": ["exact_anchor"],
+        })
+        out = ssc.annotate(df)
+        reason = out["sat_reason"].iloc[0].lower()
+        assert "anchor" in reason or "sanity" in reason, (
+            f"Expected 'anchor' or 'sanity' in sat_reason for exact-anchor row; got: {reason}"
+        )
+
+    def test_annotate_non_exact_sat_reason_mentions_score(self):
+        """sat_reason for a non-exact candidate should mention the score."""
+        ssc = _import_ssc()
+        df = _make_df().iloc[:1].copy()
+        out = ssc.annotate(df)
+        assert "score" in out["sat_reason"].iloc[0].lower()
+
+    def test_filter_all_exact_returns_empty(self):
+        """When all candidates are exact matches, filter_for_sat should return empty."""
+        ssc = _import_ssc()
+        df = pd.DataFrame({
+            "benchmark": ["b1", "b1"],
+            "optimization": ["balance", "balance"],
+            "orig_node": ["n1", "n2"],
+            "opt_node": ["x1", "x2"],
+            "combined_score": [0.99, 0.97],
+            "rank": [1, 1],
+            "is_exact_signature_match": [1, 1],
+            "match_category": ["exact_anchor", "exact_anchor"],
+        })
+        out = ssc.filter_for_sat(df)
+        assert out.empty, "All-exact input should yield empty output by default"

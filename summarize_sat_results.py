@@ -34,7 +34,7 @@ REQUIRED_COLS = {
     "benchmark", "optimization",
     "optimized_node", "original_candidate",
     "combined_score", "sat_status", "abc_result", "notes",
-    # recovery_method is optional for backwards-compat with old result files
+    # recovery_method and match_category are optional for backwards-compat
 }
 
 
@@ -65,16 +65,25 @@ def load_verified(path: str) -> pd.DataFrame:
         sys.exit(1)
 
     # Back-fill recovery_method for result files produced before the fingerprint
-    # fallback was added.  Old files had no recovery_method column; treat every
-    # inconclusive row as "inconclusive" and every concluded row as "direct".
+    # fallback was added.
     if "recovery_method" not in df.columns:
         df["recovery_method"] = df["sat_status"].map(
             lambda s: "inconclusive" if s == "inconclusive" else "direct"
         )
-        # Write back the enriched file so downstream tools (evaluate_topk_recovery)
-        # see a consistent schema without needing to re-run sat_refinement_abc.py.
         df.to_csv(path, index=False)
         print(f"  Back-filled recovery_method column in {path}")
+
+    # Back-fill match_category for result files produced before the exact-match
+    # metadata was added.  Old files had no is_exact_signature_match column;
+    # treat every row as a non_exact_candidate (conservative).
+    if "match_category" not in df.columns:
+        df["match_category"] = "non_exact_candidate"
+        if "is_exact_signature_match" in df.columns:
+            df["match_category"] = df["is_exact_signature_match"].apply(
+                lambda v: "exact_anchor" if int(v) == 1 else "non_exact_candidate"
+            )
+        df.to_csv(path, index=False)
+        print(f"  Back-filled match_category column in {path}")
 
     return df
 
@@ -87,7 +96,9 @@ def compute_group_summary(df: pd.DataFrame) -> pd.DataFrame:
       verified, rejected, inconclusive, total,
       verification_rate, rejection_rate, inconclusive_rate,
       avg_combined_score,
-      direct_name_count, fingerprint_recovered, still_inconclusive
+      direct_name_count, fingerprint_recovered, still_inconclusive,
+      exact_anchor_verified, exact_anchor_rejected, exact_anchor_inconclusive,
+      non_exact_verified, non_exact_rejected, non_exact_inconclusive
     """
     if df.empty:
         return pd.DataFrame(columns=[
@@ -96,6 +107,8 @@ def compute_group_summary(df: pd.DataFrame) -> pd.DataFrame:
             "verification_rate", "rejection_rate", "inconclusive_rate",
             "avg_combined_score",
             "direct_name_count", "fingerprint_recovered", "still_inconclusive",
+            "exact_anchor_verified", "exact_anchor_rejected", "exact_anchor_inconclusive",
+            "non_exact_verified", "non_exact_rejected", "non_exact_inconclusive",
         ])
 
     rows = []
@@ -122,20 +135,41 @@ def _summarise_group(bench: str, opt: str, group: pd.DataFrame) -> dict:
     fingerprint_recovered  = int(method_counts.get("fingerprint", 0))
     still_inconclusive     = int(method_counts.get("inconclusive", 0))
 
+    # Split by match_category (exact_anchor vs non_exact_candidate)
+    def _cat_counts(category: str) -> tuple:
+        if "match_category" not in group.columns:
+            # Old pipeline output: no match_category — treat all as non_exact_candidate.
+            sub = group if category == "non_exact_candidate" else pd.DataFrame()
+        else:
+            sub = group[group["match_category"] == category]
+        c = sub["sat_status"].value_counts() if not sub.empty else {}
+        return (int(c.get("verified", 0)),
+                int(c.get("rejected", 0)),
+                int(c.get("inconclusive", 0)))
+
+    ea_v, ea_r, ea_i = _cat_counts("exact_anchor")
+    ne_v, ne_r, ne_i = _cat_counts("non_exact_candidate")
+
     return {
-        "benchmark":            bench,
-        "optimization":         opt,
-        "verified":             verified,
-        "rejected":             rejected,
-        "inconclusive":         inconclusive,
-        "total":                total,
-        "verification_rate":    round(verified     / total, 4) if total else 0.0,
-        "rejection_rate":       round(rejected     / total, 4) if total else 0.0,
-        "inconclusive_rate":    round(inconclusive / total, 4) if total else 0.0,
-        "avg_combined_score":   avg_score,
-        "direct_name_count":    direct_name_count,
-        "fingerprint_recovered": fingerprint_recovered,
-        "still_inconclusive":   still_inconclusive,
+        "benchmark":                    bench,
+        "optimization":                 opt,
+        "verified":                     verified,
+        "rejected":                     rejected,
+        "inconclusive":                 inconclusive,
+        "total":                        total,
+        "verification_rate":            round(verified     / total, 4) if total else 0.0,
+        "rejection_rate":               round(rejected     / total, 4) if total else 0.0,
+        "inconclusive_rate":            round(inconclusive / total, 4) if total else 0.0,
+        "avg_combined_score":           avg_score,
+        "direct_name_count":            direct_name_count,
+        "fingerprint_recovered":        fingerprint_recovered,
+        "still_inconclusive":           still_inconclusive,
+        "exact_anchor_verified":        ea_v,
+        "exact_anchor_rejected":        ea_r,
+        "exact_anchor_inconclusive":    ea_i,
+        "non_exact_verified":           ne_v,
+        "non_exact_rejected":           ne_r,
+        "non_exact_inconclusive":       ne_i,
     }
 
 
@@ -181,6 +215,53 @@ def build_markdown(df: pd.DataFrame, summary: pd.DataFrame) -> str:
         lines.append(f"- **Rejected by ABC:** {rejected}")
         lines.append(f"- **Inconclusive:** {inconc}")
         lines.append(f"- **Verification rate:** {verif_rate:.1%}\n")
+
+    # ── match_category breakdown ──────────────────────────────────────────────
+    lines.append("## Match category breakdown\n")
+    lines.append(
+        "Following Carmine's feedback, candidates are now separated into two categories:\n"
+    )
+    lines.append(
+        "- **`exact_anchor`**: the optimized node and original candidate already had "
+        "identical Boolean simulation signatures before this SAT check. "
+        "ABC verifying these is a useful sanity check, but it does **not** represent "
+        "a newly-recovered correspondence — the match was already known.\n"
+    )
+    lines.append(
+        "- **`non_exact_candidate`**: the optimized node and original candidate did "
+        "**not** have the same simulation signature. "
+        "ABC verifying one of these is a genuine refinement result — it means the "
+        "scoring formula identified a real correspondence that exact signature matching "
+        "missed.\n"
+    )
+
+    if df.empty:
+        lines.append("No data.\n")
+    elif "match_category" not in df.columns:
+        lines.append("_`match_category` column not present — re-run the pipeline._\n")
+    else:
+        for cat in ("non_exact_candidate", "exact_anchor"):
+            sub = df[df["match_category"] == cat]
+            if sub.empty:
+                lines.append(f"**{cat}**: no candidates.\n")
+                continue
+            c = sub["sat_status"].value_counts()
+            v = int(c.get("verified",     0))
+            r = int(c.get("rejected",     0))
+            i = int(c.get("inconclusive", 0))
+            t = len(sub)
+            lines.append(
+                f"**{cat}** ({t} candidates): "
+                f"verified {v}, rejected {r}, inconclusive {i} "
+                f"(verification rate {v/t:.1%})\n"
+            )
+
+    lines.append(
+        "> **Important:** only `non_exact_candidate` verified results should be "
+        "interpreted as SAT refinement recovering a correspondence that exact matching "
+        "missed. `exact_anchor` verified results are expected and do not add new "
+        "information.\n"
+    )
 
     # ── Recovery method breakdown ─────────────────────────────────────────────
     lines.append("## Recovery method breakdown\n")

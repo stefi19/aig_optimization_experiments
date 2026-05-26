@@ -48,6 +48,15 @@ def _verified_df(rows):
     return pd.DataFrame(rows, columns=cols)
 
 
+def _verified_df_with_category(rows):
+    """Build a sat_verified_candidates DataFrame that includes match_category."""
+    cols = [
+        "benchmark", "optimization", "optimized_node",
+        "original_candidate", "sat_status", "match_category",
+    ]
+    return pd.DataFrame(rows, columns=cols)
+
+
 # Three optimized nodes, ranks 1-3 against three original candidates.
 CANDS = _cand_df([
     # node m1: rank-1 orig=n1 (will be verified), rank-2 orig=n2, rank-3 orig=n3
@@ -251,3 +260,68 @@ class TestBuildMarkdown:
         ])
         md = build_markdown(empty, True, False)
         assert isinstance(md, str)
+
+
+# ---------------------------------------------------------------------------
+# Exact-anchor exclusion (Carmine's methodology fix)
+# ---------------------------------------------------------------------------
+
+class TestExactAnchorExclusion:
+    """
+    build_verified_set() must exclude exact_anchor rows so that top-K
+    recovery is computed only over genuinely non-exact candidates.
+    """
+
+    # Verified set that mixes exact_anchor and non_exact_candidate rows
+    MIXED_VERIFIED = _verified_df_with_category([
+        ("toy", "balance", "m1", "n1", "verified",  "non_exact_candidate"),
+        ("toy", "balance", "m2", "n2", "verified",  "exact_anchor"),       # should be excluded
+        ("toy", "balance", "m3", "n3", "verified",  "exact_anchor"),       # should be excluded
+        ("toy", "balance", "m4", "n4", "rejected",  "non_exact_candidate"),
+    ])
+
+    def test_exact_anchors_excluded_from_verified_set(self):
+        s = build_verified_set(self.MIXED_VERIFIED)
+        # m2/n2 and m3/n3 are exact_anchor — must not appear
+        assert ("toy", "balance", "m2", "n2") not in s
+        assert ("toy", "balance", "m3", "n3") not in s
+
+    def test_non_exact_verified_included(self):
+        s = build_verified_set(self.MIXED_VERIFIED)
+        assert ("toy", "balance", "m1", "n1") in s
+
+    def test_non_exact_rejected_excluded(self):
+        s = build_verified_set(self.MIXED_VERIFIED)
+        assert ("toy", "balance", "m4", "n4") not in s
+
+    def test_only_non_exact_verified_in_set(self):
+        s = build_verified_set(self.MIXED_VERIFIED)
+        assert len(s) == 1
+
+    def test_all_exact_gives_empty_set(self):
+        all_exact = _verified_df_with_category([
+            ("toy", "balance", "m1", "n1", "verified", "exact_anchor"),
+            ("toy", "balance", "m2", "n2", "verified", "exact_anchor"),
+        ])
+        s = build_verified_set(all_exact)
+        assert s == set(), "All-exact-anchor verified set must be empty (no genuine recovery)"
+
+    def test_no_match_category_column_falls_back_gracefully(self):
+        """Old CSV without match_category: all rows treated as non_exact_candidate."""
+        old_style = _verified_df([
+            ("toy", "balance", "m1", "n1", "verified"),
+            ("toy", "balance", "m2", "n2", "verified"),
+        ])
+        assert "match_category" not in old_style.columns
+        s = build_verified_set(old_style)
+        # Both rows should be in the set (conservative back-compat)
+        assert ("toy", "balance", "m1", "n1") in s
+        assert ("toy", "balance", "m2", "n2") in s
+
+    def test_markdown_explains_anchor_exclusion(self):
+        """build_markdown() must explain that exact anchors are excluded from recovery."""
+        table = compute_topk_table(CANDS, build_verified_set(self.MIXED_VERIFIED), [1, 2])
+        md = build_markdown(table, True, True)
+        assert "exact" in md.lower() or "anchor" in md.lower(), (
+            "build_markdown() should mention exact anchor exclusion in the output"
+        )

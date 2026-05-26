@@ -34,6 +34,16 @@ def make_df(rows):
     ])
 
 
+def make_df_with_category(rows):
+    """Build a DataFrame that also carries match_category (post-methodology-fix)."""
+    return pd.DataFrame(rows, columns=[
+        "benchmark", "optimization",
+        "optimized_node", "original_candidate",
+        "combined_score", "is_exact_signature_match", "match_category",
+        "sat_status", "abc_result", "notes",
+    ])
+
+
 SAMPLE_ROWS = [
     ("bench_a", "balance",  "n1", "n1", 0.95, "verified",     "Networks are equivalent", ""),
     ("bench_a", "balance",  "n2", "n2", 0.90, "verified",     "Networks are equivalent", ""),
@@ -41,6 +51,17 @@ SAMPLE_ROWS = [
     ("bench_a", "rewrite",  "n4", "n4", 0.92, "verified",     "Networks are equivalent", ""),
     ("bench_b", "balance",  "n5", "n5", 0.91, "verified",     "Networks are equivalent", ""),
     ("bench_b", "balance",  "n6", "n7", 0.87, "rejected",     "Networks are NOT EQUIVALENT.", ""),
+]
+
+# Rows with match_category: mix of exact_anchor and non_exact_candidate.
+SAMPLE_ROWS_CATEGORISED = [
+    # exact anchors (sanity-check pairs — already known matches)
+    ("bench_a", "balance", "n1", "n1", 0.99, 1, "exact_anchor",        "verified",     "Networks are equivalent",     ""),
+    ("bench_a", "balance", "n2", "n2", 0.97, 1, "exact_anchor",        "rejected",     "Networks are NOT EQUIVALENT.", ""),
+    # non-exact candidates (genuine recovery attempts)
+    ("bench_a", "balance", "n3", "n9", 0.88, 0, "non_exact_candidate", "verified",     "Networks are equivalent",     ""),
+    ("bench_a", "balance", "n4", "n8", 0.85, 0, "non_exact_candidate", "inconclusive", "***EOF***",                   ""),
+    ("bench_b", "balance", "n5", "n6", 0.91, 0, "non_exact_candidate", "rejected",     "Networks are NOT EQUIVALENT.", ""),
 ]
 
 
@@ -244,3 +265,96 @@ class TestDfToMdTable:
         df = pd.DataFrame({"avg_combined_score": [0.9500]})
         table = _df_to_md_table(df)
         assert "0.9500" in table
+
+
+# ── match_category breakdown (Carmine's methodology fix) ─────────────────────
+
+class TestMatchCategoryBreakdown:
+    """
+    Verify that _summarise_group() correctly splits results into
+    exact_anchor vs non_exact_candidate, and that build_markdown()
+    emits the 'Match category breakdown' section.
+    """
+
+    def _summary_with_categories(self):
+        df = make_df_with_category(SAMPLE_ROWS_CATEGORISED)
+        summary = compute_group_summary(df)
+        return df, summary
+
+    def test_exact_anchor_verified_count(self):
+        df, summary = self._summary_with_categories()
+        bench_a_bal = summary[
+            (summary["benchmark"] == "bench_a") & (summary["optimization"] == "balance")
+        ].iloc[0]
+        assert bench_a_bal["exact_anchor_verified"] == 1
+
+    def test_exact_anchor_rejected_count(self):
+        df, summary = self._summary_with_categories()
+        bench_a_bal = summary[
+            (summary["benchmark"] == "bench_a") & (summary["optimization"] == "balance")
+        ].iloc[0]
+        assert bench_a_bal["exact_anchor_rejected"] == 1
+
+    def test_non_exact_verified_count(self):
+        df, summary = self._summary_with_categories()
+        bench_a_bal = summary[
+            (summary["benchmark"] == "bench_a") & (summary["optimization"] == "balance")
+        ].iloc[0]
+        assert bench_a_bal["non_exact_verified"] == 1
+
+    def test_non_exact_inconclusive_count(self):
+        df, summary = self._summary_with_categories()
+        bench_a_bal = summary[
+            (summary["benchmark"] == "bench_a") & (summary["optimization"] == "balance")
+        ].iloc[0]
+        assert bench_a_bal["non_exact_inconclusive"] == 1
+
+    def test_category_columns_present_in_summary(self):
+        df, summary = self._summary_with_categories()
+        for col in (
+            "exact_anchor_verified", "exact_anchor_rejected", "exact_anchor_inconclusive",
+            "non_exact_verified",    "non_exact_rejected",    "non_exact_inconclusive",
+        ):
+            assert col in summary.columns, f"Missing column: {col}"
+
+    def test_markdown_contains_category_breakdown_section(self):
+        df, summary = self._summary_with_categories()
+        full = add_global_row(summary, df)
+        md = build_markdown(df, full)
+        assert "Match category breakdown" in md, (
+            "build_markdown() should contain a 'Match category breakdown' section"
+        )
+
+    def test_markdown_mentions_exact_anchor(self):
+        df, summary = self._summary_with_categories()
+        full = add_global_row(summary, df)
+        md = build_markdown(df, full)
+        assert "exact_anchor" in md
+
+    def test_markdown_mentions_non_exact_candidate(self):
+        df, summary = self._summary_with_categories()
+        full = add_global_row(summary, df)
+        md = build_markdown(df, full)
+        assert "non_exact_candidate" in md
+
+    def test_markdown_important_callout_present(self):
+        """The 'Important' note distinguishing sanity checks from genuine recovery."""
+        df, summary = self._summary_with_categories()
+        full = add_global_row(summary, df)
+        md = build_markdown(df, full)
+        assert "Important" in md or "important" in md.lower()
+
+    def test_old_csv_backfilled_as_non_exact(self):
+        """
+        A DataFrame without match_category (old pipeline output) should be
+        back-filled as 'non_exact_candidate' — conservative assumption.
+        """
+        df = make_df(SAMPLE_ROWS)          # no match_category column
+        assert "match_category" not in df.columns
+        summary = compute_group_summary(df)
+        # After back-fill inside _summarise_group the non_exact counts should
+        # equal the overall counts (everything treated as non-exact).
+        bench_a_bal = summary[
+            (summary["benchmark"] == "bench_a") & (summary["optimization"] == "balance")
+        ].iloc[0]
+        assert bench_a_bal["non_exact_verified"] == bench_a_bal["verified"]

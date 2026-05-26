@@ -606,6 +606,14 @@ def rank_candidates(original, optimized, benchmark, optimization):
             depth_score = depth_similarity(opt_level, orig_level)
             final_score = combined_candidate_score(sim_score, support_score, depth_score)
 
+            # A candidate is an exact signature match when both nodes produce
+            # identical outputs on every simulated input pattern.  For circuits
+            # in exact-simulation mode (all 2^n inputs) this is a formal proof
+            # of Boolean equivalence.  For random-mode circuits it is a strong
+            # indicator but not a proof.
+            is_exact = 1 if sim_score == 1.0 else 0
+            match_category = "exact_anchor" if is_exact else "non_exact_candidate"
+
             candidates.append({
                 "benchmark": benchmark,
                 "optimization": optimization,
@@ -617,6 +625,9 @@ def rank_candidates(original, optimized, benchmark, optimization):
                 "depth_similarity": depth_score,
                 "optimized_level": opt_level,
                 "original_level": orig_level,
+                # exact-match metadata (added to address methodological clarity)
+                "is_exact_signature_match": is_exact,
+                "match_category": match_category,
                 # new fingerprint / structural columns
                 "optimized_fingerprint": opt_fp,
                 "original_fingerprint": orig_fingerprints.get(orig_node, ""),
@@ -792,6 +803,9 @@ def main():
         "depth_similarity",
         "optimized_level",
         "original_level",
+        # exact-match metadata
+        "is_exact_signature_match",
+        "match_category",
         # new structural columns
         "optimized_fingerprint",
         "original_fingerprint",

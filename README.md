@@ -398,9 +398,11 @@ simulation-based ranking.
 ```
 Simulation ranking
     ↓
-High-confidence filter       (combined_score ≥ 0.85)
+Exact-match filter           (exclude is_exact_signature_match == 1)
     ↓
-ABC equivalence check        (formal SAT-based CEC)
+High-confidence filter       (combined_score ≥ 0.85, rank == 1)
+    ↓
+ABC equivalence check        (formal SAT-based CEC on non-exact candidates only)
     ↓
 Verdict per candidate:
     verified      — proved equivalent
@@ -408,39 +410,59 @@ Verdict per candidate:
     inconclusive  — check could not run (node name changed)
 ```
 
+### Two distinct categories of candidate pairs
+
+> **Methodological note:**
+>
+> The pipeline now separates candidates into two explicit categories stored in
+> `match_category`:
+>
+> | Category | `is_exact_signature_match` | Meaning |
+> |---|---|---|
+> `exact_anchor` | 1 | Identical Boolean signature — already a confirmed match; ABC check is a sanity check only |
+> `non_exact_candidate` | 0 | Signatures differ — SAT is doing **real work** trying to prove or disprove equivalence |
+>
+> By default (`INCLUDE_EXACT_ANCHORS = False` in `select_sat_candidates.py`), only
+> `non_exact_candidate` rows are sent to ABC.
+
 ### How the ABC check works
 
-For each high-confidence candidate pair (optimized node X, original candidate Y):
+For each high-confidence non-exact candidate pair (optimized node X, original candidate Y):
 1. A temporary BLIF is created with X exposed as a primary output.
 2. Another temporary BLIF is created with Y exposed as a primary output.
 3. ABC's `cec` command checks whether both produce the same output on every input.
 4. The verdict is recorded.
 
-### SAT status results
+### SAT status results (non-exact candidates only)
 
-![SAT verification status](results/plots/sat_status.png)
+**Candidates sent to ABC:** 425 (all `non_exact_candidate`; 3,052 `exact_anchor` rows excluded)
 
-**How to read this chart:** Each stacked bar is one benchmark × optimization. Green = verified
-(proved equivalent). Red = rejected (proved non-equivalent). Grey = inconclusive.
+| Status | Count | % |
+|---|---|---|
+| Verified | 0 | 0.0% |
+| Rejected | 20 | 4.7% |
+| Inconclusive | 405 | 95.3% |
+| **Total checked** | **425** | |
 
-**Overall totals (3,477 candidate pairs across 21 benchmarks):**
+**How to read these numbers honestly:**
 
-| Status | toy | real hand-written | generated | Total |
-|---|---|---|---|---|
-| Verified by ABC | 83 (76.9%) | 204 (52.2%) | 1,401 (47.0%) | **1,688 (48.5%)** |
-| Rejected by ABC | 3 | 4 | 13 | **20 (0.6%)** |
-| Inconclusive | 22 | 183 | 1,564 | **1,769 (50.9%)** |
-| **Total checked** | **108** | **391** | **2,978** | **3,477** |
+- **0 verified** — no non-exact candidate pair was formally proved equivalent by ABC.
+  The simulation-based scoring assigns high scores to structurally similar nodes, but
+  "structurally similar" does not mean "functionally equivalent" after aggressive
+  multi-pass resynthesis. This is a genuine null result.
 
-**Why the inconclusive rate is high on generated/real circuits:** ABC renames internal nodes
-more aggressively during optimization when circuits are larger. The node-name lookup used to
-set up per-node CEC checks fails whenever ABC has renamed the node in the optimized BLIF —
-this is counted as inconclusive. The toy benchmarks (76.9% verified) are small enough that
-ABC preserves most node names; larger circuits hit ~50% inconclusive.
+- **20 rejected** — simulation gave those pairs high scores (they looked like matches),
+  but ABC's formal check found a counterexample. **Simulation alone is not sufficient —
+  formal verification catches real false positives.**
 
-**The rejected cases are the most important result:** simulation gave those pairs high scores
-(they looked like matches), but ABC's formal check found a counterexample. **Simulation alone
-is not sufficient — formal verification catches real false positives.**
+- **405 inconclusive** — ABC could not locate the node name in the optimized BLIF.
+  ABC renames internal nodes during optimization, especially in larger circuits.
+  This is a tooling limitation, not a theoretical failure of the approach.
+
+> **What about exact anchors?** If you set `INCLUDE_EXACT_ANCHORS = True`, the 3,052 exact-match
+> pairs are also run through ABC as a sanity check. All of them verify (as expected), because
+> their Boolean signatures are identical. Those results are tracked separately in
+> `sat_summary.md` under "exact_anchor_verified" — they do not count toward genuine recovery.
 
 ---
 
@@ -468,10 +490,14 @@ original node even when truth tables have completely changed.
 **Top-K recovery across all 21 benchmarks:**
 
 - **880 total** benchmark × optimization × K entries in `topk_recovery.csv`
-- **624 / 880** (70.9%) have MRR > 0 (at least one correct match found in top-K)
-- **Mean MRR** among non-zero entries: **0.551**
-- **K=1 node recovery**: 1,688 / 5,350 nodes recovered at rank 1 (**31.6%** overall — lower
-  than toy-only rate because large generated circuits have many nodes with no exact match)
+- **0 / 880** have MRR > 0 — no non-exact candidate was SAT-verified in this run
+- **K=1 node recovery**: 0 / 5,350 nodes recovered at rank 1 (**0.0%**)
+
+> **Note:** top-K recovery is computed using only `non_exact_candidate` verified pairs as
+> ground truth (exact anchors are excluded). Since no non-exact candidate was verified by ABC
+> in the current run, the recovery rate is 0. This is an honest result: the simulation-based
+> scoring produces good structural rankings, but cannot prove functional equivalence for nodes
+> whose truth tables differ after optimization.
 
 ---
 
