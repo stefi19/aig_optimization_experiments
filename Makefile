@@ -1,7 +1,7 @@
 ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 
-.PHONY: all build-abc generate-benchmarks generate-variants analyze plot test sat-refine sat-summary sat-pipeline start clean clean-results
+.PHONY: all build-abc generate-benchmarks generate-variants analyze plot test sat-refine sat-summary sat-pipeline topk-eval ablation start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -50,6 +50,14 @@ sat-pipeline:
 	@python3 sat_refinement_placeholder.py
 	@python3 sat_refinement_abc.py
 	@python3 summarize_sat_results.py
+
+topk-eval:
+	@echo "Evaluating top-K recovery (CSV + Markdown → results/topk_recovery.*)"
+	@python3 evaluate_topk_recovery.py
+
+ablation:
+	@echo "Running ablation study over scoring configs (CSV + Markdown → results/ablation_summary.*)"
+	@python3 ablation_study.py
 
 clean:
 	@echo "Cleaning ABC build (does NOT remove variants/logs/results)"
