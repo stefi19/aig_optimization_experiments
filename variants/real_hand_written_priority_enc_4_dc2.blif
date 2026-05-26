@@ -1,0 +1,15 @@
+# Benchmark "priority_enc_4" written by ABC on Tue May 26 14:59:13 2026
+.model priority_enc_4
+.inputs i0 i1 i2 i3
+.outputs y1 y0 valid
+.names i2 i3 y1
+00 0
+.names i1 i2 new_n9
+10 1
+.names i3 new_n9 y0
+00 0
+.names i1 y1 new_n11
+00 1
+.names i0 new_n11 valid
+01 0
+.end

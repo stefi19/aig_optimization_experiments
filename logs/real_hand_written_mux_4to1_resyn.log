@@ -1,0 +1,2 @@
+======== ABC command line "read_blif benchmarks/real/hand_written/mux_4to1.blif; strash; balance; rewrite; rewrite -z; balance; rewrite; balance; print_stats; write_blif variants/real_hand_written_mux_4to1_resyn.blif"
+[1;37mmux_4to1                      :[0m i/o =    6/    1  lat =    0  and =      9  lev =  4

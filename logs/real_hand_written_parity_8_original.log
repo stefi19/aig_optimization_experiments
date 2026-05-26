@@ -1,0 +1,2 @@
+======== ABC command line "read_blif benchmarks/real/hand_written/parity_8.blif; strash; print_stats; write_blif variants/real_hand_written_parity_8_original.blif"
+[1;37mparity_8                      :[0m i/o =    8/    1  lat =    0  and =     21  lev =  6

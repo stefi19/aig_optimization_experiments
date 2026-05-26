@@ -1,4 +1,4 @@
-# Benchmark "toy_and_or" written by ABC on Mon May 25 11:28:43 2026
+# Benchmark "toy_and_or" written by ABC on Tue May 26 14:59:07 2026
 .model toy_and_or
 .inputs a b c d
 .outputs y

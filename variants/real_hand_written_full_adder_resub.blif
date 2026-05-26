@@ -1,0 +1,27 @@
+# Benchmark "full_adder" written by ABC on Tue May 26 14:59:12 2026
+.model full_adder
+.inputs a b cin
+.outputs sum cout
+.names a b new_n6
+01 1
+.names a b new_n7
+10 1
+.names new_n6 new_n7 new_n8
+00 1
+.names cin new_n8 new_n9
+11 1
+.names cin new_n8 new_n10
+00 1
+.names new_n9 new_n10 sum
+00 0
+.names b cin new_n12
+11 1
+.names a b new_n13
+11 1
+.names a cin new_n14
+11 1
+.names new_n13 new_n14 new_n15
+00 1
+.names new_n12 new_n15 cout
+01 0
+.end

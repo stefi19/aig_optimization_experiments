@@ -1,0 +1,47 @@
+# Benchmark "mux_tree_8" written by ABC on Tue May 26 14:59:09 2026
+.model mux_tree_8
+.inputs d0 d1 d2 d3 d4 d5 d6 d7 s0 s1 s2
+.outputs out
+.names d6 s2 new_n13
+10 1
+.names d7 s2 new_n14
+11 1
+.names new_n13 new_n14 new_n15
+00 1
+.names d4 s2 new_n16
+10 1
+.names d5 s2 new_n17
+11 1
+.names new_n16 new_n17 new_n18
+00 1
+.names s1 new_n18 new_n19
+00 1
+.names s1 new_n15 new_n20
+10 1
+.names new_n19 new_n20 new_n21
+00 1
+.names d2 s2 new_n22
+10 1
+.names d3 s2 new_n23
+11 1
+.names new_n22 new_n23 new_n24
+00 1
+.names d0 s2 new_n25
+10 1
+.names d1 s2 new_n26
+11 1
+.names new_n25 new_n26 new_n27
+00 1
+.names s1 new_n27 new_n28
+00 1
+.names s1 new_n24 new_n29
+10 1
+.names new_n28 new_n29 new_n30
+00 1
+.names s0 new_n30 new_n31
+00 1
+.names s0 new_n21 new_n32
+10 1
+.names new_n31 new_n32 out
+00 0
+.end

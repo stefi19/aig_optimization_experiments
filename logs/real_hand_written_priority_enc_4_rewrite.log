@@ -1,0 +1,2 @@
+======== ABC command line "read_blif benchmarks/real/hand_written/priority_enc_4.blif; strash; rewrite; print_stats; write_blif variants/real_hand_written_priority_enc_4_rewrite.blif"
+[1;37mpriority_enc_4                :[0m i/o =    4/    3  lat =    0  and =      5  lev =  2

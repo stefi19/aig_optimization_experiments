@@ -1,0 +1,2 @@
+======== ABC command line "read_blif benchmarks/majority3.blif; strash; refactor -z; print_stats; write_blif variants/majority3_refactor_z.blif"
+[1;37mmajority3                     :[0m i/o =    3/    1  lat =    0  and =      4  lev =  3

@@ -1,0 +1,2 @@
+======== ABC command line "read_blif benchmarks/generated/multiplier_4.blif; strash; refactor; print_stats; write_blif variants/generated_multiplier_4_refactor.blif"
+[1;37mmultiplier_4                  :[0m i/o =    8/    8  lat =    0  and =    108  lev = 36

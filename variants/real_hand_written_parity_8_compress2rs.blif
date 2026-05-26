@@ -1,0 +1,47 @@
+# Benchmark "parity_8" written by ABC on Tue May 26 14:59:13 2026
+.model parity_8
+.inputs d0 d1 d2 d3 d4 d5 d6 d7
+.outputs parity
+.names d0 d1 new_n10
+00 1
+.names d0 d1 new_n11
+11 1
+.names new_n10 new_n11 new_n12
+00 1
+.names d2 d3 new_n13
+00 1
+.names d2 d3 new_n14
+11 1
+.names new_n13 new_n14 new_n15
+00 1
+.names new_n12 new_n15 new_n16
+00 1
+.names new_n12 new_n15 new_n17
+11 1
+.names new_n16 new_n17 new_n18
+00 1
+.names d4 d5 new_n19
+00 1
+.names d4 d5 new_n20
+11 1
+.names new_n19 new_n20 new_n21
+00 1
+.names d6 d7 new_n22
+00 1
+.names d6 d7 new_n23
+11 1
+.names new_n22 new_n23 new_n24
+00 1
+.names new_n21 new_n24 new_n25
+01 1
+.names new_n21 new_n24 new_n26
+10 1
+.names new_n25 new_n26 new_n27
+00 1
+.names new_n18 new_n27 new_n28
+11 1
+.names new_n18 new_n27 new_n29
+00 1
+.names new_n28 new_n29 parity
+00 0
+.end

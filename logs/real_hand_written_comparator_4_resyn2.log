@@ -1,0 +1,2 @@
+======== ABC command line "read_blif benchmarks/real/hand_written/comparator_4.blif; strash; balance; rewrite; refactor; balance; rewrite -z; refactor -z; balance; print_stats; write_blif variants/real_hand_written_comparator_4_resyn2.blif"
+[1;37mcomparator_4                  :[0m i/o =    8/    1  lat =    0  and =     15  lev =  4

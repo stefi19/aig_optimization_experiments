@@ -1,0 +1,2 @@
+======== ABC command line "read_blif benchmarks/real/hand_written/full_adder.blif; strash; rewrite; print_stats; write_blif variants/real_hand_written_full_adder_rewrite.blif"
+[1;37mfull_adder                    :[0m i/o =    3/    2  lat =    0  and =     11  lev =  4

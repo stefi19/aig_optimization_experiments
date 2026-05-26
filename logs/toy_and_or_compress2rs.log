@@ -1,0 +1,2 @@
+======== ABC command line "read_blif benchmarks/toy_and_or.blif; strash; balance; rewrite; refactor; resub; balance; rewrite -z; refactor -z; resub; balance; print_stats; write_blif variants/toy_and_or_compress2rs.blif"
+[1;37mtoy_and_or                    :[0m i/o =    4/    1  lat =    0  and =      3  lev =  2

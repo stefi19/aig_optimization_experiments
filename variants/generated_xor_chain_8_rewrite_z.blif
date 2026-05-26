@@ -1,0 +1,47 @@
+# Benchmark "xor_chain_8" written by ABC on Tue May 26 14:59:11 2026
+.model xor_chain_8
+.inputs x0 x1 x2 x3 x4 x5 x6 x7
+.outputs out
+.names x0 x1 new_n10
+10 1
+.names x0 x1 new_n11
+01 1
+.names new_n10 new_n11 new_n12
+00 1
+.names x4 new_n12 new_n13
+10 1
+.names x4 new_n12 new_n14
+01 1
+.names new_n13 new_n14 new_n15
+00 1
+.names x6 new_n15 new_n16
+10 1
+.names x6 new_n15 new_n17
+01 1
+.names new_n16 new_n17 new_n18
+00 1
+.names x2 x3 new_n19
+10 1
+.names x2 x3 new_n20
+01 1
+.names new_n19 new_n20 new_n21
+00 1
+.names x5 new_n21 new_n22
+10 1
+.names x5 new_n21 new_n23
+01 1
+.names new_n22 new_n23 new_n24
+00 1
+.names x7 new_n24 new_n25
+10 1
+.names x7 new_n24 new_n26
+01 1
+.names new_n25 new_n26 new_n27
+00 1
+.names new_n18 new_n27 new_n28
+11 1
+.names new_n18 new_n27 new_n29
+00 1
+.names new_n28 new_n29 out
+00 1
+.end

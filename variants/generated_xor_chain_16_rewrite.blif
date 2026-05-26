@@ -1,0 +1,95 @@
+# Benchmark "xor_chain_16" written by ABC on Tue May 26 14:59:10 2026
+.model xor_chain_16
+.inputs x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15
+.outputs out
+.names x0 x1 new_n18
+10 1
+.names x0 x1 new_n19
+01 1
+.names new_n18 new_n19 new_n20
+00 1
+.names x2 new_n20 new_n21
+00 1
+.names x2 new_n20 new_n22
+11 1
+.names new_n21 new_n22 new_n23
+00 1
+.names x3 new_n23 new_n24
+00 1
+.names x3 new_n23 new_n25
+11 1
+.names new_n24 new_n25 new_n26
+00 1
+.names x4 new_n26 new_n27
+00 1
+.names x4 new_n26 new_n28
+11 1
+.names new_n27 new_n28 new_n29
+00 1
+.names x5 new_n29 new_n30
+00 1
+.names x5 new_n29 new_n31
+11 1
+.names new_n30 new_n31 new_n32
+00 1
+.names x6 new_n32 new_n33
+00 1
+.names x6 new_n32 new_n34
+11 1
+.names new_n33 new_n34 new_n35
+00 1
+.names x7 new_n35 new_n36
+00 1
+.names x7 new_n35 new_n37
+11 1
+.names new_n36 new_n37 new_n38
+00 1
+.names x8 new_n38 new_n39
+00 1
+.names x8 new_n38 new_n40
+11 1
+.names new_n39 new_n40 new_n41
+00 1
+.names x9 new_n41 new_n42
+00 1
+.names x9 new_n41 new_n43
+11 1
+.names new_n42 new_n43 new_n44
+00 1
+.names x10 new_n44 new_n45
+00 1
+.names x10 new_n44 new_n46
+11 1
+.names new_n45 new_n46 new_n47
+00 1
+.names x11 new_n47 new_n48
+00 1
+.names x11 new_n47 new_n49
+11 1
+.names new_n48 new_n49 new_n50
+00 1
+.names x12 new_n50 new_n51
+00 1
+.names x12 new_n50 new_n52
+11 1
+.names new_n51 new_n52 new_n53
+00 1
+.names x13 new_n53 new_n54
+00 1
+.names x13 new_n53 new_n55
+11 1
+.names new_n54 new_n55 new_n56
+00 1
+.names x14 new_n56 new_n57
+00 1
+.names x14 new_n56 new_n58
+11 1
+.names new_n57 new_n58 new_n59
+00 1
+.names x15 new_n59 new_n60
+00 1
+.names x15 new_n59 new_n61
+11 1
+.names new_n60 new_n61 out
+00 0
+.end

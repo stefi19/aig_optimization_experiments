@@ -1,0 +1,2 @@
+======== ABC command line "read_blif benchmarks/generated/mux_tree_16.blif; strash; refactor -z; print_stats; write_blif variants/generated_mux_tree_16_refactor_z.blif"
+[1;37mmux_tree_16                   :[0m i/o =   20/    1  lat =    0  and =     45  lev =  8

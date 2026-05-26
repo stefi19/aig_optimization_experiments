@@ -1,0 +1,9 @@
+# Benchmark "random_small" written by ABC on Tue May 26 14:59:10 2026
+.model random_small
+.inputs x0 x1 x2 x3 x4 x5 x6 x7
+.outputs out0 out1
+.names x3 x4 out0
+11 1
+.names out0 out1
+1 1
+.end

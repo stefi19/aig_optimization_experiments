@@ -1,0 +1,15 @@
+# Benchmark "majority3" written by ABC on Tue May 26 14:59:06 2026
+.model majority3
+.inputs a b c
+.outputs y
+.names a c new_n5
+11 1
+.names a b new_n6
+11 1
+.names b c new_n7
+11 1
+.names new_n6 new_n7 new_n8
+00 1
+.names new_n5 new_n8 y
+01 0
+.end

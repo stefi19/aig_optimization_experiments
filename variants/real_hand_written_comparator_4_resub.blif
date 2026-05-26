@@ -1,0 +1,35 @@
+# Benchmark "comparator_4" written by ABC on Tue May 26 14:59:12 2026
+.model comparator_4
+.inputs a0 a1 a2 a3 b0 b1 b2 b3
+.outputs eq
+.names a3 b3 new_n10
+01 1
+.names a3 b3 new_n11
+10 1
+.names new_n10 new_n11 new_n12
+00 1
+.names a2 b2 new_n13
+01 1
+.names a2 b2 new_n14
+10 1
+.names new_n13 new_n14 new_n15
+00 1
+.names a0 b0 new_n16
+01 1
+.names a0 b0 new_n17
+10 1
+.names new_n16 new_n17 new_n18
+00 1
+.names a1 b1 new_n19
+01 1
+.names a1 b1 new_n20
+10 1
+.names new_n19 new_n20 new_n21
+00 1
+.names new_n18 new_n21 new_n22
+11 1
+.names new_n15 new_n22 new_n23
+11 1
+.names new_n12 new_n23 eq
+11 1
+.end

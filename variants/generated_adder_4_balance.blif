@@ -1,0 +1,77 @@
+# Benchmark "adder_4" written by ABC on Tue May 26 14:59:07 2026
+.model adder_4
+.inputs a0 a1 a2 a3 b0 b1 b2 b3 cin
+.outputs sum0 sum1 sum2 sum3 cout
+.names a0 b0 new_n15
+10 1
+.names a0 b0 new_n16
+01 1
+.names new_n15 new_n16 new_n17
+00 1
+.names cin new_n17 new_n18
+00 1
+.names cin new_n17 new_n19
+11 1
+.names new_n18 new_n19 sum0
+00 0
+.names a1 b1 new_n21
+10 1
+.names a1 b1 new_n22
+01 1
+.names new_n21 new_n22 new_n23
+00 1
+.names a0 b0 new_n24
+11 1
+.names cin new_n17 new_n25
+10 1
+.names new_n24 new_n25 new_n26
+00 1
+.names new_n23 new_n26 new_n27
+01 1
+.names new_n23 new_n26 new_n28
+10 1
+.names new_n27 new_n28 sum1
+00 0
+.names a2 b2 new_n30
+10 1
+.names a2 b2 new_n31
+01 1
+.names new_n30 new_n31 new_n32
+00 1
+.names a1 b1 new_n33
+11 1
+.names new_n23 new_n26 new_n34
+00 1
+.names new_n33 new_n34 new_n35
+00 1
+.names new_n32 new_n35 new_n36
+01 1
+.names new_n32 new_n35 new_n37
+10 1
+.names new_n36 new_n37 sum2
+00 0
+.names a3 b3 new_n39
+10 1
+.names a3 b3 new_n40
+01 1
+.names new_n39 new_n40 new_n41
+00 1
+.names a2 b2 new_n42
+11 1
+.names new_n32 new_n35 new_n43
+00 1
+.names new_n42 new_n43 new_n44
+00 1
+.names new_n41 new_n44 new_n45
+01 1
+.names new_n41 new_n44 new_n46
+10 1
+.names new_n45 new_n46 sum3
+00 0
+.names a3 b3 new_n48
+11 1
+.names new_n41 new_n44 new_n49
+00 1
+.names new_n48 new_n49 cout
+00 0
+.end

@@ -1,0 +1,23 @@
+# Benchmark "multiplier_2" written by ABC on Tue May 26 14:59:08 2026
+.model multiplier_2
+.inputs a0 a1 b0 b1
+.outputs p0 p1 p2 p3
+.names a0 b0 p0
+11 1
+.names a0 b1 new_n10
+11 1
+.names a1 b0 new_n11
+11 1
+.names new_n10 new_n11 new_n12
+10 1
+.names new_n10 new_n11 new_n13
+01 1
+.names new_n12 new_n13 p1
+00 0
+.names a1 b1 new_n15
+11 1
+.names p0 new_n15 p2
+01 1
+.names new_n10 new_n11 p3
+11 1
+.end
