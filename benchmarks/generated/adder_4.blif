@@ -1,0 +1,58 @@
+.model adder_4
+.inputs a0 a1 a2 a3 b0 b1 b2 b3 cin
+.outputs sum0 sum1 sum2 sum3 cout
+.names a0 b0 ab_xor0
+10 1
+01 1
+.names ab_xor0 cin sum0
+10 1
+01 1
+.names a0 b0 ab_and0
+11 1
+.names cin ab_xor0 c_ab0
+11 1
+.names ab_and0 c_ab0 carry0
+1- 1
+-1 1
+.names a1 b1 ab_xor1
+10 1
+01 1
+.names ab_xor1 carry0 sum1
+10 1
+01 1
+.names a1 b1 ab_and1
+11 1
+.names carry0 ab_xor1 c_ab1
+11 1
+.names ab_and1 c_ab1 carry1
+1- 1
+-1 1
+.names a2 b2 ab_xor2
+10 1
+01 1
+.names ab_xor2 carry1 sum2
+10 1
+01 1
+.names a2 b2 ab_and2
+11 1
+.names carry1 ab_xor2 c_ab2
+11 1
+.names ab_and2 c_ab2 carry2
+1- 1
+-1 1
+.names a3 b3 ab_xor3
+10 1
+01 1
+.names ab_xor3 carry2 sum3
+10 1
+01 1
+.names a3 b3 ab_and3
+11 1
+.names carry2 ab_xor3 c_ab3
+11 1
+.names ab_and3 c_ab3 carry3
+1- 1
+-1 1
+.names carry3 cout
+1 1
+.end

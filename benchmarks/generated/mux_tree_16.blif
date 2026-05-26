@@ -1,0 +1,51 @@
+.model mux_tree_16
+.inputs d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 s0 s1 s2 s3
+.outputs out
+.names s3 d1 d0 mux_n0
+11- 1
+0-1 1
+.names s3 d3 d2 mux_n1
+11- 1
+0-1 1
+.names s3 d5 d4 mux_n2
+11- 1
+0-1 1
+.names s3 d7 d6 mux_n3
+11- 1
+0-1 1
+.names s3 d9 d8 mux_n4
+11- 1
+0-1 1
+.names s3 d11 d10 mux_n5
+11- 1
+0-1 1
+.names s3 d13 d12 mux_n6
+11- 1
+0-1 1
+.names s3 d15 d14 mux_n7
+11- 1
+0-1 1
+.names s2 mux_n1 mux_n0 mux_n8
+11- 1
+0-1 1
+.names s2 mux_n3 mux_n2 mux_n9
+11- 1
+0-1 1
+.names s2 mux_n5 mux_n4 mux_n10
+11- 1
+0-1 1
+.names s2 mux_n7 mux_n6 mux_n11
+11- 1
+0-1 1
+.names s1 mux_n9 mux_n8 mux_n12
+11- 1
+0-1 1
+.names s1 mux_n11 mux_n10 mux_n13
+11- 1
+0-1 1
+.names s0 mux_n13 mux_n12 mux_n14
+11- 1
+0-1 1
+.names mux_n14 out
+1 1
+.end

@@ -1,0 +1,99 @@
+.model xor_chain_32
+.inputs x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17 x18 x19 x20 x21 x22 x23 x24 x25 x26 x27 x28 x29 x30 x31
+.outputs out
+.names x0 x1 xor1
+10 1
+01 1
+.names xor1 x2 xor2
+10 1
+01 1
+.names xor2 x3 xor3
+10 1
+01 1
+.names xor3 x4 xor4
+10 1
+01 1
+.names xor4 x5 xor5
+10 1
+01 1
+.names xor5 x6 xor6
+10 1
+01 1
+.names xor6 x7 xor7
+10 1
+01 1
+.names xor7 x8 xor8
+10 1
+01 1
+.names xor8 x9 xor9
+10 1
+01 1
+.names xor9 x10 xor10
+10 1
+01 1
+.names xor10 x11 xor11
+10 1
+01 1
+.names xor11 x12 xor12
+10 1
+01 1
+.names xor12 x13 xor13
+10 1
+01 1
+.names xor13 x14 xor14
+10 1
+01 1
+.names xor14 x15 xor15
+10 1
+01 1
+.names xor15 x16 xor16
+10 1
+01 1
+.names xor16 x17 xor17
+10 1
+01 1
+.names xor17 x18 xor18
+10 1
+01 1
+.names xor18 x19 xor19
+10 1
+01 1
+.names xor19 x20 xor20
+10 1
+01 1
+.names xor20 x21 xor21
+10 1
+01 1
+.names xor21 x22 xor22
+10 1
+01 1
+.names xor22 x23 xor23
+10 1
+01 1
+.names xor23 x24 xor24
+10 1
+01 1
+.names xor24 x25 xor25
+10 1
+01 1
+.names xor25 x26 xor26
+10 1
+01 1
+.names xor26 x27 xor27
+10 1
+01 1
+.names xor27 x28 xor28
+10 1
+01 1
+.names xor28 x29 xor29
+10 1
+01 1
+.names xor29 x30 xor30
+10 1
+01 1
+.names xor30 x31 xor31
+10 1
+01 1
+.names xor31 out
+1 1
+.end

@@ -282,6 +282,61 @@ def analyze_network(path):
 
 
 # -----------------------------------------------------------------------------
+# Benchmark / optimization metadata
+# -----------------------------------------------------------------------------
+
+# Ordered list of (prefix, family) pairs.
+# The first matching prefix wins, so longer prefixes should come first.
+_FAMILY_PREFIXES = [
+    ("xor_chain",  "xor_chain"),
+    ("mux_tree",   "mux_tree"),
+    ("adder",      "adder"),
+    ("multiplier", "multiplier"),
+    ("random",     "random"),
+    ("majority",   "toy"),
+    ("mux",        "toy"),
+    ("toy",        "toy"),
+]
+
+
+def infer_benchmark_family(benchmark_name: str) -> str:
+    """
+    Infer a family label from the benchmark file/directory name.
+
+    Used to group results in summary tables and ablation studies.
+    Falls back to 'unknown' if no prefix matches.
+    """
+    bn = benchmark_name.lower()
+    for prefix, family in _FAMILY_PREFIXES:
+        if bn.startswith(prefix):
+            return family
+    return "unknown"
+
+
+# Mapping from optimization name to a coarse effort group.
+# 'none' = just strash (no optimisation), increasing through very_high.
+_OPT_GROUPS = {
+    "original":    "none",
+    "balance":     "low",
+    "rewrite":     "medium",
+    "refactor":    "medium",
+    "rewrite_z":   "medium",
+    "refactor_z":  "medium",
+    "resub":       "high",
+    "resyn":       "high",
+    "resyn2":      "very_high",
+    "resyn2_like": "very_high",
+    "dc2":         "very_high",
+    "compress2rs": "very_high",
+}
+
+
+def infer_optimization_group(optimization_name: str) -> str:
+    """Return the effort group label for a given optimization name."""
+    return _OPT_GROUPS.get(optimization_name, "unknown")
+
+
+# -----------------------------------------------------------------------------
 # Matching metrics
 # -----------------------------------------------------------------------------
 
@@ -450,7 +505,13 @@ def rank_candidates(original, optimized, benchmark, optimization):
 def group_variant_files():
     """Group files like toy_balance.blif by benchmark and optimization name."""
 
-    known_opts = ["resyn2_like", "original", "balance", "rewrite", "refactor", "resub"]
+    # Longer suffixes must come before shorter ones so that e.g. 'resyn2_like'
+    # is matched before 'resyn2', and 'rewrite_z' before 'rewrite'.
+    known_opts = [
+        "resyn2_like", "compress2rs", "refactor_z", "rewrite_z",
+        "resyn2", "resyn", "dc2",
+        "original", "balance", "rewrite", "refactor", "resub",
+    ]
     grouped = defaultdict(dict)
 
     for path in sorted(glob.glob("variants/*.blif")):

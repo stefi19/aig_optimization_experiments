@@ -1,0 +1,15 @@
+.model mux_tree_4
+.inputs d0 d1 d2 d3 s0 s1
+.outputs out
+.names s1 d1 d0 mux_n0
+11- 1
+0-1 1
+.names s1 d3 d2 mux_n1
+11- 1
+0-1 1
+.names s0 mux_n1 mux_n0 mux_n2
+11- 1
+0-1 1
+.names mux_n2 out
+1 1
+.end

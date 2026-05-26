@@ -1,0 +1,110 @@
+.model adder_8
+.inputs a0 a1 a2 a3 a4 a5 a6 a7 b0 b1 b2 b3 b4 b5 b6 b7 cin
+.outputs sum0 sum1 sum2 sum3 sum4 sum5 sum6 sum7 cout
+.names a0 b0 ab_xor0
+10 1
+01 1
+.names ab_xor0 cin sum0
+10 1
+01 1
+.names a0 b0 ab_and0
+11 1
+.names cin ab_xor0 c_ab0
+11 1
+.names ab_and0 c_ab0 carry0
+1- 1
+-1 1
+.names a1 b1 ab_xor1
+10 1
+01 1
+.names ab_xor1 carry0 sum1
+10 1
+01 1
+.names a1 b1 ab_and1
+11 1
+.names carry0 ab_xor1 c_ab1
+11 1
+.names ab_and1 c_ab1 carry1
+1- 1
+-1 1
+.names a2 b2 ab_xor2
+10 1
+01 1
+.names ab_xor2 carry1 sum2
+10 1
+01 1
+.names a2 b2 ab_and2
+11 1
+.names carry1 ab_xor2 c_ab2
+11 1
+.names ab_and2 c_ab2 carry2
+1- 1
+-1 1
+.names a3 b3 ab_xor3
+10 1
+01 1
+.names ab_xor3 carry2 sum3
+10 1
+01 1
+.names a3 b3 ab_and3
+11 1
+.names carry2 ab_xor3 c_ab3
+11 1
+.names ab_and3 c_ab3 carry3
+1- 1
+-1 1
+.names a4 b4 ab_xor4
+10 1
+01 1
+.names ab_xor4 carry3 sum4
+10 1
+01 1
+.names a4 b4 ab_and4
+11 1
+.names carry3 ab_xor4 c_ab4
+11 1
+.names ab_and4 c_ab4 carry4
+1- 1
+-1 1
+.names a5 b5 ab_xor5
+10 1
+01 1
+.names ab_xor5 carry4 sum5
+10 1
+01 1
+.names a5 b5 ab_and5
+11 1
+.names carry4 ab_xor5 c_ab5
+11 1
+.names ab_and5 c_ab5 carry5
+1- 1
+-1 1
+.names a6 b6 ab_xor6
+10 1
+01 1
+.names ab_xor6 carry5 sum6
+10 1
+01 1
+.names a6 b6 ab_and6
+11 1
+.names carry5 ab_xor6 c_ab6
+11 1
+.names ab_and6 c_ab6 carry6
+1- 1
+-1 1
+.names a7 b7 ab_xor7
+10 1
+01 1
+.names ab_xor7 carry6 sum7
+10 1
+01 1
+.names a7 b7 ab_and7
+11 1
+.names carry6 ab_xor7 c_ab7
+11 1
+.names ab_and7 c_ab7 carry7
+1- 1
+-1 1
+.names carry7 cout
+1 1
+.end

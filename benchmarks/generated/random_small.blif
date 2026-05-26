@@ -1,0 +1,39 @@
+.model random_small
+.inputs x0 x1 x2 x3 x4 x5 x6 x7
+.outputs out0 out1
+.names x1 x0 g0
+10 1
+01 1
+.names x4 x3 g1
+11 1
+.names x2 x1 g2
+10 1
+01 1
+.names g0 x1 g3
+10 1
+01 1
+.names x6 x0 g4
+11 1
+.names x1 x3 g5
+11 1
+.names g0 g1 g6
+11 1
+.names g0 x3 g7
+10 1
+01 1
+.names g5 x7 g8
+1- 1
+-1 1
+.names g0 x0 g9
+11 1
+.names g5 g2 g10
+1- 1
+-1 1
+.names x4 x6 g11
+1- 1
+-1 1
+.names g1 out0
+1 1
+.names g1 out1
+1 1
+.end

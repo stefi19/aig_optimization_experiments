@@ -1,0 +1,27 @@
+.model xor_chain_8
+.inputs x0 x1 x2 x3 x4 x5 x6 x7
+.outputs out
+.names x0 x1 xor1
+10 1
+01 1
+.names xor1 x2 xor2
+10 1
+01 1
+.names xor2 x3 xor3
+10 1
+01 1
+.names xor3 x4 xor4
+10 1
+01 1
+.names xor4 x5 xor5
+10 1
+01 1
+.names xor5 x6 xor6
+10 1
+01 1
+.names xor6 x7 xor7
+10 1
+01 1
+.names xor7 out
+1 1
+.end

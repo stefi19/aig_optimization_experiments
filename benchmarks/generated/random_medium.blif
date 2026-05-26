@@ -1,0 +1,74 @@
+.model random_medium
+.inputs x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15
+.outputs out0 out1 out2 out3
+.names x3 x0 g0
+10 1
+01 1
+.names x8 x7 g1
+11 1
+.names x4 x3 g2
+10 1
+01 1
+.names g1 x2 g3
+10 1
+01 1
+.names x13 x1 g4
+11 1
+.names x2 x6 g5
+11 1
+.names g0 g3 g6
+11 1
+.names g1 x6 g7
+10 1
+01 1
+.names g4 g6 g8
+10 1
+01 1
+.names x13 x7 g9
+1- 1
+-1 1
+.names g2 x8 g10
+11 1
+.names g8 g9 g11
+11 1
+.names g6 x13 g12
+1- 1
+-1 1
+.names x8 x4 g13
+11 1
+.names g8 x10 g14
+11 1
+.names x2 x12 g15
+11 1
+.names g6 g6 g16
+10 1
+01 1
+.names g0 x2 g17
+10 1
+01 1
+.names g13 x7 g18
+1- 1
+-1 1
+.names x5 g2 g19
+10 1
+01 1
+.names g7 x12 g20
+10 1
+01 1
+.names x4 x2 g21
+10 1
+01 1
+.names x14 g2 g22
+11 1
+.names x14 x6 g23
+1- 1
+-1 1
+.names g8 out0
+1 1
+.names g14 out1
+1 1
+.names g20 out2
+1 1
+.names g11 out3
+1 1
+.end

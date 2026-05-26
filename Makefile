@@ -1,7 +1,7 @@
 ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 
-.PHONY: all build-abc generate-variants analyze plot test sat-refine sat-summary sat-pipeline start clean clean-results
+.PHONY: all build-abc generate-benchmarks generate-variants analyze plot test sat-refine sat-summary sat-pipeline start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -14,6 +14,11 @@ build-abc:
 		git clone https://github.com/berkeley-abc/abc.git $(ABC_DIR); \
 	fi
 	@cd $(ABC_DIR) && make -j2
+
+# Generate synthetic BLIF benchmarks under benchmarks/generated/
+generate-benchmarks:
+	@echo "Generating synthetic benchmarks → benchmarks/generated/"
+	@python3 scripts/generate_synthetic_benchmarks.py
 
 # Generate optimized BLIF variants using the built ABC
 generate-variants: build-abc
@@ -54,7 +59,7 @@ clean-results:
 	@echo "Removing generated results, variants, and logs (keeps benchmarks and scripts)"
 	@rm -rf results/summary_metrics.csv results/top_candidates.csv \
 		results/sat_refinement_candidates.csv results/plots \
-		variants/ logs/
+		variants/ logs/ benchmarks/generated/
 
 # One-command bootstrap: checks prerequisites, then runs the full pipeline.
 # Equivalent to running start.sh but usable as a make target.

@@ -1,0 +1,216 @@
+.model multiplier_4
+.inputs a0 a1 a2 a3 b0 b1 b2 b3
+.outputs p0 p1 p2 p3 p4 p5 p6 p7
+.names a0 b0 pp0
+11 1
+.names a0 b1 pp1
+11 1
+.names a0 b2 pp2
+11 1
+.names a0 b3 pp3
+11 1
+.names a1 b0 pp4
+11 1
+.names a1 b1 pp5
+11 1
+.names a1 b2 pp6
+11 1
+.names a1 b3 pp7
+11 1
+.names a2 b0 pp8
+11 1
+.names a2 b1 pp9
+11 1
+.names a2 b2 pp10
+11 1
+.names a2 b3 pp11
+11 1
+.names a3 b0 pp12
+11 1
+.names a3 b1 pp13
+11 1
+.names a3 b2 pp14
+11 1
+.names a3 b3 pp15
+11 1
+.names pp1 pp4 ha_s16
+10 1
+01 1
+.names pp1 pp4 ha_c17
+11 1
+.names ha_c17 pp8 fa_ab18
+10 1
+01 1
+.names fa_ab18 pp5 fa_s19
+10 1
+01 1
+.names ha_c17 pp8 and21
+11 1
+.names ha_c17 pp5 and22
+11 1
+.names pp8 pp5 and23
+11 1
+.names and21 and22 or24
+1- 1
+-1 1
+.names or24 and23 fa_c20
+1- 1
+-1 1
+.names pp2 fa_s19 ha_s25
+10 1
+01 1
+.names pp2 fa_s19 ha_c26
+11 1
+.names ha_c26 fa_c20 fa_ab27
+10 1
+01 1
+.names fa_ab27 pp12 fa_s28
+10 1
+01 1
+.names ha_c26 fa_c20 and30
+11 1
+.names ha_c26 pp12 and31
+11 1
+.names fa_c20 pp12 and32
+11 1
+.names and30 and31 or33
+1- 1
+-1 1
+.names or33 and32 fa_c29
+1- 1
+-1 1
+.names fa_s28 pp9 fa_ab34
+10 1
+01 1
+.names fa_ab34 pp6 fa_s35
+10 1
+01 1
+.names fa_s28 pp9 and37
+11 1
+.names fa_s28 pp6 and38
+11 1
+.names pp9 pp6 and39
+11 1
+.names and37 and38 or40
+1- 1
+-1 1
+.names or40 and39 fa_c36
+1- 1
+-1 1
+.names pp3 fa_s35 ha_s41
+10 1
+01 1
+.names pp3 fa_s35 ha_c42
+11 1
+.names ha_c42 fa_c36 fa_ab43
+10 1
+01 1
+.names fa_ab43 fa_c29 fa_s44
+10 1
+01 1
+.names ha_c42 fa_c36 and46
+11 1
+.names ha_c42 fa_c29 and47
+11 1
+.names fa_c36 fa_c29 and48
+11 1
+.names and46 and47 or49
+1- 1
+-1 1
+.names or49 and48 fa_c45
+1- 1
+-1 1
+.names fa_s44 pp13 fa_ab50
+10 1
+01 1
+.names fa_ab50 pp10 fa_s51
+10 1
+01 1
+.names fa_s44 pp13 and53
+11 1
+.names fa_s44 pp10 and54
+11 1
+.names pp13 pp10 and55
+11 1
+.names and53 and54 or56
+1- 1
+-1 1
+.names or56 and55 fa_c52
+1- 1
+-1 1
+.names pp7 fa_s51 ha_s57
+10 1
+01 1
+.names pp7 fa_s51 ha_c58
+11 1
+.names ha_c58 fa_c52 fa_ab59
+10 1
+01 1
+.names fa_ab59 fa_c45 fa_s60
+10 1
+01 1
+.names ha_c58 fa_c52 and62
+11 1
+.names ha_c58 fa_c45 and63
+11 1
+.names fa_c52 fa_c45 and64
+11 1
+.names and62 and63 or65
+1- 1
+-1 1
+.names or65 and64 fa_c61
+1- 1
+-1 1
+.names fa_s60 pp14 fa_ab66
+10 1
+01 1
+.names fa_ab66 pp11 fa_s67
+10 1
+01 1
+.names fa_s60 pp14 and69
+11 1
+.names fa_s60 pp11 and70
+11 1
+.names pp14 pp11 and71
+11 1
+.names and69 and70 or72
+1- 1
+-1 1
+.names or72 and71 fa_c68
+1- 1
+-1 1
+.names fa_c68 fa_c61 fa_ab73
+10 1
+01 1
+.names fa_ab73 pp15 fa_s74
+10 1
+01 1
+.names fa_c68 fa_c61 and76
+11 1
+.names fa_c68 pp15 and77
+11 1
+.names fa_c61 pp15 and78
+11 1
+.names and76 and77 or79
+1- 1
+-1 1
+.names or79 and78 fa_c75
+1- 1
+-1 1
+.names pp0 p0
+1 1
+.names ha_s16 p1
+1 1
+.names ha_s25 p2
+1 1
+.names ha_s41 p3
+1 1
+.names ha_s57 p4
+1 1
+.names fa_s67 p5
+1 1
+.names fa_s74 p6
+1 1
+.names fa_c75 p7
+1 1
+.end
