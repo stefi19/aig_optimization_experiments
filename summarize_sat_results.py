@@ -6,6 +6,14 @@ Reads results/sat_verified_candidates.csv and generates two summary files:
   results/sat_summary.csv   — per benchmark/optimization counts + rates + global row
   results/sat_summary.md    — human-readable Markdown report
 
+The CSV carries three recovery-method counters per group (added when
+sat_refinement_abc.py gained fingerprint-based fallback recovery):
+
+  direct_name_count       — checks that matched by the original node name
+  fingerprint_recovered   — checks where the node was recovered via a unique
+                            SHA-256 fingerprint (name was missing in the BLIF)
+  still_inconclusive      — checks that could not be completed at all
+
 This script has no external dependencies beyond pandas. It does not call ABC.
 
 Usage:
@@ -26,6 +34,7 @@ REQUIRED_COLS = {
     "benchmark", "optimization",
     "optimized_node", "original_candidate",
     "combined_score", "sat_status", "abc_result", "notes",
+    # recovery_method is optional for backwards-compat with old result files
 }
 
 
@@ -55,6 +64,14 @@ def load_verified(path: str) -> pd.DataFrame:
         )
         sys.exit(1)
 
+    # Back-fill recovery_method for result files produced before the fingerprint
+    # fallback was added.  Old files had no recovery_method column; treat every
+    # inconclusive row as "inconclusive" and every concluded row as "direct".
+    if "recovery_method" not in df.columns:
+        df["recovery_method"] = df["sat_status"].map(
+            lambda s: "inconclusive" if s == "inconclusive" else "direct"
+        )
+
     return df
 
 
@@ -65,7 +82,8 @@ def compute_group_summary(df: pd.DataFrame) -> pd.DataFrame:
     Return one row per (benchmark, optimization) pair with:
       verified, rejected, inconclusive, total,
       verification_rate, rejection_rate, inconclusive_rate,
-      avg_combined_score
+      avg_combined_score,
+      direct_name_count, fingerprint_recovered, still_inconclusive
     """
     if df.empty:
         return pd.DataFrame(columns=[
@@ -73,6 +91,7 @@ def compute_group_summary(df: pd.DataFrame) -> pd.DataFrame:
             "verified", "rejected", "inconclusive", "total",
             "verification_rate", "rejection_rate", "inconclusive_rate",
             "avg_combined_score",
+            "direct_name_count", "fingerprint_recovered", "still_inconclusive",
         ])
 
     rows = []
@@ -92,17 +111,27 @@ def _summarise_group(bench: str, opt: str, group: pd.DataFrame) -> dict:
 
     avg_score = round(float(group["combined_score"].mean()), 4) if total else 0.0
 
+    # Recovery-method breakdown (column may not exist in old files but
+    # load_verified() back-fills it, so it is always present here).
+    method_counts          = group["recovery_method"].value_counts() if "recovery_method" in group.columns else {}
+    direct_name_count      = int(method_counts.get("direct",      0))
+    fingerprint_recovered  = int(method_counts.get("fingerprint", 0))
+    still_inconclusive     = int(method_counts.get("inconclusive", 0))
+
     return {
-        "benchmark":         bench,
-        "optimization":      opt,
-        "verified":          verified,
-        "rejected":          rejected,
-        "inconclusive":      inconclusive,
-        "total":             total,
-        "verification_rate":  round(verified     / total, 4) if total else 0.0,
-        "rejection_rate":     round(rejected     / total, 4) if total else 0.0,
-        "inconclusive_rate":  round(inconclusive / total, 4) if total else 0.0,
-        "avg_combined_score": avg_score,
+        "benchmark":            bench,
+        "optimization":         opt,
+        "verified":             verified,
+        "rejected":             rejected,
+        "inconclusive":         inconclusive,
+        "total":                total,
+        "verification_rate":    round(verified     / total, 4) if total else 0.0,
+        "rejection_rate":       round(rejected     / total, 4) if total else 0.0,
+        "inconclusive_rate":    round(inconclusive / total, 4) if total else 0.0,
+        "avg_combined_score":   avg_score,
+        "direct_name_count":    direct_name_count,
+        "fingerprint_recovered": fingerprint_recovered,
+        "still_inconclusive":   still_inconclusive,
     }
 
 
@@ -149,13 +178,56 @@ def build_markdown(df: pd.DataFrame, summary: pd.DataFrame) -> str:
         lines.append(f"- **Inconclusive:** {inconc}")
         lines.append(f"- **Verification rate:** {verif_rate:.1%}\n")
 
+    # ── Recovery method breakdown ─────────────────────────────────────────────
+    lines.append("## Recovery method breakdown\n")
+
+    if df.empty:
+        lines.append("No data.\n")
+    else:
+        method_col = df.get("recovery_method", None) if hasattr(df, "get") else None
+        has_method = "recovery_method" in df.columns
+
+        if not has_method:
+            lines.append(
+                "_`recovery_method` column not present — re-run "
+                "`sat_refinement_abc.py` to populate it._\n"
+            )
+        else:
+            mc = df["recovery_method"].value_counts()
+            direct_n = int(mc.get("direct",      0))
+            fp_n     = int(mc.get("fingerprint", 0))
+            inc_n    = int(mc.get("inconclusive", 0))
+
+            lines.append(
+                "Each completed check is tagged with the method used to "
+                "locate the node in the BLIF file:\n"
+            )
+            lines.append(
+                f"- **direct** ({direct_n}): node name found in the BLIF "
+                "without any fallback"
+            )
+            lines.append(
+                f"- **fingerprint** ({fp_n}): node name was missing; "
+                "recovered via a unique SHA-256 fingerprint match"
+            )
+            lines.append(
+                f"- **still inconclusive** ({inc_n}): node could not be "
+                "resolved (name missing and fingerprint ambiguous/absent, "
+                "missing BLIF, ABC timeout, etc.)\n"
+            )
+            if fp_n > 0:
+                lines.append(
+                    f"Fingerprint recovery successfully rescued **{fp_n}** "
+                    "candidate(s) that would otherwise have been inconclusive, "
+                    "reducing the inconclusive rate.\n"
+                )
+
     # ── Per-group table ───────────────────────────────────────────────────────
     lines.append("## Summary by benchmark and optimization\n")
 
     if summary.empty:
         lines.append("No data.\n")
     else:
-        # All rows except the ALL/ALL global row.
         group_rows = summary[summary["benchmark"] != "ALL"]
         global_row = summary[summary["benchmark"] == "ALL"]
 
@@ -164,11 +236,14 @@ def build_markdown(df: pd.DataFrame, summary: pd.DataFrame) -> str:
             "verified", "rejected", "inconclusive", "total",
             "verification_rate", "rejection_rate", "inconclusive_rate",
             "avg_combined_score",
+            "direct_name_count", "fingerprint_recovered", "still_inconclusive",
         ]
+        # Only keep columns that exist (graceful for old files).
+        table_cols = [c for c in table_cols if c in summary.columns]
+
         lines.append(_df_to_md_table(group_rows[table_cols]))
         lines.append("")
 
-        # Global totals row as a separate small table.
         lines.append("**Global totals:**\n")
         lines.append(_df_to_md_table(global_row[table_cols]))
         lines.append("")
@@ -313,6 +388,15 @@ def main():
         f"{int(global_row['inconclusive'])} inconclusive "
         f"({global_row['verification_rate']:.1%} verification rate)"
     )
+
+    # Print recovery method breakdown.
+    if "direct_name_count" in global_row.index:
+        print(
+            f"Recovery method: "
+            f"{int(global_row['direct_name_count'])} direct, "
+            f"{int(global_row['fingerprint_recovered'])} fingerprint-recovered, "
+            f"{int(global_row['still_inconclusive'])} still inconclusive"
+        )
 
 
 if __name__ == "__main__":
