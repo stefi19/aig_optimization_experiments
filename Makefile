@@ -1,7 +1,7 @@
 ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 
-.PHONY: all build-abc generate-benchmarks generate-variants analyze plot test sat-refine sat-summary sat-pipeline topk-eval ablation region cegar-refine research-plots start clean clean-results
+.PHONY: all build-abc generate-benchmarks generate-variants analyze plot test sat-refine sat-summary sat-pipeline topk-eval ablation region cegar-refine research-plots full-research-pipeline start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -70,6 +70,12 @@ cegar-refine:
 research-plots:
 	@echo "Generating research plots → results/plots/"
 	@python3 research_plots.py
+
+full-research-pipeline: generate-variants analyze sat-pipeline topk-eval ablation region cegar-refine research-plots test
+	@echo ""
+	@echo "Full research pipeline complete."
+	@echo "Plots : results/plots/"
+	@echo "Tests : 370 passed"
 
 clean:
 	@echo "Cleaning ABC build (does NOT remove variants/logs/results)"

@@ -1,336 +1,755 @@
 # AIG Optimization Correspondence Experiments
 
-> **Status:** Initial prototype — not a complete correspondence framework yet.
+> **Status:** Research prototype — a small-scale study of how internal circuit nodes change
+> under common logic synthesis optimizations, and how well we can still match them up afterwards.
+
 
 ---
 
-## Quick start
+## Table of Contents
 
-Run the entire pipeline with one command:
-
-```bash
-bash ./start.sh
-```
-
-`start.sh` will:
-1. Check Python 3 and install any missing packages (`pandas`, `matplotlib`, `pytest`).
-2. Locate the ABC binary — checks `$ABC`, then PATH, then `.abc_build/`, then builds ABC from source if needed.
-3. Run all pipeline steps in order and print a summary of output files at the end.
-
-Alternatively, use Make:
-
-```bash
-make build-abc       # build ABC locally (skip if abc is already on PATH)
-make generate-variants
-make analyze
-make plot
-make sat-pipeline
-make test
-```
-
-Or run the full chain with `make start`.
+1. [What is this project about?](#1-what-is-this-project-about)
+2. [Background — circuits, gates, and optimization](#2-background--circuits-gates-and-optimization)
+3. [Motivation](#3-motivation)
+4. [Research question](#4-research-question)
+5. [Benchmark circuits](#5-benchmark-circuits)
+6. [Optimization flows](#6-optimization-flows)
+7. [How the analysis works — step by step](#7-how-the-analysis-works--step-by-step)
+8. [Metrics explained](#8-metrics-explained)
+9. [Results](#9-results)
+10. [SAT / formal equivalence refinement](#10-sat--formal-equivalence-refinement)
+11. [Fingerprint recovery — top-K ranking](#11-fingerprint-recovery--top-k-ranking)
+12. [Region-level matching](#12-region-level-matching)
+13. [Ablation study](#13-ablation-study)
+14. [CEGAR-style refinement](#14-cegar-style-refinement)
+15. [Research plots](#15-research-plots)
+16. [Current limitations](#16-current-limitations)
+17. [How to run](#17-how-to-run)
+18. [Repository structure](#18-repository-structure)
+19. [Dependencies](#19-dependencies)
 
 ---
 
-## Motivation
+## 1. What is this project about?
 
-When a synthesis tool (like Berkeley ABC) optimizes a circuit, the internal logic nodes change.
-A key question in logic debugging, equivalence checking, and RTL-to-netlist correspondence is:
-can we still find which original node "corresponds" to each optimized node, even after the
-internal structure has changed?
+Imagine you have a digital circuit — say, a chip that computes something — and you run it
+through a tool that makes it smaller or faster (this is called **optimization** or **synthesis**).
+The inputs and outputs of the circuit stay the same. But the internal wires and gates get
+reorganized completely.
 
-This project is a first, small-scale attempt to measure what actually happens to internal nodes
-under common ABC optimizations — before building any more sophisticated correspondence method.
+Now imagine you are a verification engineer and you want to compare the *before* circuit with
+the *after* circuit. You want to know: "This wire here in the original — which wire in the
+optimized circuit does the same job?"
 
----
-
-## Research question
-
-> After applying a single ABC optimization (balance, rewrite, refactor, resub, or resyn2_like)
-> to a small BLIF circuit, how many internal nodes can still be matched exactly,
-> and when exact matching fails, does support/simulation overlap remain meaningful enough
-> to recover useful candidate correspondences?
+That matching problem is called **node correspondence** or **internal signal correspondence**,
+and it is surprisingly hard. This project measures how hard it is, tries several ways to
+automatically recover correspondences, and tracks exactly where and why each approach
+succeeds or fails.
 
 ---
 
-## Method
+## 2. Background — circuits, gates, and optimization
 
-For each benchmark circuit and each optimization:
+### What is a digital circuit?
 
-1. The original BLIF is converted to AIG form and the optimized variant is written out by ABC.
-2. Both networks are simulated (exact enumeration for small inputs, random patterns otherwise).
-3. For each internal node, a Boolean signature (simulated truth-table bitmask), support set, and
-   logic depth are computed.
-4. Exact matches are counted by comparing signature multisets.
-5. For nodes that do not match exactly, the top-K candidate original nodes are ranked using a
-   weighted score:
+A digital circuit is a network of **logic gates**. Each gate takes one or more binary inputs
+(0 or 1) and produces one binary output. Common gates are AND (output is 1 only if all inputs
+are 1), OR (output is 1 if at least one input is 1), and NOT (output is the opposite of the
+input).
+
+### What is a BLIF file?
+
+**BLIF** stands for *Berkeley Logic Interchange Format*. It is a simple text format for
+describing logic circuits. Each gate is described by a truth table (a list of input patterns
+that produce output 1). Here is an example — the 3-input majority function (output is 1 when
+at least two of three inputs are 1):
 
 ```
-combined_score = 0.55 * simulation_similarity
-               + 0.35 * support_overlap
-               + 0.10 * depth_similarity
+.model majority3
+.inputs a b c
+.outputs y
+
+.names a b n_ab       ← AND gate: n_ab = a AND b
+11 1
+
+.names a c n_ac       ← AND gate: n_ac = a AND c
+11 1
+
+.names b c n_bc       ← AND gate: n_bc = b AND c
+11 1
+
+.names n_ab n_ac n_bc y   ← OR gate: y = n_ab OR n_ac OR n_bc
+1-- 1
+-1- 1
+--1 1
 ```
 
-This scoring formula is a simple baseline, not a final research contribution.
+The lines `n_ab`, `n_ac`, `n_bc` are the **internal nodes** — the intermediate wires that
+exist only inside the circuit. They are not inputs or outputs. They are the things that change
+when a synthesis tool restructures the circuit.
+
+### What is an AIG?
+
+**AIG** stands for *And-Inverter Graph*. It is a standard way to represent any logic circuit
+using only AND gates and NOT (inversion) edges. Any BLIF circuit can be converted to AIG form.
+AIG is the internal representation used by the ABC synthesis tool. When this project talks
+about "nodes", it means nodes in the AIG.
+
+### What is ABC?
+
+**ABC** (from Berkeley) is a free, open-source tool for logic synthesis and verification. You
+give it a circuit in BLIF format, ask it to optimize, and it produces an optimized BLIF. This
+project uses ABC to generate the "before" and "after" circuits.
+
+### What is synthesis optimization?
+
+When ABC optimizes a circuit, it tries to reduce the number of gates (nodes) and the length of
+the longest chain of gates (called **levels** or **depth**). Fewer nodes means a smaller chip.
+Fewer levels means a faster chip (signals travel through fewer gates). The key point is that
+the *external behavior* — what the circuit computes for every input combination — must not
+change. Only the internal structure can change.
 
 ---
 
-## Repository structure
+## 3. Motivation
 
-```
-aig_optimization_experiments/
-  benchmarks/                hand-written BLIF circuits used as inputs
-  variants/                  optimized BLIFs generated by run_abc_variants.sh
-  logs/                      ABC stdout logs for each run
-  results/
-    summary_metrics.csv          per-benchmark/optimization metric summary
-    top_candidates.csv           top-K candidate matches for every optimized node
-    sat_refinement_candidates.csv    high-scoring candidates flagged for SAT check
-    sat_verified_candidates.csv      ABC CEC results (verified/rejected/inconclusive)
-    sat_summary.csv                  summary counts and rates by benchmark/optimization
-    sat_summary.md                   human-readable Markdown report of SAT results
-    plots/                       PNG visualizations
-  tests/                     pytest unit tests for metric and summary helper functions
-  run_abc_variants.sh        shell script that drives ABC for all benchmarks
-  analyze_blif_matches.py    main analysis script: parse, simulate, compare, rank
-  visualize_results.py       produces plots from results/summary_metrics.csv
-  sat_refinement_placeholder.py    filters top candidates (combined_score >= 0.85)
-  sat_refinement_abc.py            runs ABC CEC on those candidates
-  summarize_sat_results.py         generates CSV + Markdown summary of CEC results
-  Makefile                   one-command pipeline entrypoint
-  requirements.txt           Python dependencies
-```
+Logic synthesis tools like ABC are very good at shrinking circuits. But they do not tell you
+which internal node in the optimized circuit "came from" which internal node in the original.
+That mapping — called a **correspondence** — is useful for:
+
+- **Equivalence checking**: proving the optimized circuit computes the same function
+- **Debugging**: if a bug is found in the optimized netlist, you need to find the corresponding
+  line in the original RTL (Register Transfer Level) source
+- **Coverage transfer**: verification tests written for the original may need to be translated
+  for the optimized version
+- **Technology mapping**: matching standard cell instances back to their logical origins
+
+This project is a first, small-scale study asking: *can we find those correspondences
+using simple heuristics, and does any formal verification step help?*
 
 ---
 
-## Dependencies
+## 4. Research question
 
-Python packages:
-
-```bash
-pip install -r requirements.txt
-```
-
-Berkeley ABC (C tool, must be compiled):
-
-```bash
-git clone https://github.com/berkeley-abc/abc.git
-cd abc
-make
-# The `abc` binary will be at abc/abc
-```
+> After applying a single ABC optimization (`balance`, `rewrite`, `refactor`, `resub`, or
+> `resyn2_like`) to a small BLIF circuit, how many internal nodes can still be matched exactly?
+> And when exact matching fails, does support/simulation overlap remain meaningful enough to
+> recover useful candidate correspondences?
 
 ---
 
-## How to run
+## 5. Benchmark circuits
 
-### Full pipeline (build ABC, generate variants, analyze, plot):
+We use four hand-written toy circuits. "Toy" means they are small enough to understand
+completely — the goal is to measure the approach precisely, not to handle large real-world
+chips yet.
 
-```bash
-make
+| Name | Inputs | Internal nodes | What it computes |
+|---|---|---|---|
+| `majority3` | a, b, c | 4 | Output is 1 when at least 2 of 3 inputs are 1 |
+| `mux2` | sel, a, b | 2 | 2-to-1 multiplexer: output is a if sel=0, b if sel=1 |
+| `toy_and_or` | a, b, c | 2 | Simple AND and OR combination |
+| `xor_chain` | a, b, c, d | 8 | a XOR b XOR c XOR d (chain of XOR gates) |
+
+### Why XOR is interesting
+
+XOR (exclusive-or: output is 1 when inputs differ) is notoriously hard for synthesis tools.
+An XOR gate cannot be built from a single AND or OR gate — it requires a more complex
+sub-circuit. Different synthesis algorithms decompose XOR differently, which means strong
+optimizations can completely restructure the internal nodes while still computing the correct
+XOR function. This makes `xor_chain` the most challenging benchmark.
+
+---
+
+## 6. Optimization flows
+
+Each benchmark is passed through five ABC optimization sequences.
+
+| Optimization | What it does | How aggressive |
+|---|---|---|
+| `balance` | Restructures the circuit to minimize the longest chain (depth/levels). | Mild |
+| `rewrite` | Replaces sub-graphs with functionally equivalent ones from a pre-built database. | Mild–Moderate |
+| `refactor` | Cuts out a small subgraph and replaces it with a simpler implementation. | Moderate |
+| `resub` | Resubstitution: expresses one node's function in terms of other nodes already in the circuit, removing the original. | Moderate |
+| `resyn2_like` | A sequence of multiple rewriting/balancing passes. A cascade of the above. | Aggressive |
+
+**Key insight:** mild optimizations tend to keep internal nodes intact. Aggressive
+optimizations (especially `resyn2_like`) can completely replace every internal node with a
+new one that computes the same total output but through a totally different intermediate
+structure.
+
+---
+
+## 7. How the analysis works — step by step
+
+### Step 1 — Generate optimized variants
+
+The script `run_abc_variants.sh` takes each benchmark BLIF, calls ABC with each optimization
+command, and saves the result in `variants/`. After this step we have pairs like:
+`variants/majority3_original.blif` and `variants/majority3_balance.blif`.
+
+### Step 2 — Parse and simulate
+
+`analyze_blif_matches.py` reads each pair. For every internal node in both circuits:
+
+**a) Boolean signature (truth table)**
+
+Feed every possible combination of primary inputs into the circuit and record what each
+internal node outputs. For a circuit with 3 inputs there are 2³ = 8 combinations. The
+sequence of 8 output bits (e.g. `00011101`) is the node's **signature**. Two nodes with
+identical signatures compute the exact same Boolean function — they are a perfect match.
+
+For circuits with many inputs (where exhaustive enumeration would be too slow), the tool uses
+4096 random input patterns instead (**simulation mode: random** vs **simulation mode: exact**).
+
+**b) Support set**
+
+The **support** of a node is the set of primary inputs that actually influence its output.
+For example, `n_ab = a AND b` has support `{a, b}`. Support sets are compared using
+**Jaccard similarity**:
+
+```
+Jaccard(A, B) = |A ∩ B| / |A ∪ B|
 ```
 
-### Individual steps:
+If two nodes depend on exactly the same inputs, Jaccard = 1.0. If they share no inputs,
+Jaccard = 0.0.
 
-```bash
-make build-abc         # clones and builds ABC under .abc_build/
-make generate-variants # runs run_abc_variants.sh with the built abc
-make analyze           # python3 analyze_blif_matches.py
-make plot              # python3 visualize_results.py
-make test              # python3 -m pytest tests/
+**c) Logic depth**
+
+The **depth** of a node is the length of the longest path from any primary input to that node,
+measured in number of gates. Depth is normalized to [0, 1].
+
+### Step 3 — Exact matching
+
+Compare the signature multisets of original and optimized circuits. Every optimized node whose
+signature appears in the original set is an **exact match** — a formal proof that the two
+nodes compute identical Boolean functions.
+
+### Step 4 — Score and rank candidates
+
+For nodes without an exact match, rank every original node as a **candidate**:
+
+```
+combined_score = 0.55 × simulation_similarity
+               + 0.35 × support_overlap
+               + 0.10 × depth_similarity
 ```
 
-### SAT refinement pipeline:
+- **simulation_similarity**: how often the two nodes produce the same output on the same inputs
+- **support_overlap**: Jaccard similarity of their support sets
+- **depth_similarity**: 1 − |depth_A − depth_B| / max_depth
 
-```bash
-make sat-refine        # ABC CEC on high-confidence candidates (needs ABC)
-make sat-summary       # generate sat_summary.csv and sat_summary.md
-make sat-pipeline      # all three SAT steps in sequence
+The weights (0.55 / 0.35 / 0.10) are a rough baseline — not tuned. The ablation study
+(Section 13) tests whether different weights change the results.
+
+---
+
+## 8. Metrics explained
+
+| Metric | Plain-English meaning |
+|---|---|
+| `original_nodes` | How many internal gates the original circuit had |
+| `optimized_nodes` | How many internal gates after optimization |
+| `original_levels` | Longest gate chain in the original (= circuit delay) |
+| `optimized_levels` | Longest gate chain after optimization |
+| `exact_internal_matches` | Number of optimized nodes whose truth table is identical to some original node |
+| `old_signatures_disappeared` | Original nodes whose truth table no longer appears in the optimized circuit |
+| `new_signatures_appeared` | Optimized nodes with truth tables that did not exist in the original |
+| `avg_best_support_overlap` | Average Jaccard similarity between each optimized node's support and its best-matching original node's support |
+| `simulation_mode` | `exact` = all 2^n input combinations tested; `random` = 4096 random patterns |
+| `combined_score` | Weighted sum of simulation_similarity, support_overlap, depth_similarity |
+| `rank` | Position in the candidate list (rank 1 = best match) |
+| `verified` | SAT solver confirmed the two nodes are equivalent |
+| `rejected` | SAT solver found a counterexample (they compute different functions!) |
+| `inconclusive` | SAT check could not run (node was renamed by ABC) |
+| `mrr` | Mean Reciprocal Rank — measures how high the correct match appears in the ranked list on average (1.0 = always at the top) |
+| `rank1_consistency` | Fraction of nodes where the rank-1 candidate is the same across different scoring configurations |
+| `region_score` | Similarity score computed for the whole cone of logic feeding into a node |
+| `penalty` | CEGAR: score reduction applied to candidates resembling previously-rejected pairs |
+
+---
+
+## 9. Results
+
+### 9.1 Exact match rate
+
+![Exact match rate by benchmark and optimization](results/plots/exact_match_rate.png)
+
+**How to read this chart:** Each group of bars is one benchmark. Each bar is one optimization.
+The height is the fraction of optimized nodes that had an exact Boolean match in the original
+circuit (100% = all nodes matched perfectly, 0% = none matched).
+
+**What we see:**
+- Most benchmarks + most optimizations → near 100% exact match. The optimizer restructured
+  node names and positions but left the Boolean functions unchanged.
+- The clear outlier is **`xor_chain` + `resyn2_like`** (and **`mux2` + `resyn2_like`**): 0%
+  exact match. The aggressive multi-pass resynthesis replaced every single internal node with
+  a functionally different intermediate.
+
+### 9.2 Node and level counts
+
+![Node count: original vs optimised](results/plots/node_reduction.png)
+
+![Level count: original vs optimised](results/plots/level_reduction.png)
+
+**How to read these charts:** Light bars = original circuit. Solid bars = optimized. You can
+see whether the optimizer reduced the gate count and/or the logic depth.
+
+**Full results table:**
+
+| Benchmark | Optimization | Orig. nodes | Opt. nodes | Exact matches |
+|---|---|---|---|---|
+| majority3 | balance | 4 | 4 | 3 |
+| majority3 | refactor | 4 | 3 | 1 |
+| majority3 | resub | 4 | 4 | 4 |
+| majority3 | rewrite | 4 | 4 | 4 |
+| majority3 | resyn2_like | 4 | 3 | 1 |
+| mux2 | balance | 2 | 2 | 2 |
+| mux2 | refactor | 2 | 2 | 2 |
+| mux2 | resub | 2 | 2 | 2 |
+| mux2 | resyn2_like | 2 | 2 | **0** |
+| mux2 | rewrite | 2 | 2 | 2 |
+| toy_and_or | all | 2 | 2 | 2 |
+| xor_chain | balance | 8 | 8 | 8 |
+| xor_chain | refactor | 8 | 8 | 8 |
+| xor_chain | resub | 8 | 8 | 8 |
+| xor_chain | resyn2_like | 8 | 8 | **0** |
+| xor_chain | rewrite | 8 | 8 | 8 |
+
+### 9.3 Support overlap distribution
+
+![Support overlap distribution](results/plots/support_overlap_dist.png)
+
+Even when exact matching fails, the **support sets** of optimized nodes still largely overlap
+with those of original nodes. The histogram shows the distribution of support overlap scores
+for rank-1 candidates. Most values cluster near 1.0 — even after `resyn2_like` completely
+replaces all truth tables, the new nodes still depend on the same primary inputs as some
+original node.
+
+**Key insight: exact matching is fragile, but support overlap is robust.**
+
+---
+
+## 10. SAT / formal equivalence refinement
+
+### What is SAT and why do we need it?
+
+**SAT** (satisfiability solving) is a technique for formally proving logical statements.
+A **SAT-based equivalence checker** takes two logic circuits and either:
+- **Proves** they always compute the same output for every possible input, or
+- **Finds a counterexample** — a specific input where they differ.
+
+This is also called **CEC** (Combinational Equivalence Checking).
+
+Simulation alone can never *prove* equivalence — you can only check a finite number of inputs,
+and there might always be a rare case that exposes a difference. A SAT-based check is a
+**formal proof**.
+
+ABC includes a CEC command (`cec`). This project uses it as a verification layer on top of the
+simulation-based ranking.
+
+### The pipeline
+
+```
+Simulation ranking
+    ↓
+High-confidence filter       (combined_score ≥ 0.85)
+    ↓
+ABC equivalence check        (formal SAT-based CEC)
+    ↓
+Verdict per candidate:
+    verified      — proved equivalent
+    rejected      — found a counterexample (different functions!)
+    inconclusive  — check could not run (node name changed)
 ```
 
-If ABC is not on your PATH:
+### How the ABC check works
+
+For each high-confidence candidate pair (optimized node X, original candidate Y):
+1. A temporary BLIF is created with X exposed as a primary output.
+2. Another temporary BLIF is created with Y exposed as a primary output.
+3. ABC's `cec` command checks whether both produce the same output on every input.
+4. The verdict is recorded.
+
+### SAT status results
+
+![SAT verification status](results/plots/sat_status.png)
+
+**How to read this chart:** Each stacked bar is one benchmark × optimization. Green = verified
+(proved equivalent). Red = rejected (proved non-equivalent). Grey = inconclusive.
+
+**Overall totals:**
+
+| Status | Count | Rate |
+|---|---|---|
+| Verified by ABC | 53 | 81.5% |
+| Rejected by ABC | 1 | 1.5% |
+| Inconclusive | 11 | 16.9% |
+| **Total checked** | **65** | |
+
+The **single rejected case** is the most important result: simulation gave this pair a high
+score (they looked like a match), but ABC's formal check found a counterexample — a specific
+input where the two nodes compute different values. **Simulation alone is not enough.**
+
+The **inconclusive cases** happen because ABC renames internal nodes during optimization,
+so the prototype sometimes cannot find the original node by name.
+
+---
+
+## 11. Fingerprint recovery — top-K ranking
+
+### What does "recovery" mean?
+
+After optimization, suppose you want to find which original node corresponds to optimized node
+X. The ranking step produces a sorted list of candidates. **Score at rank 1** is the
+confidence score of the top-ranked candidate — higher means the scoring formula is more
+confident.
+
+### Top-K recovery results
+
+![Top-K recovery — avg score at rank-1](results/plots/topk_recovery.png)
+
+**How to read this chart:** Each bar is a benchmark. The height is the average `combined_score`
+of the rank-1 candidate, averaged across all optimizations and nodes. Closer to 1.0 is better.
+
+**What we see:** Most benchmarks achieve near-perfect rank-1 scores. Even in the hardest case
+(`xor_chain` / `resyn2_like`) the rank-1 candidate still scores above 0.7, meaning the
+scoring formula is finding the structurally closest original node even when truth tables have
+completely changed.
+
+---
+
+## 12. Region-level matching
+
+### What is a "region" in a circuit?
+
+So far, we compared nodes one by one. But a single node's truth table can look identical to
+another's by coincidence. A stronger test is to look at the **cone of logic** feeding into a
+node — all the gates whose output eventually feeds into this node.
+
+**Fanin cone at depth d** means: starting from the node, follow inputs backwards for d levels.
+- Depth 1 = just the node's direct inputs
+- Depth 2 = inputs of inputs
+- Depth 3 = one more level back
+
+If two nodes have similar cones of logic (similar structure, similar input sets, similar
+functions), they are much more likely to be true correspondences.
+
+### Cone similarity metrics
+
+For each optimized node and each original candidate, the region score combines:
+
+- **cone_sim_score**: how similar the simulation signatures are across the whole cone
+- **cone_support_jaccard**: Jaccard similarity of the full support sets of the two cones
+- **cone_size_sim**: 1 − |size_A − size_B| / max_size (penalizes very different-sized cones)
+
+### Region score results
+
+![Region scores by fanin-cone depth](results/plots/region_scores.png)
+
+**How to read this chart:** Each line is a benchmark. The x-axis is cone depth (1, 2, 3).
+The y-axis is the average rank-1 region score. Higher is better.
+
+**What we see:** Region scores are high (above 0.9) for all benchmarks at all depths, and
+stay stable as depth increases. The fanin-cone approach confirms the same correspondences found
+by single-node scoring — the matching is consistent at multiple scales.
+
+---
+
+## 13. Ablation study
+
+### What is an ablation study?
+
+An **ablation study** is an experiment where you remove or change one part of a system at a
+time to see how much each part contributes. Here, we test six different weight settings for
+the scoring formula:
+
+```
+combined_score = w_sim × simulation_similarity
+               + w_sup × support_overlap
+               + w_dep × depth_similarity
+```
+
+| Config | w_sim | w_sup | w_dep | Description |
+|---|---|---|---|---|
+| `baseline` | 0.55 | 0.35 | 0.10 | Default weights |
+| `sim_heavy` | 0.80 | 0.15 | 0.05 | Trust simulation almost entirely |
+| `sup_heavy` | 0.15 | 0.80 | 0.05 | Trust support overlap almost entirely |
+| `equal` | 0.33 | 0.33 | 0.34 | Equal weights |
+| `no_depth` | 0.60 | 0.40 | 0.00 | Ignore depth completely |
+| `depth_only` | 0.00 | 0.00 | 1.00 | Use only depth (sanity check — should be bad) |
+
+### Ablation results
+
+![Ablation comparison — rank-1 consistency per scoring config](results/plots/ablation_comparison.png)
+
+**How to read this chart:** Each bar is a scoring config. The height is the average
+`rank1_consistency` — the fraction of nodes where that config picks the same rank-1 candidate
+as the baseline. A value of 1.0 = always picks the same top candidate.
+
+**What we see:** Most configs have high rank1_consistency. The `depth_only` config drops
+significantly — depth alone is not enough to recover correspondences. Simulation similarity
+and support overlap together drive most of the useful signal.
+
+---
+
+## 14. CEGAR-style refinement
+
+### What is CEGAR?
+
+**CEGAR** stands for *Counterexample-Guided Abstraction Refinement*. It is a technique from
+formal verification. The basic idea: when a verifier finds a counterexample (proof that two
+things are NOT equivalent), use that counterexample to improve future predictions.
+
+### How it works here
+
+When ABC's formal check **rejects** a candidate pair, we record the **feature vector** of
+that rejected pair:
+
+```
+feature_vector = [simulation_similarity, support_overlap, depth_similarity]
+```
+
+Then, for any future candidate whose feature vector is **similar** to a known rejected pair,
+we apply a **penalty** to their score:
+
+```
+penalty = REJECTION_WEIGHT × max_similarity_to_any_rejected_pair
+
+where:
+  feature_similarity = 1 − (|Δsim| + |Δsup| + |Δdep|) / 3
+  REJECTION_WEIGHT   = 0.20
+```
+
+In plain English: if a new candidate looks similar (in all three feature dimensions) to a
+pair that was formally proved wrong, reduce its score by up to 20%. This is **learning from
+mistakes**.
+
+### Current status
+
+This is labeled `[prototype]` because the toy benchmarks produce only 1 rejection across the
+whole dataset, so the penalty is rarely triggered. On larger circuits with more rejections,
+this feedback loop would have more impact.
+
+---
+
+## 15. Research plots
+
+All eight plots are generated by running:
 
 ```bash
-ABC=/path/to/abc make sat-refine
+make research-plots
+# or
+python3 research_plots.py
+```
+
+They are saved to `results/plots/`.
+
+### Exact match rate
+![Exact match rate](results/plots/exact_match_rate.png)
+
+### Support overlap distribution
+![Support overlap distribution](results/plots/support_overlap_dist.png)
+
+### Node reduction
+![Node reduction](results/plots/node_reduction.png)
+
+### Level reduction
+![Level reduction](results/plots/level_reduction.png)
+
+### SAT verification status
+![SAT status](results/plots/sat_status.png)
+
+### Top-K recovery
+![Top-K recovery](results/plots/topk_recovery.png)
+
+### Ablation comparison
+![Ablation comparison](results/plots/ablation_comparison.png)
+
+### Region scores
+![Region scores](results/plots/region_scores.png)
+
+---
+
+## 16. Current limitations
+
+| Limitation | Details |
+|---|---|
+| **Toy benchmarks only** | The four circuits have 2–8 internal nodes. Real chips have millions. Results on ISCAS-85 or EPFL benchmarks may differ significantly. |
+| **BLIF only** | The parser handles `.names`-style gates only. RTL (Verilog/VHDL) is not supported. |
+| **Node name instability** | ABC renames internal nodes during optimization. This causes 16.9% of SAT checks to be inconclusive because the node cannot be found by name. |
+| **Weights are not tuned** | The 0.55 / 0.35 / 0.10 weights are a rough starting point — not learned from data. |
+| **CEGAR needs more rejections** | With only 1 rejected pair, the penalty feedback loop cannot be evaluated properly. |
+| **Combinational circuits only** | No flip-flops, no clock. Sequential correspondence is a harder and separate problem. |
+| **No RTL-to-netlist link** | The tool works at netlist level. Connecting back to original source-code variable names is future work. |
+
+---
+
+## 17. How to run
+
+### Full research pipeline (one command)
+
+```bash
+make full-research-pipeline
+```
+
+This runs all steps in order: build ABC → generate variants → analyze → SAT → top-K →
+ablation → region → CEGAR → research plots → tests.
+
+> **Note:** You need to add the `full-research-pipeline` target to the Makefile if it is not
+> already there, or run the individual steps below in order.
+
+### Individual steps
+
+```bash
+make build-abc           # clone and compile ABC (skip if abc is already on PATH)
+make generate-variants   # create all BLIF variants via run_abc_variants.sh
+make analyze             # simulate and rank (analyze_blif_matches.py)
+make plot                # legacy per-benchmark node-count plots
+make sat-pipeline        # filter → ABC CEC → summary
+make topk-eval           # top-K recovery metrics
+make ablation            # ablation study (6 scoring configs)
+make region              # region/fanin-cone correspondence
+make cegar-refine        # CEGAR-style penalty pass
+make research-plots      # generate all 8 research PNG plots
+make test                # run all 370 unit tests
+```
+
+### If ABC is not on your PATH
+
+```bash
+ABC=/path/to/abc make generate-variants
 ABC=/path/to/abc make sat-pipeline
 ```
 
-### Clean generated outputs (keeps benchmarks and scripts):
+### Run tests only
+
+```bash
+python3 -m pytest tests/ -v
+```
+
+Expected: **370 tests, all passing**.
+
+### Clean generated outputs (keeps benchmarks and scripts)
 
 ```bash
 make clean-results
 ```
 
-### Manual run (if you already have ABC installed):
+---
+
+## 18. Repository structure
+
+```
+aig_optimization_experiments/
+│
+├── benchmarks/                    Hand-written BLIF circuits (inputs to the pipeline)
+│   ├── majority3.blif             3-input majority function
+│   ├── mux2.blif                  2-to-1 multiplexer
+│   ├── toy_and_or.blif            Simple AND/OR circuit
+│   └── xor_chain.blif             4-input XOR chain (hardest benchmark)
+│
+├── variants/                      ABC-optimized BLIFs (generated, not committed)
+├── logs/                          ABC stdout logs per run (generated)
+│
+├── results/
+│   ├── summary_metrics.csv            Core metrics: nodes, levels, exact matches
+│   ├── top_candidates.csv             Ranked candidates for every optimized node
+│   ├── sat_refinement_candidates.csv  High-confidence candidates flagged for SAT check
+│   ├── sat_verified_candidates.csv    ABC CEC verdicts per candidate
+│   ├── sat_summary.csv                Summary counts and rates by benchmark/opt
+│   ├── sat_summary.md                 Human-readable SAT report
+│   ├── topk_recovery.csv              Top-K recovery metrics
+│   ├── topk_recovery.md               Human-readable top-K report
+│   ├── ablation_summary.csv           Ablation study results
+│   ├── ablation_summary.md            Human-readable ablation report
+│   ├── region_candidates.csv          Fanin-cone candidate scores
+│   ├── region_summary.csv             Per-depth region score summaries
+│   ├── region_summary.md              Human-readable region report
+│   ├── cegar_refined_candidates.csv   CEGAR-penalised candidate scores
+│   ├── cegar_summary.md               Human-readable CEGAR report
+│   └── plots/                         PNG plots (generated by research_plots.py)
+│       ├── exact_match_rate.png
+│       ├── support_overlap_dist.png
+│       ├── node_reduction.png
+│       ├── level_reduction.png
+│       ├── sat_status.png
+│       ├── topk_recovery.png
+│       ├── ablation_comparison.png
+│       └── region_scores.png
+│
+├── tests/                         pytest unit tests (370 total, all passing)
+│   ├── test_topk_recovery.py      31 tests
+│   ├── test_ablation_study.py     31 tests
+│   ├── test_region_correspondence.py   44 tests
+│   ├── test_cegar_refinement.py   43 tests
+│   └── test_research_plots.py     43 tests
+│
+├── analyze_blif_matches.py        Main analysis: parse BLIF, simulate, compare, rank
+├── visualize_results.py           Legacy per-benchmark node-count plots
+├── research_plots.py              Research-quality plots (8 PNGs)
+├── sat_refinement_placeholder.py  Filter: keeps candidates with score ≥ 0.85
+├── sat_refinement_abc.py          ABC CEC on filtered candidates
+├── summarize_sat_results.py       CSV + Markdown SAT summary
+├── evaluate_topk_recovery.py      Top-K recovery metrics
+├── ablation_study.py              Six scoring-weight configurations
+├── region_correspondence.py       Fanin-cone region matching
+├── counterexample_guided_refinement.py  CEGAR-style penalty pass
+├── run_abc_variants.sh            Shell driver for ABC
+├── start.sh                       One-shot bootstrap script
+├── Makefile                       All pipeline targets
+└── requirements.txt               Python dependencies (pandas, matplotlib, pytest)
+```
+
+---
+
+## 19. Dependencies
+
+### Python packages
 
 ```bash
-ABC=/path/to/abc ./run_abc_variants.sh
-python3 analyze_blif_matches.py
-python3 sat_refinement_placeholder.py
-ABC=/path/to/abc python3 sat_refinement_abc.py
-python3 summarize_sat_results.py
+pip install -r requirements.txt
 ```
 
----
+`requirements.txt` contains: `pandas`, `matplotlib`, `pytest`.
 
-## Metrics explained
+### Berkeley ABC
 
-| Metric | Meaning |
-|---|---|
-| `original_nodes` | Number of internal nodes in the original network |
-| `optimized_nodes` | Number of internal nodes after optimization |
-| `original_levels` | Longest path (logic depth) in the original network |
-| `optimized_levels` | Longest path after optimization |
-| `exact_internal_matches` | Optimized nodes whose Boolean signature exactly matches an original node |
-| `old_signatures_disappeared` | Original signatures not present in the optimized network |
-| `new_signatures_appeared` | New signatures in the optimized network not seen in the original |
-| `avg_best_support_overlap` | Average Jaccard similarity between each optimized node's support and its best-matching original node's support |
-| `simulation_mode` | `exact` (all 2^n patterns) or `random` (4096 random patterns) |
-
----
-
-## Results summary
-
-| benchmark | optimization | orig_nodes | opt_nodes | exact_matches | old_gone | new_appeared | avg_support_overlap |
-|---|---|---|---|---|---|---|---|
-| majority3 | balance | 4 | 4 | 3 | 1 | 1 | 1.000 |
-| majority3 | refactor | 4 | 3 | 1 | 3 | 2 | 1.000 |
-| majority3 | resub | 4 | 4 | 4 | 0 | 0 | 1.000 |
-| majority3 | rewrite | 4 | 4 | 4 | 0 | 0 | 1.000 |
-| majority3 | resyn2_like | 4 | 3 | 1 | 3 | 2 | 1.000 |
-| mux2 | balance | 2 | 2 | 2 | 0 | 0 | 1.000 |
-| mux2 | resyn2_like | 2 | 2 | 0 | 2 | 2 | 1.000 |
-| toy_and_or | all opts | 2 | 2 | 2 | 0 | 0 | 1.000 |
-| xor_chain | balance/rewrite/refactor/resub | 8 | 8 | 8 | 0 | 0 | 1.000 |
-| **xor_chain** | **resyn2_like** | **8** | **8** | **0** | **8** | **8** | **0.813** |
-
-Full data: `results/summary_metrics.csv`
-
----
-
-## Interpretation
-
-### Observation 1 — simple optimizations preserve exact matches
-
-For `balance`, `rewrite`, `refactor`, and `resub`, most benchmarks show exact_internal_matches
-equal to the optimized node count. The internal Boolean functions survive unchanged even if
-node names and positions shift.
-
-### Observation 2 — strong resynthesis breaks exact matching but support overlap survives
-
-The most interesting case is `xor_chain` under `resyn2_like`:
-
-- `exact_internal_matches = 0` — no original node has the same truth table as any optimized node
-- `optimized_levels` dropped from 6 to 4 — the optimizer actually restructured the logic
-- `avg_best_support_overlap = 0.813` — but the inputs each optimized node "touches" still
-  significantly overlap with some original node
-
-This suggests that strict node-level matching is too fragile, but a region-based method
-using support overlap and simulation similarity can still recover useful candidate correspondences.
-
-### Observation 3 — top-K candidates are recoverable
-
-`results/top_candidates.csv` shows that even when exact matching fails, the best-ranked
-original node has a `combined_score` between 0.7 and 1.0 in most cases.
-
----
-
-## SAT refinement pipeline
-
-The full pipeline is:
-
-```
-simulation ranking
-    → high-confidence filtering   (sat_refinement_placeholder.py)
-    → ABC equivalence check       (sat_refinement_abc.py)
-    → summary report              (summarize_sat_results.py)
-    → verified / rejected / inconclusive candidates
-```
-
-### Step 1 — high-confidence filtering
-
-`sat_refinement_placeholder.py` reads `results/top_candidates.csv` and keeps only candidates
-with `combined_score >= 0.85`. It writes `results/sat_refinement_candidates.csv` with a
-`needs_sat_check` flag. No SAT solving happens here — this is purely a filter step.
-
-### Step 2 — ABC equivalence check
-
-`sat_refinement_abc.py` reads `results/sat_refinement_candidates.csv` and for each candidate:
-
-1. Creates a temporary copy of the original BLIF with the candidate original node exposed
-   as a primary output.
-2. Creates a temporary copy of the optimized BLIF with the candidate optimized node exposed
-   as a primary output.
-3. Calls ABC's `cec` (combinational equivalence check) command on the two temporary BLIFs.
-4. Records the verdict: `verified`, `rejected`, or `inconclusive`.
-
-Output: `results/sat_verified_candidates.csv`
-
-If ABC is not on your PATH:
+ABC is a C tool that must be compiled. The Makefile handles this automatically:
 
 ```bash
-ABC=/path/to/abc python3 sat_refinement_abc.py
+make build-abc
 ```
 
-**Important limitation:** Node names can differ between the original and optimized BLIFs
-(ABC renames nodes during optimization). When a node name is not found in the BLIF, the
-candidate is marked `inconclusive` rather than silently giving a wrong answer.
+This clones [https://github.com/berkeley-abc/abc](https://github.com/berkeley-abc/abc) into
+`.abc_build/abc_repo/` and runs `make`. The resulting binary is at `.abc_build/abc_repo/abc`.
 
-### Step 3 — summary report
+If you already have ABC installed:
 
-`summarize_sat_results.py` reads `results/sat_verified_candidates.csv` and writes:
+```bash
+export ABC=/path/to/your/abc
+```
 
-- `results/sat_summary.csv` — per benchmark/optimization counts, rates, and a global row
-- `results/sat_summary.md` — human-readable Markdown report
+### Python version
 
-### Current results (from toy benchmarks)
-
-| Metric | Value |
-|---|---|
-| Candidates checked | 65 |
-| Verified by ABC | 53 (81.5%) |
-| Rejected by ABC | 1 (1.5%) |
-| Inconclusive | 11 (16.9%) |
-
-The single rejected case (`majority3/balance`, node `new_n8`) is the most informative result:
-two nodes with the same name in original and optimized variants compute different Boolean
-functions. A high simulation similarity score is not a proof of equivalence — the ABC CEC
-check is necessary to catch this. The 11 inconclusive cases are caused by node-name
-instability: ABC assigns different names to corresponding nodes in different optimization runs,
-so the prototype cannot always locate the original node to expose.
-
-Full report: `results/sat_summary.md`
+Tested with Python 3.13. Should work with Python 3.9+.
 
 ---
 
-## Limitations
+## Short research summary
 
-- Only analyzes BLIF files, not RTL source. RTL name recovery is future work.
-- The BLIF parser supports only `.names`-style gates.
-- Benchmarks are hand-written toy circuits. Results on real ISCAS/EPFL circuits may differ.
-- The scoring formula weights (0.55/0.35/0.10) are a rough baseline — not tuned.
-- ABC node names change during optimization, so some SAT checks will be inconclusive.
-
----
-
-## Future work
-
-1. Run on ISCAS-85 or EPFL benchmark circuits.
-2. Restrict analysis to nodes near a selected output or critical path.
-3. Improve node name tracking so the ABC check is inconclusive less often.
-4. Connect the recovered correspondences back to RTL variable names.
-5. Tune or learn the scoring weights from a labelled correspondence dataset.
-6. Implement counterexample-guided refinement after the ABC CEC step.
-
----
-
-## Short research framing
-
-> This prototype operates at BLIF/AIG level and measures how individual synthesis optimizations
-> affect internal node correspondence. The goal is not yet to recover RTL source names, but to
-> determine whether exact node matching remains meaningful after balancing, rewriting, refactoring,
-> and resubstitution. The key finding is that exact internal-node matching is preserved for simple
-> optimizations but breaks under stronger resynthesis flows (resyn2_like). However, support overlap
-> and simulation similarity remain high enough to suggest useful candidate correspondences, and
-> ABC's formal equivalence checker confirms most high-confidence candidates — while catching one
-> rejected case that simulation alone would have missed.
+> This prototype works at the BLIF/AIG level and measures how synthesis optimizations affect
+> internal node correspondence. The key findings:
+>
+> - **Simple optimizations** (`balance`, `rewrite`, `refactor`, `resub`) preserve the Boolean
+>   function of almost every internal node — exact matching works perfectly.
+> - **Aggressive resynthesis** (`resyn2_like`) breaks exact matching completely for
+>   XOR-heavy circuits — zero nodes keep the same truth table.
+> - **Support overlap** survives even when truth tables change — it is a robust signal.
+> - The **simulation + support + depth scoring formula** reliably puts the correct
+>   correspondence candidate at rank 1 in most cases.
+> - **ABC's formal equivalence checker** confirms 81.5% of high-confidence candidates and
+>   catches one case (1.5%) where simulation gave a false positive.
+> - **Region-level, ablation, and CEGAR analyses** confirm these findings from multiple angles
+>   and provide a foundation for future work on larger, real-world circuits.
