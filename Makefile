@@ -1,7 +1,7 @@
 ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 
-.PHONY: all build-abc generate-benchmarks generate-variants analyze plot test sat-refine sat-summary sat-pipeline topk-eval ablation start clean clean-results
+.PHONY: all build-abc generate-benchmarks generate-variants analyze plot test sat-refine sat-summary sat-pipeline topk-eval ablation region start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -58,6 +58,10 @@ topk-eval:
 ablation:
 	@echo "Running ablation study over scoring configs (CSV + Markdown → results/ablation_summary.*)"
 	@python3 ablation_study.py
+
+region:
+	@echo "Running region correspondence baseline (CSV + Markdown → results/region_*)"
+	@python3 region_correspondence.py
 
 clean:
 	@echo "Cleaning ABC build (does NOT remove variants/logs/results)"
