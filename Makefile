@@ -20,10 +20,10 @@ generate-benchmarks:
 	@echo "Generating synthetic benchmarks → benchmarks/generated/"
 	@python3 scripts/generate_synthetic_benchmarks.py
 
-# List/import real benchmarks; convert Verilog if Yosys is available
+# Convert Verilog sources to BLIF (requires Yosys); gracefully skips if Yosys is absent
 real-benchmarks:
-	@echo "Importing real benchmarks (benchmarks/real/)"
-	@python3 scripts/import_real_benchmarks.py
+	@echo "Converting Verilog examples → BLIF (benchmarks/real/verilog_examples/)"
+	@python3 scripts/import_real_benchmarks.py --verilog benchmarks/real/verilog_examples/
 
 # Both synthetic and real benchmarks in one shot
 generate-all-benchmarks: generate-benchmarks real-benchmarks

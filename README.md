@@ -658,7 +658,7 @@ make ablation            # ablation study (6 scoring configs)
 make region              # region/fanin-cone correspondence
 make cegar-refine        # CEGAR-style penalty pass
 make research-plots      # generate all 8 research PNG plots
-make real-benchmarks     # convert verilog_examples/ to BLIF via Yosys (requires Yosys)
+make real-benchmarks     # convert verilog_examples/ → BLIF via Yosys (prints warning if Yosys absent)
 make generate-all-benchmarks  # synthetic + real benchmarks
 make test                # run all 414 unit tests
 ```
