@@ -817,6 +817,101 @@ aig_optimization_experiments/
 
 ---
 
+## 20. ABC-native SAT sweeping / hybrid validation
+
+### Motivation
+
+During a mentor review, the following feedback was given:
+
+> *"Another thing to look into is directly using the SAT sweeping tool inside ABC in order
+> to identify exact matches and to get already simulations that have been used by this tool.
+> [...] it would make sense to re-use already what is present in ABC."*
+
+The existing `sat_refinement_abc.py` script calls ABC's **combinational equivalence
+checking (CEC)** command once per candidate pair — meaning one ABC subprocess per row in
+`sat_refinement_candidates.csv`.  This is correct but inefficient: for a benchmark with
+100 candidate pairs, ABC is launched 100 times.
+
+### The `dump_equiv` approach
+
+ABC's internal `dump_equiv` command does something more powerful: given two BLIF files, it
+builds a combined miter AIG, runs **FRAIG** (simulation + SAT sweeping) on the merged
+network, and writes out the resulting cross-network equivalence classes in one pass.
+
+```
+dump_equiv orig.blif opt.blif out.txt
+```
+
+Output format (one entry per line):
+```
+<class_id>:<model_name>:<node_name>
+<class_id>:<model_name>:NOT:<node_name>   ← complement equivalence
+```
+
+Nodes in the same class are SAT-proven equivalent (or complement-equivalent).  The parser
+in `scripts/abc_sat_sweep_validation.py` cross-references node name sets from each BLIF to
+attribute every entry to either the original or optimised network, producing structured
+`EquivPair` objects with a `confidence = "sat_proven"` tag.
+
+### Efficiency comparison
+
+| Approach | ABC calls per (bench, opt) pair | Provability | Simulation quality |
+|---|---|---|---|
+| `sat_refinement_abc.py` per-node CEC | One per candidate row | SAT (exact) | External Python |
+| `hybrid_validation.py` dump_equiv | **One for the whole network pair** | SAT (exact) | ABC-internal FRAIG sims |
+
+### How to run
+
+```bash
+# Quick way (uses the Makefile-built ABC)
+make hybrid-validate
+
+# Direct invocation
+export ABC=.abc_build/abc_repo/abc
+python3 hybrid_validation.py --top-k-validate 20 --min-score 0.70
+```
+
+Optional flags:
+
+| Flag | Default | Description |
+|---|---|---|
+| `--abc-path PATH` | `$ABC` env var | Explicit ABC binary path |
+| `--candidates PATH` | `results/sat_refinement_candidates.csv` | Input candidates CSV |
+| `--top-k-validate N` | 20 | Validate top-N candidates per (bench, opt) group |
+| `--min-score F` | 0.70 | Skip rows with combined score below this threshold |
+| `--output-dir DIR` | `results/hybrid/` | Where to write output files |
+
+### Output files
+
+| File | Description |
+|---|---|
+| `results/hybrid/hybrid_validated_candidates.csv` | Full annotated candidate table |
+| `results/hybrid/hybrid_validation_summary.md` | Human-readable summary with counts table |
+| `results/hybrid/abc_sweep/<bench>/<opt>/dump_equiv.txt` | Raw ABC equivalence file |
+| `results/hybrid/abc_sweep/<bench>/<opt>/dump_equiv.log` | ABC stdout/stderr |
+| `results/hybrid/abc_sweep/<bench>/<opt>/fraig_stats.json` | Before/after FRAIG node counts |
+
+New columns added to the candidate table:
+
+| Column | Values | Meaning |
+|---|---|---|
+| `abc_validated` | `True / False` | Node pair appears in a SAT-proven equiv class |
+| `abc_complement` | `True / False` | Equivalence is complement (XOR = 1) |
+| `abc_result` | `sat_proven_equivalent`, `sat_proven_complement`, `not_in_equiv_class`, `blif_not_found`, `abc_error` | Detailed outcome |
+| `abc_log_file` | path string | Path to the ABC log for this (bench, opt) run |
+
+### Implementation notes
+
+- Core module: `scripts/abc_sat_sweep_validation.py` — can be imported independently
+- Top-level CLI: `hybrid_validation.py`
+- Design notes: `docs/abc_sat_sweeping_extension.md`
+- `fraig_sweep` is not available in this ABC build; `fraig` (via `strash; fraig;
+  print_stats`) is used instead for the single-network statistics
+- If the ABC binary is missing, all `abc_*` columns are filled with safe defaults and a
+  warning is printed; the Python ranking results are still written out
+
+---
+
 ## 19. Dependencies
 
 ### Python packages

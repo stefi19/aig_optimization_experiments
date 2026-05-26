@@ -1,7 +1,7 @@
 ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 
-.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze plot test sat-refine sat-summary sat-pipeline topk-eval ablation region cegar-refine research-plots full-research-pipeline start clean clean-results
+.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze plot test sat-refine sat-summary sat-pipeline topk-eval ablation region cegar-refine hybrid-validate research-plots full-research-pipeline start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -74,6 +74,10 @@ region:
 cegar-refine:
 	@echo "Running CEGAR-style candidate refinement [prototype] (CSV + Markdown → results/cegar_*)"
 	@python3 counterexample_guided_refinement.py
+
+hybrid-validate:
+	@echo "Running hybrid ABC SAT sweep validation (Python ranking + ABC dump_equiv/FRAIG)"
+	@ABC=$(PWD)/$(ABC_BIN) python3 hybrid_validation.py --top-k-validate 20
 
 research-plots:
 	@echo "Generating research plots → results/plots/"
