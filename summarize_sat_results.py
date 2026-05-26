@@ -107,7 +107,14 @@ def _summarise_group(bench: str, opt: str, group: pd.DataFrame) -> dict:
 
 
 def add_global_row(summary: pd.DataFrame, df: pd.DataFrame) -> pd.DataFrame:
-    """Append an ALL/ALL totals row at the bottom."""
+    """
+    Append an ALL/ALL totals row at the bottom of the summary table.
+
+    This gives a quick single-line view of the overall pipeline outcome without
+    having to sum columns mentally.  The rates in this row are computed over the
+    full dataset, not as an average of group rates, so they correctly reflect the
+    actual pass/fail numbers.
+    """
     global_row = _summarise_group("ALL", "ALL", df)
     global_df = pd.DataFrame([global_row])
     if summary.empty:

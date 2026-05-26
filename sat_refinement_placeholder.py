@@ -24,6 +24,9 @@ INPUT_CSV = os.path.join("results", "top_candidates.csv")
 OUTPUT_CSV = os.path.join("results", "sat_refinement_candidates.csv")
 
 # Candidates with combined_score >= this threshold are flagged for SAT verification.
+# 0.85 was chosen so that only the very strong simulation+support matches are forwarded;
+# weaker candidates have too high a chance of being false positives to be worth the
+# ABC CEC runtime cost.
 SAT_SCORE_THRESHOLD = 0.85
 
 # Only keep the top-ranked candidate per optimized node (rank == 1).

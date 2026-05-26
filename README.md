@@ -4,6 +4,34 @@
 
 ---
 
+## Quick start
+
+Run the entire pipeline with one command:
+
+```bash
+bash ./start.sh
+```
+
+`start.sh` will:
+1. Check Python 3 and install any missing packages (`pandas`, `matplotlib`, `pytest`).
+2. Locate the ABC binary — checks `$ABC`, then PATH, then `.abc_build/`, then builds ABC from source if needed.
+3. Run all pipeline steps in order and print a summary of output files at the end.
+
+Alternatively, use Make:
+
+```bash
+make build-abc       # build ABC locally (skip if abc is already on PATH)
+make generate-variants
+make analyze
+make plot
+make sat-pipeline
+make test
+```
+
+Or run the full chain with `make start`.
+
+---
+
 ## Motivation
 
 When a synthesis tool (like Berkeley ABC) optimizes a circuit, the internal logic nodes change.

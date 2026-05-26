@@ -1,7 +1,7 @@
 ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 
-.PHONY: all build-abc generate-variants analyze plot test sat-refine sat-summary sat-pipeline clean clean-results
+.PHONY: all build-abc generate-variants analyze plot test sat-refine sat-summary sat-pipeline start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -55,3 +55,8 @@ clean-results:
 	@rm -rf results/summary_metrics.csv results/top_candidates.csv \
 		results/sat_refinement_candidates.csv results/plots \
 		variants/ logs/
+
+# One-command bootstrap: checks prerequisites, then runs the full pipeline.
+# Equivalent to running start.sh but usable as a make target.
+start:
+	@bash ./start.sh

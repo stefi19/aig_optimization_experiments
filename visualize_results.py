@@ -18,8 +18,15 @@ def ensure_dir(path):
 
 
 def plot_node_counts(summary_df, out_dir):
+    """
+    Grouped bar chart: original nodes, optimized nodes, and exact internal matches.
+
+    One PNG per benchmark so the axes stay readable even when node counts differ
+    a lot between circuits.  The "exact_internal_matches" bar shows how many
+    optimized nodes could be paired with an original node that produces an
+        identical Boolean signature — a direct measure of structural preservation.
+    """
     ensure_dir(out_dir)
-    # Pivot so we can group by benchmark
     benchmarks = sorted(summary_df['benchmark'].unique())
     optim_order = ['original','balance','rewrite','refactor','resub','resyn2_like']
 
@@ -48,6 +55,14 @@ def plot_node_counts(summary_df, out_dir):
 
 
 def plot_support_overlap(summary_df, out_dir):
+    """
+    Line chart: avg_best_support_overlap across optimizations, one line per benchmark.
+
+    Support overlap (Jaccard between input cones) stays meaningful even when
+    simulation signatures diverge after aggressive rewriting.  A line that stays
+    close to 1.0 means the optimization rearranged gates but left the dependency
+    structure largely intact — those circuits are the best candidates for SAT.
+    """
     ensure_dir(out_dir)
     benchmarks = sorted(summary_df['benchmark'].unique())
     optim_order = ['original','balance','rewrite','refactor','resub','resyn2_like']

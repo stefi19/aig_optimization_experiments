@@ -26,6 +26,10 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+.*.swp
+*~
+venv/
+*.tmp
 
 # Generated outputs that can be reproduced
 # (keep results/ committed so the repo is self-contained for review)

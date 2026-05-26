@@ -26,6 +26,10 @@ for bench in benchmarks/*.blif; do
     for opt in original balance rewrite refactor resub resyn2_like; do
         case "$opt" in
             original)
+                # strash converts the BLIF to an AIG (and-inverter graph) and collapses
+                # any trivial redundancy.  Running it even for "original" normalizes the
+                # format so that parse_blif sees a consistent node representation across
+                # all variants.
                 cmd="strash"
                 ;;
             balance)
@@ -41,6 +45,9 @@ for bench in benchmarks/*.blif; do
                 cmd="strash; resub"
                 ;;
             resyn2_like)
+                # resyn2 is a named ABC script, but its exact contents can vary across
+                # builds depending on whether abc.rc was loaded.  Spelling out the
+                # commands explicitly guarantees the same sequence on every machine.
                 cmd="strash; balance; rewrite; refactor; balance; rewrite -z; refactor -z; balance"
                 ;;
             *)

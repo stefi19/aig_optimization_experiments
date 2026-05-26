@@ -255,8 +255,10 @@ def analyze_network(path):
         support[node.output] = frozenset(node_support)
         level[node.output] = node_level
 
-        # For this experiment I focus on internal nodes.
-        # Primary outputs are useful endpoints, but they are usually preserved by construction.
+        # Focus on internal nodes only.
+        # Primary outputs are preserved by construction in most ABC optimizations,
+        # so comparing them would inflate the match rate without testing anything useful.
+        # The interesting question is whether the intermediate logic is recoverable.
         if node.output not in net.outputs:
             internal_signatures[node.output] = values[node.output]
 
@@ -317,17 +319,30 @@ def depth_similarity(depth_a, depth_b):
 
 def combined_candidate_score(sim_score, support_score, depth_score):
     """
-    First simple scoring formula.
+    Weighted combination of simulation similarity, support overlap, and depth proximity.
 
-    This is not meant to be the final research contribution.
-    It is just a transparent baseline for Experiment 2.
+    Weights chosen empirically for Experiment 2:
+      0.55 simulation  — direct Boolean agreement is the strongest signal
+      0.35 support     — shared input cone is the best structural backup when
+                         simulation is inconclusive (e.g. under random patterns)
+      0.10 depth       — depth alone is a weak signal but breaks ties naturally
+
+    This is intentionally a simple, transparent baseline, not the final result.
     """
 
     return 0.55 * sim_score + 0.35 * support_score + 0.10 * depth_score
 
 
 def compare_networks(original, optimized):
-    """Compute summary metrics for original vs optimized network."""
+    """
+    Compute summary metrics for original vs optimized network.
+
+    The support-overlap average is the main number to watch: if optimization
+    restructures logic but preserves the same cone of inputs, the Jaccard
+    scores will stay high even when bit signatures diverge.  A low support
+    overlap means the optimization genuinely changed which inputs a node depends
+    on — that is a harder correspondence to recover later with SAT.
+    """
 
     original_sigs = original["signatures"]
     optimized_sigs = optimized["signatures"]
@@ -382,8 +397,9 @@ def rank_candidates(original, optimized, benchmark, optimization):
     """
     For every optimized internal node, rank original internal nodes as possible matches.
 
-    This gives the first version of the top-k recovery experiment.
-    Later, SAT can be added after this step only for the strongest candidates.
+    Only the top-TOP_K candidates per optimized node are kept.  The downstream
+    sat_refinement_placeholder.py then narrows this further to rank-1 entries
+    above the SAT threshold — those are the pairs that get submitted to ABC CEC.
     """
 
     rows = []

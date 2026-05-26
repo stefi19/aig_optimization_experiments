@@ -1,0 +1,292 @@
+source -s abc.rc
+read_blif /tmp/t.blif; quit
+read_blif /tmp/cec_test_a.blif; cec /tmp/cec_test_b.blif
+read_blif /tmp/cec_test_a.blif
+cec /tmp/cec_test_b.blif
+cec /tmp/cec_test_c.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpb5t4tqq8/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpb5t4tqq8/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp1tyov45t/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp1tyov45t/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpo0q__eqs/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpo0q__eqs/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpwoeop6np/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpwoeop6np/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpbiku73rq/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpbiku73rq/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp5kd3wd24/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp5kd3wd24/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpm7ftwudx/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpm7ftwudx/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpucfun_xq/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpucfun_xq/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp074a26ht/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp074a26ht/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpbdx9g6da/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpbdx9g6da/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp7qmpi_5g/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp7qmpi_5g/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpzlwfpqrh/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpzlwfpqrh/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpux62u6ne/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpux62u6ne/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp3oow5gun/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp3oow5gun/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpxavpgmh8/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpxavpgmh8/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp60wv936r/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp60wv936r/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp96fnqnza/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp96fnqnza/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpggic872h/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpggic872h/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp1k_2xfr1/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp1k_2xfr1/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp27s47sy1/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp27s47sy1/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp013sy9qf/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp013sy9qf/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmppalsy3gu/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmppalsy3gu/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp1z1ytr_o/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp1z1ytr_o/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpktsv67_4/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpktsv67_4/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpycg5y7io/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpycg5y7io/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpglebb4nk/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpglebb4nk/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpyqfkn__r/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpyqfkn__r/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp950p4fxv/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp950p4fxv/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpud78johl/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpud78johl/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpzjt_anor/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpzjt_anor/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp3ha_n7zz/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp3ha_n7zz/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpr1vbjsyo/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpr1vbjsyo/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp1evtbf2t/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp1evtbf2t/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpn22li5wq/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpn22li5wq/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpmiwhqmep/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpmiwhqmep/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpb3kgqz06/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpb3kgqz06/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp54ctzuk4/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp54ctzuk4/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp1maw9mhp/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp1maw9mhp/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmptwghxvdf/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmptwghxvdf/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpruv8r07q/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpruv8r07q/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp8cnxox8k/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp8cnxox8k/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmputkc01tf/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmputkc01tf/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpnh1ej0bh/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpnh1ej0bh/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpsjk4p3j2/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpsjk4p3j2/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpshuha1cb/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpshuha1cb/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpg5vwj6me/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpg5vwj6me/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpn6tkqu5d/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpn6tkqu5d/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpkvbdg_z4/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpkvbdg_z4/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpashq2_n8/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpashq2_n8/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpa7r1kr6o/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpa7r1kr6o/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpw9qmrj3_/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpw9qmrj3_/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpxpdc5fou/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpxpdc5fou/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpzh6kzrek/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpzh6kzrek/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpkn4nkq8l/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpkn4nkq8l/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpphxksz0k/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpphxksz0k/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp4lb3rcon/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp4lb3rcon/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmppqucc7vb/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmppqucc7vb/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp36nqkbts/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp36nqkbts/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpj_bev8sx/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpj_bev8sx/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpo8t33kh8/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpo8t33kh8/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpt4qqqfgh/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpt4qqqfgh/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp27xgorwa/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp27xgorwa/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp0wa6859i/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp0wa6859i/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp3uw3he_3/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp3uw3he_3/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpv46jq_pd/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpv46jq_pd/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpu9377ebt/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpu9377ebt/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpdsuo_lt9/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpdsuo_lt9/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmprzux0a43/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmprzux0a43/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmponqqq9z0/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmponqqq9z0/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp705oun_z/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp705oun_z/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp3g5gmphe/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp3g5gmphe/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpwtw9czzo/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpwtw9czzo/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpfycy0lc_/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpfycy0lc_/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp_3w1wf0n/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp_3w1wf0n/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpx6_2hl4c/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpx6_2hl4c/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpwfdgy_fe/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpwfdgy_fe/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpchzpkqdx/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpchzpkqdx/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpflipevef/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpflipevef/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpgdv52evy/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpgdv52evy/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmplz79087u/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmplz79087u/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp5ge7wtie/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp5ge7wtie/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpnuz4eo5c/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpnuz4eo5c/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmprhf78hlq/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmprhf78hlq/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp_voy80gq/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp_voy80gq/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp0diud091/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp0diud091/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpjqvi_vof/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpjqvi_vof/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpmsu__ef6/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpmsu__ef6/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpkkf7td_n/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpkkf7td_n/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp5o9khz7t/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp5o9khz7t/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpgfkn9kdz/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpgfkn9kdz/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpbz2_cp27/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpbz2_cp27/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpgxrcs___/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpgxrcs___/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpf1l7cl63/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpf1l7cl63/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmprl5nx8zj/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmprl5nx8zj/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp_c5k4cr6/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp_c5k4cr6/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpw_dzkssh/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpw_dzkssh/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp7tb97dp3/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp7tb97dp3/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpabl_m5jw/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpabl_m5jw/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpufdthuoi/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpufdthuoi/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpvpxrdjtk/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpvpxrdjtk/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp25y2gvrh/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp25y2gvrh/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpdwk96i7j/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpdwk96i7j/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpr3wuk7sb/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpr3wuk7sb/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp1xlf0oyw/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp1xlf0oyw/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpnfjep3u3/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpnfjep3u3/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpvyawowa0/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpvyawowa0/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp3sl6uuo0/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp3sl6uuo0/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpik5a9odj/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpik5a9odj/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpbs_beuxg/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpbs_beuxg/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmptxle11u1/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmptxle11u1/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp7tkc4vaz/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp7tkc4vaz/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpjvo_a2wo/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpjvo_a2wo/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpb_o5ifrr/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpb_o5ifrr/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp5ndz82l2/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp5ndz82l2/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmplbhkeekv/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmplbhkeekv/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp54wfmg43/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp54wfmg43/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp7k6p2q1m/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp7k6p2q1m/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpz8czc10n/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpz8czc10n/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpfxk7z28v/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpfxk7z28v/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp2bih2rzt/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp2bih2rzt/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpvxbt8bfh/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpvxbt8bfh/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpenbmbpli/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpenbmbpli/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpa832uu3d/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpa832uu3d/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpgwttoua9/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpgwttoua9/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpx0xuy6fy/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpx0xuy6fy/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp5cdf90st/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp5cdf90st/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpy3rltmdk/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpy3rltmdk/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpi9qn1ytq/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpi9qn1ytq/opt_exposed.blif
+source -s abc.rc
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpy9b9it19/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmpy9b9it19/opt_exposed.blif
+read_blif /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp27zj0dbz/orig_exposed.blif
+cec /var/folders/1l/6hh06gw95290gph8q5xgtfkh0000gn/T/tmp27zj0dbz/opt_exposed.blif
