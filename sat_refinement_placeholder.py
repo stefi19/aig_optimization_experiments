@@ -72,9 +72,10 @@ def annotate(df: pd.DataFrame) -> pd.DataFrame:
         lambda s: f"high simulation+support score ({s:.3f}) — exact equivalence unverified"
     )
 
-    # Placeholder: a real implementation would populate these columns with
-    # the BLIF file paths and node names needed to construct the SAT instance.
-    df["orig_blif"] = "benchmarks/" + df["benchmark"] + ".blif"
+    # The analysis script (analyze_blif_matches.py) compares
+    # variants/<bench>_original.blif  vs  variants/<bench>_<opt>.blif
+    # so the BLIF paths for the SAT check must point to those same files.
+    df["orig_blif"] = "variants/" + df["benchmark"] + "_original.blif"
     df["opt_blif"] = (
         "variants/" + df["benchmark"] + "_" + df["optimization"] + ".blif"
     )

@@ -1,7 +1,7 @@
 ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 
-.PHONY: all build-abc generate-variants analyze plot test clean clean-results
+.PHONY: all build-abc generate-variants analyze plot test sat-refine clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -31,6 +31,10 @@ plot:
 test:
 	@echo "Running unit tests"
 	@python3 -m pytest tests/ -v
+
+sat-refine:
+	@echo "Running ABC equivalence check on high-confidence candidates"
+	@python3 sat_refinement_abc.py
 
 clean:
 	@echo "Cleaning ABC build (does NOT remove variants/logs/results)"
