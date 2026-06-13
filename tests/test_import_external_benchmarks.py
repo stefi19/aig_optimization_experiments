@@ -97,17 +97,20 @@ class TestImportFamily:
             "z/late.blif",
         ]
 
-    def test_discovers_aiger_and_systemverilog_extensions(self, tmp_path):
+    def test_discovers_bench_aiger_and_systemverilog_extensions(self, tmp_path):
         ieb = _import_mod()
         in_dir = tmp_path / "suite"
         nested = in_dir / "nested"
         nested.mkdir(parents=True)
+        (nested / "c17.bench").write_text("OUTPUT(y)\ny = AND(a, b)\n")
         (nested / "adder.aiger").write_text("aiger placeholder")
         (nested / "control.sv").write_text("module control; endmodule")
 
+        benches = ieb._discover_files(in_dir, ieb.BENCH_EXTENSIONS)
         aigers = ieb._discover_files(in_dir, ieb.AIGER_EXTENSIONS)
         hdls = ieb._discover_files(in_dir, ieb.VERILOG_EXTENSIONS)
 
+        assert [p.name for p in benches] == ["c17.bench"]
         assert [p.name for p in aigers] == ["adder.aiger"]
         assert [p.name for p in hdls] == ["control.sv"]
 

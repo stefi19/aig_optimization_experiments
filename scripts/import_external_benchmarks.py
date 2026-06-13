@@ -9,8 +9,9 @@ Design constraints (research iteration 2)
 =========================================
 * NEVER downloads anything. You point it at files you already have locally.
 * No hardcoded absolute paths — you pass --input-dir explicitly.
-* Accepts BLIF directly, and converts AIGER (.aig/.aag/.aiger), Verilog (.v)
-  and SystemVerilog (.sv) using documented ABC / Yosys commands (see below).
+* Accepts BLIF directly, and converts BENCH (.bench), AIGER (.aig/.aag/.aiger),
+  Verilog (.v) and SystemVerilog (.sv) using documented ABC / Yosys commands
+  (see below).
 * Scans --input-dir recursively, so it can point at a suite root containing
   nested category folders.
 * Files are validated (BLIF) and copied/converted into the documented folder
@@ -18,6 +19,9 @@ Design constraints (research iteration 2)
 
 Conversion commands used
 ========================
+BENCH  → BLIF   (requires ABC on PATH, or $ABC):
+    abc -c "read_bench <in>.bench; strash; write_blif <out>.blif"
+
 AIGER  → BLIF   (requires ABC on PATH, or $ABC):
     abc -c "read_aiger <in>.aig; strash; write_blif <out>.blif"
 
@@ -36,6 +40,10 @@ Usage
     # Import + convert AIGER files (e.g. the EPFL suite) via ABC:
     python3 scripts/import_external_benchmarks.py \\
         --family epfl --input-dir /path/to/epfl/ --convert-aiger
+
+    # Import + convert ISCAS .bench files via ABC:
+    python3 scripts/import_external_benchmarks.py \\
+        --family iscas85 --input-dir /path/to/iscas85/ --convert-bench
 
     # Convert Verilog via Yosys:
     python3 scripts/import_external_benchmarks.py \\
@@ -62,6 +70,7 @@ SUPPORTED_FAMILIES = ("iscas85", "epfl")
 REQUIRED_BLIF_KEYWORDS = {".model", ".inputs", ".outputs", ".end"}
 
 BLIF_EXTENSIONS = {".blif"}
+BENCH_EXTENSIONS = {".bench"}
 AIGER_EXTENSIONS = {".aig", ".aag", ".aiger"}
 VERILOG_EXTENSIONS = {".v", ".sv"}
 
@@ -110,6 +119,23 @@ def _discover_files(input_dir: Path, extensions: set[str]) -> list[Path]:
 
 # ── converters ────────────────────────────────────────────────────────────────
 
+def convert_bench(src: Path, dst: Path) -> bool:
+    """BENCH → BLIF via ABC. Returns True on success."""
+    abc = _abc_bin()
+    if not _tool_available([abc, "-h"]):
+        print(
+            f"  ⚠  ABC not found (tried '{abc}'). Set $ABC or build via 'make build-abc'.\n"
+            f"     Manual command: {abc} -c \"read_bench {src}; strash; write_blif {dst}\""
+        )
+        return False
+    cmd = [abc, "-c", f"read_bench {src}; strash; write_blif {dst}"]
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    if result.returncode != 0:
+        print(f"    ✗  {src.name} (ABC BENCH conversion failed):\n{result.stderr[:300]}")
+        return False
+    return True
+
+
 def convert_aiger(src: Path, dst: Path) -> bool:
     """AIGER → BLIF via ABC. Returns True on success."""
     abc = _abc_bin()
@@ -148,7 +174,7 @@ def convert_verilog(src: Path, dst: Path) -> bool:
 # ── import ────────────────────────────────────────────────────────────────────
 
 def import_family(family: str, input_dir: Path, convert_aiger_flag: bool,
-                  convert_verilog_flag: bool) -> int:
+                  convert_verilog_flag: bool, convert_bench_flag: bool = False) -> int:
     """Import all matching files from *input_dir* into benchmarks/external/<family>/.
 
     Returns the number of files successfully placed.
@@ -157,15 +183,17 @@ def import_family(family: str, input_dir: Path, convert_aiger_flag: bool,
     out_dir.mkdir(parents=True, exist_ok=True)
 
     blifs = _discover_files(input_dir, BLIF_EXTENSIONS)
+    benches = _discover_files(input_dir, BENCH_EXTENSIONS) if convert_bench_flag else []
     aigs = _discover_files(input_dir, AIGER_EXTENSIONS) if convert_aiger_flag else []
     verilogs = (
         _discover_files(input_dir, VERILOG_EXTENSIONS) if convert_verilog_flag else []
     )
 
-    if not (blifs or aigs or verilogs):
+    if not (blifs or benches or aigs or verilogs):
         print(f"  No importable files found in {input_dir}")
-        print("  Expected recursive .blif files (always) plus .aig/.aag/.aiger "
-              "(--convert-aiger) or .v/.sv (--convert-verilog).")
+        print("  Expected recursive .blif files (always) plus .bench "
+              "(--convert-bench), .aig/.aag/.aiger (--convert-aiger), "
+              "or .v/.sv (--convert-verilog).")
         return 0
 
     placed = 0
@@ -179,6 +207,12 @@ def import_family(family: str, input_dir: Path, convert_aiger_flag: bool,
         rel = bf.relative_to(input_dir).as_posix()
         print(f"  ✓  {rel} → benchmarks/external/{family}/{bf.name}")
         placed += 1
+
+    for bench in benches:
+        dst = out_dir / f"{bench.stem}.blif"
+        if convert_bench(bench, dst) and not validate_blif(dst):
+            print(f"  ✓  {bench.name} → benchmarks/external/{family}/{dst.name} (BENCH→BLIF)")
+            placed += 1
 
     for af in aigs:
         dst = out_dir / f"{af.stem}.blif"
@@ -222,6 +256,8 @@ def main() -> None:
                         help="Local root directory; files are discovered recursively.")
     parser.add_argument("--convert-aiger", action="store_true",
                         help="Also convert .aig/.aag/.aiger files via ABC.")
+    parser.add_argument("--convert-bench", action="store_true",
+                        help="Also convert .bench files via ABC.")
     parser.add_argument("--convert-verilog", action="store_true",
                         help="Also convert .v/.sv files via Yosys.")
     parser.add_argument("--list", action="store_true",
@@ -243,7 +279,9 @@ def main() -> None:
         sys.exit(1)
 
     print(f"\nImporting {args.family} benchmarks from {in_dir} ...")
-    placed = import_family(args.family, in_dir, args.convert_aiger, args.convert_verilog)
+    placed = import_family(
+        args.family, in_dir, args.convert_aiger, args.convert_verilog, args.convert_bench
+    )
     print(f"\nPlaced {placed} file(s) under benchmarks/external/{args.family}/.")
     if placed:
         print("\nNext steps:")

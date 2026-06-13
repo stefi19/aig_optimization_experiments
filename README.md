@@ -1229,6 +1229,57 @@ toy/generated baselines:
 - The `sat_validation_by_family` bars show whether the non-exact null result
   (structurally similar ≠ functionally equivalent) holds on realistic circuits.
 
+### ISCAS-85 Results
+
+**Current status:** no real ISCAS-85 benchmark files are present in this
+checkout. The local folders were checked and `benchmarks/external/iscas85/`
+currently contains only its README placeholder, so this repository does **not**
+claim ISCAS-85 preservation, SAT, or optimization results yet.
+
+When ISCAS-85 files are available, place or import the small circuits first:
+
+```
+c17  c432  c499  c880  c1355  c1908
+```
+
+Supported source formats and workflows:
+
+```bash
+# Already-converted BLIF files: copied recursively into the ISCAS folder
+make import-external FAMILY=iscas85 INPUT_DIR=/path/to/iscas85_blif_root
+
+# Original ISCAS .bench files: converted through ABC read_bench → BLIF
+make import-external FAMILY=iscas85 INPUT_DIR=/path/to/iscas85_bench_root \
+    ARGS=--convert-bench
+
+# Verilog/SystemVerilog files: converted through Yosys
+make import-external FAMILY=iscas85 INPUT_DIR=/path/to/iscas85_hdl_root \
+    ARGS=--convert-verilog
+
+# AIGER files: converted through ABC read_aiger → BLIF
+make import-external FAMILY=iscas85 INPUT_DIR=/path/to/iscas85_aiger_root \
+    ARGS=--convert-aiger
+```
+
+After import, run:
+
+```bash
+make benchmark-manifest
+make list-external
+make generate-variants
+make analyze
+make sat-pipeline
+make research-plots
+make check-results
+```
+
+The ISCAS rows will be tagged as `source_family = iscas85`, so they stay
+separate from `toy`, `generated`, and `custom` results in the CSVs and
+family-separated plots. The key questions to answer after real files are added
+are whether mild passes still preserve most internal signatures, whether
+aggressive passes still destroy correspondences, and whether SAT validation
+continues to reject high-score non-exact candidates.
+
 > **Status:** as committed, `benchmarks/external/iscas85/` and
 > `benchmarks/external/epfl/` contain only `README.md` placeholders — **no
 > external benchmark files were available**, so **no ISCAS-85 / EPFL results are

@@ -37,9 +37,9 @@ family-separated plots.
 - Place `.blif` files directly in `benchmarks/external/iscas85/`.
 - Sources: search for *"ISCAS-85 benchmark circuits BLIF"*, e.g.
   <https://ptolemy.berkeley.edu/projects/embedded/pubs/downloads/iscas/>.
-- If you only have AIGER (`.aig`, `.aag`, `.aiger`) or Verilog/SystemVerilog
-  (`.v`, `.sv`), convert them — see `scripts/import_external_benchmarks.py`
-  (uses ABC / Yosys, documented there).
+- If you only have original BENCH (`.bench`), AIGER (`.aig`, `.aag`, `.aiger`)
+  or Verilog/SystemVerilog (`.v`, `.sv`), convert them — see
+  `scripts/import_external_benchmarks.py` (uses ABC / Yosys, documented there).
 
 ### EPFL combinational benchmarks
 - Place `.blif` (or `.aig`/`.aiger`) files in `benchmarks/external/epfl/`.
