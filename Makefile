@@ -1,5 +1,6 @@
 ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
+PYTHON ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; else echo python3; fi)
 
 .PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate research-plots full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
 
@@ -18,12 +19,12 @@ build-abc:
 # Generate synthetic BLIF benchmarks under benchmarks/generated/
 generate-benchmarks:
 	@echo "Generating synthetic benchmarks → benchmarks/generated/"
-	@python3 scripts/generate_synthetic_benchmarks.py
+	@$(PYTHON) scripts/generate_synthetic_benchmarks.py
 
 # Convert Verilog sources to BLIF (requires Yosys); gracefully skips if Yosys is absent
 real-benchmarks:
 	@echo "Converting Verilog examples → BLIF (benchmarks/real/verilog_examples/)"
-	@python3 scripts/import_real_benchmarks.py --verilog benchmarks/real/verilog_examples/
+	@$(PYTHON) scripts/import_real_benchmarks.py --verilog benchmarks/real/verilog_examples/
 
 # Both synthetic and real benchmarks in one shot
 generate-all-benchmarks: generate-benchmarks real-benchmarks
@@ -32,7 +33,7 @@ generate-all-benchmarks: generate-benchmarks real-benchmarks
 
 # List external benchmarks currently placed under benchmarks/external/
 list-external:
-	@python3 scripts/import_external_benchmarks.py --list
+	@$(PYTHON) scripts/import_external_benchmarks.py --list
 
 # Import external benchmarks from a local dir (no downloads). Example:
 #   make import-external FAMILY=iscas85 INPUT_DIR=/path/to/iscas85_blifs
@@ -42,12 +43,12 @@ import-external:
 		echo "Usage: make import-external FAMILY=<iscas85|epfl> INPUT_DIR=<dir> [ARGS=--convert-aiger]"; \
 		exit 1; \
 	fi
-	@python3 scripts/import_external_benchmarks.py --family $(FAMILY) --input-dir $(INPUT_DIR) $(ARGS)
+	@$(PYTHON) scripts/import_external_benchmarks.py --family $(FAMILY) --input-dir $(INPUT_DIR) $(ARGS)
 
 # Write results/benchmark_manifest.csv describing every benchmark file present
 benchmark-manifest:
 	@echo "Building benchmark manifest → results/benchmark_manifest.csv"
-	@python3 scripts/build_benchmark_manifest.py
+	@$(PYTHON) scripts/build_benchmark_manifest.py
 
 # Generate optimized BLIF variants using the built ABC
 generate-variants: build-abc
@@ -56,71 +57,71 @@ generate-variants: build-abc
 
 analyze:
 	@echo "Running analysis"
-	@python3 analyze_blif_matches.py
+	@$(PYTHON) analyze_blif_matches.py
 
 check-results:
 	@echo "Checking result CSV freshness"
-	@python3 scripts/check_results_freshness.py
+	@$(PYTHON) scripts/check_results_freshness.py
 
 plot:
 	@echo "Generating plots"
-	@python3 visualize_results.py
+	@$(PYTHON) visualize_results.py
 
 test:
 	@echo "Running unit tests"
-	@python3 -m pytest tests/ -v
+	@$(PYTHON) -m pytest tests/ -v
 
-sat-refine:
+sat-refine: build-abc
 	@echo "Running ABC equivalence check on high-confidence candidates"
-	@python3 sat_refinement_abc.py
+	@ABC=$(PWD)/$(ABC_BIN) $(PYTHON) sat_refinement_abc.py
 
 sat-summary:
 	@echo "Generating SAT refinement summary (CSV + Markdown)"
-	@python3 summarize_sat_results.py
+	@$(PYTHON) summarize_sat_results.py
 
-sat-pipeline:
+sat-pipeline: build-abc
 	@echo "Running full SAT pipeline: filter → ABC CEC → summary"
-	@python3 select_sat_candidates.py
-	@python3 sat_refinement_abc.py
-	@python3 summarize_sat_results.py
+	@$(PYTHON) select_sat_candidates.py
+	@ABC=$(PWD)/$(ABC_BIN) $(PYTHON) sat_refinement_abc.py
+	@$(PYTHON) summarize_sat_results.py
 
-sat-validation-layers:
+sat-validation-layers: build-abc
 	@echo "Running layered SAT validation: exact anchors + rank-1 non-exact + top-k non-exact"
-	@python3 select_sat_candidates.py
-	@python3 select_validation_candidates.py
-	@python3 sat_refinement_abc.py
-	@SAT_INPUT_CSV=results/sat_exact_anchor_candidates.csv SAT_OUTPUT_CSV=results/sat_exact_anchor_verified.csv python3 sat_refinement_abc.py
-	@SAT_INPUT_CSV=results/sat_topk_nonexact_candidates.csv SAT_OUTPUT_CSV=results/sat_topk_nonexact_verified.csv python3 sat_refinement_abc.py
-	@python3 summarize_sat_results.py
-	@python3 analyze_sat_validation_layers.py
+	@$(PYTHON) select_sat_candidates.py
+	@$(PYTHON) select_validation_candidates.py
+	@ABC=$(PWD)/$(ABC_BIN) $(PYTHON) sat_refinement_abc.py
+	@SAT_INPUT_CSV=results/sat_exact_anchor_candidates.csv SAT_OUTPUT_CSV=results/sat_exact_anchor_verified.csv ABC=$(PWD)/$(ABC_BIN) $(PYTHON) sat_refinement_abc.py
+	@SAT_INPUT_CSV=results/sat_topk_nonexact_candidates.csv SAT_OUTPUT_CSV=results/sat_topk_nonexact_verified.csv ABC=$(PWD)/$(ABC_BIN) $(PYTHON) sat_refinement_abc.py
+	@$(PYTHON) summarize_sat_results.py
+	@$(PYTHON) analyze_sat_validation_layers.py
 
-sat-complement:
+sat-complement: build-abc
 	@echo "Running complemented SAT validation on same-polarity rejected non-exact candidates"
-	@python3 sat_complement_refinement.py
+	@ABC=$(PWD)/$(ABC_BIN) $(PYTHON) sat_complement_refinement.py
 
 topk-eval:
 	@echo "Evaluating top-K recovery (CSV + Markdown → results/topk_recovery.*)"
-	@python3 evaluate_topk_recovery.py
+	@$(PYTHON) evaluate_topk_recovery.py
 
 ablation:
 	@echo "Running ablation study over scoring configs (CSV + Markdown → results/ablation_summary.*)"
-	@python3 ablation_study.py
+	@$(PYTHON) ablation_study.py
 
 region:
 	@echo "Running region correspondence baseline (CSV + Markdown → results/region_*)"
-	@python3 region_correspondence.py
+	@$(PYTHON) region_correspondence.py
 
 cegar-refine:
 	@echo "Running CEGAR-style candidate refinement [prototype] (CSV + Markdown → results/cegar_*)"
-	@python3 counterexample_guided_refinement.py
+	@$(PYTHON) counterexample_guided_refinement.py
 
 hybrid-validate: build-abc generate-variants analyze
 	@echo "Running hybrid ABC SAT sweep validation (Python ranking + ABC dump_equiv/FRAIG)"
-	@ABC=$(PWD)/$(ABC_BIN) python3 hybrid_validation.py --top-k-validate 20
+	@ABC=$(PWD)/$(ABC_BIN) $(PYTHON) hybrid_validation.py --top-k-validate 20
 
 research-plots:
 	@echo "Generating research plots → results/plots/"
-	@python3 research_plots.py
+	@$(PYTHON) research_plots.py
 
 full-research-pipeline: generate-variants analyze benchmark-manifest sat-pipeline topk-eval ablation region cegar-refine research-plots test
 	@echo ""

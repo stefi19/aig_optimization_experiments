@@ -188,7 +188,12 @@ priority_encoder_8, comparator_8, alu_small, mux_tree_8). Convert with:
 make real-benchmarks    # runs Yosys on all verilog_examples/ sources
 ```
 
-ISCAS-85 / EPFL benchmarks must be imported locally — no results on those are published here.
+ISCAS-85 combinational benchmarks can be imported into
+`benchmarks/external/iscas85/`. The current Iteration 2 run includes 11 real
+ISCAS-85 circuits downloaded as `.bench` files and converted to BLIF with ABC:
+`c17`, `c432`, `c499`, `c880`, `c1355`, `c1908`, `c2670`, `c3540`, `c5315`,
+`c6288`, and `c7552`. EPFL is supported by the importer, but no EPFL results
+are included yet.
 
 ---
 
@@ -351,9 +356,11 @@ served as correspondence anchors.
 
 This plot summarizes the rank-1 non-exact SAT validation layer. After fixing node exposure
 with the shared `__cmp_out` output, ABC gives decisive verdicts instead of inconclusive
-output-name failures. The important result is negative but useful: the selected rank-1
-non-exact candidates are formally rejected, so they cannot be claimed as recovered
-correspondences.
+output-name failures. On the original 21-benchmark baseline, rank-1 non-exact recovery found
+no verified correspondences. After adding ISCAS-85, the expanded rank-1 run finds a small
+verified subset: 609 verified, 9,030 rejected, and 0 inconclusive. This means the heuristic is
+not sufficient by itself, but it can sometimes rank a real non-exact correspondence first on
+larger benchmark circuits.
 
 #### False Positives by Optimization Group
 
@@ -629,7 +636,7 @@ of the rank-1 candidate, averaged across all optimizations and nodes. Closer to 
 candidate still scores above 0.7, meaning the scoring formula finds the structurally closest
 original node even when truth tables have completely changed.
 
-**Top-K recovery across all 21 benchmarks:**
+**Top-K recovery on the original 21-benchmark baseline:**
 
 - **880 total** benchmark × optimization × K entries in `topk_recovery.csv`
 - **0 / 880** have MRR > 0 — no non-exact candidate was SAT-verified in this run
@@ -638,9 +645,11 @@ original node even when truth tables have completely changed.
 
 > **Note:** top-K recovery is computed using only `non_exact_candidate` verified pairs as
 > ground truth (exact anchors are excluded). Since no non-exact candidate was verified by ABC
-> in the current run, the recovery rate is 0. This is an honest result: the simulation-based
-> scoring produces good structural rankings, but cannot prove functional equivalence for nodes
-> whose truth tables differ after optimization.
+> in the original 21-benchmark validation-layer run, the baseline recovery rate is 0. After
+> adding ISCAS-85, the broader rank-1 SAT run does find verified non-exact correspondences on
+> larger external circuits. The honest conclusion is therefore not that recovery never works,
+> but that the simulation/support/depth score must be followed by SAT validation because it
+> still produces many high-confidence false positives.
 
 ---
 
@@ -750,10 +759,12 @@ mistakes**.
 
 ### Current status
 
-This is labeled `[prototype]` because all 425 SAT-checked non-exact candidates were rejected,
-so the current feedback signal is only negative. The penalty pass affects 2,117 candidate rows
-and changes 173 rank-1 choices, but there are no verified non-exact positives yet to show that
-the refined ranking improves true recovery.
+This is labeled `[prototype]` because it was developed on the original
+21-benchmark validation layer, where all 425 SAT-checked rank-1 non-exact
+candidates were rejected. With ISCAS-85 added, the expanded rank-1 SAT run now
+contains both positive and negative labels: 609 verified and 9,030 rejected.
+That makes CEGAR-style re-ranking more meaningful future work, but the current
+prototype has not yet been re-tuned or re-evaluated against those new positives.
 
 ---
 
@@ -779,13 +790,13 @@ region scores, and per-benchmark node-count plots.
 
 | Limitation | Details |
 |---|---|
-| **Small-scale benchmark coverage** | The full pipeline has been run across 21 benchmarks (4 toy, 5 real hand-written, 12 generated), ranging from 2 to 92 internal nodes. No results on large industrial circuits (ISCAS-85, EPFL, commercial netlists) are present — performance on those is unknown. |
+| **Benchmark coverage is still modest** | The full pipeline has been run across 32 benchmarks: 4 toy, 12 generated, 5 custom hand-written, and 11 ISCAS-85 combinational circuits. EPFL and industrial/commercial netlists are still not included. |
 | **BLIF only** | The parser handles `.names`-style gates only. RTL (Verilog/VHDL) is not supported. |
-| **Simulation is not proof in random mode** | 55 of 231 summary rows use 4096 random patterns because exhaustive truth tables would be too large. Those rows support heuristic signature-matching claims, not formal truth-table claims. |
+| **Simulation is not proof in random mode** | Most ISCAS-85 rows use 4,096 random patterns because exhaustive truth tables would be too large. Those rows support heuristic signature-matching claims, not formal truth-table claims. SAT-validated candidate pairs are formal, but random-pattern signature preservation is not. |
 | **SAT candidate set is still filtered** | SAT now checks exact anchors, rank-1 high-confidence non-exact candidates, and high-score below-rank-1 top-k candidates. It still does not exhaustively check every non-exact pair in the full candidate table. |
 | **Global equivalence is strict** | The SAT checks ask whether two internal nodes are globally equivalent for all primary-input assignments. After aggressive optimization, a node might still be useful under observability don't-care conditions even if it is not globally equivalent. Future work should validate ODC-aware correspondences or reuse ABC-native SAT sweeping/FRAIG equivalence classes. |
 | **Weights are not tuned** | The 0.55 / 0.35 / 0.10 weights are a rough starting point — not learned from data. |
-| **CEGAR has only negative labels** | The SAT stage now gives many useful rejections, but no verified non-exact positives. That is enough to learn false-positive patterns, not enough to evaluate recovery precision. |
+| **CEGAR has not been updated for ISCAS positives** | The expanded ISCAS run introduces verified non-exact positives, but the CEGAR prototype was originally evaluated on the smaller all-negative validation layer. It should be revisited with the new mixed positive/negative SAT labels. |
 | **Combinational circuits only** | No flip-flops, no clock. Sequential correspondence is a harder and separate problem. |
 | **No RTL-to-netlist link** | The tool works at netlist level. Connecting back to original source-code variable names is future work. |
 
@@ -1226,21 +1237,135 @@ toy/generated baselines:
   generated circuits, the Iteration 1 conclusions generalize.
 - If aggressive passes destroy *more* signatures on external circuits, it
   indicates the synthetic benchmarks were easier than realistic ones.
-- The `sat_validation_by_family` bars show whether the non-exact null result
-  (structurally similar ≠ functionally equivalent) holds on realistic circuits.
+- The `sat_validation_by_family` bars show whether non-exact heuristic
+  candidates are verified or rejected on realistic circuits. With ISCAS-85
+  present, this is no longer a pure null result: some rank-1 non-exact
+  correspondences verify, while many more are rejected.
 
 ### ISCAS-85 Results
 
-**Current status:** no real ISCAS-85 benchmark files are present in this
-checkout. The local folders were checked and `benchmarks/external/iscas85/`
-currently contains only its README placeholder, so this repository does **not**
-claim ISCAS-85 preservation, SAT, or optimization results yet.
-
-When ISCAS-85 files are available, place or import the small circuits first:
+The current Iteration 2 run imports real ISCAS-85 combinational circuits from
+the University of Toronto benchmark mirror:
 
 ```
-c17  c432  c499  c880  c1355  c1908
+https://www.eecg.utoronto.ca/~ece1767/project/circuits/
 ```
+
+Only the ISCAS-85 combinational `.bench` files were downloaded; no ISCAS-89
+sequential benchmarks were used. The raw files are kept under
+`benchmarks/external/iscas85/raw_bench/`, and ABC converts each one to BLIF with
+`read_bench; strash; write_blif`.
+
+Imported circuits:
+
+```
+c17  c432  c499  c880  c1355  c1908  c2670  c3540  c5315  c6288  c7552
+```
+
+Commands used:
+
+```bash
+mkdir -p benchmarks/external/iscas85/raw_bench
+# curl -L -o benchmarks/external/iscas85/raw_bench/<circuit>.bench <Toronto URL>
+ABC=$(pwd)/.abc_build/abc_repo/abc \
+  make import-external FAMILY=iscas85 \
+  INPUT_DIR=benchmarks/external/iscas85/raw_bench \
+  ARGS=--convert-bench
+
+make benchmark-manifest
+make list-external
+make generate-variants
+make analyze
+make sat-pipeline
+make research-plots
+make check-results
+```
+
+Manifest summary:
+
+| Circuit | Inputs | Outputs | Internal nodes | Exact truth-table mode |
+|---|---:|---:|---:|---|
+| `c17` | 5 | 2 | 6 | yes |
+| `c432` | 36 | 7 | 209 | no, random patterns |
+| `c499` | 41 | 32 | 400 | no, random patterns |
+| `c880` | 60 | 26 | 327 | no, random patterns |
+| `c1355` | 41 | 32 | 504 | no, random patterns |
+| `c1908` | 33 | 25 | 353 | no, random patterns |
+| `c2670` | 157 | 64 | 745 | no, random patterns |
+| `c3540` | 50 | 22 | 1,026 | no, random patterns |
+| `c5315` | 178 | 123 | 1,800 | no, random patterns |
+| `c6288` | 32 | 32 | 2,337 | no, random patterns |
+| `c7552` | 207 | 108 | 2,134 | no, random patterns |
+
+This matters methodologically: only `c17` is small enough for formal
+truth-table signatures. The other 10 ISCAS circuits use 4,096 random simulation
+patterns for signature construction, so `signature_match_on_patterns` is
+evidence from sampled behavior, not a formal proof.
+
+#### ISCAS preservation by pass
+
+![ISCAS and Other Source Families: Preservation by Pass](results/plots/preservation_by_pass_and_family.png)
+
+The ISCAS bars follow the same broad shape as the toy/generated/custom
+benchmarks: mild passes preserve many more internal signatures than aggressive
+flows. Averaged over the 11 ISCAS circuits, `resub` preserves about 92.5% of
+original signatures, `balance` about 88.2%, and `rewrite` about 81.9%. The
+aggressive flows are much more destructive: `compress2rs`, `resyn2`, and
+`resyn2_like` preserve about 39-40%, while `dc2` preserves about 43.7%.
+
+#### ISCAS reduction vs preservation
+
+![Node Reduction vs Preservation by Source Family](results/plots/reduction_vs_preservation_by_family.png)
+
+This plot shows that ISCAS circuits occupy a larger and more realistic part of
+the design space than the small toy/generated cases. The same tradeoff remains:
+more restructuring and node reduction usually comes with lower internal
+signature preservation. This strengthens the claim that correspondence loss is
+not just an artifact of tiny hand-written examples.
+
+#### Mild vs aggressive external optimization
+
+![Mild vs Aggressive External Optimization](results/plots/mild_vs_aggressive_external.png)
+
+This plot is now populated because ISCAS-85 data exists. On the external suite,
+the low-aggression group (`balance`) preserves about 88.2% of original
+signatures. The very-high-aggression group averages only about 40.7%. That is a
+clear external-benchmark version of the main research story: aggressive
+optimization improves/restructures circuits while destroying many internal
+anchors.
+
+#### SAT validation by source family
+
+![SAT Validation by Source Family](results/plots/sat_validation_by_family.png)
+
+The expanded rank-1 non-exact SAT run checked 9,639 high-score candidates:
+
+| Source family | Verified | Rejected | Inconclusive |
+|---|---:|---:|---:|
+| toy | 0 | 8 | 0 |
+| generated | 0 | 400 | 0 |
+| custom | 0 | 17 | 0 |
+| ISCAS-85 | 609 | 8,605 | 0 |
+| **Total** | **609** | **9,030** | **0** |
+
+The new behavior appears only on ISCAS-85: 609 rank-1 non-exact candidates are
+formally verified by ABC. They are concentrated in `c2670` (302), `c6288`
+(133), `c5315` (90), and `c432` (84). This is an important refinement of the
+Iteration 1 conclusion. The heuristic still produces many false positives, but
+on larger real circuits it can also rank some real non-exact correspondences at
+the top.
+
+Interpretation:
+
+- Mild optimizations still preserve many internal signatures on ISCAS-85.
+- Aggressive optimizations still destroy many internal correspondences.
+- ISCAS circuits are harder and more interesting than the toy/generated set:
+  they are too wide for exhaustive truth tables, they create many more
+  candidates, and they expose verified non-exact correspondences that were not
+  visible in the smaller benchmark set.
+- SAT validation remains necessary. Most high-score rank-1 non-exact candidates
+  are still formal false positives: 8,605 / 9,214 ISCAS candidates were
+  rejected.
 
 Supported source formats and workflows:
 
@@ -1273,28 +1398,19 @@ make research-plots
 make check-results
 ```
 
-The ISCAS rows will be tagged as `source_family = iscas85`, so they stay
-separate from `toy`, `generated`, and `custom` results in the CSVs and
-family-separated plots. The key questions to answer after real files are added
-are whether mild passes still preserve most internal signatures, whether
-aggressive passes still destroy correspondences, and whether SAT validation
-continues to reject high-score non-exact candidates.
-
-> **Status:** as committed, `benchmarks/external/iscas85/` and
-> `benchmarks/external/epfl/` contain only `README.md` placeholders — **no
-> external benchmark files were available**, so **no ISCAS-85 / EPFL results are
-> claimed**. The manifest, importer, discovery, and family-separated plots are
-> in place and verified on the existing 21 benchmarks; adding files under
-> `benchmarks/external/` is all that is required to produce external results.
+The ISCAS rows are tagged as `source_family = iscas85`, so they stay separate
+from `toy`, `generated`, and `custom` results in the CSVs and family-separated
+plots. EPFL support is still import-only at this point; no EPFL benchmark files
+or results are included.
 
 ---
 
 ## Short research summary
 
 > This prototype works at the BLIF/AIG level and measures how synthesis optimizations affect
-> internal node correspondence. The full pipeline was run across **21 benchmarks** (4 toy,
-> 5 real hand-written, 12 generated — ranging from 2 to 92 internal nodes) × **11 ABC
-> optimization flows** = 231 benchmark × optimization pairs. The key findings:
+> internal node correspondence. The current pipeline was run across **32 benchmarks**:
+> 4 toy, 12 generated, 5 custom hand-written, and 11 ISCAS-85 combinational circuits.
+> Each benchmark is evaluated under **11 ABC optimization flows**. The key findings:
 >
 > - **Simple optimizations** (`resub`, `balance`, `rewrite`) preserve most internal
 >   signatures. Average optimized signature coverage is 99.8%, 95.5%, and 92.3% respectively.
@@ -1303,14 +1419,16 @@ continues to reject high-score non-exact candidates.
 >   fractions.
 > - **Support overlap** survives even when truth tables change — it is a robust signal.
 > - The **simulation + support + depth scoring formula** gives high-scoring structural
->   candidates, but the current SAT run does not verify any non-exact candidates. It should be
->   treated as a prioritization heuristic, not as recovered equivalence.
+>   candidates. On the original small benchmarks it did not verify any non-exact
+>   correspondences, but after adding ISCAS-85 the expanded rank-1 SAT run verifies
+>   **609** non-exact correspondences while rejecting **9,030**. It should be treated as a
+>   prioritization heuristic, not as proof.
 > - **SAT refinement** now has a clean sanity layer: **3,052 / 3,052 exact anchors verify**,
 >   so the `__cmp_out` CEC wrapper accepts known preserved correspondences.
-> - **Non-exact SAT recovery remains a null result**: rank-1 candidates are
->   **0 verified / 425 rejected / 0 inconclusive**, and high-score below-rank-1 top-k
->   candidates are **0 verified / 1,993 rejected / 0 inconclusive**. The selected
->   non-exact candidates are structurally similar but functionally different.
+> - **Non-exact SAT recovery is benchmark-dependent**: the original 21-benchmark validation
+>   layer remains a null result (**0 verified / 425 rejected / 0 inconclusive** at rank 1),
+>   but ISCAS-85 introduces real recovered non-exact correspondences. The expanded rank-1
+>   run is **609 verified / 9,030 rejected / 0 inconclusive**.
 > - **Complemented-equivalence validation also rejects the selected non-exact pool**:
 >   **0 complemented verified / 2,418 rejected / 0 inconclusive** across rank-1 and top-k
 >   same-polarity rejections. The null result is therefore not just a missing-inverter issue.

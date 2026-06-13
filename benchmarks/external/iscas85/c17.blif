@@ -1,0 +1,17 @@
+# Benchmark "benchmarks/external/iscas85/raw_bench/c17" written by ABC on Sun Jun 14 01:08:42 2026
+.model benchmarks/external/iscas85/raw_bench/c17
+.inputs G1 G2 G3 G4 G5
+.outputs G16 G17
+.names G1 G3 new_n8
+11 1
+.names G3 G4 new_n9
+11 1
+.names G2 new_n9 new_n10
+10 1
+.names new_n8 new_n10 G16
+00 0
+.names G5 new_n9 new_n12
+10 1
+.names new_n10 new_n12 G17
+00 0
+.end

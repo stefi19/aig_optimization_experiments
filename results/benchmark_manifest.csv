@@ -1,4 +1,15 @@
 benchmark,source_family,path,n_inputs,n_outputs,n_internal_nodes,exact_mode_possible,notes
+external_iscas85_c1355,iscas85,benchmarks/external/iscas85/c1355.blif,41,32,504,False,wide input cone (41 inputs) — random simulation only
+external_iscas85_c17,iscas85,benchmarks/external/iscas85/c17.blif,5,2,6,True,
+external_iscas85_c1908,iscas85,benchmarks/external/iscas85/c1908.blif,33,25,353,False,wide input cone (33 inputs) — random simulation only
+external_iscas85_c2670,iscas85,benchmarks/external/iscas85/c2670.blif,157,64,745,False,wide input cone (157 inputs) — random simulation only
+external_iscas85_c3540,iscas85,benchmarks/external/iscas85/c3540.blif,50,22,1026,False,wide input cone (50 inputs) — random simulation only
+external_iscas85_c432,iscas85,benchmarks/external/iscas85/c432.blif,36,7,209,False,wide input cone (36 inputs) — random simulation only
+external_iscas85_c499,iscas85,benchmarks/external/iscas85/c499.blif,41,32,400,False,wide input cone (41 inputs) — random simulation only
+external_iscas85_c5315,iscas85,benchmarks/external/iscas85/c5315.blif,178,123,1800,False,wide input cone (178 inputs) — random simulation only
+external_iscas85_c6288,iscas85,benchmarks/external/iscas85/c6288.blif,32,32,2337,False,wide input cone (32 inputs) — random simulation only
+external_iscas85_c7552,iscas85,benchmarks/external/iscas85/c7552.blif,207,108,2134,False,wide input cone (207 inputs) — random simulation only
+external_iscas85_c880,iscas85,benchmarks/external/iscas85/c880.blif,60,26,327,False,wide input cone (60 inputs) — random simulation only
 generated_adder_4,generated,benchmarks/generated/adder_4.blif,9,5,21,True,
 generated_adder_8,generated,benchmarks/generated/adder_8.blif,17,9,41,False,wide input cone (17 inputs) — random simulation only
 generated_multiplier_2,generated,benchmarks/generated/multiplier_2.blif,4,4,12,True,
