@@ -26,8 +26,16 @@ import hashlib
 import os
 import random
 import statistics
+import sys
 from collections import Counter, defaultdict
 from dataclasses import dataclass
+from pathlib import Path
+
+# infer_source_family lives in scripts/ so it can be shared by the manifest
+# builder, the plots and the freshness checker.  Make scripts/ importable
+# regardless of the current working directory.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from scripts.benchmark_id import infer_source_family
 
 
 # For small circuits, the script enumerates all input assignments exactly.
@@ -777,6 +785,7 @@ def main():
                 "benchmark": benchmark,
                 "optimization": optimization,
                 "benchmark_family": infer_benchmark_family(benchmark),
+                "source_family": infer_source_family(benchmark),
                 "optimization_group": infer_optimization_group(optimization),
             }
             row.update(metrics)
@@ -811,6 +820,7 @@ def main():
         "benchmark",
         "optimization",
         "benchmark_family",
+        "source_family",
         "optimization_group",
         "original_nodes",
         "optimized_nodes",

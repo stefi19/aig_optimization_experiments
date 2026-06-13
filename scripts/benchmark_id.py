@@ -75,6 +75,50 @@ def blif_to_id(path: str) -> str:
     return safe
 
 
+# -----------------------------------------------------------------------------
+# Source-family inference (research iteration 2)
+# -----------------------------------------------------------------------------
+#
+# "source family" answers *where a benchmark comes from*, which is orthogonal to
+# the circuit-type "benchmark_family" (adder / xor_chain / ...) used elsewhere.
+# It is used to compare findings across realistic external suites:
+#
+#   toy        – tiny hand-written sanity circuits at benchmarks/*.blif
+#   generated  – synthetic circuits from scripts/generate_synthetic_benchmarks.py
+#   iscas85    – ISCAS-85 suite under benchmarks/external/iscas85/
+#   epfl       – EPFL combinational suite under benchmarks/external/epfl/
+#   custom     – the repo's own "real" hand-written / Verilog circuits
+#
+# Inference is purely prefix-based on the benchmark id produced by blif_to_id(),
+# so it works whether the id comes from a path or from a results CSV column.
+
+# Ordered (prefix, source_family) pairs; the first match wins, longer first.
+_SOURCE_FAMILY_PREFIXES = [
+    ("external_iscas85", "iscas85"),
+    ("external_epfl",    "epfl"),
+    ("generated",        "generated"),
+    # The repo's own realistic circuits live under benchmarks/real/.
+    ("real_iscas85",     "iscas85"),   # legacy location, kept for back-compat
+    ("real_epfl",        "epfl"),      # legacy location, kept for back-compat
+    ("real",             "custom"),
+]
+
+
+def infer_source_family(benchmark_id: str) -> str:
+    """Return the source family ('toy' | 'generated' | 'iscas85' | 'epfl' |
+    'custom') for a benchmark id such as 'external_iscas85_c17' or
+    'generated_adder_4'.
+
+    Bare top-level ids (majority3, mux2, toy_and_or, xor_chain) are toy
+    sanity benchmarks and map to 'toy'.
+    """
+    bid = benchmark_id.lower()
+    for prefix, family in _SOURCE_FAMILY_PREFIXES:
+        if bid.startswith(prefix):
+            return family
+    return "toy"
+
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python3 scripts/benchmark_id.py <path-to-blif>", file=sys.stderr)

@@ -616,6 +616,106 @@ class TestRegionScores:
 
 
 # ---------------------------------------------------------------------------
+# Research iteration 2 — source-family plots
+# ---------------------------------------------------------------------------
+
+@pytest.fixture()
+def family_summary_df():
+    """Summary rows spanning generated + iscas85 source families."""
+    return pd.DataFrame({
+        "benchmark":      ["generated_adder_4", "generated_adder_4",
+                           "external_iscas85_c17", "external_iscas85_c17"],
+        "optimization":   ["balance", "compress2rs", "balance", "compress2rs"],
+        "optimization_group": ["low", "very_high", "low", "very_high"],
+        "preserved_signature_fraction": [0.95, 0.30, 0.90, 0.20],
+        "node_reduction_rate": [0.0, 0.4, 0.0, 0.5],
+        "source_family":  ["generated", "generated", "iscas85", "iscas85"],
+    })
+
+
+class TestPreservationByPassAndFamily:
+    def _run(self, df):
+        rp = _import_rp()
+        with patch.object(rp, "_load", _make_loader({"summary": df})), \
+             patch.object(rp, "_save", _mock_save):
+            return rp.plot_preservation_by_pass_and_family()
+
+    def test_returns_path(self, family_summary_df):
+        assert self._run(family_summary_df) is not None
+
+    def test_missing_returns_none(self):
+        rp = _import_rp()
+        with patch.object(rp, "_load", _make_loader({})):
+            assert rp.plot_preservation_by_pass_and_family() is None
+
+    def test_backfills_source_family(self, family_summary_df):
+        df = family_summary_df.drop(columns=["source_family"])
+        assert self._run(df) is not None
+
+
+class TestReductionVsPreservationByFamily:
+    def _run(self, df):
+        rp = _import_rp()
+        with patch.object(rp, "_load", _make_loader({"summary": df})), \
+             patch.object(rp, "_save", _mock_save):
+            return rp.plot_reduction_vs_preservation_by_family()
+
+    def test_returns_path(self, family_summary_df):
+        assert self._run(family_summary_df) is not None
+
+    def test_missing_returns_none(self):
+        rp = _import_rp()
+        with patch.object(rp, "_load", _make_loader({})):
+            assert rp.plot_reduction_vs_preservation_by_family() is None
+
+
+class TestSatValidationByFamily:
+    def _run(self, df):
+        rp = _import_rp()
+        with patch.object(rp, "_load", _make_loader({"sat_summary": df})), \
+             patch.object(rp, "_save", _mock_save):
+            return rp.plot_sat_validation_by_family()
+
+    def test_returns_path(self):
+        df = pd.DataFrame({
+            "benchmark": ["generated_adder_4", "external_iscas85_c17"],
+            "optimization": ["balance", "balance"],
+            "verified": [5, 0], "rejected": [0, 3], "inconclusive": [0, 0],
+        })
+        assert self._run(df) is not None
+
+    def test_missing_returns_none(self):
+        rp = _import_rp()
+        with patch.object(rp, "_load", _make_loader({})):
+            assert rp.plot_sat_validation_by_family() is None
+
+
+class TestMildVsAggressiveExternal:
+    def _run(self, df):
+        rp = _import_rp()
+        with patch.object(rp, "_load", _make_loader({"summary": df})), \
+             patch.object(rp, "_save", _mock_save):
+            return rp.plot_mild_vs_aggressive_external()
+
+    def test_returns_path_with_external(self, family_summary_df):
+        assert self._run(family_summary_df) is not None
+
+    def test_skips_when_no_external(self):
+        """Only toy/generated present → plot skipped (the expected default)."""
+        df = pd.DataFrame({
+            "benchmark": ["generated_adder_4", "generated_adder_4"],
+            "optimization": ["balance", "compress2rs"],
+            "optimization_group": ["low", "very_high"],
+            "preserved_signature_fraction": [0.9, 0.3],
+            "node_reduction_rate": [0.0, 0.4],
+            "source_family": ["generated", "generated"],
+        })
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            assert self._run(df) is None
+
+
+# ---------------------------------------------------------------------------
 # TestRunAll
 # ---------------------------------------------------------------------------
 
@@ -640,18 +740,19 @@ class TestRunAll:
                 results = rp.run_all()
         assert all(v is None for v in results.values())
 
-    def test_run_all_nine_entries(self):
+    def test_run_all_returns_entry_per_plot(self):
         rp = _import_rp()
         with patch.object(rp, "_load", return_value=None), \
              patch.object(rp, "_ensure_plots_dir"):
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
                 results = rp.run_all()
-        assert len(results) == 10
+        assert len(results) == len(rp.ALL_PLOTS)
 
-    def test_all_plots_list_has_ten_entries(self):
+    def test_all_plots_list_count(self):
         rp = _import_rp()
-        assert len(rp.ALL_PLOTS) == 10
+        # 10 from iteration 1 + 4 source-family plots from iteration 2.
+        assert len(rp.ALL_PLOTS) == 14
 
     def test_all_plots_callables(self):
         rp = _import_rp()

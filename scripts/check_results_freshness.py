@@ -24,6 +24,7 @@ REQUIRED_COLUMNS = {
     "results/summary_metrics.csv": {
         "benchmark",
         "optimization",
+        "source_family",
         "simulation_mode",
         "pattern_count",
         "is_formal_exact_mode",

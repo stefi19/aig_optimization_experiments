@@ -1,7 +1,7 @@
 ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 
-.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate research-plots full-research-pipeline start clean clean-results
+.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate research-plots full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -27,6 +27,27 @@ real-benchmarks:
 
 # Both synthetic and real benchmarks in one shot
 generate-all-benchmarks: generate-benchmarks real-benchmarks
+
+# ── Research iteration 2: external benchmarks (ISCAS-85 / EPFL) ───────────────
+
+# List external benchmarks currently placed under benchmarks/external/
+list-external:
+	@python3 scripts/import_external_benchmarks.py --list
+
+# Import external benchmarks from a local dir (no downloads). Example:
+#   make import-external FAMILY=iscas85 INPUT_DIR=/path/to/iscas85_blifs
+#   make import-external FAMILY=epfl    INPUT_DIR=/path/to/epfl ARGS=--convert-aiger
+import-external:
+	@if [ -z "$(FAMILY)" ] || [ -z "$(INPUT_DIR)" ]; then \
+		echo "Usage: make import-external FAMILY=<iscas85|epfl> INPUT_DIR=<dir> [ARGS=--convert-aiger]"; \
+		exit 1; \
+	fi
+	@python3 scripts/import_external_benchmarks.py --family $(FAMILY) --input-dir $(INPUT_DIR) $(ARGS)
+
+# Write results/benchmark_manifest.csv describing every benchmark file present
+benchmark-manifest:
+	@echo "Building benchmark manifest → results/benchmark_manifest.csv"
+	@python3 scripts/build_benchmark_manifest.py
 
 # Generate optimized BLIF variants using the built ABC
 generate-variants: build-abc
@@ -101,7 +122,7 @@ research-plots:
 	@echo "Generating research plots → results/plots/"
 	@python3 research_plots.py
 
-full-research-pipeline: generate-variants analyze sat-pipeline topk-eval ablation region cegar-refine research-plots test
+full-research-pipeline: generate-variants analyze benchmark-manifest sat-pipeline topk-eval ablation region cegar-refine research-plots test
 	@echo ""
 	@echo "Full research pipeline complete."
 	@echo "Plots  : results/plots/"
@@ -114,7 +135,7 @@ clean:
 clean-results:
 	@echo "Removing generated results, variants, and logs (keeps benchmarks and scripts)"
 	@rm -rf results/summary_metrics.csv results/top_candidates.csv \
-		results/node_fingerprints.csv \
+		results/node_fingerprints.csv results/benchmark_manifest.csv \
 		results/sat_refinement_candidates.csv results/sat_verified_candidates.csv \
 		results/sat_summary.csv results/sat_summary.md \
 		results/sat_exact_anchor_candidates.csv results/sat_exact_anchor_verified.csv \

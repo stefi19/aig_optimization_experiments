@@ -44,6 +44,25 @@ while IFS= read -r -d '' bf; do
     BENCH_FILES+=( "$bf" )
 done < <(find benchmarks/real -name "*.blif" -print0 2>/dev/null)
 
+# External standard suites (ISCAS-85, EPFL) placed under benchmarks/external/.
+# Empty in a fresh checkout — warn but continue (see benchmarks/external/README.md).
+EXTERNAL_COUNT=0
+while IFS= read -r -d '' bf; do
+    BENCH_FILES+=( "$bf" )
+    EXTERNAL_COUNT=$((EXTERNAL_COUNT + 1))
+done < <(find benchmarks/external -name "*.blif" -print0 2>/dev/null)
+
+if [ "$EXTERNAL_COUNT" -eq 0 ]; then
+    echo ""
+    echo "Note: no external benchmarks found under benchmarks/external/."
+    echo "      ISCAS-85 / EPFL results require placing .blif files there."
+    echo "      See benchmarks/external/README.md and"
+    echo "      scripts/import_external_benchmarks.py for instructions."
+    echo ""
+else
+    echo "Found $EXTERNAL_COUNT external benchmark(s) under benchmarks/external/."
+fi
+
 if [ ${#BENCH_FILES[@]} -eq 0 ]; then
     echo "ERROR: No .blif files found in benchmarks/. Aborting."
     exit 1

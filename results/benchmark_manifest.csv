@@ -1,0 +1,22 @@
+benchmark,source_family,path,n_inputs,n_outputs,n_internal_nodes,exact_mode_possible,notes
+generated_adder_4,generated,benchmarks/generated/adder_4.blif,9,5,21,True,
+generated_adder_8,generated,benchmarks/generated/adder_8.blif,17,9,41,False,wide input cone (17 inputs) — random simulation only
+generated_multiplier_2,generated,benchmarks/generated/multiplier_2.blif,4,4,12,True,
+generated_multiplier_4,generated,benchmarks/generated/multiplier_4.blif,8,8,88,True,
+generated_mux_tree_16,generated,benchmarks/generated/mux_tree_16.blif,20,1,16,False,wide input cone (20 inputs) — random simulation only
+generated_mux_tree_4,generated,benchmarks/generated/mux_tree_4.blif,6,1,4,True,
+generated_mux_tree_8,generated,benchmarks/generated/mux_tree_8.blif,11,1,8,True,
+generated_random_medium,generated,benchmarks/generated/random_medium.blif,16,4,28,False,wide input cone (16 inputs) — random simulation only
+generated_random_small,generated,benchmarks/generated/random_small.blif,8,2,14,True,
+generated_xor_chain_16,generated,benchmarks/generated/xor_chain_16.blif,16,1,16,False,wide input cone (16 inputs) — random simulation only
+generated_xor_chain_32,generated,benchmarks/generated/xor_chain_32.blif,32,1,32,False,wide input cone (32 inputs) — random simulation only
+generated_xor_chain_8,generated,benchmarks/generated/xor_chain_8.blif,8,1,8,True,
+majority3,toy,benchmarks/majority3.blif,3,1,4,True,
+mux2,toy,benchmarks/mux2.blif,3,1,3,True,
+real_hand_written_comparator_4,custom,benchmarks/real/hand_written/comparator_4.blif,8,1,9,True,
+real_hand_written_full_adder,custom,benchmarks/real/hand_written/full_adder.blif,3,2,6,True,
+real_hand_written_mux_4to1,custom,benchmarks/real/hand_written/mux_4to1.blif,6,1,11,True,
+real_hand_written_parity_8,custom,benchmarks/real/hand_written/parity_8.blif,8,1,7,True,
+real_hand_written_priority_enc_4,custom,benchmarks/real/hand_written/priority_enc_4.blif,4,3,5,True,
+toy_and_or,toy,benchmarks/toy_and_or.blif,4,1,3,True,
+xor_chain,toy,benchmarks/xor_chain.blif,4,1,3,True,

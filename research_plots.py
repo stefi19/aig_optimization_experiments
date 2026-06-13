@@ -15,6 +15,14 @@ Plots produced (all written to results/plots/):
   9. preservation_vs_reduction.png — node reduction vs preserved signature fraction
  10. false_positive_by_group.png — rejected non-exact candidates by optimization group
 
+Research iteration 2 — comparisons by benchmark source family
+(toy / generated / iscas85 / epfl / custom):
+ 11. preservation_by_pass_and_family.png      — preservation per pass × family
+ 12. reduction_vs_preservation_by_family.png  — node reduction vs preservation
+ 13. sat_validation_by_family.png             — SAT verdicts per family
+ 14. mild_vs_aggressive_external.png          — mild vs aggressive on external suites
+                                                (skipped until external files added)
+
 Each plot function returns the output path so callers can log/test.
 Missing optional input files are skipped gracefully (warning printed, no crash).
 """
@@ -22,6 +30,7 @@ Missing optional input files are skipped gracefully (warning printed, no crash).
 from __future__ import annotations
 
 import os
+import sys
 import warnings
 from pathlib import Path
 from typing import Optional
@@ -31,6 +40,10 @@ matplotlib.use("Agg")  # headless — no display required
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import pandas as pd
+
+# Shared source-family inference (toy / generated / iscas85 / epfl / custom).
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from scripts.benchmark_id import infer_source_family
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -542,6 +555,218 @@ def plot_false_positive_by_group() -> Optional[str]:
 
 
 # ---------------------------------------------------------------------------
+# Research iteration 2: comparisons by benchmark source family
+# ---------------------------------------------------------------------------
+#
+# These plots group results by *source family* (toy / generated / iscas85 /
+# epfl / custom) rather than by individual benchmark, so findings on toy and
+# synthetic circuits can be compared against realistic external suites.
+#
+# Each function derives source_family from the benchmark id (so it works on the
+# already-committed CSVs that may predate the source_family column) and skips
+# gracefully when external benchmarks are absent.
+
+# Display order and colour assignment for source families.
+SOURCE_FAMILY_ORDER = ["toy", "generated", "custom", "iscas85", "epfl"]
+EXTERNAL_FAMILIES = ("iscas85", "epfl")
+
+
+def _with_source_family(df: pd.DataFrame) -> pd.DataFrame:
+    """Return *df* with a guaranteed 'source_family' column.
+
+    Uses the existing column if present, otherwise derives it from 'benchmark'.
+    """
+    df = df.copy()
+    if "source_family" not in df.columns:
+        df["source_family"] = df["benchmark"].map(infer_source_family)
+    return df
+
+
+def _families_present(df: pd.DataFrame) -> list[str]:
+    present = set(df["source_family"].unique())
+    ordered = [f for f in SOURCE_FAMILY_ORDER if f in present]
+    extras = sorted(present - set(SOURCE_FAMILY_ORDER))
+    return ordered + extras
+
+
+def _family_color(family: str) -> str:
+    idx = SOURCE_FAMILY_ORDER.index(family) if family in SOURCE_FAMILY_ORDER else -1
+    return PALETTE[idx % len(PALETTE)]
+
+
+def plot_preservation_by_pass_and_family() -> Optional[str]:
+    """Grouped bar: mean preserved_signature_fraction per optimization pass,
+    one bar group per source family."""
+    df = _load("summary")
+    if df is None or "preserved_signature_fraction" not in df.columns:
+        return None
+    df = _with_source_family(df)
+
+    families = _families_present(df)
+    passes = _opt_labels(sorted(df["optimization"].unique()))
+    if not passes or not families:
+        warnings.warn("[research_plots] no data for preservation_by_pass_and_family — skipping")
+        return None
+
+    pivot = (
+        df.groupby(["optimization", "source_family"])["preserved_signature_fraction"]
+        .mean()
+        .unstack("source_family")
+    )
+
+    x = range(len(passes))
+    n = len(families)
+    width = 0.8 / max(n, 1)
+    fig, ax = plt.subplots(figsize=(max(8, len(passes) * 1.1), 4.5))
+    for i, fam in enumerate(families):
+        vals = [
+            pivot.loc[p, fam] if (p in pivot.index and fam in pivot.columns
+                                  and pd.notna(pivot.loc[p, fam])) else 0.0
+            for p in passes
+        ]
+        offsets = [xi + (i - (n - 1) / 2) * width for xi in x]
+        ax.bar(offsets, vals, width=width * 0.95, color=_family_color(fam), label=fam)
+
+    ax.set_xticks(list(x))
+    ax.set_xticklabels(passes, rotation=30, ha="right")
+    ax.set_ylabel("Mean preserved signature fraction")
+    ax.set_ylim(0, 1.05)
+    ax.set_title("Preservation by optimization pass and benchmark family")
+    ax.legend(title="source family", fontsize=8)
+    ax.grid(axis="y", linestyle="--", alpha=0.4)
+    fig.tight_layout()
+    return _save(fig, "preservation_by_pass_and_family.png")
+
+
+def plot_reduction_vs_preservation_by_family() -> Optional[str]:
+    """Scatter: node reduction (x) vs preserved signature fraction (y),
+    coloured by source family."""
+    df = _load("summary")
+    if df is None or not {"node_reduction_rate", "preserved_signature_fraction"} <= set(df.columns):
+        return None
+    df = _with_source_family(df)
+    families = _families_present(df)
+    if not families:
+        return None
+
+    fig, ax = plt.subplots(figsize=(7, 5))
+    for fam in families:
+        sub = df[df["source_family"] == fam]
+        ax.scatter(
+            sub["node_reduction_rate"], sub["preserved_signature_fraction"],
+            color=_family_color(fam), label=fam, alpha=0.7, edgecolors="white", s=45,
+        )
+    ax.set_xlabel("Node reduction rate")
+    ax.set_ylabel("Preserved signature fraction")
+    ax.set_title("Node reduction vs preservation by benchmark family")
+    ax.set_ylim(-0.02, 1.05)
+    ax.legend(title="source family", fontsize=8)
+    ax.grid(linestyle="--", alpha=0.4)
+    fig.tight_layout()
+    return _save(fig, "reduction_vs_preservation_by_family.png")
+
+
+def plot_sat_validation_by_family() -> Optional[str]:
+    """Stacked bar: SAT verified / rejected / inconclusive totals per family."""
+    df = _load("sat_summary")
+    if df is None:
+        return None
+    needed = {"verified", "rejected", "inconclusive"}
+    if not needed <= set(df.columns):
+        warnings.warn("[research_plots] sat_summary missing verdict columns — skipping")
+        return None
+    df = _with_source_family(df)
+    agg = df.groupby("source_family")[["verified", "rejected", "inconclusive"]].sum()
+    families = [f for f in _families_present(df) if f in agg.index]
+    if not families:
+        return None
+
+    x = range(len(families))
+    verified = [int(agg.loc[f, "verified"]) for f in families]
+    rejected = [int(agg.loc[f, "rejected"]) for f in families]
+    inconcl = [int(agg.loc[f, "inconclusive"]) for f in families]
+
+    fig, ax = plt.subplots(figsize=(7, 4.5))
+    ax.bar(x, verified, color="#009E73", label="verified")
+    ax.bar(x, rejected, bottom=verified, color="#D55E00", label="rejected")
+    bottom2 = [v + r for v, r in zip(verified, rejected)]
+    ax.bar(x, inconcl, bottom=bottom2, color="#999999", label="inconclusive")
+
+    ax.set_xticks(list(x))
+    ax.set_xticklabels(families)
+    ax.set_ylabel("SAT candidate count")
+    ax.set_title("SAT validation results by benchmark family")
+    ax.legend(fontsize=8)
+    ax.grid(axis="y", linestyle="--", alpha=0.4)
+    fig.tight_layout()
+    return _save(fig, "sat_validation_by_family.png")
+
+
+def plot_mild_vs_aggressive_external() -> Optional[str]:
+    """Grouped bar: mean preserved_signature_fraction under mild vs aggressive
+    optimization, restricted to external (ISCAS-85 / EPFL) families.
+
+    Skips with a clear warning when no external benchmarks are present — this is
+    the expected state until ISCAS-85 / EPFL files are added under
+    benchmarks/external/.
+    """
+    df = _load("summary")
+    if df is None or "preserved_signature_fraction" not in df.columns:
+        return None
+    df = _with_source_family(df)
+    df = df[df["source_family"].isin(EXTERNAL_FAMILIES)]
+    if df.empty:
+        warnings.warn(
+            "[research_plots] no external (ISCAS-85 / EPFL) benchmarks found — "
+            "skipping mild_vs_aggressive_external. Add files under "
+            "benchmarks/external/ to enable this comparison."
+        )
+        return None
+
+    # Map optimization_group → mild/aggressive; ignore mediums for a clean contrast.
+    group_col = df["optimization_group"] if "optimization_group" in df.columns else None
+    if group_col is None:
+        return None
+    df = df.assign(effort=group_col.map({
+        "none": "mild", "low": "mild",
+        "very_high": "aggressive",
+    }))
+    df = df[df["effort"].isin(["mild", "aggressive"])]
+    if df.empty:
+        warnings.warn("[research_plots] no mild/aggressive rows for external benchmarks — skipping")
+        return None
+
+    families = [f for f in EXTERNAL_FAMILIES if f in set(df["source_family"])]
+    efforts = ["mild", "aggressive"]
+    pivot = (
+        df.groupby(["source_family", "effort"])["preserved_signature_fraction"]
+        .mean().unstack("effort")
+    )
+
+    x = range(len(families))
+    width = 0.35
+    fig, ax = plt.subplots(figsize=(6, 4.5))
+    for i, effort in enumerate(efforts):
+        vals = [
+            pivot.loc[f, effort] if (f in pivot.index and effort in pivot.columns
+                                     and pd.notna(pivot.loc[f, effort])) else 0.0
+            for f in families
+        ]
+        offsets = [xi + (i - 0.5) * width for xi in x]
+        ax.bar(offsets, vals, width=width * 0.95, color=PALETTE[i], label=effort)
+
+    ax.set_xticks(list(x))
+    ax.set_xticklabels(families)
+    ax.set_ylabel("Mean preserved signature fraction")
+    ax.set_ylim(0, 1.05)
+    ax.set_title("Mild vs aggressive optimization (external benchmarks)")
+    ax.legend()
+    ax.grid(axis="y", linestyle="--", alpha=0.4)
+    fig.tight_layout()
+    return _save(fig, "mild_vs_aggressive_external.png")
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -556,6 +781,11 @@ ALL_PLOTS = [
     ("region_scores",         plot_region_scores),
     ("preservation_vs_reduction", plot_preservation_vs_reduction),
     ("false_positive_by_group", plot_false_positive_by_group),
+    # Research iteration 2 — by source family
+    ("preservation_by_pass_and_family", plot_preservation_by_pass_and_family),
+    ("reduction_vs_preservation_by_family", plot_reduction_vs_preservation_by_family),
+    ("sat_validation_by_family", plot_sat_validation_by_family),
+    ("mild_vs_aggressive_external", plot_mild_vs_aggressive_external),
 ]
 
 

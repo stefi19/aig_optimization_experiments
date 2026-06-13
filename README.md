@@ -872,21 +872,26 @@ aig_optimization_experiments/
 │   ├── mux2.blif                  2-to-1 multiplexer
 │   ├── toy_and_or.blif            Simple AND/OR circuit
 │   ├── xor_chain.blif             4-input XOR chain (hardest benchmark)
-│   └── real/                      Real-circuit benchmark suite
-│       ├── hand_written/          Small BLIFs verified by hand
-│       │   ├── full_adder.blif        1-bit full adder
-│       │   ├── priority_enc_4.blif    4→2 priority encoder
-│       │   ├── mux_4to1.blif          4-to-1 multiplexer
-│       │   ├── comparator_4.blif      4-bit equality comparator
-│       │   └── parity_8.blif          8-bit XOR parity tree
-│       ├── verilog_examples/      Verilog sources (convert with Yosys)
-│       │   ├── adder_8.v              8-bit ripple-carry adder
-│       │   ├── popcount_8.v           8-bit population count
-│       │   ├── priority_encoder_8.v   8-input priority encoder (3-bit grant + valid)
-│       │   ├── comparator_8.v         8-bit magnitude comparator (lt/eq/gt)
-│       │   ├── alu_small.v            4-bit ALU (ADD/SUB/AND/OR + zero flag)
-│       │   └── mux_tree_8.v           8-to-1 balanced mux tree (3-level hierarchy)
-│       └── README.md              Benchmark descriptions + conversion instructions
+│   ├── real/                      Real-circuit benchmark suite
+│   │   ├── hand_written/          Small BLIFs verified by hand
+│   │   │   ├── full_adder.blif        1-bit full adder
+│   │   │   ├── priority_enc_4.blif    4→2 priority encoder
+│   │   │   ├── mux_4to1.blif          4-to-1 multiplexer
+│   │   │   ├── comparator_4.blif      4-bit equality comparator
+│   │   │   └── parity_8.blif          8-bit XOR parity tree
+│   │   ├── verilog_examples/      Verilog sources (convert with Yosys)
+│   │   │   ├── adder_8.v              8-bit ripple-carry adder
+│   │   │   ├── popcount_8.v           8-bit population count
+│   │   │   ├── priority_encoder_8.v   8-input priority encoder (3-bit grant + valid)
+│   │   │   ├── comparator_8.v         8-bit magnitude comparator (lt/eq/gt)
+│   │   │   ├── alu_small.v            4-bit ALU (ADD/SUB/AND/OR + zero flag)
+│   │   │   └── mux_tree_8.v           8-to-1 balanced mux tree (3-level hierarchy)
+│   │   └── README.md              Benchmark descriptions + conversion instructions
+│   ├── generated/                 Synthetic BLIFs (make generate-benchmarks)
+│   └── external/                  External suites — iteration 2 (place files here)
+│       ├── iscas85/                  ISCAS-85 .blif files (not redistributed)
+│       ├── epfl/                     EPFL .blif files (not redistributed)
+│       └── README.md                 How to add / convert external benchmarks
 │
 ├── variants/                      ABC-optimized BLIFs (generated, not committed)
 ├── logs/                          ABC stdout logs per run (generated)
@@ -1098,6 +1103,138 @@ export ABC=/path/to/your/abc
 ### Python version
 
 Tested with Python 3.13. Should work with Python 3.9+.
+
+---
+
+## 21. Research Iteration 2: External Benchmarks
+
+Iteration 1 (everything above) established the methodology and result story on
+**21 benchmarks**: 4 toy, 12 generated/synthetic, and 5 custom hand-written
+circuits. Those results are **final and unchanged** — this iteration only
+*adds* the ability to re-run the same analysis on realistic external suites.
+
+### Why external benchmarks are needed
+
+Toy and synthetic circuits are useful for controlled experiments, but they do
+not reflect the structure of circuits that synthesis tools are tuned for. To
+strengthen experimental validity we add first-class support for two standard,
+widely-cited combinational benchmark families:
+
+- **ISCAS-85** — classic gate-level combinational circuits (c17, c432, …).
+- **EPFL** — the EPFL combinational benchmark suite (adder, bar, max, …).
+
+This lets us check whether the Iteration 1 findings — simple passes preserve
+internal signatures, aggressive resynthesis destroys them, non-exact candidates
+are structurally similar but functionally different — also hold on realistic
+circuit families.
+
+### Source families
+
+Every benchmark is tagged with a **source family**, inferred purely from its
+path by `scripts/benchmark_id.py::infer_source_family`:
+
+| source family | where the files live                       |
+|---------------|--------------------------------------------|
+| `toy`         | `benchmarks/*.blif`                         |
+| `generated`   | `benchmarks/generated/*.blif`               |
+| `custom`      | `benchmarks/real/**/*.blif`                 |
+| `iscas85`     | `benchmarks/external/iscas85/*.blif`        |
+| `epfl`        | `benchmarks/external/epfl/*.blif`           |
+
+The `summary_metrics.csv` now carries a `source_family` column, and a new
+`results/benchmark_manifest.csv` describes every benchmark file present.
+
+### Where to place ISCAS-85 / EPFL files
+
+The external suites are **not redistributed here** and are **never downloaded
+automatically**. Place the files yourself:
+
+```
+benchmarks/external/
+├── iscas85/   # drop c17.blif, c432.blif, … here
+└── epfl/      # drop adder.blif, bar.blif, … here
+```
+
+See `benchmarks/external/README.md` for sources. If you only have AIGER
+(`.aig`, `.aag`, `.aiger`) or Verilog/SystemVerilog (`.v`, `.sv`), convert them
+with the documented helper (uses ABC / Yosys — no network access). The
+`--input-dir` may be a suite root; files are discovered recursively, while
+hidden/cache directories are skipped:
+
+```bash
+# List what is present
+python3 scripts/import_external_benchmarks.py --list
+
+# Import BLIF files you already have locally
+python3 scripts/import_external_benchmarks.py --family iscas85 \
+    --input-dir /path/to/iscas85_blifs/
+
+# Import + convert AIGER (EPFL suite) via ABC
+python3 scripts/import_external_benchmarks.py --family epfl \
+    --input-dir /path/to/epfl/ --convert-aiger
+
+# Import + convert Verilog/SystemVerilog via Yosys
+python3 scripts/import_external_benchmarks.py --family epfl \
+    --input-dir /path/to/verilog_or_sv_root/ --convert-verilog
+```
+
+ABC conversion command used under the hood:
+
+```
+abc -c "read_aiger <in>.aig; strash; write_blif <out>.blif"
+```
+
+### How to run the pipeline
+
+Discovery is automatic — `run_abc_variants.sh` recursively finds
+`benchmarks/**/*.blif`, including `benchmarks/external/`. Nothing else needs to
+change:
+
+```bash
+# 1. record what benchmarks are present (toy/generated/custom/iscas85/epfl)
+make benchmark-manifest          # → results/benchmark_manifest.csv
+
+# 2. run the analysis + plots (works with or without external benchmarks)
+make generate-variants analyze sat-pipeline research-plots
+```
+
+If `benchmarks/external/iscas85/` and `benchmarks/external/epfl/` are empty, the
+pipeline runs normally on the existing 21 benchmarks and prints a clear warning
+that no external benchmarks were found.
+
+### New plots and tables
+
+- `results/benchmark_manifest.csv` — one row per benchmark file: source family,
+  path, #inputs / #outputs / #internal nodes, whether exact truth-table mode is
+  possible, and notes.
+- `results/plots/preservation_by_pass_and_family.png` — mean preserved signature
+  fraction per optimization pass, grouped by source family.
+- `results/plots/reduction_vs_preservation_by_family.png` — node reduction vs
+  preservation, coloured by source family.
+- `results/plots/sat_validation_by_family.png` — SAT verified / rejected /
+  inconclusive totals per source family.
+- `results/plots/mild_vs_aggressive_external.png` — mild vs aggressive
+  optimization on external suites only. **This plot is intentionally skipped
+  until ISCAS-85 / EPFL files are present** (it would otherwise have no data).
+
+### How to interpret external results
+
+Once external benchmarks are added, compare the per-family bars against the
+toy/generated baselines:
+
+- If `iscas85` / `epfl` show the **same** preservation-vs-pass shape as
+  generated circuits, the Iteration 1 conclusions generalize.
+- If aggressive passes destroy *more* signatures on external circuits, it
+  indicates the synthetic benchmarks were easier than realistic ones.
+- The `sat_validation_by_family` bars show whether the non-exact null result
+  (structurally similar ≠ functionally equivalent) holds on realistic circuits.
+
+> **Status:** as committed, `benchmarks/external/iscas85/` and
+> `benchmarks/external/epfl/` contain only `README.md` placeholders — **no
+> external benchmark files were available**, so **no ISCAS-85 / EPFL results are
+> claimed**. The manifest, importer, discovery, and family-separated plots are
+> in place and verified on the existing 21 benchmarks; adding files under
+> `benchmarks/external/` is all that is required to produce external results.
 
 ---
 
