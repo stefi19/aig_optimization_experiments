@@ -203,6 +203,24 @@ _OPT_DIFFERENT = _make_network(
     max_level=1,
 )
 
+_EMPTY = _make_network(
+    nodes={},
+    levels={},
+    support={},
+    fanin_count={},
+    num_internal_nodes=0,
+    max_level=0,
+)
+
+_RANDOM_MODE = _make_network(
+    nodes={"n1": 0b1010},
+    levels={"n1": 1},
+    support={"n1": ["a", "b"]},
+    fanin_count={"n1": 2},
+    total_patterns=4,
+    exact_simulation=False,
+)
+
 
 # ---------------------------------------------------------------------------
 # compare_networks — new columns
@@ -241,6 +259,27 @@ class TestCompareNetworksNewMetrics:
     def test_returns_support_overlap_max(self):
         m = compare_networks(_ORIG, _OPT_SAME)
         assert "support_overlap_max" in m
+
+    def test_returns_clear_signature_mode_columns(self):
+        m = compare_networks(_ORIG, _OPT_SAME)
+        for key in (
+            "pattern_count",
+            "is_formal_exact_mode",
+            "has_internal_nodes",
+            "signature_match_on_patterns",
+            "formal_truth_table_matches",
+        ):
+            assert key in m
+
+    def test_returns_denominator_aware_metrics(self):
+        m = compare_networks(_ORIG, _OPT_SAME)
+        for key in (
+            "preserved_signature_fraction",
+            "optimized_signature_coverage",
+            "disappeared_fraction",
+            "novel_fraction",
+        ):
+            assert key in m
 
     def test_exact_match_rate_range(self):
         m = compare_networks(_ORIG, _OPT_SAME)
@@ -290,6 +329,29 @@ class TestCompareNetworksNewMetrics:
     def test_exact_match_rate_zero_when_no_sigs_match(self):
         m = compare_networks(_ORIG, _OPT_DIFFERENT)
         assert m["exact_match_rate"] == pytest.approx(0.0)
+
+    def test_denominator_aware_values(self):
+        m = compare_networks(_ORIG, _OPT_SAME)
+        assert m["preserved_signature_fraction"] == pytest.approx(2 / 3)
+        assert m["optimized_signature_coverage"] == pytest.approx(1.0)
+        assert m["disappeared_fraction"] == pytest.approx(1 / 3)
+        assert m["novel_fraction"] == pytest.approx(0.0)
+
+    def test_zero_internal_nodes_are_not_reported_as_zero_percent_failure(self):
+        m = compare_networks(_EMPTY, _EMPTY)
+        assert m["has_internal_nodes"] == 0
+        assert m["exact_match_rate"] is None
+        assert m["preserved_signature_fraction"] is None
+        assert m["optimized_signature_coverage"] is None
+        assert m["disappeared_fraction"] is None
+        assert m["novel_fraction"] is None
+
+    def test_random_mode_signature_match_is_not_formal_truth_table_match(self):
+        m = compare_networks(_RANDOM_MODE, _RANDOM_MODE)
+        assert m["simulation_mode"] == "random"
+        assert m["is_formal_exact_mode"] == 0
+        assert m["signature_match_on_patterns"] == 1
+        assert m["formal_truth_table_matches"] is None
 
     def test_original_columns_still_present(self):
         m = compare_networks(_ORIG, _OPT_SAME)
@@ -370,6 +432,23 @@ class TestRankCandidatesNewColumns:
         for row in self._rows():
             for col in legacy:
                 assert col in row, f"Legacy column missing: {col}"
+
+    def test_clear_signature_columns_present(self):
+        for row in self._rows():
+            for col in (
+                "signature_match_on_patterns",
+                "formal_truth_table_match",
+                "pattern_count",
+                "is_formal_exact_mode",
+            ):
+                assert col in row
+
+    def test_formal_truth_table_match_false_in_random_mode(self):
+        rows = rank_candidates(_RANDOM_MODE, _RANDOM_MODE, "toy", "balance")
+        assert rows[0]["signature_match_on_patterns"] == 1
+        assert rows[0]["is_exact_signature_match"] == 1
+        assert rows[0]["formal_truth_table_match"] == 0
+        assert rows[0]["is_formal_exact_mode"] == 0
 
     def test_rows_sorted_by_rank(self):
         """Within each optimized node, ranks should start at 1."""

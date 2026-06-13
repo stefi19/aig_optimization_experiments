@@ -393,20 +393,47 @@ def build_markdown(df: pd.DataFrame, summary: pd.DataFrame) -> str:
 
     # ── Interpretation ────────────────────────────────────────────────────────
     lines.append("## Main interpretation\n")
-    lines.append(
-        "The SAT refinement step confirms that the simulation-based ranking method is "
-        "useful but not a proof by itself. "
-        "Most high-confidence candidates were formally verified by ABC's equivalence "
-        "checker, which shows the scoring formula produces meaningful rankings. "
-        "The rejected candidate demonstrates why a formal check is necessary: a high "
-        "simulation similarity score is not sufficient to guarantee equivalence, and "
-        "ABC can find a concrete counterexample where the two nodes disagree. "
-        "Inconclusive cases reveal current prototype limitations, especially around "
-        "node-name stability between the original and optimized BLIF files and the "
-        "fact that ABC assigns new internal names during optimization. "
-        "Reducing the inconclusive rate is the most direct path to making the "
-        "refinement step more useful in practice.\n"
-    )
+    if df.empty:
+        lines.append("No SAT checks were run, so there is no refinement evidence yet.\n")
+    else:
+        counts = df["sat_status"].value_counts()
+        total = len(df)
+        verified = int(counts.get("verified", 0))
+        rejected = int(counts.get("rejected", 0))
+        inconc = int(counts.get("inconclusive", 0))
+
+        if verified == 0 and rejected > 0:
+            lines.append(
+                "The SAT refinement step is currently most useful as a false-positive "
+                "filter. ABC rejected every checked high-confidence non-exact candidate, "
+                "so these rows cannot be claimed as recovered internal correspondences. "
+                "This is still useful evidence: high simulation/support/depth scores are "
+                "not enough to imply functional equivalence, and formal checking can "
+                "separate structural similarity from true node equivalence."
+            )
+        elif verified > 0:
+            lines.append(
+                f"ABC verified {verified} of {total} checked candidates. Verified "
+                "`non_exact_candidate` rows are the strongest evidence that the ranking "
+                "can recover correspondences missed by signature matching."
+            )
+        else:
+            lines.append(
+                "No candidates were verified or rejected, so this run does not yet provide "
+                "useful SAT refinement evidence."
+            )
+
+        if inconc == 0:
+            lines.append(
+                "There were no inconclusive candidates in this run, so the SAT results are "
+                "usable as formal verdicts for the selected candidate set.\n"
+            )
+        else:
+            lines.append(
+                f"{inconc} of {total} candidates were inconclusive. Those cases should not "
+                "be interpreted as either matches or mismatches; they are tooling or BLIF "
+                "preparation failures that need separate debugging.\n"
+            )
 
     return "\n".join(lines)
 

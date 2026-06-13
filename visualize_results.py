@@ -10,6 +10,9 @@ Requires matplotlib and pandas. Install with:
 """
 import os
 import pandas as pd
+import matplotlib
+
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 

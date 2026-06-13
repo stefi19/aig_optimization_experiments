@@ -50,12 +50,17 @@ import csv
 import shutil
 import tempfile
 import subprocess
-import pandas as pd
 
 # ── Configuration ─────────────────────────────────────────────────────────────
 
-INPUT_CSV          = os.path.join("results", "sat_refinement_candidates.csv")
-OUTPUT_CSV         = os.path.join("results", "sat_verified_candidates.csv")
+INPUT_CSV          = os.environ.get(
+    "SAT_INPUT_CSV",
+    os.path.join("results", "sat_refinement_candidates.csv"),
+)
+OUTPUT_CSV         = os.environ.get(
+    "SAT_OUTPUT_CSV",
+    os.path.join("results", "sat_verified_candidates.csv"),
+)
 FINGERPRINT_CSV    = os.path.join("results", "node_fingerprints.csv")
 
 # Columns written to the output CSV
@@ -63,8 +68,14 @@ OUT_COLS = [
     "benchmark", "optimization",
     "optimized_node", "original_candidate",
     "combined_score",
+    "rank",
+    "support_overlap",
     "is_exact_signature_match",  # 1 if already an exact Boolean match, 0 otherwise
     "match_category",            # "exact_anchor" | "non_exact_candidate"
+    "signature_match_on_patterns",
+    "formal_truth_table_match",
+    "pattern_count",
+    "is_formal_exact_mode",
     "sat_status",        # verified | rejected | inconclusive
     "abc_result",        # raw summary line from ABC
     "recovery_method",   # direct | fingerprint | inconclusive
@@ -165,13 +176,30 @@ def resolve_node_via_fingerprint(
 
 # ── BLIF node exposure ────────────────────────────────────────────────────────
 
-def expose_node_as_output(src_blif: str, node_name: str, dst_path: str) -> None:
+def expose_node_as_output(
+    src_blif: str,
+    node_name: str,
+    dst_path: str,
+    output_name: str = "__cmp_out",
+    invert: bool = False,
+) -> None:
     """
-    Write a copy of src_blif where the .outputs line is replaced by a single
-    entry: `node_name`.
+    Write a copy of src_blif where `node_name` is exposed through `output_name`.
 
-    This lets ABC load the circuit and treat `node_name` as the sole primary
-    output, so CEC checks only that node's function.
+    ABC's cec command compares primary outputs by position and name.  If one
+    temporary BLIF exposes "new_n40" and the other exposes "new_n41", ABC can
+    report a primary-output-name mismatch before proving anything useful.  To
+    avoid that, both temporary files use the same artificial output name and add
+    a one-line buffer:
+
+        .names selected_node __cmp_out
+        1 1
+
+    If invert=True, the artificial output is the complement of the selected
+    node instead:
+
+        .names selected_node __cmp_out
+        0 1
 
     The .inputs and all .names lines are kept unchanged so ABC can compute the
     transitive fanin correctly. Unused nodes are harmless — ABC ignores them.
@@ -179,23 +207,23 @@ def expose_node_as_output(src_blif: str, node_name: str, dst_path: str) -> None:
     Raises ValueError if `node_name` is not defined by any .names statement
     in the source BLIF (catches typos early).
     """
-    with open(src_blif) as fh:
+    with open(src_blif, encoding="utf-8") as fh:
         lines = fh.readlines()
 
     # Verify the node actually exists in this BLIF.
     defined_names = set()
+    primary_inputs = set()
     for line in lines:
         stripped = line.strip()
         if stripped.startswith(".names"):
             parts = stripped.split()
             if len(parts) >= 2:
                 defined_names.add(parts[-1])  # last token is the output name
+        if stripped.startswith(".inputs"):
+            primary_inputs.update(stripped.split()[1:])
 
     # Also count primary inputs as defined (they don't have .names lines).
-    for line in lines:
-        stripped = line.strip()
-        if stripped.startswith(".inputs"):
-            defined_names.update(stripped.split()[1:])
+    defined_names.update(primary_inputs)
 
     if node_name not in defined_names:
         raise ValueError(
@@ -203,16 +231,45 @@ def expose_node_as_output(src_blif: str, node_name: str, dst_path: str) -> None:
             f"Defined names: {sorted(defined_names)}"
         )
 
+    if output_name in defined_names and output_name != node_name:
+        raise ValueError(
+            f"Artificial output name '{output_name}' already exists in {src_blif}. "
+            "Choose a different comparison output name."
+        )
+
     out_lines = []
+    wrote_outputs = False
+    inserted_buffer = False
+
     for line in lines:
         stripped = line.strip()
         if stripped.startswith(".outputs"):
-            # Replace whatever was here with just our target node.
-            out_lines.append(f".outputs {node_name}\n")
+            # Replace all original outputs with a single shared comparison PO.
+            if not wrote_outputs:
+                out_lines.append(f".outputs {output_name}\n")
+                wrote_outputs = True
+            # If a file has multiple .outputs lines, skip the later ones.
+        elif stripped.startswith(".end"):
+            if not wrote_outputs:
+                out_lines.append(f".outputs {output_name}\n")
+                wrote_outputs = True
+            if output_name != node_name:
+                out_lines.append(f".names {node_name} {output_name}\n")
+                out_lines.append("0 1\n" if invert else "1 1\n")
+            inserted_buffer = True
+            out_lines.append(line)
         else:
             out_lines.append(line)
 
-    with open(dst_path, "w") as fh:
+    if not inserted_buffer:
+        if not wrote_outputs:
+            out_lines.append(f".outputs {output_name}\n")
+        if output_name != node_name:
+            out_lines.append(f".names {node_name} {output_name}\n")
+            out_lines.append("0 1\n" if invert else "1 1\n")
+        out_lines.append(".end\n")
+
+    with open(dst_path, "w", encoding="utf-8") as fh:
         fh.writelines(out_lines)
 
 
@@ -300,9 +357,17 @@ def check_candidate(abc_bin: str, row: dict, fp_index: dict | None = None) -> di
         "optimized_node":           row["optimized_node"],
         "original_candidate":       row["original_candidate"],
         "combined_score":           row["combined_score"],
+        "rank":                     int(row.get("rank", 0)),
+        "support_overlap":          row.get("support_overlap", ""),
         # pass through exact-match metadata from select_sat_candidates.py
         "is_exact_signature_match": int(row.get("is_exact_signature_match", 0)),
         "match_category":           row.get("match_category", "non_exact_candidate"),
+        "signature_match_on_patterns": int(
+            row.get("signature_match_on_patterns", row.get("is_exact_signature_match", 0))
+        ),
+        "formal_truth_table_match": int(row.get("formal_truth_table_match", 0)),
+        "pattern_count": int(row.get("pattern_count", 0)),
+        "is_formal_exact_mode": int(row.get("is_formal_exact_mode", 0)),
         "sat_status":               "inconclusive",
         "abc_result":               "",
         "recovery_method":          "inconclusive",
@@ -456,6 +521,8 @@ def _find_useful_error_line(raw: str) -> str:
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
+    import pandas as pd
+
     # Locate ABC.
     try:
         abc_bin = find_abc()

@@ -1,0 +1,4 @@
+validation_layer,total,verified,rejected,inconclusive,verification_rate,rejection_rate,inconclusive_rate
+exact_anchor_sanity,3052,3052,0,0,1.0,0.0,0.0
+rank1_nonexact_recovery,425,0,425,0,0.0,1.0,0.0
+topk_nonexact_recovery,1993,0,1993,0,0.0,1.0,0.0

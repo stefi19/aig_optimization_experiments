@@ -3,9 +3,8 @@ research_plots.py — Generate research-quality matplotlib PNG plots for AIG
 optimization experiments.
 
 Plots produced (all written to results/plots/):
-  1. exact_match_rate.png        — exact internal match rate per benchmark/opt
-                                   (denominator = optimized_nodes, consistent with
-                                   analyze_blif_matches.py)
+  1. exact_match_rate.png        — signature match rate per benchmark/opt
+                                   (formal only when is_formal_exact_mode = 1)
   2. support_overlap_dist.png    — distribution of avg_best_support_overlap
   3. node_reduction.png          — original vs optimised node counts (grouped bar)
   4. level_reduction.png         — original vs optimised level counts (grouped bar)
@@ -13,6 +12,8 @@ Plots produced (all written to results/plots/):
   6. topk_recovery.png           — avg_score_at_1 by benchmark (bar)
   7. ablation_comparison.png     — MRR / rank1_consistency per scoring config
   8. region_scores.png           — avg rank-1 region score by depth (line)
+  9. preservation_vs_reduction.png — node reduction vs preserved signature fraction
+ 10. false_positive_by_group.png — rejected non-exact candidates by optimization group
 
 Each plot function returns the output path so callers can log/test.
 Missing optional input files are skipped gracefully (warning printed, no crash).
@@ -47,6 +48,7 @@ CSV = {
     "ablation":        RESULTS_DIR / "ablation_summary.csv",
     "region_summary":  RESULTS_DIR / "region_summary.csv",
     "cegar":           RESULTS_DIR / "cegar_refined_candidates.csv",
+    "false_positive":  RESULTS_DIR / "sat_false_positive_analysis.csv",
 }
 
 # Colour palette (colour-blind friendly, Okabe-Ito inspired)
@@ -101,18 +103,15 @@ def _opt_labels(optimizations: list[str]) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
-# 1. Exact match rate
+# 1. Signature match rate
 # ---------------------------------------------------------------------------
 
 def plot_exact_match_rate() -> Optional[str]:
-    """Bar chart of exact internal match rate per benchmark × opt.
+    """Bar chart of internal signature match rate per benchmark × opt.
 
-    Uses the pre-computed 'exact_match_rate' column from summary_metrics.csv if
-    present (it is computed as exact_internal_matches / optimized_nodes by
-    analyze_blif_matches.py).  Falls back to recomputing with the same denominator
-    (optimized_nodes) so the chart is always consistent with the analysis script.
-    We deliberately do NOT divide by original_nodes because the denominator should
-    be the set of nodes we are trying to match — the optimized ones.
+    The legacy output filename is kept for compatibility.  For rows where
+    is_formal_exact_mode = 0, this is only a sampled-pattern signature match,
+    not a formal truth-table proof.
     """
     df = _load("summary")
     if df is None:
@@ -149,8 +148,8 @@ def plot_exact_match_rate() -> Optional[str]:
 
     ax.set_xticks(list(x))
     ax.set_xticklabels(benchmarks, rotation=15, ha="right")
-    ax.set_ylabel("Exact Match Rate")
-    ax.set_title("Exact Internal Match Rate by Benchmark & Optimization")
+    ax.set_ylabel("Signature Match Rate")
+    ax.set_title("Internal Signature Match Rate by Benchmark & Optimization")
     ax.yaxis.set_major_formatter(mticker.PercentFormatter(xmax=1))
     ax.set_ylim(0, 1.1)
     ax.legend(title="Optimization", bbox_to_anchor=(1.01, 1), loc="upper left")
@@ -437,6 +436,112 @@ def plot_region_scores() -> Optional[str]:
 
 
 # ---------------------------------------------------------------------------
+# 9. Preservation vs node reduction
+# ---------------------------------------------------------------------------
+
+def plot_preservation_vs_reduction() -> Optional[str]:
+    """Scatter plot: node reduction vs preserved signature fraction.
+
+    This uses the newer denominator-aware metric preserved_signature_fraction
+    when present.  It excludes zero-internal-node rows so empty 0/0 cases do
+    not look like failed preservation.
+    """
+    df = _load("summary")
+    if df is None:
+        return None
+
+    df = df.copy()
+    if "has_internal_nodes" in df.columns:
+        df = df[df["has_internal_nodes"].astype(bool)]
+    if df.empty:
+        warnings.warn("[research_plots] no internal-node rows in summary CSV — skipping preservation plot")
+        return None
+
+    if "preserved_signature_fraction" not in df.columns:
+        df["preserved_signature_fraction"] = (
+            df["exact_internal_matches"] / df["original_nodes"].replace(0, float("nan"))
+        )
+    if "node_reduction_rate" not in df.columns:
+        df["node_reduction_rate"] = (
+            (df["original_nodes"] - df["optimized_nodes"])
+            / df["original_nodes"].replace(0, float("nan"))
+        )
+
+    opts = _opt_labels(df["optimization"].unique().tolist())
+    fig, ax = plt.subplots(figsize=(7, 5))
+    for i, opt in enumerate(opts):
+        sub = df[df["optimization"] == opt]
+        ax.scatter(
+            sub["node_reduction_rate"],
+            sub["preserved_signature_fraction"],
+            s=42,
+            alpha=0.75,
+            color=PALETTE[i % len(PALETTE)],
+            label=opt,
+            edgecolor="white",
+            linewidth=0.4,
+        )
+
+    ax.set_xlabel("Node Reduction Rate")
+    ax.set_ylabel("Preserved Signature Fraction")
+    ax.set_title("Node Reduction vs Signature Preservation")
+    ax.xaxis.set_major_formatter(mticker.PercentFormatter(xmax=1))
+    ax.yaxis.set_major_formatter(mticker.PercentFormatter(xmax=1))
+    ax.set_ylim(-0.05, 1.05)
+    ax.grid(linestyle="--", alpha=0.4)
+    ax.legend(title="Optimization", bbox_to_anchor=(1.01, 1), loc="upper left", fontsize=7)
+    fig.tight_layout()
+    return _save(fig, "preservation_vs_reduction.png")
+
+
+# ---------------------------------------------------------------------------
+# 10. False-positive analysis
+# ---------------------------------------------------------------------------
+
+def plot_false_positive_by_group() -> Optional[str]:
+    """Grouped bar: rejected non-exact SAT candidates by optimization group."""
+    df = _load("false_positive")
+    if df is None:
+        return None
+
+    df = df[
+        (df["dimension"] == "optimization_group")
+        & (df["validation_layer"].isin([
+            "rank1_nonexact_recovery",
+            "topk_nonexact_recovery",
+        ]))
+    ].copy()
+    if df.empty:
+        warnings.warn("[research_plots] no false-positive rows by optimization_group — skipping")
+        return None
+
+    groups = ["mild", "moderate", "aggressive"]
+    layers = ["rank1_nonexact_recovery", "topk_nonexact_recovery"]
+    labels = ["rank-1", "top-k below rank 1"]
+    x = range(len(groups))
+    width = 0.34
+
+    fig, ax = plt.subplots(figsize=(7, 4))
+    for i, (layer, label) in enumerate(zip(layers, labels)):
+        sub = df[df["validation_layer"] == layer]
+        vals = [
+            int(sub.loc[sub["bucket"] == group, "rejected_count"].sum())
+            for group in groups
+        ]
+        offsets = [xi + (i - 0.5) * width for xi in x]
+        ax.bar(offsets, vals, width=width * 0.9, color=PALETTE[i], label=label)
+
+    ax.set_xticks(list(x))
+    ax.set_xticklabels(groups)
+    ax.set_ylabel("Rejected Candidate Count")
+    ax.set_title("False Positives by Optimization Group")
+    ax.legend()
+    ax.grid(axis="y", linestyle="--", alpha=0.4)
+    fig.tight_layout()
+    return _save(fig, "false_positive_by_group.png")
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -449,6 +554,8 @@ ALL_PLOTS = [
     ("topk_recovery",         plot_topk_recovery),
     ("ablation_comparison",   plot_ablation_comparison),
     ("region_scores",         plot_region_scores),
+    ("preservation_vs_reduction", plot_preservation_vs_reduction),
+    ("false_positive_by_group", plot_false_positive_by_group),
 ]
 
 

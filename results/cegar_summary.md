@@ -6,7 +6,7 @@
 
 - `top_candidates.csv`: ✅ loaded
 - `sat_verified_candidates.csv`: ✅ loaded
-- Rejected pairs used as penalty sources: **20**
+- Rejected pairs used as penalty sources: **425**
 
 ## Configuration
 
@@ -53,17 +53,17 @@
 | generated_multiplier_2 | resyn2_like | 4 | 0 | 0 | 0 | 0.9141 | 0.9141 | 0.0000 |
 | generated_multiplier_2 | rewrite | 5 | 0 | 0 | 0 | 1.0000 | 1.0000 | 0.0000 |
 | generated_multiplier_2 | rewrite_z | 5 | 0 | 0 | 0 | 1.0000 | 1.0000 | 0.0000 |
-| generated_multiplier_4 | balance | 112 | 0 | 0 | 0 | 0.9970 | 0.9970 | 0.0000 |
-| generated_multiplier_4 | compress2rs | 75 | 1 | 0 | 1 | 0.9360 | 0.9333 | 0.0027 |
-| generated_multiplier_4 | dc2 | 82 | 1 | 0 | 1 | 0.9330 | 0.9306 | 0.0024 |
-| generated_multiplier_4 | refactor | 100 | 0 | 0 | 0 | 0.9789 | 0.9789 | 0.0000 |
-| generated_multiplier_4 | refactor_z | 100 | 0 | 0 | 0 | 0.9500 | 0.9500 | 0.0000 |
-| generated_multiplier_4 | resub | 101 | 0 | 0 | 0 | 0.9927 | 0.9927 | 0.0000 |
-| generated_multiplier_4 | resyn | 83 | 1 | 0 | 1 | 0.9388 | 0.9363 | 0.0024 |
-| generated_multiplier_4 | resyn2 | 82 | 1 | 0 | 1 | 0.9339 | 0.9315 | 0.0024 |
-| generated_multiplier_4 | resyn2_like | 82 | 1 | 0 | 1 | 0.9339 | 0.9315 | 0.0024 |
-| generated_multiplier_4 | rewrite | 85 | 1 | 0 | 1 | 0.9730 | 0.9706 | 0.0024 |
-| generated_multiplier_4 | rewrite_z | 91 | 4 | 2 | 4 | 0.9337 | 0.9251 | 0.0077 |
+| generated_multiplier_4 | balance | 112 | 8 | 6 | 8 | 0.9970 | 0.9831 | 0.0121 |
+| generated_multiplier_4 | compress2rs | 75 | 45 | 24 | 45 | 0.9360 | 0.8236 | 0.1073 |
+| generated_multiplier_4 | dc2 | 82 | 51 | 28 | 51 | 0.9330 | 0.8178 | 0.1104 |
+| generated_multiplier_4 | refactor | 100 | 17 | 0 | 17 | 0.9789 | 0.9449 | 0.0340 |
+| generated_multiplier_4 | refactor_z | 100 | 35 | 6 | 35 | 0.9500 | 0.8804 | 0.0684 |
+| generated_multiplier_4 | resub | 101 | 5 | 2 | 5 | 0.9927 | 0.9833 | 0.0092 |
+| generated_multiplier_4 | resyn | 83 | 49 | 26 | 49 | 0.9388 | 0.8285 | 0.1056 |
+| generated_multiplier_4 | resyn2 | 82 | 49 | 26 | 49 | 0.9339 | 0.8223 | 0.1069 |
+| generated_multiplier_4 | resyn2_like | 82 | 49 | 26 | 49 | 0.9339 | 0.8223 | 0.1069 |
+| generated_multiplier_4 | rewrite | 85 | 25 | 4 | 25 | 0.9730 | 0.9151 | 0.0567 |
+| generated_multiplier_4 | rewrite_z | 91 | 47 | 25 | 47 | 0.9337 | 0.8377 | 0.0920 |
 | generated_mux_tree_16 | balance | 44 | 0 | 0 | 0 | 1.0000 | 1.0000 | 0.0000 |
 | generated_mux_tree_16 | compress2rs | 44 | 0 | 0 | 0 | 0.7891 | 0.7891 | 0.0000 |
 | generated_mux_tree_16 | dc2 | 44 | 0 | 0 | 0 | 0.6463 | 0.6463 | 0.0000 |
@@ -98,16 +98,16 @@
 | generated_mux_tree_8 | rewrite | 20 | 0 | 0 | 0 | 1.0000 | 1.0000 | 0.0000 |
 | generated_mux_tree_8 | rewrite_z | 20 | 0 | 0 | 0 | 0.8488 | 0.8488 | 0.0000 |
 | generated_random_medium | balance | 17 | 0 | 0 | 0 | 1.0000 | 1.0000 | 0.0000 |
-| generated_random_medium | compress2rs | 17 | 1 | 0 | 1 | 0.8466 | 0.8348 | 0.0118 |
+| generated_random_medium | compress2rs | 17 | 3 | 0 | 3 | 0.8466 | 0.8113 | 0.0353 |
 | generated_random_medium | dc2 | 17 | 0 | 0 | 0 | 0.8560 | 0.8560 | 0.0000 |
 | generated_random_medium | refactor | 17 | 0 | 0 | 0 | 1.0000 | 1.0000 | 0.0000 |
-| generated_random_medium | refactor_z | 17 | 0 | 0 | 0 | 0.9216 | 0.9216 | 0.0000 |
+| generated_random_medium | refactor_z | 17 | 6 | 0 | 6 | 0.9216 | 0.8510 | 0.0706 |
 | generated_random_medium | resub | 17 | 0 | 0 | 0 | 1.0000 | 1.0000 | 0.0000 |
-| generated_random_medium | resyn | 17 | 0 | 0 | 0 | 0.8845 | 0.8845 | 0.0000 |
-| generated_random_medium | resyn2 | 17 | 1 | 0 | 1 | 0.8466 | 0.8348 | 0.0118 |
-| generated_random_medium | resyn2_like | 17 | 1 | 0 | 1 | 0.8466 | 0.8348 | 0.0118 |
+| generated_random_medium | resyn | 17 | 2 | 0 | 2 | 0.8845 | 0.8610 | 0.0235 |
+| generated_random_medium | resyn2 | 17 | 3 | 0 | 3 | 0.8466 | 0.8113 | 0.0353 |
+| generated_random_medium | resyn2_like | 17 | 3 | 0 | 3 | 0.8466 | 0.8113 | 0.0353 |
 | generated_random_medium | rewrite | 17 | 0 | 0 | 0 | 1.0000 | 1.0000 | 0.0000 |
-| generated_random_medium | rewrite_z | 17 | 0 | 0 | 0 | 0.8865 | 0.8865 | 0.0000 |
+| generated_random_medium | rewrite_z | 17 | 3 | 0 | 3 | 0.8865 | 0.8512 | 0.0353 |
 | generated_xor_chain_16 | balance | 44 | 0 | 0 | 0 | 1.0000 | 1.0000 | 0.0000 |
 | generated_xor_chain_16 | compress2rs | 44 | 0 | 0 | 0 | 0.5941 | 0.5941 | 0.0000 |
 | generated_xor_chain_16 | dc2 | 44 | 0 | 0 | 0 | 0.5205 | 0.5205 | 0.0000 |
@@ -142,14 +142,14 @@
 | generated_xor_chain_8 | rewrite | 20 | 0 | 0 | 0 | 1.0000 | 1.0000 | 0.0000 |
 | generated_xor_chain_8 | rewrite_z | 20 | 0 | 0 | 0 | 0.6538 | 0.6538 | 0.0000 |
 | majority3 | balance | 4 | 1 | 0 | 1 | 0.9656 | 0.9156 | 0.0500 |
-| majority3 | compress2rs | 3 | 0 | 0 | 0 | 0.8625 | 0.8625 | 0.0000 |
-| majority3 | dc2 | 3 | 0 | 0 | 0 | 0.8625 | 0.8625 | 0.0000 |
+| majority3 | compress2rs | 3 | 1 | 0 | 1 | 0.8625 | 0.7958 | 0.0667 |
+| majority3 | dc2 | 3 | 1 | 0 | 1 | 0.8625 | 0.7958 | 0.0667 |
 | majority3 | refactor | 3 | 0 | 0 | 0 | 0.8299 | 0.8299 | 0.0000 |
-| majority3 | refactor_z | 3 | 0 | 0 | 0 | 0.8625 | 0.8625 | 0.0000 |
+| majority3 | refactor_z | 3 | 1 | 0 | 1 | 0.8625 | 0.7958 | 0.0667 |
 | majority3 | resub | 4 | 0 | 0 | 0 | 1.0000 | 1.0000 | 0.0000 |
 | majority3 | resyn | 4 | 1 | 0 | 1 | 0.9656 | 0.9156 | 0.0500 |
-| majority3 | resyn2 | 3 | 0 | 0 | 0 | 0.8625 | 0.8625 | 0.0000 |
-| majority3 | resyn2_like | 3 | 0 | 0 | 0 | 0.8625 | 0.8625 | 0.0000 |
+| majority3 | resyn2 | 3 | 1 | 0 | 1 | 0.8625 | 0.7958 | 0.0667 |
+| majority3 | resyn2_like | 3 | 1 | 0 | 1 | 0.8625 | 0.7958 | 0.0667 |
 | majority3 | rewrite | 4 | 0 | 0 | 0 | 1.0000 | 1.0000 | 0.0000 |
 | majority3 | rewrite_z | 4 | 1 | 0 | 1 | 0.9656 | 0.9156 | 0.0500 |
 | mux2 | balance | 2 | 0 | 0 | 0 | 1.0000 | 1.0000 | 0.0000 |
@@ -176,13 +176,13 @@
 | real_hand_written_comparator_4 | rewrite_z | 14 | 0 | 0 | 0 | 0.9256 | 0.9256 | 0.0000 |
 | real_hand_written_full_adder | balance | 9 | 1 | 0 | 1 | 0.9847 | 0.9625 | 0.0222 |
 | real_hand_written_full_adder | compress2rs | 5 | 0 | 0 | 0 | 0.9250 | 0.9250 | 0.0000 |
-| real_hand_written_full_adder | dc2 | 6 | 0 | 0 | 0 | 0.8490 | 0.8490 | 0.0000 |
+| real_hand_written_full_adder | dc2 | 6 | 3 | 0 | 3 | 0.8490 | 0.7490 | 0.1000 |
 | real_hand_written_full_adder | refactor | 8 | 0 | 0 | 0 | 0.9531 | 0.9531 | 0.0000 |
-| real_hand_written_full_adder | refactor_z | 8 | 0 | 0 | 0 | 0.9016 | 0.9016 | 0.0000 |
+| real_hand_written_full_adder | refactor_z | 8 | 1 | 0 | 1 | 0.9016 | 0.8766 | 0.0250 |
 | real_hand_written_full_adder | resub | 9 | 0 | 0 | 0 | 1.0000 | 1.0000 | 0.0000 |
 | real_hand_written_full_adder | resyn | 9 | 1 | 0 | 1 | 0.9847 | 0.9625 | 0.0222 |
-| real_hand_written_full_adder | resyn2 | 8 | 0 | 0 | 0 | 0.9016 | 0.9016 | 0.0000 |
-| real_hand_written_full_adder | resyn2_like | 8 | 0 | 0 | 0 | 0.9016 | 0.9016 | 0.0000 |
+| real_hand_written_full_adder | resyn2 | 8 | 1 | 0 | 1 | 0.9016 | 0.8766 | 0.0250 |
+| real_hand_written_full_adder | resyn2_like | 8 | 1 | 0 | 1 | 0.9016 | 0.8766 | 0.0250 |
 | real_hand_written_full_adder | rewrite | 9 | 0 | 0 | 0 | 1.0000 | 1.0000 | 0.0000 |
 | real_hand_written_full_adder | rewrite_z | 9 | 1 | 0 | 1 | 0.9847 | 0.9625 | 0.0222 |
 | real_hand_written_mux_4to1 | balance | 10 | 0 | 0 | 0 | 0.9058 | 0.9058 | 0.0000 |
@@ -191,14 +191,14 @@
 | real_hand_written_mux_4to1 | refactor | 8 | 0 | 0 | 0 | 0.7620 | 0.7620 | 0.0000 |
 | real_hand_written_mux_4to1 | refactor_z | 8 | 0 | 0 | 0 | 0.6505 | 0.6505 | 0.0000 |
 | real_hand_written_mux_4to1 | resub | 10 | 0 | 0 | 0 | 1.0000 | 1.0000 | 0.0000 |
-| real_hand_written_mux_4to1 | resyn | 8 | 0 | 0 | 0 | 0.7286 | 0.7286 | 0.0000 |
+| real_hand_written_mux_4to1 | resyn | 8 | 2 | 0 | 2 | 0.7286 | 0.6786 | 0.0500 |
 | real_hand_written_mux_4to1 | resyn2 | 8 | 0 | 0 | 0 | 0.6505 | 0.6505 | 0.0000 |
 | real_hand_written_mux_4to1 | resyn2_like | 8 | 0 | 0 | 0 | 0.6505 | 0.6505 | 0.0000 |
-| real_hand_written_mux_4to1 | rewrite | 8 | 0 | 0 | 0 | 0.7286 | 0.7286 | 0.0000 |
-| real_hand_written_mux_4to1 | rewrite_z | 8 | 0 | 0 | 0 | 0.7286 | 0.7286 | 0.0000 |
+| real_hand_written_mux_4to1 | rewrite | 8 | 2 | 0 | 2 | 0.7286 | 0.6786 | 0.0500 |
+| real_hand_written_mux_4to1 | rewrite_z | 8 | 2 | 0 | 2 | 0.7286 | 0.6786 | 0.0500 |
 | real_hand_written_parity_8 | balance | 20 | 0 | 0 | 0 | 1.0000 | 1.0000 | 0.0000 |
 | real_hand_written_parity_8 | compress2rs | 20 | 0 | 0 | 0 | 0.8594 | 0.8594 | 0.0000 |
-| real_hand_written_parity_8 | dc2 | 20 | 1 | 0 | 1 | 0.8071 | 0.7971 | 0.0100 |
+| real_hand_written_parity_8 | dc2 | 20 | 2 | 0 | 2 | 0.8071 | 0.7871 | 0.0200 |
 | real_hand_written_parity_8 | refactor | 20 | 0 | 0 | 0 | 1.0000 | 1.0000 | 0.0000 |
 | real_hand_written_parity_8 | refactor_z | 20 | 0 | 0 | 0 | 0.8875 | 0.8875 | 0.0000 |
 | real_hand_written_parity_8 | resub | 20 | 0 | 0 | 0 | 1.0000 | 1.0000 | 0.0000 |
@@ -245,21 +245,28 @@
 
 | total_nodes | nodes_with_penalty | pct_penalized | nodes_rank1_changed | pct_rank1_changed | n_rejected_pairs | avg_original_rank1 | avg_refined_rank1 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 5350 | 20 | 0.4% | 2 | 0.0% | 20 | 0.8901 | 0.8888 |
+| 5350 | 425 | 7.9% | 173 | 3.2% | 425 | 0.8901 | 0.8812 |
 
 ## Rank changes
 
-- **4** candidate rows moved to a higher rank (rank_change > 0)
-- **3** candidate rows moved to a lower rank (rank_change < 0)
-- **26507** rows unchanged
+- **466** candidate rows moved to a higher rank (rank_change > 0)
+- **480** candidate rows moved to a lower rank (rank_change < 0)
+- **25568** rows unchanged
 
 ### Most penalised candidates (largest rank drops)
 
 | benchmark              | optimization   | optimized_node   | original_candidate   |   combined_score |   penalty |   refined_score |   rank |   cegar_rank |
 |:-----------------------|:---------------|:-----------------|:---------------------|-----------------:|----------:|----------------:|-------:|-------------:|
-| generated_multiplier_4 | rewrite_z      | new_n104         | new_n105             |         0.901172 |   0.19375 |        0.707422 |      3 |            5 |
-| generated_multiplier_4 | rewrite_z      | new_n104         | new_n104             |         0.952734 |   0.2     |        0.752734 |      1 |            2 |
-| generated_multiplier_4 | rewrite_z      | new_n40          | new_n40              |         0.965625 |   0.2     |        0.765625 |      1 |            2 |
+| generated_multiplier_4 | rewrite        | new_n86          | new_n77              |         0.954883 |       0.2 |        0.754883 |      1 |            5 |
+| generated_multiplier_4 | dc2            | new_n59          | new_n102             |         0.941211 |       0.2 |        0.741211 |      1 |            5 |
+| generated_multiplier_4 | resyn          | new_n62          | new_n102             |         0.936914 |       0.2 |        0.736914 |      1 |            5 |
+| generated_multiplier_4 | compress2rs    | new_n57          | new_n102             |         0.936914 |       0.2 |        0.736914 |      1 |            5 |
+| generated_multiplier_4 | resyn2         | new_n61          | new_n102             |         0.936914 |       0.2 |        0.736914 |      1 |            5 |
+| generated_multiplier_4 | dc2            | new_n79          | new_n78              |         0.866797 |       0.2 |        0.666797 |      1 |            5 |
+| generated_multiplier_4 | resyn2_like    | new_n61          | new_n102             |         0.936914 |       0.2 |        0.736914 |      1 |            5 |
+| generated_multiplier_4 | rewrite_z      | new_n64          | new_n102             |         0.941211 |       0.2 |        0.741211 |      1 |            5 |
+| generated_multiplier_4 | balance        | new_n135         | new_n134             |         0.944141 |       0.2 |        0.744141 |      1 |            5 |
+| generated_multiplier_4 | rewrite_z      | new_n107         | new_n106             |         0.935547 |       0.2 |        0.735547 |      1 |            4 |
 
 ## Interpretation
 

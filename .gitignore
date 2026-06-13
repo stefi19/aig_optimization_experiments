@@ -13,6 +13,7 @@ env/
 .pytest_cache/
 .coverage
 htmlcov/
+.matplotlib-cache/
 
 # ABC build (built locally, not tracked)
 .abc_build/

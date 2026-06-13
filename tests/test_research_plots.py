@@ -46,6 +46,9 @@ def summary_df():
         "exact_internal_matches":   [3, 1, 5, 2],
         "old_signatures_disappeared": [1, 3, 1, 4],
         "new_signatures_appeared":  [1, 2, 0, 3],
+        "preserved_signature_fraction": [0.75, 0.25, 0.83, 0.33],
+        "node_reduction_rate":       [0.0, 0.25, 0.17, 0.0],
+        "has_internal_nodes":        [True, True, True, True],
         "avg_best_support_overlap": [1.0, 1.0, 0.9, 0.8],
         "simulation_mode":          ["exact", "exact", "exact", "exact"],
     })
@@ -637,18 +640,18 @@ class TestRunAll:
                 results = rp.run_all()
         assert all(v is None for v in results.values())
 
-    def test_run_all_eight_entries(self):
+    def test_run_all_nine_entries(self):
         rp = _import_rp()
         with patch.object(rp, "_load", return_value=None), \
              patch.object(rp, "_ensure_plots_dir"):
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
                 results = rp.run_all()
-        assert len(results) == 8
+        assert len(results) == 10
 
-    def test_all_plots_list_has_eight_entries(self):
+    def test_all_plots_list_has_ten_entries(self):
         rp = _import_rp()
-        assert len(rp.ALL_PLOTS) == 8
+        assert len(rp.ALL_PLOTS) == 10
 
     def test_all_plots_callables(self):
         rp = _import_rp()

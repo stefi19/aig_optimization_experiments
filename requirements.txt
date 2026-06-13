@@ -1,3 +1,4 @@
 pandas>=1.5
 matplotlib>=3.6
 pytest>=7.0
+tabulate>=0.9

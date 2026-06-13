@@ -69,7 +69,7 @@ class TestExposeNodeAsOutput:
         with open(path) as f:
             return f.read()
 
-    def test_output_line_replaced(self):
+    def test_output_line_replaced_with_shared_comparison_output(self):
         src = (
             ".model test\n"
             ".inputs a b\n"
@@ -90,8 +90,9 @@ class TestExposeNodeAsOutput:
         os.unlink(src_path)
         os.unlink(dst.name)
 
-        assert ".outputs n_ab" in content
+        assert ".outputs __cmp_out" in content
         assert ".outputs y" not in content
+        assert ".names n_ab __cmp_out\n1 1\n" in content
 
     def test_inputs_unchanged(self):
         src = (
@@ -137,12 +138,12 @@ class TestExposeNodeAsOutput:
         os.unlink(src_path)
         os.unlink(dst.name)
 
-        # Both .names blocks must still be in the file.
-        assert content.count(".names") == 2
+        # Both original .names blocks plus the comparison-output buffer.
+        assert content.count(".names") == 3
 
     def test_expose_primary_input(self):
         # Primary inputs are "defined" (no .names line), so exposing one
-        # should succeed and just change .outputs.
+        # should succeed and add the same comparison buffer.
         src = (
             ".model test\n"
             ".inputs a b\n"
@@ -161,7 +162,30 @@ class TestExposeNodeAsOutput:
         os.unlink(src_path)
         os.unlink(dst.name)
 
-        assert ".outputs a" in content
+        assert ".outputs __cmp_out" in content
+        assert ".names a __cmp_out\n1 1\n" in content
+
+    def test_expose_node_as_inverted_output(self):
+        src = (
+            ".model test\n"
+            ".inputs a b\n"
+            ".outputs y\n"
+            ".names a b x\n"
+            "11 1\n"
+            ".end\n"
+        )
+        src_path = self._write_blif(src)
+        dst = tempfile.NamedTemporaryFile(suffix=".blif", delete=False)
+        dst.close()
+
+        expose_node_as_output(src_path, "x", dst.name, invert=True)
+        content = self._read(dst.name)
+
+        os.unlink(src_path)
+        os.unlink(dst.name)
+
+        assert ".outputs __cmp_out" in content
+        assert ".names x __cmp_out\n0 1\n" in content
 
     def test_missing_node_raises(self):
         src = (
@@ -210,5 +234,27 @@ class TestExposeNodeAsOutput:
         os.unlink(dst.name)
 
         # There should be no reference to the old .outputs line anymore.
-        assert ".outputs y" in content
+        assert ".outputs __cmp_out" in content
         assert ".outputs y z" not in content
+
+    def test_missing_end_still_gets_comparison_output(self):
+        src = (
+            ".model test\n"
+            ".inputs a b\n"
+            ".outputs y\n"
+            ".names a b y\n"
+            "11 1\n"
+        )
+        src_path = self._write_blif(src)
+        dst = tempfile.NamedTemporaryFile(suffix=".blif", delete=False)
+        dst.close()
+
+        expose_node_as_output(src_path, "y", dst.name)
+        content = self._read(dst.name)
+
+        os.unlink(src_path)
+        os.unlink(dst.name)
+
+        assert ".outputs __cmp_out" in content
+        assert ".names y __cmp_out\n1 1\n" in content
+        assert content.rstrip().endswith(".end")

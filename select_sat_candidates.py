@@ -126,8 +126,12 @@ def annotate(df: pd.DataFrame) -> pd.DataFrame:
     # Human-readable reason that explains why this candidate was selected.
     def _reason(row):
         if row.get("match_category") == "exact_anchor":
+            if int(row.get("is_formal_exact_mode", 0)):
+                kind = "formal truth-table match"
+            else:
+                kind = "signature match on sampled patterns"
             return (
-                f"exact signature match included only as an anchor/sanity check "
+                f"{kind} included only as an anchor/sanity check "
                 f"(score {row['combined_score']:.3f})"
             )
         return (

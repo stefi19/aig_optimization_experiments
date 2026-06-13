@@ -500,6 +500,11 @@ def compare_networks(original, optimized):
     optimized_sigs = optimized["signatures"]
     orig_nodes = original["num_internal_nodes"]
     opt_nodes = optimized["num_internal_nodes"]
+    has_internal_nodes = bool(orig_nodes or opt_nodes)
+    is_formal_exact_mode = bool(
+        original["exact_simulation"] and optimized["exact_simulation"]
+    )
+    total_patterns = min(original["total_patterns"], optimized["total_patterns"])
 
     original_counter = Counter(original_sigs.values())
     optimized_counter = Counter(optimized_sigs.values())
@@ -520,9 +525,6 @@ def compare_networks(original, optimized):
     best_support_scores: list[float] = []
     best_sim_scores: list[float] = []
     best_combined_scores: list[float] = []
-    original_nodes_list = list(original_sigs.keys())
-    total_patterns = min(original["total_patterns"], optimized["total_patterns"])
-
     for opt_node, opt_sig in optimized_sigs.items():
         opt_support = set(optimized["support"][opt_node])
         opt_level = optimized["level"][opt_node]
@@ -551,6 +553,10 @@ def compare_networks(original, optimized):
     def _avg(lst):
         return statistics.mean(lst) if lst else 0.0
 
+    optimized_signature_coverage = (
+        safe_rate(exact_matches, opt_nodes) if opt_nodes else None
+    )
+
     return {
         # ---- original columns (unchanged) ----
         "original_nodes": orig_nodes,
@@ -562,8 +568,26 @@ def compare_networks(original, optimized):
         "new_signatures_appeared": new_appeared,
         "avg_best_support_overlap": _avg(best_support_scores),
         "simulation_mode": "exact" if original["exact_simulation"] else "random",
+        "pattern_count": total_patterns,
+        "is_formal_exact_mode": int(is_formal_exact_mode),
+        "has_internal_nodes": int(has_internal_nodes),
+        "signature_match_on_patterns": exact_matches,
+        "formal_truth_table_matches": exact_matches if is_formal_exact_mode else None,
         # ---- new research metrics ----
-        "exact_match_rate": safe_rate(exact_matches, opt_nodes),
+        # Backward-compatible name. Prefer optimized_signature_coverage in reports.
+        "exact_match_rate": (
+            optimized_signature_coverage if optimized_signature_coverage is not None else None
+        ),
+        "preserved_signature_fraction": (
+            safe_rate(exact_matches, orig_nodes) if orig_nodes else None
+        ),
+        "optimized_signature_coverage": optimized_signature_coverage,
+        "disappeared_fraction": (
+            safe_rate(old_disappeared, orig_nodes) if orig_nodes else None
+        ),
+        "novel_fraction": (
+            safe_rate(new_appeared, opt_nodes) if opt_nodes else None
+        ),
         "node_reduction_rate": safe_rate(orig_nodes - opt_nodes, orig_nodes),
         "level_reduction_rate": safe_rate(
             original["max_level"] - optimized["max_level"], original["max_level"]
@@ -594,6 +618,9 @@ def rank_candidates(original, optimized, benchmark, optimization):
 
     rows = []
     total_patterns = min(original["total_patterns"], optimized["total_patterns"])
+    is_formal_exact_mode = bool(
+        original["exact_simulation"] and optimized["exact_simulation"]
+    )
 
     opt_fingerprints = optimized.get("fingerprints", {})
     orig_fingerprints = original.get("fingerprints", {})
@@ -617,13 +644,11 @@ def rank_candidates(original, optimized, benchmark, optimization):
             depth_score = depth_similarity(opt_level, orig_level)
             final_score = combined_candidate_score(sim_score, support_score, depth_score)
 
-            # A candidate is an exact signature match when both nodes produce
-            # identical outputs on every simulated input pattern.  For circuits
-            # in exact-simulation mode (all 2^n inputs) this is a formal proof
-            # of Boolean equivalence.  For random-mode circuits it is a strong
-            # indicator but not a proof.
-            is_exact = 1 if sim_score == 1.0 else 0
-            match_category = "exact_anchor" if is_exact else "non_exact_candidate"
+            # This is an exact Boolean proof only when we enumerated every input.
+            # In random mode it just means the pair agreed on sampled patterns.
+            signature_match = 1 if sim_score == 1.0 else 0
+            formal_match = 1 if signature_match and is_formal_exact_mode else 0
+            match_category = "exact_anchor" if signature_match else "non_exact_candidate"
 
             candidates.append({
                 "benchmark": benchmark,
@@ -637,8 +662,13 @@ def rank_candidates(original, optimized, benchmark, optimization):
                 "optimized_level": opt_level,
                 "original_level": orig_level,
                 # exact-match metadata (added to address methodological clarity)
-                "is_exact_signature_match": is_exact,
+                # Backward-compatible name. Prefer the two explicit columns below.
+                "is_exact_signature_match": signature_match,
                 "match_category": match_category,
+                "signature_match_on_patterns": signature_match,
+                "formal_truth_table_match": formal_match,
+                "pattern_count": total_patterns,
+                "is_formal_exact_mode": int(is_formal_exact_mode),
                 # new fingerprint / structural columns
                 "optimized_fingerprint": opt_fp,
                 "original_fingerprint": orig_fingerprints.get(orig_node, ""),
@@ -791,8 +821,17 @@ def main():
         "new_signatures_appeared",
         "avg_best_support_overlap",
         "simulation_mode",
+        "pattern_count",
+        "is_formal_exact_mode",
+        "has_internal_nodes",
+        "signature_match_on_patterns",
+        "formal_truth_table_matches",
         # new research metrics
         "exact_match_rate",
+        "preserved_signature_fraction",
+        "optimized_signature_coverage",
+        "disappeared_fraction",
+        "novel_fraction",
         "node_reduction_rate",
         "level_reduction_rate",
         "avg_best_simulation_similarity",
@@ -817,6 +856,10 @@ def main():
         # exact-match metadata
         "is_exact_signature_match",
         "match_category",
+        "signature_match_on_patterns",
+        "formal_truth_table_match",
+        "pattern_count",
+        "is_formal_exact_mode",
         # new structural columns
         "optimized_fingerprint",
         "original_fingerprint",

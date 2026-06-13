@@ -1,7 +1,7 @@
 ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 
-.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze plot test sat-refine sat-summary sat-pipeline topk-eval ablation region cegar-refine hybrid-validate research-plots full-research-pipeline start clean clean-results
+.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate research-plots full-research-pipeline start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -37,6 +37,10 @@ analyze:
 	@echo "Running analysis"
 	@python3 analyze_blif_matches.py
 
+check-results:
+	@echo "Checking result CSV freshness"
+	@python3 scripts/check_results_freshness.py
+
 plot:
 	@echo "Generating plots"
 	@python3 visualize_results.py
@@ -58,6 +62,20 @@ sat-pipeline:
 	@python3 select_sat_candidates.py
 	@python3 sat_refinement_abc.py
 	@python3 summarize_sat_results.py
+
+sat-validation-layers:
+	@echo "Running layered SAT validation: exact anchors + rank-1 non-exact + top-k non-exact"
+	@python3 select_sat_candidates.py
+	@python3 select_validation_candidates.py
+	@python3 sat_refinement_abc.py
+	@SAT_INPUT_CSV=results/sat_exact_anchor_candidates.csv SAT_OUTPUT_CSV=results/sat_exact_anchor_verified.csv python3 sat_refinement_abc.py
+	@SAT_INPUT_CSV=results/sat_topk_nonexact_candidates.csv SAT_OUTPUT_CSV=results/sat_topk_nonexact_verified.csv python3 sat_refinement_abc.py
+	@python3 summarize_sat_results.py
+	@python3 analyze_sat_validation_layers.py
+
+sat-complement:
+	@echo "Running complemented SAT validation on same-polarity rejected non-exact candidates"
+	@python3 sat_complement_refinement.py
 
 topk-eval:
 	@echo "Evaluating top-K recovery (CSV + Markdown → results/topk_recovery.*)"
@@ -99,6 +117,12 @@ clean-results:
 		results/node_fingerprints.csv \
 		results/sat_refinement_candidates.csv results/sat_verified_candidates.csv \
 		results/sat_summary.csv results/sat_summary.md \
+		results/sat_exact_anchor_candidates.csv results/sat_exact_anchor_verified.csv \
+		results/sat_topk_nonexact_candidates.csv results/sat_topk_nonexact_verified.csv \
+		results/sat_validation_layers_summary.csv results/sat_validation_layers.md \
+		results/sat_complement_rank1_nonexact.csv results/sat_complement_topk_nonexact.csv \
+		results/sat_complement_summary.csv results/sat_complement_summary.md \
+		results/sat_false_positive_analysis.csv \
 		results/topk_recovery.csv results/topk_recovery.md \
 		results/ablation_summary.csv results/ablation_summary.md \
 		results/region_candidates.csv results/region_summary.csv results/region_summary.md \

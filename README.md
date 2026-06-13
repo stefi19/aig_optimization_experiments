@@ -238,6 +238,8 @@ identical signatures compute the exact same Boolean function — they are a perf
 
 For circuits with many inputs (where exhaustive enumeration would be too slow), the tool uses
 4096 random input patterns instead (**simulation mode: random** vs **simulation mode: exact**).
+That distinction matters: in random mode, identical signatures are evidence on the sampled
+patterns, not a formal truth-table proof.
 
 **b) Support set**
 
@@ -257,11 +259,13 @@ Jaccard = 0.0.
 The **depth** of a node is the length of the longest path from any primary input to that node,
 measured in number of gates. Depth is normalized to [0, 1].
 
-### Step 3 — Exact matching
+### Step 3 — Signature matching
 
 Compare the signature multisets of original and optimized circuits. Every optimized node whose
-signature appears in the original set is an **exact match** — a formal proof that the two
-nodes compute identical Boolean functions.
+signature appears in the original set is a **signature match**. If `is_formal_exact_mode = 1`,
+this is a formal truth-table match because all input assignments were enumerated. If
+`is_formal_exact_mode = 0`, it is only `signature_match_on_patterns`: a strong simulation
+signal, but not a proof.
 
 ### Step 4 — Score and rank candidates
 
@@ -290,7 +294,16 @@ The weights (0.55 / 0.35 / 0.10) are a rough baseline — not tuned. The ablatio
 | `optimized_nodes` | How many internal gates after optimization |
 | `original_levels` | Longest gate chain in the original (= circuit delay) |
 | `optimized_levels` | Longest gate chain after optimization |
-| `exact_internal_matches` | Number of optimized nodes whose truth table is identical to some original node |
+| `exact_internal_matches` | Backward-compatible count of matched signatures |
+| `signature_match_on_patterns` | Number of optimized nodes whose signature matched on the evaluated patterns |
+| `formal_truth_table_matches` | Number of matches that are formal truth-table matches; blank/0 when random simulation was used |
+| `is_formal_exact_mode` | 1 if all input combinations were enumerated, 0 if random patterns were used |
+| `pattern_count` | Number of input patterns used to build node signatures |
+| `has_internal_nodes` | False for degenerate rows with no internal nodes; those rows are reported separately from preservation averages |
+| `preserved_signature_fraction` | matched signatures / original internal nodes |
+| `optimized_signature_coverage` | matched signatures / optimized internal nodes |
+| `disappeared_fraction` | old signatures disappeared / original internal nodes |
+| `novel_fraction` | new signatures appeared / optimized internal nodes |
 | `old_signatures_disappeared` | Original nodes whose truth table no longer appears in the optimized circuit |
 | `new_signatures_appeared` | Optimized nodes with truth tables that did not exist in the original |
 | `avg_best_support_overlap` | Average Jaccard similarity between each optimized node's support and its best-matching original node's support |
@@ -299,7 +312,7 @@ The weights (0.55 / 0.35 / 0.10) are a rough baseline — not tuned. The ablatio
 | `rank` | Position in the candidate list (rank 1 = best match) |
 | `verified` | SAT solver confirmed the two nodes are equivalent |
 | `rejected` | SAT solver found a counterexample (they compute different functions!) |
-| `inconclusive` | SAT check could not run (node was renamed by ABC) |
+| `inconclusive` | SAT check could not produce a verdict |
 | `mrr` | Mean Reciprocal Rank — measures how high the correct match appears in the ranked list on average (1.0 = always at the top) |
 | `rank1_consistency` | Fraction of nodes where the rank-1 candidate is the same across different scoring configurations |
 | `region_score` | Similarity score computed for the whole cone of logic feeding into a node |
@@ -309,13 +322,64 @@ The weights (0.55 / 0.35 / 0.10) are a rough baseline — not tuned. The ablatio
 
 ## 9. Results
 
-### 9.1 Exact match rate
+### 9.1 Key Results at a Glance
 
-![Exact match rate by benchmark and optimization](results/plots/exact_match_rate.png)
+These five plots are the main experimental evidence for the current research story.
+
+#### Signature Preservation by Optimization
+
+![Signature Match Rate by Benchmark and Optimization](results/plots/exact_match_rate.png)
+
+This plot shows how often optimized internal-node signatures still appear in the original
+circuit. Mild passes such as `resub`, `balance`, and `rewrite` preserve many signatures,
+while aggressive flows such as `dc2`, `compress2rs`, and `resyn2_like` destroy much more
+internal correspondence. This directly answers the core question: output-equivalent
+optimization can still heavily disrupt internal-node matching.
+
+#### Optimization Benefit vs Correspondence Loss
+
+![Node Reduction vs Signature Preservation](results/plots/preservation_vs_reduction.png)
+
+This plot compares node-count reduction with preserved signature fraction. It matters because
+optimization quality and correspondence preservation are not the same objective: a pass can
+reduce or restructure the circuit while also replacing internal functions that would have
+served as correspondence anchors.
+
+#### SAT Validation Status
+
+![SAT Validation Status](results/plots/sat_status.png)
+
+This plot summarizes the rank-1 non-exact SAT validation layer. After fixing node exposure
+with the shared `__cmp_out` output, ABC gives decisive verdicts instead of inconclusive
+output-name failures. The important result is negative but useful: the selected rank-1
+non-exact candidates are formally rejected, so they cannot be claimed as recovered
+correspondences.
+
+#### False Positives by Optimization Group
+
+![False Positive Analysis by Optimization Group](results/plots/false_positive_by_group.png)
+
+This plot groups formally rejected non-exact candidates by optimization aggressiveness. It
+shows where the heuristic ranking creates plausible but wrong candidates. This supports the
+methodological conclusion that simulation/support/depth scores are useful triage signals, but
+formal SAT validation is required before claiming equivalence.
+
+#### Support Overlap of Heuristic Candidates
+
+![Support Overlap Distribution](results/plots/support_overlap_dist.png)
+
+This plot shows that many high-ranked candidates share very similar or identical input
+support. That explains why the heuristic looks reasonable, but the SAT results show the limit:
+same support does not imply same Boolean function. This is the strongest evidence that
+structural locality and functional correspondence must be separated.
+
+### 9.2 Detailed Signature Match Rate
 
 **How to read this chart:** Each group of bars is one benchmark. Each bar is one optimization.
-The height is the fraction of optimized nodes that had an exact Boolean match in the original
-circuit (100% = all nodes matched perfectly, 0% = none matched).
+The height is `optimized_signature_coverage`: the fraction of optimized internal nodes whose
+signature was also present in the original circuit. For rows with `simulation_mode = exact`,
+this is a formal truth-table result. For rows with `simulation_mode = random`, it is only a
+sampled-pattern result.
 
 **What we see:**
 - Most benchmarks + most optimizations → near 100% exact match. The optimizer restructured
@@ -324,47 +388,45 @@ circuit (100% = all nodes matched perfectly, 0% = none matched).
   exact match. The aggressive multi-pass resynthesis replaced every single internal node with
   a functionally different intermediate.
 
-### 9.2 Node and level counts
-
-![Node count: original vs optimised](results/plots/node_reduction.png)
-
-![Level count: original vs optimised](results/plots/level_reduction.png)
+### 9.3 Node and level counts
 
 **How to read these charts:** Light bars = original circuit. Solid bars = optimized. You can
 see whether the optimizer reduced the gate count and/or the logic depth.
 
 **Full pipeline run:** 21 benchmarks × 11 optimization flows = **231 benchmark × optimization pairs** in `results/summary_metrics.csv`.
+Of these, **220 rows have internal nodes** and **11 generated rows have zero internal nodes**;
+the zero-internal-node rows are tracked with `has_internal_nodes = 0` and are not treated as
+failed preservation cases.
 
 **Results by benchmark family:**
 
-| Family | Benchmarks | Avg orig nodes | Avg opt nodes | Avg exact match rate |
-|---|---|---|---|---|
-| toy (majority3, mux2, toy_and_or, xor_chain) | 4 | 4.0 | 3.9 | 65.1% |
-| real hand-written (full_adder, comparator_4, mux_4to1, parity_8, priority_enc_4) | 5 | 11.0 | 10.5 | 65.9% |
-| generated (adders, multipliers, MUX trees, XOR chains, random) | 12 | 38.2 | 34.9 | 53.7% |
+| Family | Benchmarks | Avg orig nodes | Avg opt nodes | Avg optimized signature coverage | Avg preserved signature fraction |
+|---|---|---|---|---|---|
+| toy (majority3, mux2, toy_and_or, xor_chain) | 4 | 4.0 | 3.9 | 65.1% | 63.9% |
+| real hand-written (full_adder, comparator_4, mux_4to1, parity_8, priority_enc_4) | 5 | 11.0 | 10.5 | 65.9% | 64.8% |
+| generated (adders, multipliers, MUX trees, XOR chains, random) | 12 | 41.7 | 38.1 | 58.6% | 53.3% |
 
-**Exact match rate by optimization** (averaged across all 21 benchmarks):
+**Signature preservation by optimization** (averaged over rows with internal nodes):
 
-| Optimization | Avg exact match rate | Notes |
-|---|---|---|
-| `resub` | ~95% | Resubstitution rarely changes node truth tables |
-| `rewrite` | ~89% | Good preservation across all families |
-| `balance` | ~91% | Structural rebalancing is mostly conservative |
-| `refactor` | ~91% | Similar to balance |
-| `refactor_z` / `rewrite_z` | ~85–90% | Zero-cost variants, mild impact |
-| `resyn` | ~72% | Multi-pass, some restructuring |
-| `compress2rs` | ~39% | Aggressive; worst for generated (26%) and toy (33%) |
-| `dc2` | ~28% | Aggressive don't-care rewriting; drops to 26% on generated |
-| `resyn2` / `resyn2_like` | ~28% | Cascade of rewrites; fully breaks XOR-heavy circuits |
+| Optimization | Optimized signature coverage | Preserved signature fraction | Disappeared fraction | Novel fraction | Notes |
+|---|---|---|---|---|---|
+| `resub` | 99.8% | 97.5% | 2.5% | 0.2% | Best preservation; few novel optimized signatures |
+| `balance` | 95.5% | 95.5% | 4.5% | 4.5% | Mostly preserves functions while changing structure |
+| `rewrite` | 92.3% | 88.6% | 11.4% | 7.7% | Good preservation with moderate node reduction |
+| `refactor` | 82.6% | 79.3% | 20.7% | 17.4% | More destructive than simple rewrite |
+| `refactor_z` | 57.7% | 54.7% | 45.3% | 42.3% | Zero-cost does not mean correspondence-preserving |
+| `rewrite_z` | 57.7% | 54.4% | 45.6% | 42.3% | Similar preservation loss to `refactor_z` |
+| `resyn` | 55.2% | 51.8% | 48.2% | 44.8% | Multi-pass restructuring destroys many signatures |
+| `compress2rs` | 36.4% | 30.7% | 69.3% | 63.6% | Aggressive compression, high signature churn |
+| `resyn2` / `resyn2_like` | 35.6% | 31.2% | 68.8% | 64.4% | Cascade of rewrites; hard for internal matching |
+| `dc2` | 30.6% | 26.8% | 73.2% | 69.4% | Lowest preservation; don't-care rewriting changes internal functions |
 
-**Key insight:** mild flows (`resub`, `rewrite`, `balance`) preserve ~90%+ of node truth tables
-even on larger generated circuits. Aggressive flows (`compress2rs`, `dc2`, `resyn2_like`)
-drop to 25–55% on real/generated benchmarks — the exact match rate is strongly correlated
-with circuit structure and optimization aggressiveness.
+**Key insight:** mild flows (`resub`, `balance`, `rewrite`) preserve most internal signatures.
+Aggressive flows (`compress2rs`, `dc2`, `resyn2_like`) create many disappeared and novel
+signatures. This supports the central research claim that output equivalence does not imply
+internal-node correspondence.
 
-### 9.3 Support overlap distribution
-
-![Support overlap distribution](results/plots/support_overlap_dist.png)
+### 9.4 Support overlap distribution
 
 Even when exact matching fails, the **support sets** of optimized nodes still largely overlap
 with those of original nodes. The histogram shows the distribution of support overlap scores
@@ -372,7 +434,7 @@ for rank-1 candidates. Most values cluster near 1.0 — even after `resyn2_like`
 replaces all truth tables, the new nodes still depend on the same primary inputs as some
 original node.
 
-**Key insight: exact matching is fragile, but support overlap is robust.**
+**Key insight: signature matching is fragile, but support overlap is robust.**
 
 ---
 
@@ -408,7 +470,7 @@ ABC equivalence check        (formal SAT-based CEC on non-exact candidates only)
 Verdict per candidate:
     verified      — proved equivalent
     rejected      — found a counterexample (different functions!)
-    inconclusive  — check could not run (node name changed)
+    inconclusive  — ABC or BLIF preparation failed before a verdict
 ```
 
 ### Two distinct categories of candidate pairs
@@ -429,20 +491,49 @@ Verdict per candidate:
 ### How the ABC check works
 
 For each high-confidence non-exact candidate pair (optimized node X, original candidate Y):
-1. A temporary BLIF is created with X exposed as a primary output.
-2. Another temporary BLIF is created with Y exposed as a primary output.
+1. A temporary BLIF is created with X exposed through an artificial primary output named `__cmp_out`.
+2. Another temporary BLIF is created with Y exposed through the same artificial output name.
 3. ABC's `cec` command checks whether both produce the same output on every input.
 4. The verdict is recorded.
 
-### SAT status results (non-exact candidates only)
+Using the same artificial output name matters: the old implementation exposed each internal
+node under its own node name, which made ABC reject many comparisons before solving because
+the two BLIFs appeared to have different primary outputs.
+
+This default CEC check is **same-polarity only**: it asks whether `f == g`. In AIGs, a useful
+node correspondence can sometimes appear with inverted polarity. The separate complemented
+validation layer below retests same-polarity rejections for `f == NOT g`; those results are
+kept separate so the headline SAT numbers remain easy to interpret.
+
+### SAT validation layers
+
+The SAT validation is now split into three deliberately separate layers:
+
+| Layer | Purpose | Verified | Rejected | Inconclusive | Interpretation |
+|---|---:|---:|---:|---:|---|
+| exact-anchor sanity | Check known preserved signature matches | 3,052 | 0 | 0 | The `__cmp_out` CEC wrapper accepts known-good correspondences |
+| rank-1 non-exact recovery | Check best high-score non-exact candidate per optimized node | 0 | 425 | 0 | No recovered non-exact correspondence at rank 1 |
+| top-k non-exact recovery | Check high-score non-exact candidates below rank 1, up to top 10 | 0 | 1,993 | 0 | No recovered non-exact correspondence appeared below rank 1 in this high-score pool |
+| complemented non-exact follow-up | Retest same-polarity rejected non-exact candidates for `f == NOT g` | 0 | 2,418 | 0 | No complemented correspondence found in the selected rank-1/top-k non-exact pool |
+
+These results are written to:
+
+- `results/sat_exact_anchor_verified.csv`
+- `results/sat_verified_candidates.csv`
+- `results/sat_topk_nonexact_verified.csv`
+- `results/sat_validation_layers.md`
+- `results/sat_complement_summary.md`
+- `results/sat_false_positive_analysis.csv`
+
+### Rank-1 non-exact SAT result
 
 **Candidates sent to ABC:** 425 (all `non_exact_candidate`; 3,052 `exact_anchor` rows excluded)
 
 | Status | Count | % |
 |---|---|---|
 | Verified | 0 | 0.0% |
-| Rejected | 20 | 4.7% |
-| Inconclusive | 405 | 95.3% |
+| Rejected | 425 | 100.0% |
+| Inconclusive | 0 | 0.0% |
 | **Total checked** | **425** | |
 
 **How to read these numbers honestly:**
@@ -452,18 +543,70 @@ For each high-confidence non-exact candidate pair (optimized node X, original ca
   "structurally similar" does not mean "functionally equivalent" after aggressive
   multi-pass resynthesis. This is a genuine null result.
 
-- **20 rejected** — simulation gave those pairs high scores (they looked like matches),
-  but ABC's formal check found a counterexample. **Simulation alone is not sufficient —
-  formal verification catches real false positives.**
+- **425 rejected** — simulation/support/depth scoring gave these pairs high scores
+  (`combined_score` ranged from 0.851 to 0.996, mean 0.919), but ABC's formal check found
+  counterexamples. **Simulation alone is not sufficient — formal verification catches real
+  false positives.**
 
-- **405 inconclusive** — ABC could not locate the node name in the optimized BLIF.
-  ABC renames internal nodes during optimization, especially in larger circuits.
-  This is a tooling limitation, not a theoretical failure of the approach.
+- **0 inconclusive** — after wrapping both exposed nodes with the same `__cmp_out` output,
+  ABC can now give a formal verdict for every selected candidate.
+
+The previous SAT run was **0 verified / 20 rejected / 405 inconclusive**. The new run is
+**0 verified / 425 rejected / 0 inconclusive**. The fix did not uncover hidden recovered
+correspondences; instead, it turned the old inconclusive cases into useful formal rejections.
 
 > **What about exact anchors?** If you set `INCLUDE_EXACT_ANCHORS = True`, the 3,052 exact-match
-> pairs are also run through ABC as a sanity check. All of them verify (as expected), because
-> their Boolean signatures are identical. Those results are tracked separately in
-> `sat_summary.md` under "exact_anchor_verified" — they do not count toward genuine recovery.
+> pairs are also run through ABC as a sanity check. In the current run, all **3,052 / 3,052**
+> exact anchors verify. This confirms that the SAT pipeline accepts known preserved
+> correspondences, but these rows do **not** count as recovered non-exact correspondences.
+
+### Top-k non-exact SAT result
+
+The next validation layer checks whether recovered equivalences appear below rank 1. The
+selection used `rank > 1`, `rank <= 10`, `combined_score >= 0.85`, and
+`is_exact_signature_match == 0`. In this dataset, all candidates meeting that threshold were
+at ranks 2-5:
+
+| Rank | Candidates |
+|---:|---:|
+| 2 | 650 |
+| 3 | 549 |
+| 4 | 432 |
+| 5 | 362 |
+
+ABC rejected all **1,993 / 1,993** of these below-rank-1 candidates. This means no formally
+equivalent non-exact correspondence was found just below rank 1 in the high-score top-k pool.
+It strengthens the negative result: the current heuristic produces plausible structural
+neighbors, not recovered equivalences.
+
+### Complemented-equivalence follow-up
+
+Because AIGs naturally use complemented edges, the same-polarity result is not the whole
+story. The follow-up script `sat_complement_refinement.py` retests same-polarity rejected
+non-exact candidates by exposing the optimized node through an inverted `__cmp_out` buffer.
+This checks whether the original candidate equals the complement of the optimized node.
+
+| Layer | Same-polarity verified | Complemented verified | Rejected both polarities | Inconclusive |
+|---|---:|---:|---:|---:|
+| rank-1 non-exact recovery | 0 | 0 | 425 | 0 |
+| top-k non-exact recovery | 0 | 0 | 1,993 | 0 |
+
+So the current null result is not caused by missing simple inversions. The selected high-score
+non-exact candidates are neither same-polarity equivalent nor complemented-equivalent as
+global Boolean functions.
+
+### False-positive analysis
+
+The rejected non-exact candidates are not low-quality outliers. Many have high scores and
+perfect support overlap:
+
+- Rank-1 non-exact: 110 rejected candidates are in the `0.95-1.00` combined-score bucket.
+- Top-k non-exact: 49 rejected below-rank-1 candidates are also in the `0.95-1.00` bucket.
+- Rank-1 non-exact: 419 / 425 rejected candidates have `support_overlap = 1.00`.
+- Top-k non-exact: 1,840 / 1,993 rejected candidates have `support_overlap = 1.00`.
+
+So support equality is a useful locality signal, but it is not enough to imply functional
+equivalence of internal nodes.
 
 ---
 
@@ -478,8 +621,6 @@ confident.
 
 ### Top-K recovery results
 
-![Top-K recovery — avg score at rank-1](results/plots/topk_recovery.png)
-
 **How to read this chart:** Each bar is a benchmark. The height is the average `combined_score`
 of the rank-1 candidate, averaged across all optimizations and nodes. Closer to 1.0 is better.
 
@@ -493,6 +634,7 @@ original node even when truth tables have completely changed.
 - **880 total** benchmark × optimization × K entries in `topk_recovery.csv`
 - **0 / 880** have MRR > 0 — no non-exact candidate was SAT-verified in this run
 - **K=1 node recovery**: 0 / 5,350 nodes recovered at rank 1 (**0.0%**)
+- **Below-rank-1 high-score SAT recovery**: 0 / 1,993 verified (**0.0%**)
 
 > **Note:** top-K recovery is computed using only `non_exact_candidate` verified pairs as
 > ground truth (exact anchors are excluded). Since no non-exact candidate was verified by ABC
@@ -530,8 +672,6 @@ For each optimized node and each original candidate, the region score combines:
 
 ### Region score results
 
-![Region scores by fanin-cone depth](results/plots/region_scores.png)
-
 **How to read this chart:** Each line is a benchmark. The x-axis is cone depth (1, 2, 3).
 The y-axis is the average rank-1 region score. Higher is better.
 
@@ -565,8 +705,6 @@ combined_score = w_sim × simulation_similarity
 | `depth_only` | 0.00 | 0.00 | 1.00 | Use only depth (sanity check — should be bad) |
 
 ### Ablation results
-
-![Ablation comparison — rank-1 consistency per scoring config](results/plots/ablation_comparison.png)
 
 **How to read this chart:** Each bar is a scoring config. The height is the average
 `rank1_consistency` — the fraction of nodes where that config picks the same rank-1 candidate
@@ -612,15 +750,16 @@ mistakes**.
 
 ### Current status
 
-This is labeled `[prototype]` because the toy benchmarks produce only 1 rejection across the
-whole dataset, so the penalty is rarely triggered. On larger circuits with more rejections,
-this feedback loop would have more impact.
+This is labeled `[prototype]` because all 425 SAT-checked non-exact candidates were rejected,
+so the current feedback signal is only negative. The penalty pass affects 2,117 candidate rows
+and changes 173 rank-1 choices, but there are no verified non-exact positives yet to show that
+the refined ranking improves true recovery.
 
 ---
 
 ## 15. Research plots
 
-All eight plots are generated by running:
+All ten plots are generated by running:
 
 ```bash
 make research-plots
@@ -630,29 +769,9 @@ python3 research_plots.py
 
 They are saved to `results/plots/`.
 
-### Exact match rate
-![Exact match rate](results/plots/exact_match_rate.png)
-
-### Support overlap distribution
-![Support overlap distribution](results/plots/support_overlap_dist.png)
-
-### Node reduction
-![Node reduction](results/plots/node_reduction.png)
-
-### Level reduction
-![Level reduction](results/plots/level_reduction.png)
-
-### SAT verification status
-![SAT status](results/plots/sat_status.png)
-
-### Top-K recovery
-![Top-K recovery](results/plots/topk_recovery.png)
-
-### Ablation comparison
-![Ablation comparison](results/plots/ablation_comparison.png)
-
-### Region scores
-![Region scores](results/plots/region_scores.png)
+The most important plots are embedded in Section 9.1. Additional generated plots are available
+under `results/plots/`, including node/level reduction, top-k recovery, ablation comparison,
+region scores, and per-benchmark node-count plots.
 
 ---
 
@@ -662,9 +781,11 @@ They are saved to `results/plots/`.
 |---|---|
 | **Small-scale benchmark coverage** | The full pipeline has been run across 21 benchmarks (4 toy, 5 real hand-written, 12 generated), ranging from 2 to 92 internal nodes. No results on large industrial circuits (ISCAS-85, EPFL, commercial netlists) are present — performance on those is unknown. |
 | **BLIF only** | The parser handles `.names`-style gates only. RTL (Verilog/VHDL) is not supported. |
-| **Node name instability** | ABC renames internal nodes during optimization. This causes ~50.9% of SAT checks on generated/real circuits to be inconclusive (node cannot be found by name). Toy benchmarks are less affected (22% inconclusive). |
+| **Simulation is not proof in random mode** | 55 of 231 summary rows use 4096 random patterns because exhaustive truth tables would be too large. Those rows support heuristic signature-matching claims, not formal truth-table claims. |
+| **SAT candidate set is still filtered** | SAT now checks exact anchors, rank-1 high-confidence non-exact candidates, and high-score below-rank-1 top-k candidates. It still does not exhaustively check every non-exact pair in the full candidate table. |
+| **Global equivalence is strict** | The SAT checks ask whether two internal nodes are globally equivalent for all primary-input assignments. After aggressive optimization, a node might still be useful under observability don't-care conditions even if it is not globally equivalent. Future work should validate ODC-aware correspondences or reuse ABC-native SAT sweeping/FRAIG equivalence classes. |
 | **Weights are not tuned** | The 0.55 / 0.35 / 0.10 weights are a rough starting point — not learned from data. |
-| **CEGAR needs more rejections** | With only 20 rejected pairs (0.6% of SAT checks), the penalty feedback loop is lightly exercised. On larger circuits with more rejections, this feedback loop would have more impact. |
+| **CEGAR has only negative labels** | The SAT stage now gives many useful rejections, but no verified non-exact positives. That is enough to learn false-positive patterns, not enough to evaluate recovery precision. |
 | **Combinational circuits only** | No flip-flops, no clock. Sequential correspondence is a harder and separate problem. |
 | **No RTL-to-netlist link** | The tool works at netlist level. Connecting back to original source-code variable names is future work. |
 
@@ -687,13 +808,16 @@ ablation → region → CEGAR → research plots → tests.
 make build-abc           # clone and compile ABC (skip if abc is already on PATH)
 make generate-variants   # create all BLIF variants via run_abc_variants.sh
 make analyze             # simulate and rank (analyze_blif_matches.py)
+make check-results       # warn if result CSVs were generated with an older schema
 make plot                # legacy per-benchmark node-count plots
 make sat-pipeline        # filter → ABC CEC → summary
+make sat-validation-layers  # exact-anchor sanity + rank-1/top-k non-exact SAT checks
+make sat-complement      # retest same-polarity rejections for complemented equivalence
 make topk-eval           # top-K recovery metrics
 make ablation            # ablation study (6 scoring configs)
 make region              # region/fanin-cone correspondence
 make cegar-refine        # CEGAR-style penalty pass
-make research-plots      # generate all 8 research PNG plots
+make research-plots      # generate all 10 research PNG plots
 make real-benchmarks     # convert verilog_examples/ → BLIF via Yosys (prints warning if Yosys absent)
 make generate-all-benchmarks  # synthetic + real benchmarks
 make test                # run all 414 unit tests
@@ -720,7 +844,15 @@ ABC=/path/to/abc make generate-variants
 python3 -m pytest tests/ -v
 ```
 
-Expected: **414 tests, all passing**.
+For a quick check of the recent SAT/signature-metric changes:
+
+```bash
+python3 -m pytest tests/test_sat_refinement_abc.py tests/test_fingerprints.py -q
+```
+
+Expected for that focused check: **72 tests passing**.
+
+Current full-suite result in this environment: **483 passed, 4 skipped**.
 
 ### Clean generated outputs (keeps benchmarks and scripts)
 
@@ -760,12 +892,21 @@ aig_optimization_experiments/
 ├── logs/                          ABC stdout logs per run (generated)
 │
 ├── results/
-│   ├── summary_metrics.csv            Core metrics: nodes, levels, exact matches
+│   ├── summary_metrics.csv            Core metrics: nodes, levels, signature matches
 │   ├── top_candidates.csv             Ranked candidates for every optimized node
 │   ├── sat_refinement_candidates.csv  High-confidence candidates flagged for SAT check
 │   ├── sat_verified_candidates.csv    ABC CEC verdicts per candidate
 │   ├── sat_summary.csv                Summary counts and rates by benchmark/opt
 │   ├── sat_summary.md                 Human-readable SAT report
+│   ├── sat_exact_anchor_candidates.csv    Exact-anchor sanity-check candidates
+│   ├── sat_exact_anchor_verified.csv      ABC CEC verdicts for exact anchors
+│   ├── sat_topk_nonexact_candidates.csv   Below-rank-1 top-k non-exact candidates
+│   ├── sat_topk_nonexact_verified.csv     ABC CEC verdicts for top-k non-exact candidates
+│   ├── sat_validation_layers_summary.csv  Layered SAT result summary
+│   ├── sat_complement_summary.csv         Complemented-equivalence SAT summary
+│   ├── sat_complement_summary.md          Human-readable complemented SAT report
+│   ├── sat_false_positive_analysis.csv    False-positive breakdown tables
+│   ├── sat_validation_layers.md           Human-readable layered SAT report
 │   ├── topk_recovery.csv              Top-K recovery metrics
 │   ├── topk_recovery.md               Human-readable top-K report
 │   ├── ablation_summary.csv           Ablation study results
@@ -791,12 +932,14 @@ aig_optimization_experiments/
 │       ├── sat_status.png
 │       ├── topk_recovery.png
 │       ├── ablation_comparison.png
-│       └── region_scores.png
+│       ├── region_scores.png
+│       ├── preservation_vs_reduction.png
+│       └── false_positive_by_group.png
 │
 ├── docs/
 │   └── abc_sat_sweeping_extension.md  Design notes for the ABC hybrid validation flow
 │
-├── tests/                         pytest unit tests (474 passed, 4 skipped)
+├── tests/                         pytest unit tests
 │   ├── test_topk_recovery.py
 │   ├── test_ablation_study.py
 │   ├── test_region_correspondence.py
@@ -815,10 +958,13 @@ aig_optimization_experiments/
 │
 ├── analyze_blif_matches.py        Main analysis: parse BLIF, simulate, compare, rank
 ├── visualize_results.py           Legacy per-benchmark node-count plots
-├── research_plots.py              Research-quality plots (8 PNGs)
+├── research_plots.py              Research-quality plots (10 PNGs)
 ├── select_sat_candidates.py       Filter: keeps rank-1 candidates with score ≥ 0.85
+├── select_validation_candidates.py  Builds exact-anchor and top-k SAT candidate files
 ├── sat_refinement_abc.py          ABC CEC on filtered candidates
+├── sat_complement_refinement.py   Complemented CEC follow-up for rejected non-exact candidates
 ├── summarize_sat_results.py       CSV + Markdown SAT summary
+├── analyze_sat_validation_layers.py  Layered SAT + false-positive summaries
 ├── evaluate_topk_recovery.py      Top-K recovery metrics
 ├── ablation_study.py              Six scoring-weight configurations
 ├── region_correspondence.py       Fanin-cone region matching (root_sim_score)
@@ -827,7 +973,7 @@ aig_optimization_experiments/
 ├── run_abc_variants.sh            Shell driver for ABC (discovers all benchmarks/**/*)
 ├── start.sh                       One-shot bootstrap script (classic pipeline)
 ├── Makefile                       All pipeline targets
-└── requirements.txt               Python dependencies (pandas, matplotlib, pytest)
+└── requirements.txt               Python dependencies (pandas, matplotlib, pytest, tabulate)
 ```
 
 ---
@@ -929,7 +1075,8 @@ New columns added to the candidate table:
 pip install -r requirements.txt
 ```
 
-`requirements.txt` contains: `pandas`, `matplotlib`, `pytest`.
+`requirements.txt` contains: `pandas`, `matplotlib`, `pytest`, and `tabulate` (used by
+Markdown summary tables).
 
 ### Berkeley ABC
 
@@ -961,18 +1108,27 @@ Tested with Python 3.13. Should work with Python 3.9+.
 > 5 real hand-written, 12 generated — ranging from 2 to 92 internal nodes) × **11 ABC
 > optimization flows** = 231 benchmark × optimization pairs. The key findings:
 >
-> - **Simple optimizations** (`balance`, `rewrite`, `refactor`, `resub`) preserve ~90%+ of
->   internal node truth tables across all circuit families — exact matching works well.
-> - **Aggressive resynthesis** (`compress2rs`, `dc2`, `resyn2`, `resyn2_like`) drops exact
->   match rates to 25–55% on generated and real circuits; XOR-heavy structures are the hardest.
+> - **Simple optimizations** (`resub`, `balance`, `rewrite`) preserve most internal
+>   signatures. Average optimized signature coverage is 99.8%, 95.5%, and 92.3% respectively.
+> - **Aggressive resynthesis** (`compress2rs`, `dc2`, `resyn2`, `resyn2_like`) drops optimized
+>   signature coverage to roughly 30–36% on average, with high disappeared/novel-signature
+>   fractions.
 > - **Support overlap** survives even when truth tables change — it is a robust signal.
-> - The **simulation + support + depth scoring formula** reliably puts the correct
->   correspondence candidate at rank 1 in most cases (mean MRR 0.551 across 880 top-K entries).
-> - **SAT refinement** after excluding exact anchors found **0 newly verified non-exact
->   correspondences**, rejected 20 high-scoring false positives, and left 405 cases
->   inconclusive — mostly due to node-name recovery limits after aggressive renaming.
->   This is an honest null result: simulation/support ranking is useful for prioritization,
->   but formal verification is needed before claiming equivalence.
+> - The **simulation + support + depth scoring formula** gives high-scoring structural
+>   candidates, but the current SAT run does not verify any non-exact candidates. It should be
+>   treated as a prioritization heuristic, not as recovered equivalence.
+> - **SAT refinement** now has a clean sanity layer: **3,052 / 3,052 exact anchors verify**,
+>   so the `__cmp_out` CEC wrapper accepts known preserved correspondences.
+> - **Non-exact SAT recovery remains a null result**: rank-1 candidates are
+>   **0 verified / 425 rejected / 0 inconclusive**, and high-score below-rank-1 top-k
+>   candidates are **0 verified / 1,993 rejected / 0 inconclusive**. The selected
+>   non-exact candidates are structurally similar but functionally different.
+> - **Complemented-equivalence validation also rejects the selected non-exact pool**:
+>   **0 complemented verified / 2,418 rejected / 0 inconclusive** across rank-1 and top-k
+>   same-polarity rejections. The null result is therefore not just a missing-inverter issue.
+> - The current SAT result is a global internal-node equivalence result. ODC-aware matching
+>   and ABC-native SAT sweeping/FRAIG equivalence classes are the next step if the goal is to
+>   recover correspondences that are only valid in circuit context.
 > - The **newer hybrid `dump_equiv` flow** reuses ABC's internal SAT sweeping / FRAIG
 >   machinery and validates all candidates in one ABC call per benchmark–optimization pair,
 >   making it a more scalable follow-up to the original per-candidate CEC approach.
