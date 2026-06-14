@@ -1494,6 +1494,96 @@ Detailed outputs:
 
 ---
 
+## Toward Formal Approximate Correspondence
+
+The final research goal is to map points in an **optimized** circuit back to
+corresponding points in the **original** RTL/unoptimized circuit. The optimized
+netlist may carry the critical path, but the hardware engineer only understands
+and edits the original design. Exact SAT sweeping already finds identical
+internal points, and complemented checks find inverted ones — but after
+aggressive synthesis **many optimized nodes match no original node exactly**.
+For those, "equal / not equal" is not enough; we want "how close".
+
+This section is a **prototype** of a formal *approximate* correspondence metric.
+See [`docs/formal_approximate_matching_plan.md`](docs/formal_approximate_matching_plan.md)
+for the full motivation and its connection to approximate computing and the
+paper *"Formal Methods for Exact Analysis of Approximate Circuits"*.
+
+```text
+Exact match:        f == g
+Complemented match: f == NOT g
+Approximate match:  f and g differ on only a small fraction of input assignments
+```
+
+### The distance metric
+
+For two internal node functions `f` and `g` over their common (union) support of
+size `n`:
+
+```text
+distance(f, g)   = count_x[ f(x) != g(x) ] / 2^n
+similarity(f, g) = 1 - distance(f, g)
+```
+
+- When the **union support is small** (`<= --max-exact-support`, default 12),
+  the distance is computed by **exhaustive truth-table enumeration**. This value
+  is *formal* (exact) for the two node functions over that support.
+- When the support is **too large**, the prototype does **not** pretend the
+  result is formal. By default it computes a **sampled estimate** (deterministic
+  random patterns) and labels it `distance_mode = sampled`,
+  `is_formal_distance = False`. With `--no-sampled-fallback` such rows are
+  written to the skipped file instead.
+
+> Sampled distances are estimates and **must not be described as formal**. Only
+> `distance_mode = exact` rows are exact.
+
+### How to run
+
+```bash
+make approx-distance        # regenerates variants, then writes the results below
+# tuning:
+python3 scripts/approximate_node_distance.py --max-exact-support 12 \
+    --limit-rejected 2000 [--no-sampled-fallback]
+```
+
+Outputs:
+
+- `results/approximate_distance_exact.csv` — formal exhaustive distances
+- `results/approximate_distance_sampled.csv` — sampled estimates (not formal)
+- `results/approximate_distance_skipped.csv` — pairs not measured (and why)
+- `results/approximate_distance_summary.csv` / `.md` — per-group statistics
+- `results/plots/approx_distance_distribution.png`
+- `results/plots/approx_similarity_by_sat_status.png`
+- `results/plots/approx_distance_by_circuit.png`
+- `results/plots/approx_distance_by_optimization.png`
+
+### What the prototype shows on ISCAS-85
+
+Scope: ISCAS-85 rank-1 non-exact candidates — all SAT-**verified** rows plus the
+highest-scoring SAT-**rejected** rows (`--limit-rejected`, default 2000). In the
+committed run this was **2,609 candidate pairs**: **545 measured exactly**
+(support ≤ 12) and **2,064 via sampled fallback** (0 skipped, because sampling
+was enabled). Key observations (see `approximate_distance_summary.md`):
+
+- **Many SAT-rejected high-score candidates are approximately very close.** For
+  the exact-mode rejected pool, median distance is ≈ 6.25% and **97.6% have
+  distance ≤ 10%**; the closest sampled rejected pairs differ on ≈ 0.02% of
+  assignments. This **explains why the heuristic ranked them highly** — they are
+  near-correspondences, not random matches, even though they are not formally
+  equivalent.
+- The distance is measured over the union support with non-support inputs held
+  at 0, so it is a **global** truth-table distance. This is a deliberately simple
+  first metric: a node can be equivalent only under observability don't-care
+  conditions while still having nonzero global distance, which is exactly the
+  direction future ODC-aware / approximate-SAT-sweep work should take.
+
+This is a **prototype**, not a finished tool: exact distance is only available
+for small supports, sampled distance is an estimate, and the metric is global
+(context-free). It establishes that approximate truth-table distance is a usable,
+partly-formal way to rank near-correspondences for unmatched optimized nodes.
+
+---
+
 ## Short research summary
 
 > This prototype works at the BLIF/AIG level and measures how synthesis optimizations affect
