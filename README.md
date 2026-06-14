@@ -3,6 +3,9 @@
 > **Status:** Research prototype — a small-scale study of how internal circuit nodes change
 > under common logic synthesis optimizations, and how well we can still match them up afterwards.
 
+For a concise current-state mini-report, see
+[`docs/research_summary_current_state.md`](docs/research_summary_current_state.md).
+
 
 ---
 
