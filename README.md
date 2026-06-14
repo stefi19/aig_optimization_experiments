@@ -8,6 +8,16 @@ For a concise current-state mini-report, see
 For browser slides, open
 [`docs/presentation/index.html`](docs/presentation/index.html).
 
+## Web presentation
+
+Once GitHub Pages is enabled from `main /docs`, the project website will be available at:
+
+https://stefi19.github.io/aig_optimization_experiments/
+
+The slide deck will be available at:
+
+https://stefi19.github.io/aig_optimization_experiments/presentation/
+
 
 ---
 
