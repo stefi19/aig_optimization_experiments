@@ -28,6 +28,8 @@
 18. [Repository structure](#18-repository-structure)
 19. [ABC-native SAT sweeping / hybrid validation](#19-abc-native-sat-sweeping--hybrid-validation)
 20. [Dependencies](#20-dependencies)
+21. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+22. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -1402,6 +1404,93 @@ The ISCAS rows are tagged as `source_family = iscas85`, so they stay separate
 from `toy`, `generated`, and `custom` results in the CSVs and family-separated
 plots. EPFL support is still import-only at this point; no EPFL benchmark files
 or results are included.
+
+---
+
+## ISCAS-85 Recovery Analysis
+
+The expanded rank-1 SAT run produces 609 verified non-exact correspondences on
+ISCAS-85. These are not exact signature matches from the random-pattern
+fingerprint stage; they are candidates whose sampled signatures differed but
+whose exposed internal nodes were later proved equivalent by ABC CEC.
+
+The important refinement is that recovery is concentrated. Four circuits
+produce all verified matches: `c2670`, `c6288`, `c5315`, and `c432`. The other
+six ISCAS circuits with SAT candidates produce only formal false positives in
+this rank-1 high-score pool.
+
+![ISCAS Verified Matches by Circuit](results/plots/iscas_verified_by_circuit.png)
+
+| Circuit | Verified | Rejected | Total checked | Precision |
+|---|---:|---:|---:|---:|
+| `c2670` | 302 | 392 | 694 | 43.5% |
+| `c6288` | 133 | 1,810 | 1,943 | 6.8% |
+| `c5315` | 90 | 885 | 975 | 9.2% |
+| `c432` | 84 | 64 | 148 | 56.8% |
+| `c1355` | 0 | 772 | 772 | 0.0% |
+| `c1908` | 0 | 567 | 567 | 0.0% |
+| `c3540` | 0 | 1,076 | 1,076 | 0.0% |
+| `c499` | 0 | 557 | 557 | 0.0% |
+| `c7552` | 0 | 2,211 | 2,211 | 0.0% |
+| `c880` | 0 | 271 | 271 | 0.0% |
+
+The optimization-pass view is also mixed. Recoveries are not limited to mild
+passes: `compress2rs`, `resyn2`, `resyn2_like`, and `dc2` together account for
+281 verified matches. However, precision remains low for most aggressive flows.
+`resub` has the highest pass-level precision because it checks fewer candidates
+and verifies 43 of them.
+
+![ISCAS Verified Matches by Optimization](results/plots/iscas_verified_by_optimization.png)
+
+![ISCAS Precision by Optimization](results/plots/iscas_precision_by_optimization.png)
+
+The feature comparison shows why SAT is still necessary. Verified candidates do
+not simply have higher `combined_score`: rejected candidates actually have a
+slightly higher mean score (0.905 vs 0.899). Support overlap is also not enough:
+598 / 609 verified candidates have `support_overlap = 1.0`, but so do
+6,046 / 8,605 rejected candidates. Simulation similarity is somewhat more
+separating: verified candidates have higher mean and median simulation
+similarity than rejected candidates, but the distributions still overlap.
+
+![Verified vs Rejected Score Distribution](results/plots/verified_vs_rejected_score_distribution.png)
+
+![Verified vs Rejected Support Overlap](results/plots/verified_vs_rejected_support_overlap.png)
+
+The heatmap makes the concentration clear: successful recovery happens in
+specific circuit/pass combinations rather than uniformly across ISCAS-85.
+
+![ISCAS Recovery Heatmap](results/plots/iscas_recovery_heatmap.png)
+
+Representative verified matches:
+
+| Benchmark | Optimization | Original node | Optimized node | Combined score | Support overlap | Simulation similarity | Interpretation |
+|---|---|---|---|---:|---:|---:|---|
+| `external_iscas85_c5315` | `refactor` | `new_n1392` | `new_n1243` | 0.9981 | 1.000 | 0.9966 | High-score verified match from a moderate pass |
+| `external_iscas85_c2670` | `compress2rs` | `new_n883` | `new_n729` | 0.9297 | 1.000 | 0.9934 | Aggressive compression can still leave recoverable equivalent nodes |
+| `external_iscas85_c5315` | `resub` | `new_n1560` | `new_n1478` | 0.8780 | 0.697 | 0.9709 | Structural support estimate changed, but SAT proves equivalence |
+| `external_iscas85_c2670` | `refactor` | `new_n925` | `new_n825` | 0.9828 | 1.000 | 0.9688 | Example from the circuit with the most recoveries |
+| `external_iscas85_c6288` | `rewrite` | `new_n2293` | `new_n2261` | 0.9249 | 1.000 | 0.9998 | Multiplier-like benchmark with recoverable internal matches |
+
+Representative high-score false positives:
+
+| Benchmark | Optimization | Original node | Optimized node | Combined score | Support overlap | Simulation similarity | Why misleading |
+|---|---|---|---|---:|---:|---:|---|
+| `external_iscas85_c1908` | `refactor_z` | `new_n277` | `new_n273` | 0.9999 | 1.000 | 0.9998 | Nearly identical heuristic features, but ABC finds a counterexample |
+| `external_iscas85_c1908` | `refactor_z` | `new_n274` | `new_n276` | 0.9999 | 1.000 | 0.9998 | High random-pattern similarity is still not a proof |
+| `external_iscas85_c1908` | `balance` | `new_n283` | `new_n283` | 0.9997 | 1.000 | 0.9995 | Same-looking node name/features can still fail formal CEC |
+| `external_iscas85_c1908` | `balance` | `new_n291` | `new_n296` | 0.9997 | 1.000 | 0.9995 | Support equality does not imply Boolean equivalence |
+| `external_iscas85_c1908` | `dc2` | `new_n301` | `new_n284` | 0.9997 | 1.000 | 0.9995 | Don't-care rewriting can make very plausible but false correspondences |
+
+The updated conclusion is: the heuristic is a useful ranking signal and can
+recover real non-exact correspondences on larger external circuits, but it is
+not reliable enough to claim correspondence without formal SAT validation.
+
+Detailed outputs:
+
+- `results/iscas_verified_match_analysis.csv`
+- `results/iscas_verified_match_analysis.md`
+- `results/iscas_feature_comparison.csv`
+- `results/iscas_case_studies.md`
 
 ---
 
