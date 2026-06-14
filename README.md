@@ -5,6 +5,8 @@
 
 For a concise current-state mini-report, see
 [`docs/research_summary_current_state.md`](docs/research_summary_current_state.md).
+For browser slides, open
+[`docs/presentation/index.html`](docs/presentation/index.html).
 
 
 ---

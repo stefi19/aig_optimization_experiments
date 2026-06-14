@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exact and Approximate Internal Correspondence Recovery</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="deck" aria-live="polite">
+    <section class="slide title-slide active">
+      <div class="slide-content title-grid">
+        <div>
+          <p class="eyebrow">Research prototype</p>
+          <h1>Exact and Approximate Internal Correspondence Recovery After Logic Synthesis Optimization</h1>
+          <p class="subtitle">Mapping optimized circuit nodes back to the original design</p>
+        </div>
+        <svg class="hero-svg" viewBox="0 0 760 420" role="img" aria-label="Original circuit maps to optimized circuit">
+          <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="currentColor"></path></marker></defs>
+          <g class="circuit original">
+            <text x="70" y="50">Original</text>
+            <circle cx="90" cy="120" r="26"></circle><circle cx="170" cy="90" r="26"></circle><circle cx="170" cy="160" r="26"></circle><circle cx="250" cy="125" r="26"></circle>
+            <path d="M116 120 L144 98 M116 120 L144 152 M196 90 L224 120 M196 160 L224 132"></path>
+          </g>
+          <path class="big-arrow" d="M330 125 C385 80 425 80 480 125" marker-end="url(#arrow)"></path>
+          <g class="circuit optimized">
+            <text x="535" y="50">Optimized</text>
+            <circle cx="525" cy="105" r="24"></circle><circle cx="610" cy="105" r="24"></circle><circle cx="570" cy="180" r="24"></circle><circle cx="660" cy="180" r="24"></circle>
+            <path d="M549 105 L586 105 M610 129 L581 162 M594 180 L636 180"></path>
+          </g>
+          <text class="caption" x="185" y="320">Same input/output behavior, different internal graph</text>
+        </svg>
+      </div>
+      <aside class="notes">Start with the big picture: synthesis keeps the circuit behavior but changes the internal graph. The project asks how to recover the relationship between old and new internal points.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Motivation</p>
+          <h2>Think of synthesis like a compiler</h2>
+          <div class="analogy">
+            <div class="card"><h3>Software</h3><p>Readable source code becomes faster machine code.</p><p class="muted">Fast, but harder to inspect.</p></div>
+            <div class="card"><h3>Circuits</h3><p>Readable RTL becomes optimized logic.</p><p class="muted">Smaller or faster, but internal signals move.</p></div>
+          </div>
+        </div>
+        <div class="callout"><h3>Final use case</h3><p>The optimized netlist may show a critical path, but the engineer edits the original RTL.</p><p>We need a map back to the original design.</p></div>
+      </div>
+      <aside class="notes">Use the compiler analogy because it is familiar. Then transition: for circuits, the important internal wires are like source-level variables that may disappear after optimization.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Definition</p>
+          <h2>What is a digital circuit?</h2>
+          <p>A digital circuit is a network of small decisions. Each decision takes 0/1 inputs and produces a 0/1 output.</p>
+          <div class="definition"><h3>Gate</h3><p>A gate computes a tiny Boolean function such as AND, OR, or NOT.</p></div>
+        </div>
+        <svg class="simple-circuit" viewBox="0 0 620 360" role="img" aria-label="Small circuit with gates">
+          <text x="35" y="42">Inputs</text><text x="500" y="42">Output</text>
+          <text x="55" y="105">a</text><text x="55" y="175">b</text><text x="55" y="255">c</text>
+          <rect class="gate" x="180" y="105" width="115" height="75" rx="14"></rect><text x="215" y="152">AND</text>
+          <rect class="gate green" x="365" y="160" width="115" height="75" rx="14"></rect><text x="408" y="207">OR</text>
+          <path class="wire" d="M80 100 H180 M80 170 H180 M295 142 H340 V185 H365 M80 250 H340 V210 H365 M480 198 H560"></path>
+          <text class="small-label" x="205" y="205">n1</text><text class="small-label" x="405" y="260">n2 / out</text>
+        </svg>
+      </div>
+      <aside class="notes">Introduce gates as small Boolean functions. Keep it concrete: inputs are bits, gates produce bits, and wires connect the results.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Running example</p>
+          <h2>One small circuit we reuse</h2>
+          <div class="formula-list">
+            <code>n1 = a AND b</code>
+            <code>n2 = n1 OR c</code>
+            <code>out = n2</code>
+          </div>
+          <p><strong>Internal nodes</strong> are intermediate results inside the circuit. Here, <code>n1</code> and <code>n2</code> are internal nodes.</p>
+        </div>
+        <div class="callout"><h3>Why internal nodes matter</h3><p>They are the circuit's "middle steps". Optimization often changes or removes them, even when the final output stays the same.</p></div>
+      </div>
+      <aside class="notes">Tell the audience that this tiny example is the anchor for the rest of the presentation. We will use it for truth tables, matching, and optimization.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Basic EDA vocabulary</p>
+          <h2>RTL, synthesis, optimization, benchmark</h2>
+          <div class="concept-grid">
+            <div><strong>RTL</strong><span>Readable hardware description, similar to source code.</span></div>
+            <div><strong>Logic synthesis</strong><span>Turns RTL or logic into gates.</span></div>
+            <div><strong>Optimization</strong><span>Changes gates to reduce area or delay.</span></div>
+            <div><strong>Benchmark</strong><span>A test circuit used to compare methods.</span></div>
+          </div>
+        </div>
+        <div class="pipeline mini"><div>RTL</div><div>Gates</div><div>Optimized gates</div><div>Analysis</div></div>
+      </div>
+      <aside class="notes">This slide prevents terminology confusion. Emphasize that a benchmark is just an example circuit used for experiments.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Files and tools</p>
+          <h2>BLIF and ABC</h2>
+          <div class="definition"><h3>BLIF</h3><p>A text format for logic circuits: inputs, outputs, and gate truth tables.</p></div>
+          <div class="definition"><h3>ABC</h3><p>An academic synthesis and verification tool used to optimize and check circuits.</p></div>
+        </div>
+        <pre class="code-card"><code>.inputs a b c
+.outputs out
+.names a b n1
+11 1
+.names n1 c out
+1- 1
+-1 1</code></pre>
+      </div>
+      <aside class="notes">Mention that the project uses BLIF because it is easy to parse and ABC can read/write it. We do not need to understand every BLIF detail.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Truth tables</p>
+          <h2>A truth table is the full behavior of a Boolean function</h2>
+          <p>For every possible input row, it lists the output. If two nodes have the same truth table, they compute the same function.</p>
+        </div>
+        <div class="truth-table">
+          <div>a</div><div>b</div><div>a AND b</div><div>a OR b</div>
+          <div>0</div><div>0</div><div>0</div><div>0</div>
+          <div>0</div><div>1</div><div>0</div><div>1</div>
+          <div>1</div><div>0</div><div>0</div><div>1</div>
+          <div>1</div><div>1</div><div>1</div><div>1</div>
+        </div>
+      </div>
+      <aside class="notes">The intuition is simple: a truth table is like the answer key for all inputs. Matching answer keys means equivalent functions.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Support and signatures</p>
+          <h2>How do we rank possible matches?</h2>
+          <div class="concept-grid">
+            <div><strong>Support</strong><span>Inputs a node depends on.</span></div>
+            <div><strong>Signature</strong><span>Observed output pattern over selected inputs.</span></div>
+            <div><strong>Support overlap</strong><span>How much two support sets overlap.</span></div>
+            <div><strong>Combined score</strong><span>A heuristic score for candidate ranking.</span></div>
+          </div>
+        </div>
+        <div class="callout"><h3>Example</h3><p><code>a AND b</code> and <code>a OR b</code> both depend on <code>{a,b}</code>.</p><p class="warning">High support overlap, but not equivalent.</p></div>
+      </div>
+      <aside class="notes">Explain that ranking helps choose candidates, but it is not proof. This sets up why SAT validation is needed.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <p class="eyebrow">Core problem</p>
+        <h2>The whole circuit can be equivalent while internal nodes change</h2>
+        <div class="node-map">
+          <div class="node-column"><h3>Original graph</h3><div class="node">n1</div><div class="node">n2</div><div class="node">n3</div></div>
+          <div class="mapping-lines"><span class="solid">same?</span><span class="dash">similar?</span><span class="unknown">?</span></div>
+          <div class="node-column"><h3>Optimized graph</h3><div class="node blue">m1</div><div class="node blue">m2</div><div class="node blue">m3</div></div>
+        </div>
+        <p class="bottom-line">Primary outputs still match, but internal identity is no longer obvious.</p>
+      </div>
+      <aside class="notes">Now that the audience knows gates and nodes, return to the main problem: node identity is not preserved by optimization.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <p class="eyebrow">Why exact matching is not enough</p>
+        <h2>Optimization rewrites the middle of the circuit</h2>
+        <div class="formula-transform">
+          <div class="formula-card"><code>(a AND b) OR (a AND c)</code></div>
+          <div class="arrow-text">factor</div>
+          <div class="formula-card"><code>a AND (b OR c)</code></div>
+        </div>
+        <div class="pill-row"><span>balance</span><span>rewrite</span><span>refactor</span><span>resub</span><span>dc2</span><span>resyn2</span><span>compress2rs</span></div>
+        <p class="bottom-line">Same output function. Different internal nodes.</p>
+      </div>
+      <aside class="notes">The algebra example is intentionally simple. It shows that even mathematically equivalent expressions can expose different internal signals.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">SAT / CEC intuition</p>
+          <h2>Ask: is there any input where two nodes differ?</h2>
+          <p><strong>SAT</strong> asks whether a Boolean condition can be satisfied.</p>
+          <p><strong>CEC</strong> means combinational equivalence checking.</p>
+        </div>
+        <svg class="miter-svg" viewBox="0 0 620 340" role="img" aria-label="Miter checks whether f and g differ">
+          <text x="70" y="95">f</text><text x="70" y="245">g</text>
+          <path class="wire" d="M110 90 H275 M110 240 H275"></path>
+          <polygon class="xor" points="275,70 390,155 275,260 335,155"></polygon>
+          <text x="305" y="165">XOR</text>
+          <path class="wire" d="M390 155 H520"></path>
+          <text x="430" y="130">Can this be 1?</text>
+          <text class="small-label" x="110" y="305">If yes: different. If no: equivalent.</text>
+        </svg>
+      </div>
+      <aside class="notes">This is the miter idea. XOR is 1 exactly when the two functions disagree. SAT tries to find such a disagreement input.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">SAT sweeping</p>
+          <h2>Formal matching is stronger than simulation</h2>
+          <ul class="large-list">
+            <li>Simulation tests selected input patterns.</li>
+            <li>SAT/CEC proves whether a difference exists.</li>
+            <li>SAT sweeping groups nodes that compute the same function.</li>
+          </ul>
+        </div>
+        <div class="callout"><h3>Key idea</h3><p>Simulation can miss rare differences.</p><p>SAT gives a formal yes/no for the equivalence query.</p></div>
+      </div>
+      <aside class="notes">Use this slide to distinguish heuristic evidence from formal evidence. This distinction appears throughout the results.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <p class="eyebrow">Match types</p>
+        <h2>Four useful ways to relate nodes</h2>
+        <div class="match-table">
+          <div>Match type</div><div>Meaning</div><div>Example</div>
+          <div>Exact</div><div><code>f == g</code></div><div><code>a AND b</code> vs <code>b AND a</code></div>
+          <div>Complemented</div><div><code>f == NOT g</code></div><div>a node vs its inversion</div>
+          <div>SAT-verified non-exact</div><div>Different name/signature, formally equivalent</div><div>Recovered by SAT/CEC</div>
+          <div>Approximate</div><div>Not equal, but close</div><div>Differs on a few truth-table rows</div>
+        </div>
+      </div>
+      <aside class="notes">This is the central vocabulary slide. The later critical-path mapper uses exactly this priority order.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <p class="eyebrow">Layered flow</p>
+        <h2>Use the strongest evidence first</h2>
+        <div class="flowchart vertical">
+          <div class="flow-node start">Optimized node</div><div class="flow-node exact">Exact match?</div><div class="flow-node complement">Complemented match?</div><div class="flow-node sat">SAT-verified non-exact match?</div><div class="flow-node approx">Approximate near-match?</div><div class="flow-node unresolved">Unresolved</div>
+        </div>
+      </div>
+      <aside class="notes">Transition from theory to method: the project does not rely on one signal; it layers increasingly weaker forms of evidence.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <p class="eyebrow">Experimental setup</p>
+        <h2>From benchmarks to mapped critical-path nodes</h2>
+        <div class="pipeline">
+          <div>BLIF benchmark</div><div>ABC optimization</div><div>Candidate ranking</div><div>SAT/CEC validation</div><div>Approximate distance</div><div>Critical-path mapping</div>
+        </div>
+        <div class="benchmarks"><div><strong>Toy</strong><span>sanity circuits</span></div><div><strong>Generated</strong><span>adders, muxes, multipliers</span></div><div><strong>Custom</strong><span>hand-written examples</span></div><div><strong>ISCAS-85</strong><span>external benchmark circuits</span></div></div>
+      </div>
+      <aside class="notes">This is the pipeline slide. Mention that no physical timing is used yet; the last step uses structural depth as a proxy.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Exact correspondence results</p><h2>Mild passes preserve more internal signatures</h2></div>
+        <img src="assets/plots/exact_match_rate.png" alt="Exact match rate by optimization pass">
+        <div class="meaning-box"><strong>What this means:</strong> exact matching is reliable when nodes survive, but aggressive optimization destroys more internal identity.</div>
+      </div>
+      <aside class="notes">Explain the plot at a high level. The audience does not need every pass name; focus on mild versus aggressive optimization.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content split-result">
+        <div><p class="eyebrow">ISCAS changed the story</p><h2>Small benchmarks were too limited</h2><div class="result-card muted-card"><h3>Before ISCAS</h3><p class="big-number">0</p><p>verified rank-1 non-exact recoveries on the small benchmark pool</p></div></div>
+        <div><h2 class="spacer">With ISCAS</h2><div class="result-card"><h3>Expanded rank-1 SAT run</h3><p><span class="verified-text">609 verified</span></p><p><span class="rejected-text">9030 rejected</span></p><p>0 inconclusive</p></div></div>
+        <div class="meaning-box wide"><strong>What this means:</strong> recovery is possible on real benchmark circuits, but it is not universal.</div>
+      </div>
+      <aside class="notes">This slide is important because it corrects the early null result. Bigger external circuits expose real recoveries.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Where recoveries come from</p><h2>The 609 verified matches are concentrated</h2><p>Most recoveries appear in c2670, c6288, c5315, and c432.</p></div>
+        <img src="assets/plots/iscas_verified_by_circuit.png" alt="ISCAS verified matches by circuit">
+        <div class="meaning-box"><strong>What this means:</strong> benchmark choice matters; correspondence recovery is circuit-dependent.</div>
+      </div>
+      <aside class="notes">Point out concentration. This is why the project should not claim a single universal recovery rate.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Heuristics are useful, not proof</p><h2>High score can still be wrong</h2><p>Verified mean score was about 0.899, while rejected mean score was about 0.905.</p><p class="warning">Support overlap alone is misleading.</p></div>
+        <div class="plot-card"><img src="assets/plots/verified_vs_rejected_score_distribution.png" alt="Verified versus rejected score distribution"><p>A high heuristic score suggests similarity, but cannot prove equivalence.</p></div>
+      </div>
+      <aside class="notes">Connect this back to support/signature definitions. Ranking helps choose candidates, but SAT decides exact equivalence.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Approximate distance</p>
+          <h2>How close are two non-equivalent nodes?</h2>
+          <p><code>distance(f,g) = rows where f and g differ / total rows</code></p>
+          <div class="truth-table compact">
+            <div>x</div><div>y</div><div>f</div><div>g</div>
+            <div>0</div><div>0</div><div>0</div><div>0</div>
+            <div>0</div><div>1</div><div>0</div><div>0</div>
+            <div>1</div><div>0</div><div>1</div><div>0</div>
+            <div>1</div><div>1</div><div>1</div><div>1</div>
+          </div>
+        </div>
+        <div class="callout"><h3>Example</h3><p>They differ on 1 of 4 rows.</p><p><strong>distance = 25%</strong></p><p><strong>similarity = 75%</strong></p></div>
+      </div>
+      <aside class="notes">Make approximate matching concrete with a tiny table. Distance zero means exact; small distance means near-correspondence.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Approximate correspondence result</p><h2>SAT rejected does not always mean useless</h2><p>2609 pairs analyzed: 545 exact distances, 2064 sampled distances, 0 skipped.</p></div>
+        <img src="assets/plots/approx_distance_distribution.png" alt="Approximate distance distribution">
+        <div class="meaning-box"><strong>What this means:</strong> some rejected candidates are still close enough to be useful as approximate mappings. Sampled distance is not formal.</div>
+      </div>
+      <aside class="notes">Stress the caveat: exact distance is formal only for small supports where all input combinations are checked.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Critical path</p><h2>The path that limits speed</h2><p>A critical path is the longest or slowest chain of logic between two timing points.</p><p>If it is too slow, the clock period must be longer.</p></div>
+        <svg class="path-svg" viewBox="0 0 640 360" role="img" aria-label="Critical path through gates">
+          <text x="40" y="55">input</text><text x="530" y="55">output</text>
+          <path class="critical" d="M85 170 H190 H305 H420 H535"></path>
+          <rect class="gate" x="150" y="130" width="80" height="80" rx="12"></rect><text x="170" y="178">G1</text>
+          <rect class="gate" x="265" y="130" width="80" height="80" rx="12"></rect><text x="285" y="178">G2</text>
+          <rect class="gate" x="380" y="130" width="80" height="80" rx="12"></rect><text x="400" y="178">G3</text>
+          <text class="small-label" x="225" y="260">long delay path</text>
+        </svg>
+      </div>
+      <aside class="notes">Explain clock speed in plain language: the signal must finish traveling before the next tick.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Critical-path prototype</p><h2>First end-to-end mapping flow</h2><ol class="steps"><li>Extract structural longest path in optimized BLIF.</li><li>Map each node using the layered flow.</li><li>Report exact, SAT-verified, approximate, or unresolved.</li></ol><p class="warning">This is structural depth, not real timing yet.</p></div>
+        <svg class="backmap-svg" viewBox="0 0 640 360" role="img" aria-label="Critical path nodes back mapped to original circuit nodes">
+          <text x="50" y="35">Optimized path</text><text x="430" y="35">Original nodes</text>
+          <g class="path-list"><rect x="65" y="70" width="130" height="42" rx="8"></rect><rect x="65" y="128" width="130" height="42" rx="8"></rect><rect x="65" y="186" width="130" height="42" rx="8"></rect><rect x="65" y="244" width="130" height="42" rx="8"></rect><text x="102" y="97">m12</text><text x="102" y="155">m31</text><text x="102" y="213">m57</text><text x="102" y="271">m88</text></g>
+          <g class="orig-list"><rect x="445" y="70" width="130" height="42" rx="8"></rect><rect x="445" y="128" width="130" height="42" rx="8"></rect><rect x="445" y="186" width="130" height="42" rx="8"></rect><rect x="445" y="244" width="130" height="42" rx="8"></rect><text x="482" y="97">n09</text><text x="482" y="155">n22</text><text x="482" y="213">n41</text><text x="482" y="271">?</text></g>
+          <path class="map-arrow green" d="M195 91 C285 65 355 65 445 91"></path><path class="map-arrow purple" d="M195 149 C290 145 350 145 445 149"></path><path class="map-arrow orange" d="M195 207 C285 235 355 235 445 207"></path><path class="map-arrow gray" d="M195 265 C285 305 355 305 445 265"></path>
+        </svg>
+      </div>
+      <aside class="notes">This slide describes what the new script does. It is the first prototype of the final idea, not a complete timing tool.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Critical-path mapping results</p><h2>76.5% of structural path nodes mapped</h2><div class="inline-stats"><span>1686 nodes</span><span>1136 exact</span><span>145 SAT-verified</span><span>8 approximate</span><span>397 unresolved</span></div></div>
+        <img src="assets/plots/critical_path_mapping_categories.png" alt="Critical-path mapping categories">
+        <div class="meaning-box"><strong>What this means:</strong> the flow can already map most structural path nodes, while unresolved nodes show where better matching is needed.</div>
+      </div>
+      <aside class="notes">Present mapped fraction and unresolved fraction. Avoid claiming real timing; these are structural critical-path nodes.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Structural path, not real timing path.</p><p>Approximate distance is global and context-free.</p><p>Large supports use sampled estimates.</p><p>No RTL source-location mapping yet.</p><p>No automatic register insertion yet.</p></div></div>
+        <div class="callout"><h3>Important idea</h3><p>Unresolved nodes are not simply failures. They show where context, observability don't-cares, or stronger formal methods may be needed.</p></div>
+      </div>
+      <aside class="notes">Use this slide to show research maturity. We know what the prototype can and cannot claim.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <p class="eyebrow">Glossary</p>
+        <h2>Key terms in one place</h2>
+        <div class="glossary">
+          <div><strong>RTL</strong> readable hardware source</div><div><strong>Gate</strong> small Boolean operator</div><div><strong>Node</strong> signal point in graph</div><div><strong>Internal node</strong> non-input/output node</div>
+          <div><strong>AIG</strong> AND-inverter graph</div><div><strong>BLIF</strong> text circuit format</div><div><strong>ABC</strong> synthesis/verification tool</div><div><strong>Synthesis</strong> converts logic to gates</div>
+          <div><strong>Optimization pass</strong> one circuit transform</div><div><strong>Critical path</strong> slowest/longest path</div><div><strong>SAT</strong> satisfiability query</div><div><strong>CEC</strong> equivalence checking</div>
+          <div><strong>SAT sweeping</strong> finds equivalent nodes</div><div><strong>Truth table</strong> all input/output rows</div><div><strong>Support</strong> inputs a node depends on</div><div><strong>Signature</strong> observed output pattern</div>
+          <div><strong>Heuristic</strong> useful ranking rule</div><div><strong>False positive</strong> plausible but wrong match</div><div><strong>Exact match</strong> same function</div><div><strong>Approximate match</strong> close but not equal</div>
+          <div><strong>ODC</strong> differences hidden by circuit context</div>
+        </div>
+      </div>
+      <aside class="notes">This can be used as a backup slide if the audience asks about terminology. Do not read every definition aloud unless needed.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">References and inspiration</p><h2>Research context</h2><ul class="large-list"><li>Giovanni De Micheli, <em>Synthesis and Optimization of Digital Circuits</em>, especially Chapter 7.</li><li>Zdenek Vasicek, <em>Formal Methods for Exact Analysis of Approximate Circuits</em>.</li><li>ABC logic synthesis and verification tool.</li><li>ISCAS-85 combinational benchmark circuits.</li></ul></div>
+        <div class="callout"><h3>Positioning</h3><p>This project combines ideas from logic synthesis, equivalence checking, approximate computing, and debugging-oriented back-mapping.</p></div>
+      </div>
+      <aside class="notes">Use this to show academic grounding without overloading the audience with citations.</aside>
+    </section>
+
+    <section class="slide title-slide">
+      <div class="slide-content title-grid">
+        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit using exact, SAT-verified, and approximate matching, then demonstrates a first critical-path back-mapping prototype.</p></div>
+        <div class="takeaway-chain"><div>Optimized critical path</div><div>Correspondence recovery</div><div>Original circuit location</div><div>Future register insertion suggestion</div></div>
+      </div>
+      <aside class="notes">Close with the main contribution and the immediate next research direction: real timing paths and ODC-aware approximate matching.</aside>
+    </section>
+  </main>
+
+  <footer class="controls">
+    <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
+    <button id="prev" type="button" aria-label="Previous slide">Prev</button>
+    <span id="slide-number">1 / 28</span>
+    <button id="next" type="button" aria-label="Next slide">Next</button>
+    <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
+  </footer>
+
+  <aside id="notes-panel" class="notes-panel" aria-label="Speaker notes"></aside>
+  <script src="script.js"></script>
+</body>
+</html>
