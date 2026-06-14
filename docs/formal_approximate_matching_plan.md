@@ -105,3 +105,46 @@ under observability don't-care conditions even if its global truth-table distanc
 is not small. A mature correspondence method should eventually combine exact
 equivalence, complemented equivalence, approximate distance, and ODC-aware
 validation.
+
+## Critical-Path Back-Mapping Prototype
+
+The final use case is not only to say whether two internal nodes are equal. The
+practical goal is to help an engineer understand an optimized implementation in
+terms of the original RTL or unoptimized circuit. If the optimized circuit has a
+critical path, the engineer needs to know which original logic points correspond
+to the nodes on that path.
+
+Exact SAT sweeping is a strong first layer, but it is insufficient by itself.
+Classical synthesis can rewrite, refactor, resubstitute, and balance logic so
+that many optimized internal nodes no longer have an identical original node.
+Those nodes can still be meaningful descendants of original logic, or very close
+approximations of it.
+
+The first back-mapping prototype therefore uses the correspondence layers in a
+fixed priority order:
+
+```text
+1. exact match
+2. complemented match
+3. SAT-verified non-exact match
+4. approximate-distance near-match
+5. unresolved
+```
+
+For now, the "critical path" is a structural proxy: the script extracts the
+deepest fanin chain in the optimized BLIF network. This is not a physical timing
+path, but it is enough to test the end-to-end idea before adding libraries,
+placement, routing, or STA reports.
+
+Approximate correspondence helps because it gives a fallback for path nodes that
+are not SAT-equivalent to any original node. A near-match with small truth-table
+distance is not a proof of equality, but it can still be a useful explanation
+point: "this optimized node behaves like original node X on about 98% of sampled
+or enumerated assignments."
+
+Future work should replace the structural proxy with real timing reports, attach
+mapped nodes back to RTL source locations, and eventually use the mapping for
+optimization guidance such as register insertion or localized RTL rewrites.
+Another important extension is observability don't-care awareness: a node may be
+a better path explanation under circuit context than its global truth-table
+distance suggests.

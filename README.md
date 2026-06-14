@@ -1584,6 +1584,71 @@ partly-formal way to rank near-correspondences for unmatched optimized nodes.
 
 ---
 
+## Critical-Path Back-Mapping Prototype
+
+This is the first end-to-end version of the final tool idea: take a path in the
+optimized circuit and map each optimized node back to an original node when
+possible. For now, the path is a **structural longest path** through the
+optimized BLIF, not a real STA path. That makes the experiment lightweight while
+still testing whether the correspondence layers can explain nodes that lie on a
+deep optimized logic chain.
+
+The mapper uses the correspondence layers in this priority order:
+
+```text
+exact -> complemented -> SAT-verified non-exact -> approximate near-match -> unresolved
+```
+
+Approximate near-matches are only used after exact and SAT-verified layers fail.
+The default threshold is `distance <= 0.05`, configurable with
+`--approx-threshold`. Exact-distance rows are formal only when
+`is_formal_distance = True`; sampled approximate rows are still estimates. The
+`exact` mapping category reuses the existing exact-anchor layer, so for
+large-input ISCAS cases the CSV explanation/metadata should be checked to see
+whether the anchor came from formal exact mode or simulation-pattern mode.
+
+Run:
+
+```bash
+make critical-path-map
+# tuning:
+python3 scripts/critical_path_back_mapping.py --circuits c432 c2670 c6288 \
+    --approx-threshold 0.05
+```
+
+Outputs:
+
+- `results/critical_path_mapping.csv`
+- `results/critical_path_mapping.md`
+- `results/plots/critical_path_mapping_categories.png`
+- `results/plots/critical_path_mapped_fraction_by_circuit.png`
+- `results/plots/critical_path_mapping_by_optimization.png`
+
+![Critical-Path Mapping Categories](results/plots/critical_path_mapping_categories.png)
+
+This plot shows how many structural critical-path nodes are explained by each
+mapping layer. It matters because the final research question is not only
+whether internal nodes survive optimization, but whether important optimized
+nodes can still be related back to the original circuit.
+
+![Critical-Path Mapped Fraction by Circuit](results/plots/critical_path_mapped_fraction_by_circuit.png)
+
+This plot separates the case studies by ISCAS-85 circuit. It shows whether
+back-mapping is uniformly easy or concentrated in particular designs, which is
+important because the earlier SAT recovery results were highly circuit-dependent.
+
+![Critical-Path Mapping by Optimization](results/plots/critical_path_mapping_by_optimization.png)
+
+This plot compares optimization passes. It helps distinguish passes whose deep
+optimized paths remain mostly explainable from passes that create many
+unresolved path nodes.
+
+Limitations: this is not timing-aware yet, it does not connect nodes back to RTL
+source locations, and it does not model register insertion. It is a prototype for
+the correspondence part of that future flow.
+
+---
+
 ## Short research summary
 
 > This prototype works at the BLIF/AIG level and measures how synthesis optimizations affect

@@ -2,7 +2,7 @@ ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 PYTHON ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; else echo python3; fi)
 
-.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate research-plots iscas-analysis approx-distance full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
+.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate research-plots iscas-analysis approx-distance critical-path-map full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -133,6 +133,10 @@ approx-distance: generate-variants
 	@echo "Computing approximate node distances for ISCAS-85 candidates"
 	@$(PYTHON) scripts/approximate_node_distance.py
 
+critical-path-map: approx-distance
+	@echo "Mapping structural critical paths back to original ISCAS-85 nodes"
+	@$(PYTHON) scripts/critical_path_back_mapping.py
+
 full-research-pipeline: generate-variants analyze benchmark-manifest sat-pipeline topk-eval ablation region cegar-refine research-plots test
 	@echo ""
 	@echo "Full research pipeline complete."
@@ -155,6 +159,10 @@ clean-results:
 		results/sat_complement_rank1_nonexact.csv results/sat_complement_topk_nonexact.csv \
 		results/sat_complement_summary.csv results/sat_complement_summary.md \
 		results/sat_false_positive_analysis.csv \
+		results/approximate_distance_exact.csv results/approximate_distance_sampled.csv \
+		results/approximate_distance_skipped.csv results/approximate_distance_summary.csv \
+		results/approximate_distance_summary.md \
+		results/critical_path_mapping.csv results/critical_path_mapping.md \
 		results/topk_recovery.csv results/topk_recovery.md \
 		results/ablation_summary.csv results/ablation_summary.md \
 		results/region_candidates.csv results/region_summary.csv results/region_summary.md \
