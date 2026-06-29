@@ -224,6 +224,92 @@
     </section>
 
     <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">ABC-native baseline</p>
+          <h2>ABC-Native SAT Sweeping / FRAIG</h2>
+          <div class="concept-grid">
+            <div><strong>ABC</strong><span>A standard academic logic synthesis and verification tool.</span></div>
+            <div><strong>FRAIG</strong><span>A functionally reduced AIG: equivalent nodes are merged when proven safe.</span></div>
+            <div><strong>SAT sweeping</strong><span>Finds nodes that compute the same Boolean function.</span></div>
+            <div><strong>Baseline</strong><span>A standard-tool comparison against our custom mapping flow.</span></div>
+          </div>
+        </div>
+        <div class="callout"><h3>Simple version</h3><p>Instead of only asking our own script to compare pairs of nodes, we also ask ABC to run its own internal sweeping flow.</p></div>
+      </div>
+      <aside class="notes">Carmine suggested this direction because ABC already has mature SAT sweeping machinery. The point is not to replace our pipeline immediately, but to compare against the standard tool behavior.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <p class="eyebrow">Why compare against ABC?</p>
+        <h2>Two related questions, two different outputs</h2>
+        <div class="dual-flow">
+          <div class="flow-lane">
+            <h3>Custom flow</h3>
+            <div class="lane-step">Candidate ranking</div>
+            <div class="lane-arrow">↓</div>
+            <div class="lane-step">Pairwise SAT / CEC</div>
+            <div class="lane-arrow">↓</div>
+            <div class="lane-output mapping">Mapping table</div>
+          </div>
+          <div class="flow-lane">
+            <h3>ABC-native flow</h3>
+            <div class="lane-step">Optimized network</div>
+            <div class="lane-arrow">↓</div>
+            <div class="lane-step"><code>fraig</code> / <code>&amp;fraig -x</code></div>
+            <div class="lane-arrow">↓</div>
+            <div class="lane-output stats">Swept network + statistics</div>
+          </div>
+        </div>
+        <div class="meaning-box wide"><strong>Key difference:</strong> the custom flow outputs candidate correspondences. The ABC flow outputs reduced networks and statistics.</div>
+      </div>
+      <aside class="notes">This is the central comparison. Our pipeline is mapping-oriented. ABC-native FRAIG is reduction-oriented unless we can extract equivalence classes or merge provenance.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div>
+          <p class="eyebrow">ABC baseline results</p>
+          <h2>ABC reduces redundant structure on real circuits</h2>
+          <div class="inline-stats"><span>64 rows</span><span>8 benchmarks</span><span>4 optimizations</span><span>2 ABC flows</span></div>
+        </div>
+        <div class="plot-pair">
+          <img src="assets/plots/abc_native_node_reduction_by_flow.png" alt="ABC-native node reduction by flow">
+          <img src="assets/plots/abc_native_level_reduction_by_flow.png" alt="ABC-native level reduction by flow">
+        </div>
+        <div class="meaning-box"><strong>Largest reductions:</strong> c432/original 209 → 171, c2670/balance 714 → 677, c432/balance 209 → 173, c2670/original 717 → 688, c432/rewrite 194 → 170.</div>
+      </div>
+      <aside class="notes">The lightweight baseline used c432, c2670, c6288, three toy circuits, generated_mux_tree_8, and generated_multiplier_2. The regular fraig command and the ampersand-space &fraig -x flow produced the same reductions on this subset.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">What ABC gives us</p>
+          <h2>Useful comparison, indirect mapping evidence</h2>
+          <div class="checklist future"><p>Supported locally: <code>fraig</code>, <code>&amp;get</code>, <code>&amp;fraig -x</code>, <code>cec</code>, <code>print_stats</code>, <code>ps</code>, <code>write_blif</code>.</p><p>Unsupported locally: regular <code>fraig -x</code> and <code>fraig -y</code>.</p><p><code>fraig</code> and <code>amp_fraig_x</code> behaved similarly on this subset.</p><p>Ordinary FRAIG output did not expose old-to-new node provenance.</p></div>
+        </div>
+        <div class="plot-card"><img src="assets/plots/abc_native_vs_custom_recovery.png" alt="ABC-native reductions versus custom recovery"><p>ABC-native reductions and custom correspondence recovery are related, but not the same measurement.</p></div>
+        <div class="meaning-box wide"><strong>What this means:</strong> ABC-native sweeping reuses a standard EDA flow, but the custom correspondence layer remains necessary for critical-path back-mapping.</div>
+      </div>
+      <aside class="notes">This is the careful interpretation. ABC is valuable because it is standard and efficient, but these logs do not directly answer which original node corresponds to each optimized critical-path node.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Provenance check</p>
+          <h2>FRAIG reduces, but ordinary output is not a map</h2>
+          <div class="checklist future"><p>Controlled examples tested duplicate ANDs, commuted ANDs, and same-support non-equivalent nodes.</p><p>Single-network <code>fraig</code> / <code>&amp;fraig -x</code> wrote swept networks, not explicit merge provenance.</p><p><code>dump_equiv</code> can emit cross-network equivalence classes, but that is a separate validation interface.</p><p>On c432/rewrite, both ABC flows reduced 194 → 170 AIG nodes without printing old-to-new merge records.</p></div>
+        </div>
+        <div class="plot-card"><img src="assets/plots/abc_provenance_summary.png" alt="ABC provenance probe summary"><p>The provenance probe is exploratory: it measures visibility of names/classes, not only reduction.</p></div>
+        <div class="meaning-box wide"><strong>Research consequence:</strong> ABC remains the right standard baseline, but critical-path back-mapping still needs an explicit correspondence layer.</div>
+      </div>
+      <aside class="notes">This slide captures the follow-up to Carmine's suggestion. We tested whether the standard ABC commands give us the missing provenance. They help with reductions and dump_equiv can expose cross-network classes, but ordinary FRAIG output is not enough to replace the custom mapping table.</aside>
+    </section>
+
+    <section class="slide">
       <div class="slide-content">
         <p class="eyebrow">Match types</p>
         <h2>Four useful ways to relate nodes</h2>
@@ -252,13 +338,18 @@
     <section class="slide">
       <div class="slide-content">
         <p class="eyebrow">Experimental setup</p>
-        <h2>From benchmarks to mapped critical-path nodes</h2>
-        <div class="pipeline">
-          <div>BLIF benchmark</div><div>ABC optimization</div><div>Candidate ranking</div><div>SAT/CEC validation</div><div>Approximate distance</div><div>Critical-path mapping</div>
+        <h2>From optimized circuit to mapping and baseline comparison</h2>
+        <div class="branch-flow">
+          <div class="flow-node start">Optimized circuit</div>
+          <div class="branch-grid">
+            <div class="branch-card"><h3>Custom correspondence flow</h3><p>Candidate ranking → SAT/CEC → approximate distance</p><strong>Output: mapping table</strong></div>
+            <div class="branch-card"><h3>ABC-native FRAIG baseline</h3><p><code>fraig</code> / <code>&amp;fraig -x</code></p><strong>Output: swept network + statistics</strong></div>
+          </div>
+          <div class="flow-node unresolved">Critical-path back-mapping still needs correspondences</div>
         </div>
         <div class="benchmarks"><div><strong>Toy</strong><span>sanity circuits</span></div><div><strong>Generated</strong><span>adders, muxes, multipliers</span></div><div><strong>Custom</strong><span>hand-written examples</span></div><div><strong>ISCAS-85</strong><span>external benchmark circuits</span></div></div>
       </div>
-      <aside class="notes">This is the pipeline slide. Mention that no physical timing is used yet; the last step uses structural depth as a proxy.</aside>
+      <aside class="notes">Update the flow: we now have a side-by-side ABC-native baseline. It strengthens the comparison story, but the final goal remains a mapping back to original circuit locations.</aside>
     </section>
 
     <section class="slide">
@@ -363,18 +454,10 @@
 
     <section class="slide">
       <div class="slide-content two-column">
-        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Structural path, not real timing path.</p><p>Approximate distance is global and context-free.</p><p>Large supports use sampled estimates.</p><p>No RTL source-location mapping yet.</p><p>No automatic register insertion yet.</p></div></div>
-        <div class="callout"><h3>Important idea</h3><p>Unresolved nodes are not simply failures. They show where context, observability don't-cares, or stronger formal methods may be needed.</p></div>
+        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Structural path, not real timing path.</p><p>Approximate distance is global and context-free.</p><p>Large supports use sampled estimates.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>No RTL source-location mapping or automatic register insertion yet.</p></div></div>
+        <div class="callout"><h3>Important idea</h3><p>Unresolved nodes are not simply failures. They show where context, observability don't-cares, or deeper ABC integration may be needed.</p></div>
       </div>
-      <aside class="notes">Use this slide to show research maturity. We know what the prototype can and cannot claim.</aside>
-    </section>
-
-    <section class="slide">
-      <div class="slide-content two-column">
-        <div><p class="eyebrow">Future direction</p><h2>Reuse ABC-native SAT sweeping</h2><div class="checklist future"><p>Probe local support for `fraig`, `fraig -x`, `fraig -y`, `&fraig -x`, and `cec`.</p><p>Run native sweep flows on selected optimized BLIFs.</p><p>Compare node/level reductions with custom correspondence recovery.</p><p>Treat reductions as indirect evidence unless ABC exposes equivalence classes.</p></div></div>
-        <div class="callout"><h3>Careful claim</h3><p>ABC-native sweeping can show what the tool can merge efficiently, but ordinary FRAIG output is not automatically an old-to-new node mapping.</p></div>
-      </div>
-      <aside class="notes">This appendix note connects Carmine's suggestion to the next baseline without rewriting the presentation.</aside>
+      <aside class="notes">Use this slide to show research maturity. The ABC-native baseline is a meaningful addition, but it does not remove the need for a correspondence layer.</aside>
     </section>
 
     <section class="slide">
@@ -403,17 +486,17 @@
 
     <section class="slide title-slide">
       <div class="slide-content title-grid">
-        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit using exact, SAT-verified, and approximate matching, then demonstrates a first critical-path back-mapping prototype.</p></div>
-        <div class="takeaway-chain"><div>Optimized critical path</div><div>Correspondence recovery</div><div>Original circuit location</div><div>Future register insertion suggestion</div></div>
+        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, and now documents the limits of ordinary ABC provenance output.</p></div>
+        <div class="takeaway-chain"><div>Optimized critical path</div><div>Correspondence recovery</div><div>ABC-native baseline comparison</div><div>dump_equiv / deeper provenance extraction</div></div>
       </div>
-      <aside class="notes">Close with the main contribution and the immediate next research direction: real timing paths and ODC-aware approximate matching.</aside>
+      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is now a standard-flow baseline, and the provenance probe explains why deeper dump_equiv parsing or ABC instrumentation is needed before ABC can replace mapping-oriented logic.</aside>
     </section>
   </main>
 
   <footer class="controls">
     <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
     <button id="prev" type="button" aria-label="Previous slide">Prev</button>
-    <span id="slide-number">1 / 29</span>
+    <span id="slide-number">1 / 33</span>
     <button id="next" type="button" aria-label="Next slide">Next</button>
     <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
   </footer>

@@ -2,7 +2,7 @@ ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 PYTHON ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; else echo python3; fi)
 
-.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare research-plots iscas-analysis approx-distance critical-path-map full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
+.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance research-plots iscas-analysis approx-distance critical-path-map full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -139,6 +139,14 @@ abc-sweep-compare:
 	@echo "Comparing ABC-native sweep baseline with custom correspondence results"
 	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/compare_abc_native_vs_custom.py
 
+abc-provenance:
+	@echo "Investigating ABC-native FRAIG provenance / equivalence-class visibility"
+	@if [ ! -x "$(ABC_BIN)" ] && [ -z "$$ABC" ]; then \
+		echo "ABC binary not found. Run 'make build-abc' or set ABC=/path/to/abc"; \
+		exit 1; \
+	fi
+	@PYTHONDONTWRITEBYTECODE=1 ABC=$${ABC:-$(PWD)/$(ABC_BIN)} $(PYTHON) scripts/investigate_abc_provenance.py
+
 research-plots:
 	@echo "Generating research plots → results/plots/"
 	@$(PYTHON) research_plots.py
@@ -186,6 +194,7 @@ clean-results:
 		results/abc_sat_sweeping_capabilities.csv results/abc_sat_sweeping_capabilities.md \
 		results/abc_native_sweep_baseline.csv results/abc_native_sweep_baseline.md \
 		results/abc_native_vs_custom_comparison.csv results/abc_native_vs_custom_comparison.md \
+		results/abc_provenance_probe.csv results/abc_provenance_probe.md \
 		results/topk_recovery.csv results/topk_recovery.md \
 		results/ablation_summary.csv results/ablation_summary.md \
 		results/region_candidates.csv results/region_summary.csv results/region_summary.md \

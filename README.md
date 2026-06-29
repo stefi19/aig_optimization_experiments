@@ -43,9 +43,10 @@ https://stefi19.github.io/aig_optimization_experiments/presentation/
 18. [Repository structure](#18-repository-structure)
 19. [ABC-native SAT sweeping / hybrid validation](#19-abc-native-sat-sweeping--hybrid-validation)
 20. [ABC-Native SAT Sweeping Baseline](#abc-native-sat-sweeping-baseline)
-21. [Dependencies](#20-dependencies)
-22. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
-23. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
+21. [ABC Provenance Investigation](#abc-provenance-investigation)
+22. [Dependencies](#20-dependencies)
+23. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+24. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -971,7 +972,9 @@ aig_optimization_experiments/
 │       └── false_positive_by_group.png
 │
 ├── docs/
-│   └── abc_sat_sweeping_extension.md  Design notes for the ABC hybrid validation flow
+│   ├── abc_sat_sweeping_extension.md  Design notes for the ABC hybrid validation flow
+│   ├── abc_native_sat_sweeping_plan.md Native FRAIG baseline plan
+│   └── abc_provenance_investigation.md ABC provenance / equivalence-class note
 │
 ├── tests/                         pytest unit tests
 │   ├── test_topk_recovery.py
@@ -991,7 +994,8 @@ aig_optimization_experiments/
 │   ├── abc_sat_sweep_validation.py        Core ABC dump_equiv / FRAIG module
 │   ├── probe_abc_sat_sweeping.py          ABC command capability probe
 │   ├── abc_native_sat_sweep_baseline.py   Native FRAIG/sweep baseline
-│   └── compare_abc_native_vs_custom.py    Exploratory comparison with custom results
+│   ├── compare_abc_native_vs_custom.py    Exploratory comparison with custom results
+│   └── investigate_abc_provenance.py      ABC provenance visibility probe
 │
 ├── analyze_blif_matches.py        Main analysis: parse BLIF, simulate, compare, rank
 ├── visualize_results.py           Legacy per-benchmark node-count plots
@@ -1163,6 +1167,49 @@ make abc-sweep-compare
 ```
 
 See `docs/abc_native_sat_sweeping_plan.md` for the research plan and interpretation rules.
+
+---
+
+## ABC Provenance Investigation
+
+The next ABC-native step asks whether ordinary ABC FRAIG/sweeping commands expose enough
+merge provenance to replace the custom correspondence layer. The answer from the current
+probe is cautious: ABC reduces networks and `dump_equiv` can expose cross-network
+equivalence-class files, but the single-network `fraig` / `&fraig -x` flows tested here do
+not print a reliable old-node to new-node map.
+
+Run the lightweight provenance investigation with:
+
+```bash
+make abc-provenance
+```
+
+The probe generates controlled temporary BLIFs for duplicate AND nodes, commuted AND
+nodes, and same-support non-equivalent AND/OR nodes. It also runs a light
+`external_iscas85_c432` / `rewrite` sample. Outputs:
+
+- `results/abc_provenance_probe.csv`
+- `results/abc_provenance_probe.md`
+- `results/plots/abc_provenance_summary.png`
+
+Current local findings:
+
+- Supported provenance-related commands/flows include `fraig`, `&get` / `&fraig -x` via
+  the `amp_fraig_x` flow, `cec`, `print_fanio`, and `dump_equiv` in its two-network form.
+- Regular `fraig -x`, regular `fraig -y`, `choice`, `print_factor`, and `print_gates`
+  were unsupported or failed in this local build.
+- Controlled single-network FRAIG outputs did not preserve the sampled internal node names.
+- On `external_iscas85_c432/rewrite`, both `fraig` and `amp_fraig_x` reduced the network
+  from 194 to 170 AIG nodes, but stdout did not expose merge provenance.
+- `dump_equiv` is still useful for cross-network equivalence classes, but that is a
+  separate validation interface rather than ordinary `write_blif` provenance.
+
+Interpretation: ABC-native sweeping is a strong reference flow, and deeper ABC integration
+may expose equivalence classes or merge provenance. For now, the custom correspondence layer
+remains necessary when the research output needs an explicit mapping table for
+critical-path back-mapping.
+
+See `docs/abc_provenance_investigation.md` for the investigation plan and caveats.
 
 ---
 
