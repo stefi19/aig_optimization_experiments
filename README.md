@@ -44,9 +44,11 @@ https://stefi19.github.io/aig_optimization_experiments/presentation/
 19. [ABC-native SAT sweeping / hybrid validation](#19-abc-native-sat-sweeping--hybrid-validation)
 20. [ABC-Native SAT Sweeping Baseline](#abc-native-sat-sweeping-baseline)
 21. [ABC Provenance Investigation](#abc-provenance-investigation)
-22. [Dependencies](#20-dependencies)
-23. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
-24. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
+22. [Approximate-Distance Sampling Calibration](#approximate-distance-sampling-calibration)
+23. [Toward ODC-Aware Approximate Matching](#toward-odc-aware-approximate-matching)
+24. [Dependencies](#20-dependencies)
+25. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+26. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -974,7 +976,8 @@ aig_optimization_experiments/
 ├── docs/
 │   ├── abc_sat_sweeping_extension.md  Design notes for the ABC hybrid validation flow
 │   ├── abc_native_sat_sweeping_plan.md Native FRAIG baseline plan
-│   └── abc_provenance_investigation.md ABC provenance / equivalence-class note
+│   ├── abc_provenance_investigation.md ABC provenance / equivalence-class note
+│   └── odc_aware_matching_plan.md      Plan for context-aware matching
 │
 ├── tests/                         pytest unit tests
 │   ├── test_topk_recovery.py
@@ -995,7 +998,9 @@ aig_optimization_experiments/
 │   ├── probe_abc_sat_sweeping.py          ABC command capability probe
 │   ├── abc_native_sat_sweep_baseline.py   Native FRAIG/sweep baseline
 │   ├── compare_abc_native_vs_custom.py    Exploratory comparison with custom results
-│   └── investigate_abc_provenance.py      ABC provenance visibility probe
+│   ├── investigate_abc_provenance.py      ABC provenance visibility probe
+│   ├── calibrate_approximate_distance_sampling.py Sampling calibration
+│   └── odc_aware_match_probe.py           Tiny ODC-aware matching probe
 │
 ├── analyze_blif_matches.py        Main analysis: parse BLIF, simulate, compare, rank
 ├── visualize_results.py           Legacy per-benchmark node-count plots
@@ -1210,6 +1215,85 @@ remains necessary when the research output needs an explicit mapping table for
 critical-path back-mapping.
 
 See `docs/abc_provenance_investigation.md` for the investigation plan and caveats.
+
+---
+
+## Approximate-Distance Sampling Calibration
+
+Approximate node distance has two modes:
+
+- exact mode for small union supports, where the full truth table can be enumerated;
+- sampled mode for larger supports, where random patterns estimate the distance.
+
+Sampled distance is useful for ranking, but it is not formal. The calibration script
+recomputes sampled distances on candidate pairs whose exact distance is available, using
+multiple sample sizes and seeds:
+
+```bash
+make approx-sampling-calibration
+```
+
+Default sample sizes are `128`, `512`, `1024`, `4096`, and `8192`, with five deterministic
+seeds per size. To avoid mixing stale generated variants into the calibration, the script
+recomputes exact distance on the same currently reproducible BLIF pair used for sampling
+and skips rows whose regenerated node names/supports no longer match the exact-mode cap.
+
+Outputs:
+
+- `results/approx_sampling_calibration.csv`
+- `results/approx_sampling_calibration.md`
+- `results/plots/approx_sampling_error_by_sample_size.png`
+- `results/plots/approx_sampling_exact_vs_sampled.png`
+- `results/plots/approx_sampling_rank_stability.png`
+
+Current lightweight calibration result:
+
+- calibrated exact pairs: 27,
+- at 128 samples: mean absolute error about `0.02545`, mean Spearman rank correlation
+  about `0.93593`,
+- at 8192 samples: mean absolute error about `0.00332`, max error about `0.01746`,
+  and mean Spearman rank correlation about `0.97659`.
+
+Interpretation: sampled distance looks reliable enough for coarse ranking on this small
+calibrated subset, especially at larger sample sizes, but it remains an estimate. Exact
+distance rows should still be described separately from sampled approximate-distance rows.
+
+---
+
+## Toward ODC-Aware Approximate Matching
+
+Global internal-node equivalence can be too strict. Two candidate nodes may differ as
+Boolean functions but still produce no primary-output difference because the surrounding
+circuit masks that difference. This is the observability don't-care direction.
+
+Run the tiny controlled probe with:
+
+```bash
+make odc-probe
+```
+
+The probe builds small original/modified BLIF pairs, computes the exact global distance
+between candidate nodes, and uses ABC `cec` to check whether replacing one node with the
+other changes primary outputs.
+
+Outputs:
+
+- `results/odc_probe_results.csv`
+- `results/odc_probe_results.md`
+- `results/plots/odc_probe_summary.png`
+
+Current controlled findings:
+
+- `masked_and_or`: `a AND b` versus `a OR b` has global distance `0.5000`, but the
+  difference is hidden by a constant-zero output context, so ABC reports equivalent
+  outputs.
+- `visible_and_or`: the same node difference is directly observable, so ABC reports the
+  circuits are not equivalent.
+- `equivalent_commuted_and`: the candidates are globally equivalent and output-equivalent.
+
+This is only a controlled prototype. General ODC-aware matching still needs automatic
+candidate substitution inside arbitrary original/optimized networks and careful
+primary-output alignment. See `docs/odc_aware_matching_plan.md` for the research plan.
 
 ---
 

@@ -416,6 +416,41 @@
     </section>
 
     <section class="slide">
+      <div class="slide-content plot-slide">
+        <div>
+          <p class="eyebrow">Sampling calibration</p>
+          <h2>Sampled distance is useful, but it needs error bars</h2>
+          <div class="inline-stats"><span>27 exact pairs</span><span>5 sample sizes</span><span>5 seeds</span><span>8192 MAE 0.0033</span><span>rank corr 0.977</span></div>
+        </div>
+        <div class="plot-pair">
+          <img src="assets/plots/approx_sampling_error_by_sample_size.png" alt="Approximate sampling error by sample size">
+          <img src="assets/plots/approx_sampling_rank_stability.png" alt="Approximate sampling rank stability">
+        </div>
+        <div class="meaning-box"><strong>What this means:</strong> sampled approximate distance is good enough for coarse ranking on this calibrated subset, especially at larger sample sizes, but it remains an estimate.</div>
+      </div>
+      <aside class="notes">This slide tightens the approximate layer. We now calibrate sampled estimates against exact distances where exact computation is feasible. The result supports using sampled distance as a ranking signal, but not as a formal proof.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">ODC-aware direction</p>
+          <h2>Some internal differences do not reach outputs</h2>
+          <div class="odc-mini">
+            <div><code>f = a AND b</code></div>
+            <div><code>g = a OR b</code></div>
+            <div><code>z = 0</code></div>
+            <div><code>y = f AND z</code></div>
+          </div>
+          <p>Globally, <code>f</code> and <code>g</code> differ. In this context, replacing <code>f</code> with <code>g</code> still leaves <code>y = 0</code>.</p>
+        </div>
+        <div class="plot-card"><img src="assets/plots/odc_probe_summary.png" alt="ODC probe summary"><p>The controlled probe compares global node distance with ABC CEC output observability.</p></div>
+        <div class="meaning-box wide"><strong>Research consequence:</strong> future matching should ask whether a difference matters at primary outputs, not only whether two internal nodes are globally equal.</div>
+      </div>
+      <aside class="notes">This is intentionally a direction slide, not a completed feature claim. The current probe uses tiny controlled BLIF pairs. General ODC matching requires automatic substitution inside arbitrary networks.</aside>
+    </section>
+
+    <section class="slide">
       <div class="slide-content two-column">
         <div><p class="eyebrow">Critical path</p><h2>The path that limits speed</h2><p>A critical path is the longest or slowest chain of logic between two timing points.</p><p>If it is too slow, the clock period must be longer.</p></div>
         <svg class="path-svg" viewBox="0 0 640 360" role="img" aria-label="Critical path through gates">
@@ -454,7 +489,7 @@
 
     <section class="slide">
       <div class="slide-content two-column">
-        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Structural path, not real timing path.</p><p>Approximate distance is global and context-free.</p><p>Large supports use sampled estimates.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>No RTL source-location mapping or automatic register insertion yet.</p></div></div>
+        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Structural path, not real timing path.</p><p>Sampled approximate distance is calibrated but still not formal.</p><p>Approximate distance is global and context-free until ODC-aware matching is integrated.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>No RTL source-location mapping or automatic register insertion yet.</p></div></div>
         <div class="callout"><h3>Important idea</h3><p>Unresolved nodes are not simply failures. They show where context, observability don't-cares, or deeper ABC integration may be needed.</p></div>
       </div>
       <aside class="notes">Use this slide to show research maturity. The ABC-native baseline is a meaningful addition, but it does not remove the need for a correspondence layer.</aside>
@@ -486,17 +521,17 @@
 
     <section class="slide title-slide">
       <div class="slide-content title-grid">
-        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, and now documents the limits of ordinary ABC provenance output.</p></div>
-        <div class="takeaway-chain"><div>Optimized critical path</div><div>Correspondence recovery</div><div>ABC-native baseline comparison</div><div>dump_equiv / deeper provenance extraction</div></div>
+        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, and opens an ODC-aware matching direction.</p></div>
+        <div class="takeaway-chain"><div>Optimized critical path</div><div>Correspondence recovery</div><div>Calibrated approximate ranking</div><div>ODC-aware future matching</div></div>
       </div>
-      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is now a standard-flow baseline, and the provenance probe explains why deeper dump_equiv parsing or ABC instrumentation is needed before ABC can replace mapping-oriented logic.</aside>
+      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is now a standard-flow baseline, sampled approximate distance has calibration, and ODC-aware matching is the next context-sensitive direction.</aside>
     </section>
   </main>
 
   <footer class="controls">
     <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
     <button id="prev" type="button" aria-label="Previous slide">Prev</button>
-    <span id="slide-number">1 / 33</span>
+    <span id="slide-number">1 / 35</span>
     <button id="next" type="button" aria-label="Next slide">Next</button>
     <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
   </footer>

@@ -2,7 +2,7 @@ ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 PYTHON ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; else echo python3; fi)
 
-.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance research-plots iscas-analysis approx-distance critical-path-map full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
+.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance research-plots iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -161,6 +161,18 @@ approx-distance: generate-variants
 	@echo "Computing approximate node distances for ISCAS-85 candidates"
 	@$(PYTHON) scripts/approximate_node_distance.py
 
+approx-sampling-calibration:
+	@echo "Calibrating sampled approximate-distance estimates against exact rows"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/calibrate_approximate_distance_sampling.py
+
+odc-probe:
+	@echo "Running tiny ODC-aware matching probe"
+	@if [ ! -x "$(ABC_BIN)" ] && [ -z "$$ABC" ]; then \
+		echo "ABC binary not found. Run 'make build-abc' or set ABC=/path/to/abc"; \
+		exit 1; \
+	fi
+	@PYTHONDONTWRITEBYTECODE=1 ABC=$${ABC:-$(PWD)/$(ABC_BIN)} $(PYTHON) scripts/odc_aware_match_probe.py
+
 critical-path-map: approx-distance
 	@echo "Mapping structural critical paths back to original ISCAS-85 nodes"
 	@$(PYTHON) scripts/critical_path_back_mapping.py
@@ -190,6 +202,8 @@ clean-results:
 		results/approximate_distance_exact.csv results/approximate_distance_sampled.csv \
 		results/approximate_distance_skipped.csv results/approximate_distance_summary.csv \
 		results/approximate_distance_summary.md \
+		results/approx_sampling_calibration.csv results/approx_sampling_calibration.md \
+		results/odc_probe_results.csv results/odc_probe_results.md \
 		results/critical_path_mapping.csv results/critical_path_mapping.md \
 		results/abc_sat_sweeping_capabilities.csv results/abc_sat_sweeping_capabilities.md \
 		results/abc_native_sweep_baseline.csv results/abc_native_sweep_baseline.md \
