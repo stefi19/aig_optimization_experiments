@@ -1,0 +1,33 @@
+benchmark,source_family,optimization,best_abc_flow,node_count_before,node_count_after,level_count_before,level_count_after,node_reduction,level_reduction,exact_match_rate,preserved_signature_fraction,optimized_signature_coverage,custom_node_reduction_rate,custom_level_reduction_rate,non_exact_verified,verification_rate,rejection_rate,approx_near_match_available,critical_path_mapped_fraction,interpretation
+external_iscas85_c2670,iscas85,balance,fraig,714,677,17,17,37,0,0.8480825958702065,0.8443465491923642,0.8480825958702065,0.004405286343612335,0.19047619047619047,0,0.0,1.0,true,0.7647,ABC reduces while many custom exact signatures remain preserved
+external_iscas85_c2670,iscas85,original,fraig,717,688,21,21,29,0,,,,,,,,,true,,ABC reduces this network; custom evidence is indirect or absent
+external_iscas85_c2670,iscas85,resyn2,fraig,571,570,17,17,1,0,0.15427509293680297,0.12187958883994127,0.15427509293680297,0.20998531571218795,0.19047619047619047,50,0.5882,0.4118,true,0.0000,"Both flows show recoverable structure, but ABC mapping is not exposed here"
+external_iscas85_c2670,iscas85,rewrite,fraig,583,583,21,21,0,0,0.8848263254113345,0.71071953010279,0.8848263254113345,0.19676945668135096,0.0,0,0.0,1.0,true,0.8571,ABC sweep did not reduce nodes in this row
+external_iscas85_c432,iscas85,balance,fraig,209,173,25,23,36,2,0.7871287128712872,0.7871287128712872,0.7871287128712872,0.0,0.40476190476190477,0,0.0,1.0,true,0.4800,ABC reduces while many custom exact signatures remain preserved
+external_iscas85_c432,iscas85,original,fraig,209,171,42,40,38,2,,,,,,,,,true,,ABC reduces this network; custom evidence is indirect or absent
+external_iscas85_c432,iscas85,resyn2,fraig,136,130,25,25,6,0,0.648854961832061,0.4207920792079208,0.648854961832061,0.35148514851485146,0.40476190476190477,6,0.75,0.25,true,0.4400,"Both flows show recoverable structure, but ABC mapping is not exposed here"
+external_iscas85_c432,iscas85,rewrite,fraig,194,170,41,39,24,2,0.9090909090909091,0.8415841584158416,0.9090909090909091,0.07425742574257425,0.023809523809523808,11,0.6875,0.3125,true,0.7805,ABC reduces while many custom exact signatures remain preserved
+external_iscas85_c6288,iscas85,balance,fraig,2337,2334,120,120,3,0,1.0,1.0,1.0,0.0,0.0,,,,true,0.9833,ABC reduces while many custom exact signatures remain preserved
+external_iscas85_c6288,iscas85,original,fraig,2337,2334,120,120,3,0,,,,,,,,,true,,ABC reduces this network; custom evidence is indirect or absent
+external_iscas85_c6288,iscas85,resyn2,fraig,1870,1870,89,89,0,0,0.5163220892274211,0.41171366594360087,0.5163220892274211,0.20260303687635575,0.25833333333333336,16,0.0542,0.9458,true,0.7753,ABC sweep did not reduce nodes in this row
+external_iscas85_c6288,iscas85,rewrite,fraig,2305,2305,117,117,0,0,0.957765068191817,0.944468546637744,0.957765068191817,0.01388286334056399,0.025,37,0.2937,0.7063,true,0.9658,ABC sweep did not reduce nodes in this row
+generated_multiplier_2,generated,balance,fraig,12,9,4,3,3,1,1.0,1.0,1.0,0.0,0.0,,,,true,,ABC reduces while many custom exact signatures remain preserved
+generated_multiplier_2,generated,original,fraig,12,9,4,3,3,1,,,,,,,,,true,,ABC reduces this network; custom evidence is indirect or absent
+generated_multiplier_2,generated,resyn2,fraig,8,8,3,3,0,0,0.75,0.375,0.75,0.5,0.25,,,,true,,ABC sweep did not reduce nodes in this row
+generated_multiplier_2,generated,rewrite,fraig,9,9,3,3,0,0,1.0,0.625,1.0,0.375,0.25,,,,true,,ABC sweep did not reduce nodes in this row
+generated_mux_tree_8,generated,balance,fraig,21,21,6,6,0,0,1.0,1.0,1.0,0.0,0.0,,,,true,,ABC sweep did not reduce nodes in this row
+generated_mux_tree_8,generated,original,fraig,21,21,6,6,0,0,,,,,,,,,true,,ABC sweep did not reduce nodes in this row
+generated_mux_tree_8,generated,resyn2,fraig,21,21,6,6,0,0,0.4,0.4,0.4,0.0,0.0,,,,true,,ABC sweep did not reduce nodes in this row
+generated_mux_tree_8,generated,rewrite,fraig,21,21,6,6,0,0,1.0,1.0,1.0,0.0,0.0,,,,true,,ABC sweep did not reduce nodes in this row
+majority3,toy,balance,fraig,5,5,3,3,0,0,0.75,0.75,0.75,0.0,0.0,0,0.0,1.0,true,,ABC sweep did not reduce nodes in this row
+majority3,toy,original,fraig,5,5,3,3,0,0,,,,,,,,,true,,ABC sweep did not reduce nodes in this row
+majority3,toy,resyn2,fraig,4,4,3,3,0,0,0.3333333333333333,0.25,0.3333333333333333,0.25,0.0,0,0.0,1.0,true,,ABC sweep did not reduce nodes in this row
+majority3,toy,rewrite,fraig,5,5,3,3,0,0,1.0,1.0,1.0,0.0,0.0,,,,true,,ABC sweep did not reduce nodes in this row
+mux2,toy,balance,fraig,3,3,2,2,0,0,1.0,1.0,1.0,0.0,0.0,,,,true,,ABC sweep did not reduce nodes in this row
+mux2,toy,original,fraig,3,3,2,2,0,0,,,,,,,,,true,,ABC sweep did not reduce nodes in this row
+mux2,toy,resyn2,fraig,3,3,2,2,0,0,0.0,0.0,0.0,0.0,0.0,,,,true,,ABC sweep did not reduce nodes in this row
+mux2,toy,rewrite,fraig,3,3,2,2,0,0,1.0,1.0,1.0,0.0,0.0,,,,true,,ABC sweep did not reduce nodes in this row
+toy_and_or,toy,balance,fraig,3,3,2,2,0,0,1.0,1.0,1.0,0.0,0.0,,,,true,,ABC sweep did not reduce nodes in this row
+toy_and_or,toy,original,fraig,3,3,2,2,0,0,,,,,,,,,true,,ABC sweep did not reduce nodes in this row
+toy_and_or,toy,resyn2,fraig,3,3,2,2,0,0,1.0,1.0,1.0,0.0,0.0,,,,true,,ABC sweep did not reduce nodes in this row
+toy_and_or,toy,rewrite,fraig,3,3,2,2,0,0,1.0,1.0,1.0,0.0,0.0,,,,true,,ABC sweep did not reduce nodes in this row

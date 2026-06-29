@@ -42,9 +42,10 @@ https://stefi19.github.io/aig_optimization_experiments/presentation/
 17. [How to run](#17-how-to-run)
 18. [Repository structure](#18-repository-structure)
 19. [ABC-native SAT sweeping / hybrid validation](#19-abc-native-sat-sweeping--hybrid-validation)
-20. [Dependencies](#20-dependencies)
-21. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
-22. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
+20. [ABC-Native SAT Sweeping Baseline](#abc-native-sat-sweeping-baseline)
+21. [Dependencies](#20-dependencies)
+22. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+23. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -987,7 +988,10 @@ aig_optimization_experiments/
 │   ├── generate_synthetic_benchmarks.py   Synthetic BLIF generator
 │   ├── benchmark_id.py                    Collision-free benchmark ID from BLIF path
 │   ├── import_real_benchmarks.py          Lists/imports real benchmarks; Yosys converter
-│   └── abc_sat_sweep_validation.py        Core ABC dump_equiv / FRAIG module
+│   ├── abc_sat_sweep_validation.py        Core ABC dump_equiv / FRAIG module
+│   ├── probe_abc_sat_sweeping.py          ABC command capability probe
+│   ├── abc_native_sat_sweep_baseline.py   Native FRAIG/sweep baseline
+│   └── compare_abc_native_vs_custom.py    Exploratory comparison with custom results
 │
 ├── analyze_blif_matches.py        Main analysis: parse BLIF, simulate, compare, rank
 ├── visualize_results.py           Legacy per-benchmark node-count plots
@@ -1097,6 +1101,68 @@ New columns added to the candidate table:
   print_stats`) is used instead for the single-network statistics
 - If the ABC binary is missing, all `abc_*` columns are filled with safe defaults and a
   warning is printed; the Python ranking results are still written out
+
+---
+
+## ABC-Native SAT Sweeping Baseline
+
+This baseline was added after Carmine suggested comparing the custom pairwise SAT
+validation flow with the SAT sweeping and FRAIG behavior already available inside ABC.
+It is intentionally conservative: ABC-native sweeping is treated as a network-reduction
+baseline, not as a direct old-node to new-node correspondence map unless a command exposes
+equivalence classes explicitly.
+
+The probe script checks the local ABC build for `fraig`, `fraig -x`, `fraig -y`, `&get`,
+`&fraig -x`, `cec`, `print_stats`, `ps`, and `write_blif`:
+
+```bash
+make abc-sweep-probe
+```
+
+The lightweight baseline then runs supported native sweep flows such as:
+
+```text
+read_blif <optimized_blif>; strash; fraig; write_blif <swept_blif>; ps
+read_blif <optimized_blif>; strash; fraig -x; write_blif <swept_blif>; ps
+read_blif <optimized_blif>; strash; fraig -y; write_blif <swept_blif>; ps
+read_blif <optimized_blif>; strash; &get -n; &fraig -x; &put; write_blif <swept_blif>; ps
+```
+
+By default the script keeps the run small: `c432`, `c2670`, `c6288`, several toy/generated
+circuits, and a short optimization list (`original`, `balance`, `rewrite`, `resyn2`). If a
+matching file is not already present in `variants/`, the script creates a lightweight
+optimized input under `results/abc_native_inputs/` from the source BLIF.
+
+Outputs:
+
+- `results/abc_sat_sweeping_capabilities.csv`
+- `results/abc_sat_sweeping_capabilities.md`
+- `results/abc_native_sweep_baseline.csv`
+- `results/abc_native_sweep_baseline.md`
+- `results/abc_native_vs_custom_comparison.csv`
+- `results/abc_native_vs_custom_comparison.md`
+- `results/plots/abc_native_node_reduction_by_flow.png`
+- `results/plots/abc_native_level_reduction_by_flow.png`
+- `results/plots/abc_native_vs_custom_recovery.png`
+
+The comparison joins ABC-native node/level reductions with the existing custom metrics:
+preserved signature fraction, SAT-verified non-exact matches, approximate near-match
+availability, and critical-path mapped fraction where available.
+
+The main caveat is that ordinary `fraig` output gives swept networks and statistics. It does
+not automatically provide the same explicit correspondence mapping as the custom pipeline.
+For direct mappings, the next step remains `dump_equiv` or ABC instrumentation that exposes
+equivalence classes and merge provenance.
+
+Run the lightweight iteration with:
+
+```bash
+make abc-sweep-probe
+make abc-sweep-baseline
+make abc-sweep-compare
+```
+
+See `docs/abc_native_sat_sweeping_plan.md` for the research plan and interpretation rules.
 
 ---
 

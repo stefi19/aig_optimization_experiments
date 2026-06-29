@@ -10,7 +10,6 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-import matplotlib.pyplot as plt
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,6 +20,7 @@ from analyze_blif_matches import eval_cover, parse_blif  # noqa: E402
 
 RESULTS = ROOT / "results"
 PLOTS = RESULTS / "plots"
+plt = None
 
 SAT_CANDIDATES = RESULTS / "sat_verified_candidates.csv"
 TOP_CANDIDATES = RESULTS / "top_candidates.csv"
@@ -369,6 +369,12 @@ def write_markdown_summary(
 
 
 def plot_outputs(all_rows: pd.DataFrame, summary: pd.DataFrame) -> None:
+    global plt
+    if plt is None:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as _plt
+        plt = _plt
     PLOTS.mkdir(parents=True, exist_ok=True)
     usable = all_rows[all_rows["distance"].notna()].copy()
     if usable.empty:

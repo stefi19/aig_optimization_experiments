@@ -1,0 +1,19 @@
+# ABC SAT Sweeping Capability Probe
+
+ABC binary: `.abc_build/abc_repo/abc`
+
+| Command | Supported | Exit code | Snippet |
+|---|---:|---:|---|
+| `fraig` | true | 0 | UC Berkeley, ABC 1.01 (compiled Jun 13 2026 17:59:16) ================== Command history ================== &put write_blif <repo>/results/abc_native_swept/generated_multiplier_2_resyn2_amp_fraig_x.blif read_blif <tmp> fraig -x fraig -y strash cec <tmp> <tmp> print_stats source -s abc.rc write_blif <tmp> ===================================================== probe : i/o = 3/ 1 lat = 0 and = 2 lev = 2 ***EOF*** |
+| `fraig -x` | false | 0 | UC Berkeley, ABC 1.01 (compiled Jun 13 2026 17:59:16) ================== Command history ================== read_blif <tmp> fraig -x fraig -y strash cec <tmp> <tmp> print_stats source -s abc.rc write_blif <tmp> read_blif <tmp> fraig ===================================================== usage: fraig [-R num] [-D num] [-C num] [-rscpvtah] transforms a logic network into a functionally reduced AIG (known bugs: takes an UNSAT miter and returns a SAT one) (there are newer fraiging commands, "ifraig"  |
+| `fraig -y` | false | 0 | UC Berkeley, ABC 1.01 (compiled Jun 13 2026 17:59:16) ================== Command history ================== read_blif <tmp> fraig -x fraig -y strash cec <tmp> <tmp> print_stats source -s abc.rc write_blif <tmp> read_blif <tmp> fraig ===================================================== usage: fraig [-R num] [-D num] [-C num] [-rscpvtah] transforms a logic network into a functionally reduced AIG (known bugs: takes an UNSAT miter and returns a SAT one) (there are newer fraiging commands, "ifraig"  |
+| `&get` | true | 0 | UC Berkeley, ABC 1.01 (compiled Jun 13 2026 17:59:16) ================== Command history ================== read_blif <tmp> fraig -x fraig -y strash cec <tmp> <tmp> print_stats source -s abc.rc write_blif <tmp> read_blif <tmp> fraig ===================================================== ***EOF*** |
+| `&fraig -x` | true | 0 | UC Berkeley, ABC 1.01 (compiled Jun 13 2026 17:59:16) ================== Command history ================== fraig -x fraig -y strash cec <tmp> <tmp> print_stats source -s abc.rc write_blif <tmp> read_blif <tmp> fraig &get -n ===================================================== probe : i/o = 3/ 1 lat = 0 and = 2 lev = 2 ***EOF*** |
+| `cec` | true | 0 | UC Berkeley, ABC 1.01 (compiled Jun 13 2026 17:59:16) ================== Command history ================== strash cec <tmp> <tmp> print_stats source -s abc.rc write_blif <tmp> read_blif <tmp> fraig &get -n &fraig -x &put ===================================================== Networks are equivalent after structural hashing. Time = 0.00 sec ***EOF*** |
+| `print_stats` | true | 0 | UC Berkeley, ABC 1.01 (compiled Jun 13 2026 17:59:16) ================== Command history ================== cec <tmp> <tmp> print_stats source -s abc.rc write_blif <tmp> read_blif <tmp> fraig &get -n &fraig -x &put cec <tmp> <tmp> ===================================================== probe : i/o = 3/ 1 lat = 0 and = 2 lev = 2 ***EOF*** |
+| `ps` | true | 0 | UC Berkeley, ABC 1.01 (compiled Jun 13 2026 17:59:16) ================== Command history ================== print_stats source -s abc.rc write_blif <tmp> read_blif <tmp> fraig &get -n &fraig -x &put cec <tmp> <tmp> strash ===================================================== probe : i/o = 3/ 1 lat = 0 and = 2 lev = 2 ***EOF*** |
+| `write_blif` | true | 0 | UC Berkeley, ABC 1.01 (compiled Jun 13 2026 17:59:16) ================== Command history ================== print_stats source -s abc.rc write_blif <tmp> read_blif <tmp> fraig &get -n &fraig -x &put cec <tmp> <tmp> strash ===================================================== ***EOF*** |
+
+Interpretation: this is a command-level probe only. A supported command may still
+produce little useful correspondence data unless ABC exposes the relevant merge
+classes or statistics in stdout.

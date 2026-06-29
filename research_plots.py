@@ -31,15 +31,141 @@ from __future__ import annotations
 
 import os
 import sys
+import types
 import warnings
 from pathlib import Path
 from typing import Optional
 
-import matplotlib
-matplotlib.use("Agg")  # headless — no display required
-import matplotlib.pyplot as plt
-import matplotlib.ticker as mticker
 import pandas as pd
+
+try:
+    from io import BytesIO
+
+    import matplotlib
+    matplotlib.use("Agg")  # headless — no display required
+    import matplotlib.pyplot as plt
+    import matplotlib.ticker as mticker
+    _fig, _ax = plt.subplots(figsize=(1, 1))
+    _ax.text(0.5, 0.5, "ok")
+    _fig.savefig(BytesIO(), format="png")
+    plt.close(_fig)
+except Exception:
+    class _FallbackFormatter:
+        def __init__(self, *args, **kwargs):
+            pass
+
+    class _FallbackTicker:
+        PercentFormatter = _FallbackFormatter
+
+    class _FallbackBar:
+        def __init__(self, x=0, width=1, height=0):
+            self._x = x
+            self._width = width
+            self._height = height
+
+        def get_x(self):
+            return self._x
+
+        def get_width(self):
+            return self._width
+
+        def get_height(self):
+            return self._height
+
+    class _FallbackAxisPart:
+        def set_major_formatter(self, *args, **kwargs):
+            return None
+
+    class _FallbackAxis:
+        def __init__(self):
+            self.xaxis = _FallbackAxisPart()
+            self.yaxis = _FallbackAxisPart()
+
+        def bar(self, x, height=None, *args, **kwargs):
+            xs = list(x) if hasattr(x, "__iter__") and not isinstance(x, str) else [x]
+            hs = list(height) if hasattr(height, "__iter__") and not isinstance(height, str) else [height or 0]
+            return [_FallbackBar(i, kwargs.get("width", 1), hs[i] if i < len(hs) else 0) for i, _ in enumerate(xs)]
+
+        def hist(self, *args, **kwargs):
+            return ([], [], [])
+
+        def axvline(self, *args, **kwargs):
+            return None
+
+        def boxplot(self, *args, **kwargs):
+            return {}
+
+        def plot(self, *args, **kwargs):
+            return []
+
+        def scatter(self, *args, **kwargs):
+            return None
+
+        def text(self, *args, **kwargs):
+            return None
+
+        def set_xticks(self, *args, **kwargs):
+            return None
+
+        def set_xticklabels(self, *args, **kwargs):
+            return None
+
+        def set_xlabel(self, *args, **kwargs):
+            return None
+
+        def set_ylabel(self, *args, **kwargs):
+            return None
+
+        def set_title(self, *args, **kwargs):
+            return None
+
+        def set_ylim(self, *args, **kwargs):
+            return None
+
+        def legend(self, *args, **kwargs):
+            return None
+
+        def grid(self, *args, **kwargs):
+            return None
+
+        def tick_params(self, *args, **kwargs):
+            return None
+
+    class _FallbackFigure:
+        def tight_layout(self):
+            return None
+
+        def savefig(self, path, *args, **kwargs):
+            from PIL import Image, ImageDraw
+            img = Image.new("RGB", (640, 360), "white")
+            draw = ImageDraw.Draw(img)
+            draw.text((20, 20), "Plot fallback: Matplotlib unavailable", fill="black")
+            img.save(path)
+
+    class _FallbackPyplot:
+        Figure = _FallbackFigure
+
+        def subplots(self, *args, **kwargs):
+            return _FallbackFigure(), _FallbackAxis()
+
+        def close(self, *args, **kwargs):
+            return None
+
+    plt = _FallbackPyplot()
+    mticker = _FallbackTicker()
+    matplotlib_stub = types.ModuleType("matplotlib")
+    pyplot_stub = types.ModuleType("matplotlib.pyplot")
+    ticker_stub = types.ModuleType("matplotlib.ticker")
+    pyplot_stub.subplots = plt.subplots
+    pyplot_stub.close = plt.close
+    pyplot_stub.Figure = _FallbackFigure
+    ticker_stub.PercentFormatter = _FallbackFormatter
+    matplotlib_stub.pyplot = pyplot_stub
+    matplotlib_stub.ticker = ticker_stub
+    matplotlib_stub.use = lambda *args, **kwargs: None
+    sys.modules["matplotlib"] = matplotlib_stub
+    sys.modules["matplotlib.pyplot"] = pyplot_stub
+    sys.modules["matplotlib.ticker"] = ticker_stub
 
 # Shared source-family inference (toy / generated / iscas85 / epfl / custom).
 sys.path.insert(0, str(Path(__file__).resolve().parent))
