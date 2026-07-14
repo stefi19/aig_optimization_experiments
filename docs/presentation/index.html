@@ -505,10 +505,37 @@
 
     <section class="slide">
       <div class="slide-content two-column">
-        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate distance is calibrated but still not formal.</p><p>Approximate distance is global and context-free until ODC-aware matching is integrated.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>No RTL source-location mapping or automatic register insertion yet.</p></div></div>
+        <div>
+          <p class="eyebrow">RTL/source direction</p>
+          <h2>Back-mapping should end at source code</h2>
+          <ol class="steps">
+            <li>Optimized critical-path node</li>
+            <li>Original BLIF node</li>
+            <li>RTL signal, expression, file, and line</li>
+            <li>Engineer-reviewed register insertion suggestion</li>
+          </ol>
+          <p class="warning">Prototype only: the current local run records that Yosys is unavailable.</p>
+        </div>
+        <svg class="backmap-svg" viewBox="0 0 640 360" role="img" aria-label="Source-level back-mapping workflow">
+          <rect class="gate" x="35" y="70" width="150" height="54" rx="8"></rect><text x="58" y="103">opt node m57</text>
+          <rect class="gate" x="245" y="70" width="150" height="54" rx="8"></rect><text x="268" y="103">orig node n41</text>
+          <rect class="gate" x="455" y="70" width="150" height="54" rx="8"></rect><text x="470" y="103">RTL signal mix</text>
+          <path class="map-arrow green" d="M185 97 H245"></path><path class="map-arrow purple" d="M395 97 H455"></path>
+          <text class="small-label" x="55" y="185">existing correspondence layers</text>
+          <text class="small-label" x="305" y="185">new metadata prototype</text>
+          <rect class="gate" x="185" y="235" width="270" height="54" rx="8"></rect><text x="215" y="268">future register suggestion</text>
+        </svg>
+        <div class="meaning-box wide"><strong>What this means:</strong> BLIF-to-BLIF mapping is the research core, but source metadata is what makes the result actionable for hardware engineers.</div>
+      </div>
+      <aside class="notes">This slide introduces the source-level metadata step. The implementation adds a controlled Verilog example, a Yosys metadata probe, and a source-map prototype. On this machine Yosys was not installed, so the scripts document the skip and remain ready for a Yosys-enabled environment.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate distance is calibrated but still not formal.</p><p>Approximate distance is global and context-free until ODC-aware matching is integrated.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>RTL source mapping is a metadata prototype, not integrated back-mapping yet.</p><p>No automatic register insertion yet.</p></div></div>
         <div class="callout"><h3>Important idea</h3><p>Unresolved nodes are not simply failures. They show where context, observability don't-cares, or deeper ABC integration may be needed.</p></div>
       </div>
-      <aside class="notes">Use this slide to show research maturity. The ABC-native baseline is a meaningful addition, but it does not remove the need for a correspondence layer.</aside>
+      <aside class="notes">Use this slide to show research maturity. The ABC-native baseline is a meaningful addition, but it does not remove the need for a correspondence layer. The new RTL/source prototype also clarifies that source-level actionability requires preserved metadata or reconstruction.</aside>
     </section>
 
     <section class="slide">
@@ -537,17 +564,17 @@
 
     <section class="slide title-slide">
       <div class="slide-content title-grid">
-        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, and now probes timing-aware path selection.</p></div>
-        <div class="takeaway-chain"><div>Optimized critical path</div><div>Correspondence recovery</div><div>Timing proxy comparison</div><div>RTL/register direction</div></div>
+        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, probes timing-aware path selection, and now sketches the RTL/source metadata bridge.</p></div>
+        <div class="takeaway-chain"><div>Optimized critical path</div><div>Correspondence recovery</div><div>Original RTL/source location</div><div>Register suggestion direction</div></div>
       </div>
-      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is now a standard-flow baseline, sampled approximate distance has calibration, and timing-aware path extraction is the next engineering bridge toward RTL/register suggestions.</aside>
+      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, timing-aware path extraction has a first probe, and the new source-metadata prototype identifies the next bridge toward engineer-facing RTL/register suggestions.</aside>
     </section>
   </main>
 
   <footer class="controls">
     <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
     <button id="prev" type="button" aria-label="Previous slide">Prev</button>
-    <span id="slide-number">1 / 36</span>
+    <span id="slide-number">1 / 37</span>
     <button id="next" type="button" aria-label="Next slide">Next</button>
     <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
   </footer>

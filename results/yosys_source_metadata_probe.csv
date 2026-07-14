@@ -1,0 +1,2 @@
+tool,available,version,example,json_generated,blif_generated,netnames_with_src,cells_with_src,visible_rtl_signals,notes
+yosys,false,,benchmarks/source_examples/simple_pipeline.v,false,false,0,0,,Yosys not found on PATH; install Yosys to run the metadata-preservation probe.

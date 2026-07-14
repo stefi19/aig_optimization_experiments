@@ -1,0 +1,5 @@
+rtl_signal,module,lowered_name,source_file,source_line,source_attribute,available,confidence,notes
+mix,simple_pipeline,,benchmarks/source_examples/simple_pipeline.v,,,false,skipped,Yosys not found on PATH; install Yosys to generate JSON metadata.
+gated,simple_pipeline,,benchmarks/source_examples/simple_pipeline.v,,,false,skipped,Yosys not found on PATH; install Yosys to generate JSON metadata.
+next_state,simple_pipeline,,benchmarks/source_examples/simple_pipeline.v,,,false,skipped,Yosys not found on PATH; install Yosys to generate JSON metadata.
+state_q,simple_pipeline,,benchmarks/source_examples/simple_pipeline.v,,,false,skipped,Yosys not found on PATH; install Yosys to generate JSON metadata.

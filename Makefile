@@ -2,7 +2,7 @@ ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 PYTHON ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; else echo python3; fi)
 
-.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance abc-timing-probe research-plots iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map timing-path-probe full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
+.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance abc-timing-probe yosys-source-probe source-map-prototype research-plots iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map timing-path-probe full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -193,6 +193,14 @@ timing-path-probe:
 	fi
 	@PYTHONDONTWRITEBYTECODE=1 ABC=$${ABC:-$(PWD)/$(ABC_BIN)} $(PYTHON) scripts/timing_aware_path_probe.py
 
+yosys-source-probe:
+	@echo "Probing Yosys RTL/source metadata preservation"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/probe_yosys_source_metadata.py
+
+source-map-prototype:
+	@echo "Building tiny RTL/source-map prototype"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/build_source_map_prototype.py
+
 full-research-pipeline: generate-variants analyze benchmark-manifest sat-pipeline topk-eval ablation region cegar-refine research-plots test
 	@echo ""
 	@echo "Full research pipeline complete."
@@ -228,6 +236,9 @@ clean-results:
 		results/abc_timing_command_probe.csv results/abc_timing_command_probe.md \
 		results/timing_path_probe.csv results/timing_path_probe.md \
 		results/timing_vs_structural_mapping.csv results/timing_vs_structural_mapping.md \
+		results/yosys_source_metadata_probe.csv results/yosys_source_metadata_probe.md \
+		results/source_map_prototype.csv results/source_map_prototype.md \
+		results/source_mapping_next_steps.md \
 		results/topk_recovery.csv results/topk_recovery.md \
 		results/ablation_summary.csv results/ablation_summary.md \
 		results/region_candidates.csv results/region_summary.csv results/region_summary.md \

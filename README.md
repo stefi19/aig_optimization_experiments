@@ -47,9 +47,10 @@ https://stefi19.github.io/aig_optimization_experiments/presentation/
 22. [Approximate-Distance Sampling Calibration](#approximate-distance-sampling-calibration)
 23. [Toward ODC-Aware Approximate Matching](#toward-odc-aware-approximate-matching)
 24. [Timing-Aware Critical-Path Investigation](#timing-aware-critical-path-investigation)
-25. [Dependencies](#20-dependencies)
-26. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
-27. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
+25. [Toward RTL/Source-Level Back-Mapping](#toward-rtlsource-level-back-mapping)
+26. [Dependencies](#20-dependencies)
+27. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+28. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -1365,6 +1366,54 @@ reason to continue toward real library-based timing extraction. See
 
 ---
 
+## Toward RTL/Source-Level Back-Mapping
+
+The current correspondence pipeline maps optimized BLIF/internal nodes back to original
+BLIF/internal nodes. That is enough to study synthesis behavior, but it is not enough for a
+hardware engineer who needs to inspect or edit the original RTL. The longer-term flow is:
+
+```text
+optimized critical-path node
+  -> original BLIF node
+  -> RTL signal / expression / source location
+  -> future register insertion suggestion
+```
+
+This iteration adds a planning note, a tiny Verilog example, and a source-metadata probe:
+
+- `docs/rtl_source_mapping_plan.md`
+- `benchmarks/source_examples/simple_pipeline.v`
+- `scripts/probe_yosys_source_metadata.py`
+- `scripts/build_source_map_prototype.py`
+
+Run:
+
+```bash
+make yosys-source-probe
+make source-map-prototype
+```
+
+Outputs:
+
+- `results/yosys_source_metadata_probe.csv`
+- `results/yosys_source_metadata_probe.md`
+- `results/source_map_prototype.csv`
+- `results/source_map_prototype.md`
+- `results/source_mapping_next_steps.md`
+
+Current local result: Yosys was not available on `PATH`, so the probe records a graceful
+skip and the source-map prototype writes placeholder rows for the controlled RTL signals
+(`mix`, `gated`, `next_state`, and `state_q`). On a machine with Yosys installed, the same
+scripts run the tiny Verilog design through Yosys JSON/BLIF output and inspect which signal
+names or `src` attributes survive.
+
+Interpretation: this does not yet make the project RTL-aware. It defines the metadata needed
+to turn an original BLIF-node mapping into an engineer-facing source location, and it provides
+the first executable hook for testing whether Yosys can preserve the necessary names and
+attributes.
+
+---
+
 ## 20. Dependencies
 
 ### Python packages
@@ -1924,8 +1973,9 @@ optimized paths remain mostly explainable from passes that create many
 unresolved path nodes.
 
 Limitations: this is not timing-aware yet, it does not connect nodes back to RTL
-source locations, and it does not model register insertion. It is a prototype for
-the correspondence part of that future flow.
+source locations, and it does not model register insertion. The RTL/source-mapping
+prototype now documents the metadata bridge needed for that future flow, but it is
+not integrated into the critical-path mapper yet.
 
 ---
 
