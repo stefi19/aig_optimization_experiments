@@ -2,7 +2,7 @@ ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 PYTHON ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; else echo python3; fi)
 
-.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance abc-timing-probe yosys-source-probe source-map-prototype research-plots iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map timing-path-probe full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
+.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance abc-timing-probe yosys-source-probe source-map-prototype register-suggestions research-plots iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map timing-path-probe full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -201,6 +201,10 @@ source-map-prototype:
 	@echo "Building tiny RTL/source-map prototype"
 	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/build_source_map_prototype.py
 
+register-suggestions:
+	@echo "Suggesting engineer-review register insertion points from mapped critical paths"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/suggest_register_insertion_points.py
+
 full-research-pipeline: generate-variants analyze benchmark-manifest sat-pipeline topk-eval ablation region cegar-refine research-plots test
 	@echo ""
 	@echo "Full research pipeline complete."
@@ -239,6 +243,7 @@ clean-results:
 		results/yosys_source_metadata_probe.csv results/yosys_source_metadata_probe.md \
 		results/source_map_prototype.csv results/source_map_prototype.md \
 		results/source_mapping_next_steps.md \
+		results/register_insertion_suggestions.csv results/register_insertion_suggestions.md \
 		results/topk_recovery.csv results/topk_recovery.md \
 		results/ablation_summary.csv results/ablation_summary.md \
 		results/region_candidates.csv results/region_summary.csv results/region_summary.md \

@@ -48,9 +48,10 @@ https://stefi19.github.io/aig_optimization_experiments/presentation/
 23. [Toward ODC-Aware Approximate Matching](#toward-odc-aware-approximate-matching)
 24. [Timing-Aware Critical-Path Investigation](#timing-aware-critical-path-investigation)
 25. [Toward RTL/Source-Level Back-Mapping](#toward-rtlsource-level-back-mapping)
-26. [Dependencies](#20-dependencies)
-27. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
-28. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
+26. [Register Insertion Suggestion Prototype](#register-insertion-suggestion-prototype)
+27. [Dependencies](#20-dependencies)
+28. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+29. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -1411,6 +1412,50 @@ Interpretation: this does not yet make the project RTL-aware. It defines the met
 to turn an original BLIF-node mapping into an engineer-facing source location, and it provides
 the first executable hook for testing whether Yosys can preserve the necessary names and
 attributes.
+
+---
+
+## Register Insertion Suggestion Prototype
+
+The final direction of the tool is an engineer-facing workflow:
+
+```text
+optimized timing/critical path
+  -> mapped original circuit node
+  -> RTL/source location
+  -> candidate register insertion point
+```
+
+This iteration adds a small prototype that ranks possible insertion points from
+`results/critical_path_mapping.csv`. It does not edit RTL and it does not prove that a
+register can be inserted. It produces candidate locations for engineer review.
+
+Run:
+
+```bash
+make register-suggestions
+```
+
+Outputs:
+
+- `results/register_insertion_suggestions.csv`
+- `results/register_insertion_suggestions.md`
+- `results/plots/register_suggestion_categories.png`
+- `results/plots/register_suggestion_confidence.png`
+
+The scoring is intentionally simple:
+
+- prefer mapped nodes near the middle of a long critical path;
+- prefer mapping categories in this order: exact, complemented, SAT-verified non-exact,
+  approximate near-match;
+- exclude unresolved nodes;
+- use existing confidence/support/simulation fields as small tie-breakers;
+- penalize approximate near-matches by their recorded distance.
+
+The generated Markdown shows example suggestions from the ISCAS-85 critical-path cases. They
+should be read as "start looking here" hints, not automatic transformations. Correct register
+insertion still requires RTL edits, sequential/latency-aware verification, and control/data
+dependency analysis. See `docs/register_insertion_suggestion_plan.md`.
 
 ---
 

@@ -532,10 +532,37 @@
 
     <section class="slide">
       <div class="slide-content two-column">
-        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate distance is calibrated but still not formal.</p><p>Approximate distance is global and context-free until ODC-aware matching is integrated.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>RTL source mapping is a metadata prototype, not integrated back-mapping yet.</p><p>No automatic register insertion yet.</p></div></div>
+        <div>
+          <p class="eyebrow">Future-facing tool demo</p>
+          <h2>From mapped path to register suggestion</h2>
+          <ol class="steps">
+            <li>Take a mapped critical-path node.</li>
+            <li>Prefer a node near the path midpoint.</li>
+            <li>Rank by mapping confidence.</li>
+            <li>Report a candidate for engineer review.</li>
+          </ol>
+          <p class="warning">No automatic RTL rewrite or sequential correctness claim.</p>
+        </div>
+        <svg class="backmap-svg" viewBox="0 0 640 360" role="img" aria-label="Register insertion suggestion workflow">
+          <rect class="gate" x="35" y="70" width="145" height="54" rx="8"></rect><text x="55" y="103">critical path</text>
+          <rect class="gate" x="245" y="70" width="145" height="54" rx="8"></rect><text x="263" y="103">back-mapped node</text>
+          <rect class="gate" x="460" y="70" width="145" height="54" rx="8"></rect><text x="478" y="103">register hint</text>
+          <path class="map-arrow green" d="M180 97 H245"></path><path class="map-arrow purple" d="M390 97 H460"></path>
+          <path class="critical" d="M95 235 H205 H315 H425 H545"></path>
+          <rect class="gate" x="285" y="200" width="70" height="70" rx="8"></rect><text x="304" y="242">cut</text>
+          <text class="small-label" x="210" y="305">ranked midpoint candidate, not an edit</text>
+        </svg>
+        <div class="meaning-box wide"><strong>What this means:</strong> the correspondence layers can now drive a final-tool style ranked list of possible pipeline cut locations, while correctness remains future work.</div>
+      </div>
+      <aside class="notes">This is intentionally framed as a future-facing demo. The prototype chooses mapped nodes near the middle of each critical path and ranks them by exact, SAT-backed, or approximate confidence. It produces a review list, not an RTL patch.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate distance is calibrated but still not formal.</p><p>Approximate distance is global and context-free until ODC-aware matching is integrated.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>RTL source mapping is a metadata prototype, not integrated back-mapping yet.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
         <div class="callout"><h3>Important idea</h3><p>Unresolved nodes are not simply failures. They show where context, observability don't-cares, or deeper ABC integration may be needed.</p></div>
       </div>
-      <aside class="notes">Use this slide to show research maturity. The ABC-native baseline is a meaningful addition, but it does not remove the need for a correspondence layer. The new RTL/source prototype also clarifies that source-level actionability requires preserved metadata or reconstruction.</aside>
+      <aside class="notes">Use this slide to show research maturity. The ABC-native baseline is a meaningful addition, but it does not remove the need for a correspondence layer. The RTL/source and register-suggestion prototypes clarify the final engineering direction without claiming automatic correctness.</aside>
     </section>
 
     <section class="slide">
@@ -564,17 +591,17 @@
 
     <section class="slide title-slide">
       <div class="slide-content title-grid">
-        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, probes timing-aware path selection, and now sketches the RTL/source metadata bridge.</p></div>
-        <div class="takeaway-chain"><div>Optimized critical path</div><div>Correspondence recovery</div><div>Original RTL/source location</div><div>Register suggestion direction</div></div>
+        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, probes timing-aware path selection, sketches the RTL/source bridge, and now demonstrates register-suggestion ranking.</p></div>
+        <div class="takeaway-chain"><div>Optimized critical path</div><div>Correspondence recovery</div><div>Original RTL/source location</div><div>Register suggestion list</div></div>
       </div>
-      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, timing-aware path extraction has a first probe, and the new source-metadata prototype identifies the next bridge toward engineer-facing RTL/register suggestions.</aside>
+      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, timing-aware path extraction has a first probe, source metadata identifies the RTL bridge, and register suggestions show the final tool shape.</aside>
     </section>
   </main>
 
   <footer class="controls">
     <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
     <button id="prev" type="button" aria-label="Previous slide">Prev</button>
-    <span id="slide-number">1 / 37</span>
+    <span id="slide-number">1 / 38</span>
     <button id="next" type="button" aria-label="Next slide">Next</button>
     <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
   </footer>
