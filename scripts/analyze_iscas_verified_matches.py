@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Summarize SAT-verified non-exact ISCAS-85 rank-1 matches."""
+"""Summarize ISCAS-85 rank-1 structural-mismatch candidates proven by SAT/CEC."""
 
 from __future__ import annotations
 
@@ -207,7 +207,7 @@ def plot_counts(circuit_table: pd.DataFrame, opt_table: pd.DataFrame, df: pd.Dat
     ax = plot_df.set_index("circuit")[["verified", "rejected"]].plot(
         kind="barh", stacked=True, figsize=(9, 5), color=["#2f7d32", "#b54848"]
     )
-    ax.set_xlabel("SAT-checked rank-1 non-exact candidates")
+    ax.set_xlabel("SAT-checked rank-1 structural-mismatch candidates")
     ax.set_ylabel("ISCAS-85 circuit")
     ax.set_title("ISCAS-85 SAT Verdicts by Circuit")
     save_plot(PLOTS / "iscas_verified_by_circuit.png")
@@ -216,7 +216,7 @@ def plot_counts(circuit_table: pd.DataFrame, opt_table: pd.DataFrame, df: pd.Dat
     ax = plot_df.set_index("optimization")[["verified", "rejected"]].plot(
         kind="barh", stacked=True, figsize=(9, 5), color=["#2f7d32", "#b54848"]
     )
-    ax.set_xlabel("SAT-checked rank-1 non-exact candidates")
+    ax.set_xlabel("SAT-checked rank-1 structural-mismatch candidates")
     ax.set_ylabel("Optimization pass")
     ax.set_title("ISCAS-85 SAT Verdicts by Optimization")
     save_plot(PLOTS / "iscas_verified_by_optimization.png")
@@ -305,7 +305,8 @@ def write_markdown(
     md = [
         "# ISCAS-85 Verified Match Analysis",
         "",
-        "This analysis covers rank-1 non-exact candidates from the expanded ISCAS-85 SAT run.",
+        "This analysis covers rank-1 candidates that were not recovered by the initial signature/structural matching stage in the expanded ISCAS-85 SAT run.",
+        "When SAT/CEC verifies one of these rows, it proves exact Boolean equivalence; only the discovery method was non-initial.",
         "",
         f"- Total checked: {len(df):,}",
         f"- Verified: {verified_total:,}",
@@ -350,7 +351,7 @@ def write_markdown(
             [
                 "# ISCAS-85 Case Studies",
                 "",
-                "## Verified non-exact correspondences",
+                "## SAT/CEC-Proven Equivalent After Structural Mismatch",
                 "",
                 short_case_table(cases).to_markdown(index=False),
                 "",
@@ -385,7 +386,7 @@ def main() -> int:
     plot_counts(circuit_table, opt_table, df)
     write_markdown(df, circuit_table, opt_table, feature_table, cases, false_pos)
 
-    print(f"Loaded {len(df):,} ISCAS rank-1 non-exact SAT candidates")
+    print(f"Loaded {len(df):,} ISCAS rank-1 structural-mismatch SAT candidates")
     print(f"Wrote {OUT_ANALYSIS_CSV.relative_to(ROOT)}")
     print(f"Wrote {OUT_ANALYSIS_MD.relative_to(ROOT)}")
     print(f"Wrote {OUT_FEATURE_CSV.relative_to(ROOT)}")

@@ -1,359 +1,359 @@
 benchmark,circuit,optimization,path_type,path_length,path_index,optimized_node,structural_level,node_delay,arrival_time,mapped_original_node,mapping_category,confidence,distance,explanation
-external_iscas85_c432,c432,rewrite,structural,41,1,new_n51,1,1.0,1.0,new_n51,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,2,new_n53,2,1.0,2.0,new_n53,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,3,new_n54,3,1.0,3.0,new_n54,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,4,new_n55,4,1.0,4.0,new_n55,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,5,new_n56,5,1.0,5.0,new_n56,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,6,new_n57,6,1.0,6.0,new_n57,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,7,new_n58,7,1.0,7.0,new_n58,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,8,new_n59,8,1.0,8.0,new_n59,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,9,G426,9,1.0,9.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c432,c432,rewrite,structural,41,10,new_n90,10,1.0,10.0,new_n61,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,11,new_n92,11,1.0,11.0,new_n98,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,12,new_n94,12,1.0,12.0,new_n100,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,13,new_n100,13,1.0,13.0,new_n106,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,14,new_n101,14,1.0,14.0,new_n107,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,15,new_n102,15,1.0,15.0,new_n108,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,16,new_n103,16,1.0,16.0,new_n109,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,17,new_n104,17,1.0,17.0,new_n110,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,18,new_n105,18,1.0,18.0,new_n111,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c432,c432,rewrite,structural,41,19,new_n106,19,1.0,19.0,new_n112,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c432,c432,rewrite,structural,41,20,G427,20,1.0,20.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c432,c432,rewrite,structural,41,21,new_n144,21,1.0,21.0,new_n114,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,22,new_n146,22,1.0,22.0,new_n158,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,23,new_n149,23,1.0,23.0,new_n161,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,24,new_n156,24,1.0,24.0,new_n168,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,25,new_n157,25,1.0,25.0,new_n169,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,26,new_n158,26,1.0,26.0,new_n170,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,27,new_n159,27,1.0,27.0,new_n171,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,28,new_n160,28,1.0,28.0,new_n172,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,29,new_n161,29,1.0,29.0,new_n173,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c432,c432,rewrite,structural,41,30,new_n162,30,1.0,30.0,new_n174,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c432,c432,rewrite,structural,41,31,G428,31,1.0,31.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c432,c432,rewrite,structural,41,32,new_n194,32,1.0,32.0,new_n176,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,33,new_n198,33,1.0,33.0,new_n186,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,34,new_n199,34,1.0,34.0,new_n223,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,35,new_n206,35,1.0,35.0,new_n230,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,structural,41,36,G430,36,1.0,36.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c432,c432,rewrite,structural,41,37,new_n221,37,1.0,37.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c432,c432,rewrite,structural,41,38,new_n222,38,1.0,38.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c432,c432,rewrite,structural,41,39,new_n223,39,1.0,39.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c432,c432,rewrite,structural,41,40,new_n224,40,1.0,40.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c432,c432,rewrite,structural,41,41,G429,41,1.0,41.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c432,c432,rewrite,delay_weighted,41,1,new_n51,1,1.0,1.0,new_n51,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,2,new_n53,2,1.0,2.0,new_n53,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,3,new_n54,3,1.0,3.0,new_n54,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,4,new_n55,4,1.0,4.0,new_n55,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,5,new_n56,5,1.0,5.0,new_n56,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,6,new_n57,6,1.0,6.0,new_n57,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,7,new_n58,7,1.0,7.0,new_n58,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,8,new_n59,8,1.0,8.0,new_n59,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,9,G426,9,1.0,9.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c432,c432,rewrite,delay_weighted,41,10,new_n90,10,1.0,10.0,new_n61,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,11,new_n92,11,1.0,11.0,new_n98,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,12,new_n94,12,1.0,12.0,new_n100,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,13,new_n100,13,1.0,13.0,new_n106,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,14,new_n101,14,1.0,14.0,new_n107,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,15,new_n102,15,1.0,15.0,new_n108,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,16,new_n103,16,1.0,16.0,new_n109,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,17,new_n104,17,1.0,17.0,new_n110,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,18,new_n105,18,1.0,18.0,new_n111,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,19,new_n106,19,1.0,19.0,new_n112,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,20,G427,20,1.0,20.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c432,c432,rewrite,delay_weighted,41,21,new_n144,21,1.0,21.0,new_n114,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,22,new_n146,22,1.0,22.0,new_n158,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,23,new_n149,23,1.0,23.0,new_n161,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,24,new_n156,24,1.0,24.0,new_n168,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,25,new_n157,25,1.0,25.0,new_n169,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,26,new_n158,26,1.0,26.0,new_n170,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,27,new_n159,27,1.0,27.0,new_n171,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,28,new_n160,28,1.0,28.0,new_n172,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,29,new_n161,29,1.0,29.0,new_n173,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,30,new_n162,30,1.0,30.0,new_n174,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,31,G428,31,1.0,31.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c432,c432,rewrite,delay_weighted,41,32,new_n194,32,1.0,32.0,new_n176,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,33,new_n198,33,1.0,33.0,new_n186,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,34,new_n199,34,1.0,34.0,new_n223,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,35,new_n206,35,1.0,35.0,new_n230,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c432,c432,rewrite,delay_weighted,41,36,G430,36,1.0,36.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c432,c432,rewrite,delay_weighted,41,37,new_n221,37,1.0,37.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c432,c432,rewrite,delay_weighted,41,38,new_n222,38,1.0,38.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c432,c432,rewrite,delay_weighted,41,39,new_n223,39,1.0,39.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c432,c432,rewrite,delay_weighted,41,40,new_n224,40,1.0,40.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c432,c432,rewrite,delay_weighted,41,41,G429,41,1.0,41.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c2670,c2670,rewrite,structural,21,1,new_n261,1,1.0,1.0,new_n268,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,structural,21,2,new_n262,2,1.0,2.0,new_n269,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,structural,21,3,new_n264,3,1.0,3.0,new_n272,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,structural,21,4,new_n266,4,1.0,4.0,new_n273,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,structural,21,5,G2559,5,1.0,5.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c2670,c2670,rewrite,structural,21,6,new_n690,6,1.0,6.0,new_n792,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,structural,21,7,new_n725,7,1.0,7.0,new_n796,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,structural,21,8,new_n738,8,1.0,8.0,new_n853,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,structural,21,9,new_n740,9,1.0,9.0,new_n855,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,structural,21,10,new_n741,10,1.0,10.0,new_n856,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,structural,21,11,new_n743,11,1.0,11.0,new_n861,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,structural,21,12,new_n745,12,1.0,12.0,new_n863,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,structural,21,13,new_n750,13,1.0,13.0,new_n880,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,structural,21,14,new_n751,14,1.0,14.0,new_n876,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,structural,21,15,new_n752,15,1.0,15.0,new_n877,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,structural,21,16,new_n757,16,1.0,16.0,new_n878,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,structural,21,17,new_n769,17,1.0,17.0,new_n892,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,structural,21,18,new_n797,18,1.0,18.0,new_n924,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,structural,21,19,new_n798,19,1.0,19.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c2670,c2670,rewrite,structural,21,20,new_n799,20,1.0,20.0,new_n933,approximate_near_match,0.951904296875,0.048095703125,Closest approximate-distance candidate.
-external_iscas85_c2670,c2670,rewrite,structural,21,21,G2591,21,1.0,21.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,1,new_n261,1,1.0,1.0,new_n268,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,2,new_n262,2,1.0,2.0,new_n269,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,3,new_n264,3,1.0,3.0,new_n272,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,4,new_n266,4,1.0,4.0,new_n273,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,5,G2559,5,1.0,5.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,6,new_n690,6,1.0,6.0,new_n792,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,7,new_n725,7,1.0,7.0,new_n796,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,8,new_n738,8,1.0,8.0,new_n853,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,9,new_n740,9,1.0,9.0,new_n855,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,10,new_n741,10,1.0,10.0,new_n856,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,11,new_n743,11,1.0,11.0,new_n861,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,12,new_n745,12,1.0,12.0,new_n863,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,13,new_n750,13,1.0,13.0,new_n880,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,14,new_n751,14,1.0,14.0,new_n876,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,15,new_n752,15,1.0,15.0,new_n877,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,16,new_n757,16,1.0,16.0,new_n878,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,17,new_n769,17,1.0,17.0,new_n892,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,18,new_n797,18,1.0,18.0,new_n924,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,19,new_n798,19,1.0,19.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,20,new_n799,20,1.0,20.0,new_n933,approximate_near_match,0.951904296875,0.048095703125,Closest approximate-distance candidate.
-external_iscas85_c2670,c2670,rewrite,delay_weighted,21,21,G2591,21,1.0,21.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c6288,c6288,rewrite,structural,117,1,new_n1047,1,1.0,1.0,new_n1047,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,2,new_n1049,2,1.0,2.0,new_n1049,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,3,new_n1050,3,1.0,3.0,new_n1050,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,4,new_n1052,4,1.0,4.0,new_n1052,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,5,new_n1053,5,1.0,5.0,new_n1053,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,6,new_n1054,6,1.0,6.0,new_n1054,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,7,new_n1056,7,1.0,7.0,new_n1056,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,8,new_n1058,8,1.0,8.0,new_n1058,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,9,new_n1059,9,1.0,9.0,new_n1059,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,10,new_n1061,10,1.0,10.0,new_n1061,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,11,new_n1063,11,1.0,11.0,new_n1063,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,12,new_n1064,12,1.0,12.0,new_n1064,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,13,new_n1066,13,1.0,13.0,new_n1066,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,14,new_n1068,14,1.0,14.0,new_n1068,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,15,new_n1069,15,1.0,15.0,new_n1069,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,16,new_n1071,16,1.0,16.0,new_n1071,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,17,new_n1073,17,1.0,17.0,new_n1073,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,18,new_n1074,18,1.0,18.0,new_n1074,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,19,new_n1076,19,1.0,19.0,new_n1076,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,20,new_n1078,20,1.0,20.0,new_n1078,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,21,new_n1079,21,1.0,21.0,new_n1079,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,22,new_n1081,22,1.0,22.0,new_n1081,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,23,new_n1083,23,1.0,23.0,new_n1083,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,24,new_n1084,24,1.0,24.0,new_n1084,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,25,new_n1086,25,1.0,25.0,new_n1086,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,26,new_n1088,26,1.0,26.0,new_n1088,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,27,new_n1089,27,1.0,27.0,new_n1089,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,28,new_n1091,28,1.0,28.0,new_n1091,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,29,new_n1093,29,1.0,29.0,new_n1093,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,30,new_n1094,30,1.0,30.0,new_n1094,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,31,new_n1096,31,1.0,31.0,new_n1096,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,32,new_n1098,32,1.0,32.0,new_n1098,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,33,new_n1099,33,1.0,33.0,new_n1099,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,34,new_n1101,34,1.0,34.0,new_n1101,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,35,new_n1103,35,1.0,35.0,new_n1103,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,36,new_n1104,36,1.0,36.0,new_n1104,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,37,new_n1106,37,1.0,37.0,new_n1106,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,38,new_n1108,38,1.0,38.0,new_n1108,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,39,new_n1109,39,1.0,39.0,new_n1109,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,40,new_n1111,40,1.0,40.0,new_n1111,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,41,new_n1113,41,1.0,41.0,new_n1113,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,42,new_n1114,42,1.0,42.0,new_n1114,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,43,new_n1116,43,1.0,43.0,new_n1116,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,44,new_n1118,44,1.0,44.0,new_n1118,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,45,new_n1119,45,1.0,45.0,new_n1119,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,46,new_n1121,46,1.0,46.0,new_n1121,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,47,new_n1123,47,1.0,47.0,new_n1123,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,48,new_n1124,48,1.0,48.0,new_n1124,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,49,new_n1126,49,1.0,49.0,new_n1126,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,50,new_n1128,50,1.0,50.0,new_n1128,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,51,new_n1129,51,1.0,51.0,new_n1129,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,52,new_n1131,52,1.0,52.0,new_n1131,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,53,new_n1133,53,1.0,53.0,new_n1133,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,54,new_n1134,54,1.0,54.0,new_n1134,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,55,new_n1136,55,1.0,55.0,new_n1136,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,56,new_n1138,56,1.0,56.0,new_n1138,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,57,new_n1139,57,1.0,57.0,new_n1139,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,58,new_n1141,58,1.0,58.0,new_n1141,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,59,new_n1143,59,1.0,59.0,new_n1143,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,60,new_n1144,60,1.0,60.0,new_n1144,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,61,new_n1146,61,1.0,61.0,new_n1146,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,62,new_n1148,62,1.0,62.0,new_n1148,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,63,new_n1149,63,1.0,63.0,new_n1149,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,64,new_n1151,64,1.0,64.0,new_n1151,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,65,new_n1153,65,1.0,65.0,new_n1153,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,66,new_n1154,66,1.0,66.0,new_n1154,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,67,new_n1156,67,1.0,67.0,new_n1156,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,68,new_n1158,68,1.0,68.0,new_n1158,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,69,new_n1159,69,1.0,69.0,new_n1159,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,70,new_n1161,70,1.0,70.0,new_n1161,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,71,new_n1163,71,1.0,71.0,new_n1163,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,72,new_n1164,72,1.0,72.0,new_n1164,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,73,new_n1166,73,1.0,73.0,new_n1166,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,74,new_n1168,74,1.0,74.0,new_n1168,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,75,new_n1169,75,1.0,75.0,new_n1169,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,76,new_n1171,76,1.0,76.0,new_n1171,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,77,new_n1173,77,1.0,77.0,new_n1173,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,78,new_n1174,78,1.0,78.0,new_n1174,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,79,new_n1176,79,1.0,79.0,new_n1176,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,80,new_n1178,80,1.0,80.0,new_n1178,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,81,new_n1179,81,1.0,81.0,new_n1179,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,82,new_n1181,82,1.0,82.0,new_n1181,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,83,new_n1183,83,1.0,83.0,new_n1183,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,84,new_n1184,84,1.0,84.0,new_n1184,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,85,new_n1186,85,1.0,85.0,new_n1186,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,86,new_n1188,86,1.0,86.0,new_n1188,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,87,new_n1192,87,1.0,87.0,new_n1332,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,88,new_n1304,88,1.0,88.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c6288,c6288,rewrite,structural,117,89,new_n1442,89,1.0,89.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c6288,c6288,rewrite,structural,117,90,new_n1572,90,1.0,90.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c6288,c6288,rewrite,structural,117,91,new_n1573,91,1.0,91.0,new_n1605,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,structural,117,92,new_n1693,92,1.0,92.0,new_n1725,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,structural,117,93,new_n1694,93,1.0,93.0,new_n1726,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,structural,117,94,new_n1804,94,1.0,94.0,new_n1836,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,structural,117,95,new_n1805,95,1.0,95.0,new_n1837,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,structural,117,96,new_n1905,96,1.0,96.0,new_n1937,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,structural,117,97,new_n1906,97,1.0,97.0,new_n1938,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,structural,117,98,new_n1996,98,1.0,98.0,new_n2028,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,structural,117,99,new_n1997,99,1.0,99.0,new_n2029,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,structural,117,100,new_n2077,100,1.0,100.0,new_n2109,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,structural,117,101,new_n2078,101,1.0,101.0,new_n2110,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,structural,117,102,new_n2148,102,1.0,102.0,new_n2180,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,structural,117,103,new_n2149,103,1.0,103.0,new_n2181,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,structural,117,104,new_n2209,104,1.0,104.0,new_n2241,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,structural,117,105,new_n2210,105,1.0,105.0,new_n2242,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,structural,117,106,new_n2260,106,1.0,106.0,new_n2292,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,structural,117,107,new_n2261,107,1.0,107.0,new_n2293,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,structural,117,108,new_n2301,108,1.0,108.0,new_n2333,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,structural,117,109,new_n2302,109,1.0,109.0,new_n2334,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,110,new_n2332,110,1.0,110.0,new_n2364,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,111,new_n2333,111,1.0,111.0,new_n2365,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,112,new_n2353,112,1.0,112.0,new_n2385,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,113,new_n2354,113,1.0,113.0,new_n2386,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,114,new_n2364,114,1.0,114.0,new_n2396,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,115,new_n2365,115,1.0,115.0,new_n2397,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,116,new_n2367,116,1.0,116.0,new_n2399,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,structural,117,117,G6288,117,1.0,117.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,1,new_n1047,1,1.0,1.0,new_n1047,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,2,new_n1049,2,1.0,2.0,new_n1049,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,3,new_n1050,3,1.0,3.0,new_n1050,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,4,new_n1052,4,1.0,4.0,new_n1052,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,5,new_n1053,5,1.0,5.0,new_n1053,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,6,new_n1054,6,1.0,6.0,new_n1054,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,7,new_n1056,7,1.0,7.0,new_n1056,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,8,new_n1058,8,1.0,8.0,new_n1058,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,9,new_n1059,9,1.0,9.0,new_n1059,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,10,new_n1061,10,1.0,10.0,new_n1061,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,11,new_n1063,11,1.0,11.0,new_n1063,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,12,new_n1064,12,1.0,12.0,new_n1064,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,13,new_n1066,13,1.0,13.0,new_n1066,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,14,new_n1068,14,1.0,14.0,new_n1068,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,15,new_n1069,15,1.0,15.0,new_n1069,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,16,new_n1071,16,1.0,16.0,new_n1071,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,17,new_n1073,17,1.0,17.0,new_n1073,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,18,new_n1074,18,1.0,18.0,new_n1074,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,19,new_n1076,19,1.0,19.0,new_n1076,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,20,new_n1078,20,1.0,20.0,new_n1078,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,21,new_n1079,21,1.0,21.0,new_n1079,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,22,new_n1081,22,1.0,22.0,new_n1081,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,23,new_n1083,23,1.0,23.0,new_n1083,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,24,new_n1084,24,1.0,24.0,new_n1084,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,25,new_n1086,25,1.0,25.0,new_n1086,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,26,new_n1088,26,1.0,26.0,new_n1088,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,27,new_n1089,27,1.0,27.0,new_n1089,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,28,new_n1091,28,1.0,28.0,new_n1091,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,29,new_n1093,29,1.0,29.0,new_n1093,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,30,new_n1094,30,1.0,30.0,new_n1094,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,31,new_n1096,31,1.0,31.0,new_n1096,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,32,new_n1098,32,1.0,32.0,new_n1098,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,33,new_n1099,33,1.0,33.0,new_n1099,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,34,new_n1101,34,1.0,34.0,new_n1101,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,35,new_n1103,35,1.0,35.0,new_n1103,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,36,new_n1104,36,1.0,36.0,new_n1104,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,37,new_n1106,37,1.0,37.0,new_n1106,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,38,new_n1108,38,1.0,38.0,new_n1108,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,39,new_n1109,39,1.0,39.0,new_n1109,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,40,new_n1111,40,1.0,40.0,new_n1111,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,41,new_n1113,41,1.0,41.0,new_n1113,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,42,new_n1114,42,1.0,42.0,new_n1114,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,43,new_n1116,43,1.0,43.0,new_n1116,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,44,new_n1118,44,1.0,44.0,new_n1118,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,45,new_n1119,45,1.0,45.0,new_n1119,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,46,new_n1121,46,1.0,46.0,new_n1121,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,47,new_n1123,47,1.0,47.0,new_n1123,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,48,new_n1124,48,1.0,48.0,new_n1124,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,49,new_n1126,49,1.0,49.0,new_n1126,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,50,new_n1128,50,1.0,50.0,new_n1128,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,51,new_n1129,51,1.0,51.0,new_n1129,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,52,new_n1131,52,1.0,52.0,new_n1131,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,53,new_n1133,53,1.0,53.0,new_n1133,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,54,new_n1134,54,1.0,54.0,new_n1134,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,55,new_n1136,55,1.0,55.0,new_n1136,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,56,new_n1138,56,1.0,56.0,new_n1138,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,57,new_n1139,57,1.0,57.0,new_n1139,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,58,new_n1141,58,1.0,58.0,new_n1141,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,59,new_n1143,59,1.0,59.0,new_n1143,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,60,new_n1144,60,1.0,60.0,new_n1144,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,61,new_n1146,61,1.0,61.0,new_n1146,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,62,new_n1148,62,1.0,62.0,new_n1148,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,63,new_n1149,63,1.0,63.0,new_n1149,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,64,new_n1151,64,1.0,64.0,new_n1151,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,65,new_n1153,65,1.0,65.0,new_n1153,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,66,new_n1154,66,1.0,66.0,new_n1154,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,67,new_n1156,67,1.0,67.0,new_n1156,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,68,new_n1158,68,1.0,68.0,new_n1158,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,69,new_n1159,69,1.0,69.0,new_n1159,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,70,new_n1161,70,1.0,70.0,new_n1161,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,71,new_n1163,71,1.0,71.0,new_n1163,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,72,new_n1164,72,1.0,72.0,new_n1164,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,73,new_n1166,73,1.0,73.0,new_n1166,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,74,new_n1168,74,1.0,74.0,new_n1168,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,75,new_n1169,75,1.0,75.0,new_n1169,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,76,new_n1171,76,1.0,76.0,new_n1171,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,77,new_n1173,77,1.0,77.0,new_n1173,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,78,new_n1174,78,1.0,78.0,new_n1174,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,79,new_n1176,79,1.0,79.0,new_n1176,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,80,new_n1178,80,1.0,80.0,new_n1178,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,81,new_n1179,81,1.0,81.0,new_n1179,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,82,new_n1181,82,1.0,82.0,new_n1181,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,83,new_n1183,83,1.0,83.0,new_n1183,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,84,new_n1184,84,1.0,84.0,new_n1184,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,85,new_n1186,85,1.0,85.0,new_n1186,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,86,new_n1188,86,1.0,86.0,new_n1188,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,87,new_n1192,87,1.0,87.0,new_n1332,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,88,new_n1304,88,1.0,88.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,89,new_n1442,89,1.0,89.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,90,new_n1572,90,1.0,90.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,91,new_n1573,91,1.0,91.0,new_n1605,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,92,new_n1693,92,1.0,92.0,new_n1725,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,93,new_n1694,93,1.0,93.0,new_n1726,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,94,new_n1804,94,1.0,94.0,new_n1836,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,95,new_n1805,95,1.0,95.0,new_n1837,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,96,new_n1905,96,1.0,96.0,new_n1937,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,97,new_n1906,97,1.0,97.0,new_n1938,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,98,new_n1996,98,1.0,98.0,new_n2028,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,99,new_n1997,99,1.0,99.0,new_n2029,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,100,new_n2077,100,1.0,100.0,new_n2109,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,101,new_n2078,101,1.0,101.0,new_n2110,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,102,new_n2148,102,1.0,102.0,new_n2180,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,103,new_n2149,103,1.0,103.0,new_n2181,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,104,new_n2209,104,1.0,104.0,new_n2241,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,105,new_n2210,105,1.0,105.0,new_n2242,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,106,new_n2260,106,1.0,106.0,new_n2292,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,107,new_n2261,107,1.0,107.0,new_n2293,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,108,new_n2301,108,1.0,108.0,new_n2333,sat_verified_nonexact,1.0,,SAT/CEC verified non-exact correspondence.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,109,new_n2302,109,1.0,109.0,new_n2334,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,110,new_n2332,110,1.0,110.0,new_n2364,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,111,new_n2333,111,1.0,111.0,new_n2365,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,112,new_n2353,112,1.0,112.0,new_n2385,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,113,new_n2354,113,1.0,113.0,new_n2386,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,114,new_n2364,114,1.0,114.0,new_n2396,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,115,new_n2365,115,1.0,115.0,new_n2397,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,116,new_n2367,116,1.0,116.0,new_n2399,exact,1.0,,Exact anchor from top_candidates.
-external_iscas85_c6288,c6288,rewrite,delay_weighted,117,117,G6288,117,1.0,117.0,,unresolved,,,"No exact, complemented, SAT-verified, or near-distance candidate was available."
+external_iscas85_c432,c432,rewrite,structural,41,1,new_n51,1,1.0,1.0,new_n51,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,2,new_n53,2,1.0,2.0,new_n53,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,3,new_n54,3,1.0,3.0,new_n54,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,4,new_n55,4,1.0,4.0,new_n55,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,5,new_n56,5,1.0,5.0,new_n56,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,6,new_n57,6,1.0,6.0,new_n57,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,7,new_n58,7,1.0,7.0,new_n58,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,8,new_n59,8,1.0,8.0,new_n59,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,9,G426,9,1.0,9.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c432,c432,rewrite,structural,41,10,new_n90,10,1.0,10.0,new_n61,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,11,new_n92,11,1.0,11.0,new_n98,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,12,new_n94,12,1.0,12.0,new_n100,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,13,new_n100,13,1.0,13.0,new_n106,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,14,new_n101,14,1.0,14.0,new_n107,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,15,new_n102,15,1.0,15.0,new_n108,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,16,new_n103,16,1.0,16.0,new_n109,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,17,new_n104,17,1.0,17.0,new_n110,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,18,new_n105,18,1.0,18.0,new_n111,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c432,c432,rewrite,structural,41,19,new_n106,19,1.0,19.0,new_n112,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c432,c432,rewrite,structural,41,20,G427,20,1.0,20.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c432,c432,rewrite,structural,41,21,new_n144,21,1.0,21.0,new_n114,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,22,new_n146,22,1.0,22.0,new_n158,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,23,new_n149,23,1.0,23.0,new_n161,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,24,new_n156,24,1.0,24.0,new_n168,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,25,new_n157,25,1.0,25.0,new_n169,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,26,new_n158,26,1.0,26.0,new_n170,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,27,new_n159,27,1.0,27.0,new_n171,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,28,new_n160,28,1.0,28.0,new_n172,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,29,new_n161,29,1.0,29.0,new_n173,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c432,c432,rewrite,structural,41,30,new_n162,30,1.0,30.0,new_n174,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c432,c432,rewrite,structural,41,31,G428,31,1.0,31.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c432,c432,rewrite,structural,41,32,new_n194,32,1.0,32.0,new_n176,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,33,new_n198,33,1.0,33.0,new_n186,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,34,new_n199,34,1.0,34.0,new_n223,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,35,new_n206,35,1.0,35.0,new_n230,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,structural,41,36,G430,36,1.0,36.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c432,c432,rewrite,structural,41,37,new_n221,37,1.0,37.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c432,c432,rewrite,structural,41,38,new_n222,38,1.0,38.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c432,c432,rewrite,structural,41,39,new_n223,39,1.0,39.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c432,c432,rewrite,structural,41,40,new_n224,40,1.0,40.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c432,c432,rewrite,structural,41,41,G429,41,1.0,41.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c432,c432,rewrite,delay_weighted,41,1,new_n51,1,1.0,1.0,new_n51,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,2,new_n53,2,1.0,2.0,new_n53,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,3,new_n54,3,1.0,3.0,new_n54,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,4,new_n55,4,1.0,4.0,new_n55,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,5,new_n56,5,1.0,5.0,new_n56,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,6,new_n57,6,1.0,6.0,new_n57,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,7,new_n58,7,1.0,7.0,new_n58,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,8,new_n59,8,1.0,8.0,new_n59,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,9,G426,9,1.0,9.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c432,c432,rewrite,delay_weighted,41,10,new_n90,10,1.0,10.0,new_n61,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,11,new_n92,11,1.0,11.0,new_n98,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,12,new_n94,12,1.0,12.0,new_n100,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,13,new_n100,13,1.0,13.0,new_n106,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,14,new_n101,14,1.0,14.0,new_n107,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,15,new_n102,15,1.0,15.0,new_n108,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,16,new_n103,16,1.0,16.0,new_n109,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,17,new_n104,17,1.0,17.0,new_n110,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,18,new_n105,18,1.0,18.0,new_n111,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,19,new_n106,19,1.0,19.0,new_n112,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,20,G427,20,1.0,20.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c432,c432,rewrite,delay_weighted,41,21,new_n144,21,1.0,21.0,new_n114,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,22,new_n146,22,1.0,22.0,new_n158,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,23,new_n149,23,1.0,23.0,new_n161,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,24,new_n156,24,1.0,24.0,new_n168,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,25,new_n157,25,1.0,25.0,new_n169,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,26,new_n158,26,1.0,26.0,new_n170,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,27,new_n159,27,1.0,27.0,new_n171,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,28,new_n160,28,1.0,28.0,new_n172,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,29,new_n161,29,1.0,29.0,new_n173,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,30,new_n162,30,1.0,30.0,new_n174,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,31,G428,31,1.0,31.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c432,c432,rewrite,delay_weighted,41,32,new_n194,32,1.0,32.0,new_n176,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,33,new_n198,33,1.0,33.0,new_n186,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,34,new_n199,34,1.0,34.0,new_n223,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,35,new_n206,35,1.0,35.0,new_n230,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c432,c432,rewrite,delay_weighted,41,36,G430,36,1.0,36.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c432,c432,rewrite,delay_weighted,41,37,new_n221,37,1.0,37.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c432,c432,rewrite,delay_weighted,41,38,new_n222,38,1.0,38.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c432,c432,rewrite,delay_weighted,41,39,new_n223,39,1.0,39.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c432,c432,rewrite,delay_weighted,41,40,new_n224,40,1.0,40.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c432,c432,rewrite,delay_weighted,41,41,G429,41,1.0,41.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c2670,c2670,rewrite,structural,21,1,new_n261,1,1.0,1.0,new_n268,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,structural,21,2,new_n262,2,1.0,2.0,new_n269,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,structural,21,3,new_n264,3,1.0,3.0,new_n272,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,structural,21,4,new_n266,4,1.0,4.0,new_n273,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,structural,21,5,G2559,5,1.0,5.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c2670,c2670,rewrite,structural,21,6,new_n690,6,1.0,6.0,new_n792,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,structural,21,7,new_n725,7,1.0,7.0,new_n796,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,structural,21,8,new_n738,8,1.0,8.0,new_n853,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,structural,21,9,new_n740,9,1.0,9.0,new_n855,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,structural,21,10,new_n741,10,1.0,10.0,new_n856,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,structural,21,11,new_n743,11,1.0,11.0,new_n861,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,structural,21,12,new_n745,12,1.0,12.0,new_n863,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,structural,21,13,new_n750,13,1.0,13.0,new_n880,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,structural,21,14,new_n751,14,1.0,14.0,new_n876,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,structural,21,15,new_n752,15,1.0,15.0,new_n877,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,structural,21,16,new_n757,16,1.0,16.0,new_n878,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,structural,21,17,new_n769,17,1.0,17.0,new_n892,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,structural,21,18,new_n797,18,1.0,18.0,new_n924,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,structural,21,19,new_n798,19,1.0,19.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c2670,c2670,rewrite,structural,21,20,new_n799,20,1.0,20.0,new_n933,global_approximate_near_match,0.951904296875,0.048095703125,Closest approximate-distance candidate.
+external_iscas85_c2670,c2670,rewrite,structural,21,21,G2591,21,1.0,21.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,1,new_n261,1,1.0,1.0,new_n268,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,2,new_n262,2,1.0,2.0,new_n269,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,3,new_n264,3,1.0,3.0,new_n272,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,4,new_n266,4,1.0,4.0,new_n273,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,5,G2559,5,1.0,5.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,6,new_n690,6,1.0,6.0,new_n792,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,7,new_n725,7,1.0,7.0,new_n796,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,8,new_n738,8,1.0,8.0,new_n853,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,9,new_n740,9,1.0,9.0,new_n855,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,10,new_n741,10,1.0,10.0,new_n856,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,11,new_n743,11,1.0,11.0,new_n861,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,12,new_n745,12,1.0,12.0,new_n863,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,13,new_n750,13,1.0,13.0,new_n880,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,14,new_n751,14,1.0,14.0,new_n876,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,15,new_n752,15,1.0,15.0,new_n877,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,16,new_n757,16,1.0,16.0,new_n878,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,17,new_n769,17,1.0,17.0,new_n892,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,18,new_n797,18,1.0,18.0,new_n924,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,19,new_n798,19,1.0,19.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,20,new_n799,20,1.0,20.0,new_n933,global_approximate_near_match,0.951904296875,0.048095703125,Closest approximate-distance candidate.
+external_iscas85_c2670,c2670,rewrite,delay_weighted,21,21,G2591,21,1.0,21.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c6288,c6288,rewrite,structural,117,1,new_n1047,1,1.0,1.0,new_n1047,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,2,new_n1049,2,1.0,2.0,new_n1049,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,3,new_n1050,3,1.0,3.0,new_n1050,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,4,new_n1052,4,1.0,4.0,new_n1052,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,5,new_n1053,5,1.0,5.0,new_n1053,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,6,new_n1054,6,1.0,6.0,new_n1054,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,7,new_n1056,7,1.0,7.0,new_n1056,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,8,new_n1058,8,1.0,8.0,new_n1058,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,9,new_n1059,9,1.0,9.0,new_n1059,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,10,new_n1061,10,1.0,10.0,new_n1061,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,11,new_n1063,11,1.0,11.0,new_n1063,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,12,new_n1064,12,1.0,12.0,new_n1064,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,13,new_n1066,13,1.0,13.0,new_n1066,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,14,new_n1068,14,1.0,14.0,new_n1068,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,15,new_n1069,15,1.0,15.0,new_n1069,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,16,new_n1071,16,1.0,16.0,new_n1071,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,17,new_n1073,17,1.0,17.0,new_n1073,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,18,new_n1074,18,1.0,18.0,new_n1074,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,19,new_n1076,19,1.0,19.0,new_n1076,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,20,new_n1078,20,1.0,20.0,new_n1078,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,21,new_n1079,21,1.0,21.0,new_n1079,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,22,new_n1081,22,1.0,22.0,new_n1081,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,23,new_n1083,23,1.0,23.0,new_n1083,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,24,new_n1084,24,1.0,24.0,new_n1084,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,25,new_n1086,25,1.0,25.0,new_n1086,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,26,new_n1088,26,1.0,26.0,new_n1088,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,27,new_n1089,27,1.0,27.0,new_n1089,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,28,new_n1091,28,1.0,28.0,new_n1091,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,29,new_n1093,29,1.0,29.0,new_n1093,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,30,new_n1094,30,1.0,30.0,new_n1094,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,31,new_n1096,31,1.0,31.0,new_n1096,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,32,new_n1098,32,1.0,32.0,new_n1098,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,33,new_n1099,33,1.0,33.0,new_n1099,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,34,new_n1101,34,1.0,34.0,new_n1101,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,35,new_n1103,35,1.0,35.0,new_n1103,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,36,new_n1104,36,1.0,36.0,new_n1104,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,37,new_n1106,37,1.0,37.0,new_n1106,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,38,new_n1108,38,1.0,38.0,new_n1108,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,39,new_n1109,39,1.0,39.0,new_n1109,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,40,new_n1111,40,1.0,40.0,new_n1111,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,41,new_n1113,41,1.0,41.0,new_n1113,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,42,new_n1114,42,1.0,42.0,new_n1114,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,43,new_n1116,43,1.0,43.0,new_n1116,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,44,new_n1118,44,1.0,44.0,new_n1118,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,45,new_n1119,45,1.0,45.0,new_n1119,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,46,new_n1121,46,1.0,46.0,new_n1121,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,47,new_n1123,47,1.0,47.0,new_n1123,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,48,new_n1124,48,1.0,48.0,new_n1124,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,49,new_n1126,49,1.0,49.0,new_n1126,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,50,new_n1128,50,1.0,50.0,new_n1128,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,51,new_n1129,51,1.0,51.0,new_n1129,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,52,new_n1131,52,1.0,52.0,new_n1131,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,53,new_n1133,53,1.0,53.0,new_n1133,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,54,new_n1134,54,1.0,54.0,new_n1134,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,55,new_n1136,55,1.0,55.0,new_n1136,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,56,new_n1138,56,1.0,56.0,new_n1138,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,57,new_n1139,57,1.0,57.0,new_n1139,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,58,new_n1141,58,1.0,58.0,new_n1141,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,59,new_n1143,59,1.0,59.0,new_n1143,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,60,new_n1144,60,1.0,60.0,new_n1144,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,61,new_n1146,61,1.0,61.0,new_n1146,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,62,new_n1148,62,1.0,62.0,new_n1148,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,63,new_n1149,63,1.0,63.0,new_n1149,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,64,new_n1151,64,1.0,64.0,new_n1151,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,65,new_n1153,65,1.0,65.0,new_n1153,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,66,new_n1154,66,1.0,66.0,new_n1154,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,67,new_n1156,67,1.0,67.0,new_n1156,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,68,new_n1158,68,1.0,68.0,new_n1158,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,69,new_n1159,69,1.0,69.0,new_n1159,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,70,new_n1161,70,1.0,70.0,new_n1161,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,71,new_n1163,71,1.0,71.0,new_n1163,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,72,new_n1164,72,1.0,72.0,new_n1164,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,73,new_n1166,73,1.0,73.0,new_n1166,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,74,new_n1168,74,1.0,74.0,new_n1168,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,75,new_n1169,75,1.0,75.0,new_n1169,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,76,new_n1171,76,1.0,76.0,new_n1171,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,77,new_n1173,77,1.0,77.0,new_n1173,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,78,new_n1174,78,1.0,78.0,new_n1174,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,79,new_n1176,79,1.0,79.0,new_n1176,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,80,new_n1178,80,1.0,80.0,new_n1178,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,81,new_n1179,81,1.0,81.0,new_n1179,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,82,new_n1181,82,1.0,82.0,new_n1181,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,83,new_n1183,83,1.0,83.0,new_n1183,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,84,new_n1184,84,1.0,84.0,new_n1184,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,85,new_n1186,85,1.0,85.0,new_n1186,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,86,new_n1188,86,1.0,86.0,new_n1188,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,87,new_n1192,87,1.0,87.0,new_n1332,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,88,new_n1304,88,1.0,88.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c6288,c6288,rewrite,structural,117,89,new_n1442,89,1.0,89.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c6288,c6288,rewrite,structural,117,90,new_n1572,90,1.0,90.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c6288,c6288,rewrite,structural,117,91,new_n1573,91,1.0,91.0,new_n1605,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,structural,117,92,new_n1693,92,1.0,92.0,new_n1725,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,structural,117,93,new_n1694,93,1.0,93.0,new_n1726,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,structural,117,94,new_n1804,94,1.0,94.0,new_n1836,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,structural,117,95,new_n1805,95,1.0,95.0,new_n1837,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,structural,117,96,new_n1905,96,1.0,96.0,new_n1937,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,structural,117,97,new_n1906,97,1.0,97.0,new_n1938,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,structural,117,98,new_n1996,98,1.0,98.0,new_n2028,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,structural,117,99,new_n1997,99,1.0,99.0,new_n2029,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,structural,117,100,new_n2077,100,1.0,100.0,new_n2109,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,structural,117,101,new_n2078,101,1.0,101.0,new_n2110,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,structural,117,102,new_n2148,102,1.0,102.0,new_n2180,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,structural,117,103,new_n2149,103,1.0,103.0,new_n2181,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,structural,117,104,new_n2209,104,1.0,104.0,new_n2241,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,structural,117,105,new_n2210,105,1.0,105.0,new_n2242,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,structural,117,106,new_n2260,106,1.0,106.0,new_n2292,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,structural,117,107,new_n2261,107,1.0,107.0,new_n2293,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,structural,117,108,new_n2301,108,1.0,108.0,new_n2333,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,structural,117,109,new_n2302,109,1.0,109.0,new_n2334,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,110,new_n2332,110,1.0,110.0,new_n2364,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,111,new_n2333,111,1.0,111.0,new_n2365,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,112,new_n2353,112,1.0,112.0,new_n2385,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,113,new_n2354,113,1.0,113.0,new_n2386,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,114,new_n2364,114,1.0,114.0,new_n2396,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,115,new_n2365,115,1.0,115.0,new_n2397,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,116,new_n2367,116,1.0,116.0,new_n2399,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,structural,117,117,G6288,117,1.0,117.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,1,new_n1047,1,1.0,1.0,new_n1047,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,2,new_n1049,2,1.0,2.0,new_n1049,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,3,new_n1050,3,1.0,3.0,new_n1050,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,4,new_n1052,4,1.0,4.0,new_n1052,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,5,new_n1053,5,1.0,5.0,new_n1053,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,6,new_n1054,6,1.0,6.0,new_n1054,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,7,new_n1056,7,1.0,7.0,new_n1056,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,8,new_n1058,8,1.0,8.0,new_n1058,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,9,new_n1059,9,1.0,9.0,new_n1059,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,10,new_n1061,10,1.0,10.0,new_n1061,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,11,new_n1063,11,1.0,11.0,new_n1063,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,12,new_n1064,12,1.0,12.0,new_n1064,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,13,new_n1066,13,1.0,13.0,new_n1066,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,14,new_n1068,14,1.0,14.0,new_n1068,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,15,new_n1069,15,1.0,15.0,new_n1069,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,16,new_n1071,16,1.0,16.0,new_n1071,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,17,new_n1073,17,1.0,17.0,new_n1073,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,18,new_n1074,18,1.0,18.0,new_n1074,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,19,new_n1076,19,1.0,19.0,new_n1076,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,20,new_n1078,20,1.0,20.0,new_n1078,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,21,new_n1079,21,1.0,21.0,new_n1079,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,22,new_n1081,22,1.0,22.0,new_n1081,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,23,new_n1083,23,1.0,23.0,new_n1083,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,24,new_n1084,24,1.0,24.0,new_n1084,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,25,new_n1086,25,1.0,25.0,new_n1086,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,26,new_n1088,26,1.0,26.0,new_n1088,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,27,new_n1089,27,1.0,27.0,new_n1089,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,28,new_n1091,28,1.0,28.0,new_n1091,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,29,new_n1093,29,1.0,29.0,new_n1093,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,30,new_n1094,30,1.0,30.0,new_n1094,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,31,new_n1096,31,1.0,31.0,new_n1096,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,32,new_n1098,32,1.0,32.0,new_n1098,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,33,new_n1099,33,1.0,33.0,new_n1099,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,34,new_n1101,34,1.0,34.0,new_n1101,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,35,new_n1103,35,1.0,35.0,new_n1103,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,36,new_n1104,36,1.0,36.0,new_n1104,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,37,new_n1106,37,1.0,37.0,new_n1106,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,38,new_n1108,38,1.0,38.0,new_n1108,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,39,new_n1109,39,1.0,39.0,new_n1109,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,40,new_n1111,40,1.0,40.0,new_n1111,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,41,new_n1113,41,1.0,41.0,new_n1113,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,42,new_n1114,42,1.0,42.0,new_n1114,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,43,new_n1116,43,1.0,43.0,new_n1116,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,44,new_n1118,44,1.0,44.0,new_n1118,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,45,new_n1119,45,1.0,45.0,new_n1119,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,46,new_n1121,46,1.0,46.0,new_n1121,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,47,new_n1123,47,1.0,47.0,new_n1123,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,48,new_n1124,48,1.0,48.0,new_n1124,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,49,new_n1126,49,1.0,49.0,new_n1126,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,50,new_n1128,50,1.0,50.0,new_n1128,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,51,new_n1129,51,1.0,51.0,new_n1129,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,52,new_n1131,52,1.0,52.0,new_n1131,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,53,new_n1133,53,1.0,53.0,new_n1133,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,54,new_n1134,54,1.0,54.0,new_n1134,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,55,new_n1136,55,1.0,55.0,new_n1136,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,56,new_n1138,56,1.0,56.0,new_n1138,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,57,new_n1139,57,1.0,57.0,new_n1139,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,58,new_n1141,58,1.0,58.0,new_n1141,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,59,new_n1143,59,1.0,59.0,new_n1143,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,60,new_n1144,60,1.0,60.0,new_n1144,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,61,new_n1146,61,1.0,61.0,new_n1146,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,62,new_n1148,62,1.0,62.0,new_n1148,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,63,new_n1149,63,1.0,63.0,new_n1149,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,64,new_n1151,64,1.0,64.0,new_n1151,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,65,new_n1153,65,1.0,65.0,new_n1153,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,66,new_n1154,66,1.0,66.0,new_n1154,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,67,new_n1156,67,1.0,67.0,new_n1156,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,68,new_n1158,68,1.0,68.0,new_n1158,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,69,new_n1159,69,1.0,69.0,new_n1159,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,70,new_n1161,70,1.0,70.0,new_n1161,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,71,new_n1163,71,1.0,71.0,new_n1163,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,72,new_n1164,72,1.0,72.0,new_n1164,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,73,new_n1166,73,1.0,73.0,new_n1166,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,74,new_n1168,74,1.0,74.0,new_n1168,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,75,new_n1169,75,1.0,75.0,new_n1169,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,76,new_n1171,76,1.0,76.0,new_n1171,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,77,new_n1173,77,1.0,77.0,new_n1173,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,78,new_n1174,78,1.0,78.0,new_n1174,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,79,new_n1176,79,1.0,79.0,new_n1176,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,80,new_n1178,80,1.0,80.0,new_n1178,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,81,new_n1179,81,1.0,81.0,new_n1179,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,82,new_n1181,82,1.0,82.0,new_n1181,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,83,new_n1183,83,1.0,83.0,new_n1183,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,84,new_n1184,84,1.0,84.0,new_n1184,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,85,new_n1186,85,1.0,85.0,new_n1186,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,86,new_n1188,86,1.0,86.0,new_n1188,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,87,new_n1192,87,1.0,87.0,new_n1332,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,88,new_n1304,88,1.0,88.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,89,new_n1442,89,1.0,89.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,90,new_n1572,90,1.0,90.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,91,new_n1573,91,1.0,91.0,new_n1605,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,92,new_n1693,92,1.0,92.0,new_n1725,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,93,new_n1694,93,1.0,93.0,new_n1726,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,94,new_n1804,94,1.0,94.0,new_n1836,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,95,new_n1805,95,1.0,95.0,new_n1837,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,96,new_n1905,96,1.0,96.0,new_n1937,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,97,new_n1906,97,1.0,97.0,new_n1938,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,98,new_n1996,98,1.0,98.0,new_n2028,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,99,new_n1997,99,1.0,99.0,new_n2029,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,100,new_n2077,100,1.0,100.0,new_n2109,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,101,new_n2078,101,1.0,101.0,new_n2110,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,102,new_n2148,102,1.0,102.0,new_n2180,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,103,new_n2149,103,1.0,103.0,new_n2181,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,104,new_n2209,104,1.0,104.0,new_n2241,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,105,new_n2210,105,1.0,105.0,new_n2242,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,106,new_n2260,106,1.0,106.0,new_n2292,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,107,new_n2261,107,1.0,107.0,new_n2293,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,108,new_n2301,108,1.0,108.0,new_n2333,sat_cec_proven_equivalent,1.0,,SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,109,new_n2302,109,1.0,109.0,new_n2334,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,110,new_n2332,110,1.0,110.0,new_n2364,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,111,new_n2333,111,1.0,111.0,new_n2365,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,112,new_n2353,112,1.0,112.0,new_n2385,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,113,new_n2354,113,1.0,113.0,new_n2386,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,114,new_n2364,114,1.0,114.0,new_n2396,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,115,new_n2365,115,1.0,115.0,new_n2397,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,116,new_n2367,116,1.0,116.0,new_n2399,exact_signature_match,1.0,,Signature match from top_candidates.
+external_iscas85_c6288,c6288,rewrite,delay_weighted,117,117,G6288,117,1.0,117.0,,unresolved,,,"No signature, complemented, SAT/CEC-proven, or near-distance candidate was available."

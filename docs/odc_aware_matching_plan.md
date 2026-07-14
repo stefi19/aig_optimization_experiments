@@ -53,7 +53,7 @@ correspondences that global internal-node equivalence misses.
 ## Connection To Approximate Matching
 
 Approximate matching currently measures how often two internal-node functions differ over
-input assignments. It is useful as a ranking signal after exact and SAT-verified recovery
+input assignments. It is useful as a ranking signal after exact and SAT/CEC-proven recovery
 fail, but it does not know whether the differences are observable.
 
 ODC-aware approximate matching would combine both ideas:

@@ -71,7 +71,7 @@ claim.
 
 The first prototype focuses on existing ISCAS-85 rank-1 SAT candidates:
 
-- SAT-verified non-exact matches, to confirm that exact-equivalent nodes have
+- SAT/CEC-proven equivalences after structural mismatch, to confirm that exact-equivalent nodes have
   distance 0.
 - SAT-rejected high-score candidates, to ask whether false positives are still
   approximately close.
@@ -124,9 +124,9 @@ The first back-mapping prototype therefore uses the correspondence layers in a
 fixed priority order:
 
 ```text
-1. exact match
-2. complemented match
-3. SAT-verified non-exact match
+1. exact signature match
+2. complemented equivalence
+3. SAT/CEC-proven equivalence after structural mismatch
 4. approximate-distance near-match
 5. unresolved
 ```

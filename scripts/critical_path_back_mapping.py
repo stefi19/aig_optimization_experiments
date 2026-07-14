@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from analyze_blif_matches import BlifNetwork, parse_blif  # noqa: E402
+from contextual_error_metrics import category_display_label, normalize_mapping_category  # noqa: E402
 
 
 RESULTS = ROOT / "results"
@@ -37,11 +38,14 @@ MAPPING_MD = RESULTS / "critical_path_mapping.md"
 DEFAULT_CIRCUITS = ("c432", "c2670", "c6288")
 DEFAULT_APPROX_THRESHOLD = 0.05
 MAPPING_PRIORITY = {
-    "exact": 0,
-    "complemented": 1,
-    "sat_verified_nonexact": 2,
-    "approximate_near_match": 3,
-    "unresolved": 4,
+    "exact_signature_match": 0,
+    "complemented_equivalence": 1,
+    "sat_cec_proven_equivalent": 2,
+    "odc_valid_correspondence": 3,
+    "contextually_approximate_exact": 4,
+    "contextually_approximate_sampled": 5,
+    "global_approximate_near_match": 6,
+    "unresolved": 7,
 }
 
 
@@ -133,9 +137,10 @@ def row_int(row: pd.Series, column: str) -> int | None:
 
 
 def choice_from_row(category: str, row: pd.Series, explanation: str) -> MappingChoice:
+    category = normalize_mapping_category(category)
     distance = row_float(row, "distance")
     similarity = row_float(row, "similarity")
-    if category in {"exact", "complemented", "sat_verified_nonexact"}:
+    if category in {"exact_signature_match", "complemented_equivalence", "sat_cec_proven_equivalent"}:
         confidence = 1.0
     elif similarity is not None:
         confidence = similarity
@@ -189,7 +194,7 @@ def choose_mapping_for_node(
         return choice_from_row(
             "exact",
             row,
-            "Exact anchor from top_candidates "
+            "Signature match from top_candidates "
             + ("in formal truth-table mode." if formal else "in simulation-pattern mode."),
         )
 
@@ -214,9 +219,9 @@ def choose_mapping_for_node(
     row = best_ranked_row(sat_verified[key_filter])
     if row is not None:
         return choice_from_row(
-            "sat_verified_nonexact",
+            "sat_cec_proven_equivalent",
             row,
-            "Same-polarity SAT/CEC verified a non-exact-name correspondence.",
+            "SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.",
         )
 
     key_filter = (
@@ -229,7 +234,7 @@ def choose_mapping_for_node(
         rows = rows.sort_values(["distance", "combined_score"], ascending=[True, False])
         row = rows.iloc[0]
         return choice_from_row(
-            "approximate_near_match",
+            "global_approximate_near_match",
             row,
             "Closest approximate-distance candidate below the configured threshold.",
         )
@@ -237,7 +242,7 @@ def choose_mapping_for_node(
     return MappingChoice(
         category="unresolved",
         original_node="",
-        explanation="No exact, complemented, SAT-verified, or near-distance candidate was available.",
+        explanation="No signature, complemented, SAT/CEC-proven, contextual, or near-distance candidate was available.",
     )
 
 
@@ -274,12 +279,17 @@ def load_complemented_candidates() -> pd.DataFrame:
     )
 
 
-def load_sat_verified_nonexact() -> pd.DataFrame:
+def load_sat_cec_proven_equivalent_candidates() -> pd.DataFrame:
     df = pd.read_csv(SAT_CANDIDATES)
     return df[
         (df["sat_status"] == "verified")
         & (df["match_category"] == "non_exact_candidate")
     ].copy()
+
+
+def load_sat_verified_nonexact() -> pd.DataFrame:
+    """Compatibility wrapper for older tests/imports."""
+    return load_sat_cec_proven_equivalent_candidates()
 
 
 def load_approximate_candidates(threshold: float) -> pd.DataFrame:
@@ -339,7 +349,7 @@ def build_mapping_rows(
 ) -> pd.DataFrame:
     exact = load_exact_candidates()
     complemented = load_complemented_candidates()
-    sat_verified = load_sat_verified_nonexact()
+    sat_verified = load_sat_cec_proven_equivalent_candidates()
     approximate = load_approximate_candidates(threshold)
 
     rows: list[dict] = []
@@ -417,14 +427,10 @@ def summarize_mappings(rows: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
                 "circuit",
                 "optimization",
                 "critical_path_nodes",
-                "exact",
-                "complemented",
-                "sat_verified_nonexact",
-                "approximate_near_match",
-                "unresolved",
+                *category_order,
                 "mapped_fraction",
-                "exact_fraction",
-                "approximate_fraction",
+                "signature_fraction",
+                "global_approximate_fraction",
                 "unresolved_fraction",
             ]
         )
@@ -443,8 +449,8 @@ def summarize_mappings(rows: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     grouped["critical_path_nodes"] = grouped[category_order].sum(axis=1)
     grouped["mapped_nodes"] = grouped["critical_path_nodes"] - grouped["unresolved"]
     grouped["mapped_fraction"] = grouped["mapped_nodes"] / grouped["critical_path_nodes"]
-    grouped["exact_fraction"] = grouped["exact"] / grouped["critical_path_nodes"]
-    grouped["approximate_fraction"] = grouped["approximate_near_match"] / grouped["critical_path_nodes"]
+    grouped["signature_fraction"] = grouped["exact_signature_match"] / grouped["critical_path_nodes"]
+    grouped["global_approximate_fraction"] = grouped["global_approximate_near_match"] / grouped["critical_path_nodes"]
     grouped["unresolved_fraction"] = grouped["unresolved"] / grouped["critical_path_nodes"]
     grouped = grouped[
         [
@@ -454,8 +460,8 @@ def summarize_mappings(rows: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
             "critical_path_nodes",
             *category_order,
             "mapped_fraction",
-            "exact_fraction",
-            "approximate_fraction",
+            "signature_fraction",
+            "global_approximate_fraction",
             "unresolved_fraction",
         ]
     ]
@@ -476,9 +482,11 @@ def write_markdown(rows: pd.DataFrame, summary: pd.DataFrame, totals: pd.DataFra
         "# Critical-Path Back-Mapping Summary",
         "",
         "This prototype uses structural longest path as a timing proxy, then maps",
-        "optimized path nodes back to original nodes using exact anchors,",
-        "complemented matches, SAT-verified non-exact matches, and approximate",
+        "optimized path nodes back to original nodes using signature matches,",
+        "complemented equivalence, SAT/CEC-proven equivalence after structural mismatch, and approximate",
         "near-matches in that priority order.",
+        "",
+        "\"After structural mismatch\" means that the pair was not identified by the initial signature or structural matching stage. SAT/CEC later proved that the two nodes compute the same Boolean function.",
         "",
         f"- Optimized critical-path nodes analyzed: {total_nodes:,}",
         f"- Mapped nodes: {mapped:,} ({mapped_fraction:.1%})",
@@ -500,10 +508,10 @@ def write_markdown(rows: pd.DataFrame, summary: pd.DataFrame, totals: pd.DataFra
             "circuit",
             "optimization",
             "critical_path_nodes",
-            "exact",
-            "complemented",
-            "sat_verified_nonexact",
-            "approximate_near_match",
+            "exact_signature_match",
+            "complemented_equivalence",
+            "sat_cec_proven_equivalent",
+            "global_approximate_near_match",
             "unresolved",
             "mapped_fraction",
             "unresolved_fraction",
@@ -544,17 +552,20 @@ def plot_outputs(rows: pd.DataFrame, summary: pd.DataFrame, totals: pd.DataFrame
         return
 
     colors = {
-        "exact": "#4c78a8",
-        "complemented": "#72b7b2",
-        "sat_verified_nonexact": "#54a24b",
-        "approximate_near_match": "#f2a541",
+        "exact_signature_match": "#4c78a8",
+        "complemented_equivalence": "#72b7b2",
+        "sat_cec_proven_equivalent": "#54a24b",
+        "odc_valid_correspondence": "#2f9ed8",
+        "contextually_approximate_exact": "#e0704a",
+        "contextually_approximate_sampled": "#f2a541",
+        "global_approximate_near_match": "#b279a2",
         "unresolved": "#b8b8b8",
     }
 
     fig, ax = plt.subplots(figsize=(7, 4.5))
     plot_totals = totals[totals["count"] > 0]
     ax.bar(
-        plot_totals["mapping_category"],
+        [category_display_label(cat) for cat in plot_totals["mapping_category"]],
         plot_totals["count"],
         color=[colors.get(cat, "#777777") for cat in plot_totals["mapping_category"]],
     )
@@ -584,11 +595,14 @@ def plot_outputs(rows: pd.DataFrame, summary: pd.DataFrame, totals: pd.DataFrame
         if category not in pivot:
             pivot[category] = 0
     pivot = pivot[list(MAPPING_PRIORITY)]
+    plot_columns = list(pivot.columns)
+    plot_colors = [colors.get(category, "#777777") for category in plot_columns]
+    pivot = pivot.rename(columns={category: category_display_label(category) for category in plot_columns})
     ax = pivot.plot(
         kind="bar",
         stacked=True,
         figsize=(9, 4.8),
-        color=[colors[category] for category in pivot.columns],
+        color=plot_colors,
     )
     ax.set_ylabel("critical-path node count")
     ax.set_xlabel("optimization")

@@ -75,7 +75,7 @@ ABC-native FRAIG remains a valuable reference flow, but it does not replace the 
 correspondence pipeline. The custom layer remains necessary for:
 
 - explicit candidate correspondence tables,
-- SAT-verified non-exact recovery,
+- SAT/CEC-proven equivalence after structural mismatch,
 - approximate near-match analysis,
 - critical-path node back-mapping.
 

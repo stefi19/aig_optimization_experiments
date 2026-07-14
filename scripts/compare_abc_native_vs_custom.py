@@ -163,7 +163,7 @@ def write_markdown(rows: list[dict[str, str]], path: Path = COMPARISON_MD) -> No
         "",
         "This comparison is intentionally indirect. ABC-native FRAIG flows report swept",
         "network size changes, while the custom pipeline reports candidate correspondences",
-        "and SAT-verified node-pair checks.",
+        "and SAT/CEC-proven node-pair checks.",
         "",
     ]
     if not rows:

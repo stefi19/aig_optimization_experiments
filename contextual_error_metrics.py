@@ -39,6 +39,64 @@ class SubstitutionResult:
     network: BlifNetwork | None
 
 
+LEGACY_CATEGORY_MAP = {
+    "exact": "exact_signature_match",
+    "exact_anchor": "exact_signature_match",
+    "exact signature match": "exact_signature_match",
+    "complemented": "complemented_equivalence",
+    "complemented match": "complemented_equivalence",
+    "complemented equivalence": "complemented_equivalence",
+    "sat_verified_nonexact": "sat_cec_proven_equivalent",
+    "sat_verified_non_exact": "sat_cec_proven_equivalent",
+    "sat verified non-exact": "sat_cec_proven_equivalent",
+    "sat verified non exact": "sat_cec_proven_equivalent",
+    "sat-verified non-exact": "sat_cec_proven_equivalent",
+    "sat/cec-proven equivalent after structural mismatch": "sat_cec_proven_equivalent",
+    "approximate_near_match": "global_approximate_near_match",
+    "global approximate near-match": "global_approximate_near_match",
+    "odc_valid_contextual": "odc_valid_correspondence",
+    "contextually_approximate": "contextually_approximate_sampled",
+}
+
+CATEGORY_DISPLAY_LABELS = {
+    "exact_signature_match": "Signature match",
+    "complemented_equivalence": "Complemented equivalence",
+    "sat_cec_proven_equivalent": "SAT/CEC-proven equivalent",
+    "odc_valid_correspondence": "ODC-valid contextual",
+    "contextually_approximate_exact": "Exact contextual approximation",
+    "contextually_approximate_sampled": "Sampled contextual approximation",
+    "global_approximate_near_match": "Global approximate near-match",
+    "globally_exact": "Globally exact",
+    "unsafe_candidate": "Unsafe",
+    "unresolved": "Unresolved",
+}
+
+
+def normalize_mapping_category(category: object) -> str:
+    text = str(category or "").strip()
+    lowered = re.sub(r"\s+", " ", text.lower().replace("_", " ")).strip()
+    underscore = lowered.replace(" ", "_").replace("-", "_")
+    return LEGACY_CATEGORY_MAP.get(text, LEGACY_CATEGORY_MAP.get(lowered, LEGACY_CATEGORY_MAP.get(underscore, text)))
+
+
+def category_display_label(category: object) -> str:
+    normalized = normalize_mapping_category(category)
+    return CATEGORY_DISPLAY_LABELS.get(normalized, normalized.replace("_", " "))
+
+
+def contextual_evidence_level(classification: str, contextual_formal: bool, cec_status: str) -> str:
+    classification = normalize_mapping_category(classification)
+    if classification == "odc_valid_correspondence":
+        return "formal_cec"
+    if classification in {"globally_exact", "contextually_approximate_exact"}:
+        return "formal_exhaustive" if contextual_formal else "unresolved"
+    if classification in {"contextually_approximate_sampled", "unsafe_candidate"}:
+        return "formal_exhaustive" if contextual_formal else "sampled_estimate"
+    if cec_status == "verified_equivalent":
+        return "formal_cec"
+    return "unresolved"
+
+
 def stable_seed(seed: int, key: str) -> int:
     digest = hashlib.sha256(f"{seed}|{key}".encode("utf-8")).hexdigest()
     return int(digest[:16], 16)
@@ -148,6 +206,7 @@ def clone_candidate_cone(
     candidate_node: str,
     target_output: str,
     optimized_inputs: set[str],
+    forbidden_names: set[str] | None = None,
     prefix: str = "__ctx_orig_",
 ) -> tuple[list[BlifNode], str, str]:
     """Clone the candidate's transitive fanin cone into an optimized network context."""
@@ -158,6 +217,7 @@ def clone_candidate_cone(
     cloned: list[BlifNode] = []
     visiting: set[str] = set()
     visited: set[str] = set()
+    forbidden = set(forbidden_names or set())
 
     def visit(signal: str) -> str:
         if signal in optimized_inputs:
@@ -172,6 +232,8 @@ def clone_candidate_cone(
         node = by_output[signal]
         mapped_inputs = [visit(fanin) for fanin in node.inputs]
         cloned_output = prefixed_name(prefix, signal)
+        if cloned_output in forbidden:
+            raise ValueError(f"cloned candidate-cone node {cloned_output!r} collides with optimized network name")
         cloned.append(BlifNode(output=cloned_output, inputs=mapped_inputs, cover=list(node.cover)))
         visiting.remove(signal)
         visited.add(signal)
@@ -189,6 +251,10 @@ def substitute_candidate(
     candidate_original_node: str,
 ) -> SubstitutionResult:
     """Return optimized network with `optimized_node` replaced by candidate's original cone."""
+    if not optimized.outputs:
+        return SubstitutionResult("skipped", "optimized circuit has no primary outputs", None)
+    if len(set(optimized.outputs)) != len(optimized.outputs):
+        return SubstitutionResult("skipped", "optimized primary output names are not unique", None)
     if optimized_node in optimized.inputs:
         return SubstitutionResult("skipped", "optimized node is a primary input", None)
     if optimized_node in optimized.outputs:
@@ -199,8 +265,8 @@ def substitute_candidate(
         return SubstitutionResult("skipped", f"candidate original node {candidate_original_node!r} missing", None)
     if optimized.inputs != original.inputs:
         return SubstitutionResult("skipped", "primary input ordering differs between original and optimized networks", None)
-    if optimized.outputs != optimized.outputs:
-        return SubstitutionResult("skipped", "invalid optimized output ordering", None)
+    existing_names = set(optimized.inputs) | set(optimized.outputs) | {node.output for node in optimized.nodes}
+    existing_names.discard(optimized_node)
 
     try:
         cloned_nodes, _, reason = clone_candidate_cone(
@@ -208,6 +274,7 @@ def substitute_candidate(
             candidate_original_node,
             optimized_node,
             set(optimized.inputs),
+            existing_names,
         )
     except ValueError as exc:
         return SubstitutionResult("skipped", str(exc), None)
@@ -224,10 +291,13 @@ def substitute_candidate(
             new_nodes.append(BlifNode(output=node.output, inputs=list(node.inputs), cover=list(node.cover)))
     if not inserted:
         return SubstitutionResult("skipped", f"optimized node {optimized_node!r} was not replaced", None)
+    substituted = BlifNetwork(inputs=list(optimized.inputs), outputs=list(optimized.outputs), nodes=new_nodes)
+    if substituted.outputs != optimized.outputs:
+        return SubstitutionResult("skipped", "optimized primary output ordering changed during substitution", None)
     return SubstitutionResult(
         "ok",
         "substitution constructed",
-        BlifNetwork(inputs=list(optimized.inputs), outputs=list(optimized.outputs), nodes=new_nodes),
+        substituted,
     )
 
 
@@ -292,7 +362,9 @@ def classify_candidate(
     if global_error_rate > 0 and cec_status == "verified_equivalent":
         return "odc_valid_correspondence"
     if cec_status == "rejected_non_equivalent" and contextual_error_rate <= threshold:
-        return "contextually_approximate"
+        if contextual_formal:
+            return "contextually_approximate_exact"
+        return "contextually_approximate_sampled"
     if contextual_error_rate > threshold:
         return "unsafe_candidate"
     return "unresolved"
@@ -316,6 +388,7 @@ def evaluate_contextual_pair(
             "substitution_status": "skipped",
             "reason": reason,
             "classification": "unresolved",
+            "evidence_level": "unresolved",
         }, None, None
 
     substitution = substitute_candidate(optimized, original, optimized_node, candidate_original_node)
@@ -324,6 +397,7 @@ def evaluate_contextual_pair(
             "substitution_status": substitution.status,
             "reason": substitution.reason,
             "classification": "unresolved",
+            "evidence_level": "unresolved",
         }, optimized, None
 
     key = f"{optimized_path}|{optimized_node}|{candidate_original_node}"
@@ -335,14 +409,14 @@ def evaluate_contextual_pair(
 
     if optimized_node not in baseline_values:
         reason = f"optimized node {optimized_node!r} missing after evaluation"
-        return {"substitution_status": "skipped", "reason": reason, "classification": "unresolved"}, optimized, substitution.network
+        return {"substitution_status": "skipped", "reason": reason, "classification": "unresolved", "evidence_level": "unresolved"}, optimized, substitution.network
     if candidate_original_node not in original_values:
         reason = f"candidate node {candidate_original_node!r} missing after evaluation"
-        return {"substitution_status": "skipped", "reason": reason, "classification": "unresolved"}, optimized, substitution.network
+        return {"substitution_status": "skipped", "reason": reason, "classification": "unresolved", "evidence_level": "unresolved"}, optimized, substitution.network
     missing_outputs = [name for name in optimized.outputs if name not in baseline_values or name not in substituted_values]
     if missing_outputs:
         reason = f"missing primary output values: {', '.join(missing_outputs)}"
-        return {"substitution_status": "skipped", "reason": reason, "classification": "unresolved"}, optimized, substitution.network
+        return {"substitution_status": "skipped", "reason": reason, "classification": "unresolved", "evidence_level": "unresolved"}, optimized, substitution.network
 
     global_error = hamming_distance_rate(
         baseline_values[optimized_node],
@@ -379,5 +453,6 @@ def evaluate_contextual_pair(
         "substitution_status": "ok",
         "reason": "substitution constructed; CEC not run yet",
         "classification": classification,
+        "evidence_level": contextual_evidence_level(classification, patterns.mode == "exact", "not_run"),
         "seed": seed,
     }, optimized, substitution.network

@@ -34,21 +34,31 @@ nodes can still be related back to original logic.
 The current prototype uses a layered correspondence flow:
 
 ```text
-exact match
--> complemented match
--> SAT-verified non-exact match
--> approximate near-match
+exact signature match
+-> complemented equivalence
+-> SAT/CEC-proven equivalence after structural mismatch
+-> ODC-valid contextual correspondence
+-> exact contextual approximation
+-> sampled contextual approximation
+-> global approximate near-match
 -> unresolved
 ```
 
 Each layer has a different role:
 
-- **Exact match** identifies nodes whose signatures or formal truth tables match.
-- **Complemented match** checks whether a rejected same-polarity candidate is
+- **Exact signature match** identifies nodes whose signatures or formal truth tables match.
+- **Complemented equivalence** checks whether a rejected same-polarity candidate is
   actually equivalent up to inversion.
-- **SAT-verified non-exact match** uses ABC CEC/SAT validation to prove that two
-  differently named internal nodes are globally equivalent.
-- **Approximate near-match** measures truth-table distance for non-equivalent
+- **SAT/CEC-proven equivalence after structural mismatch** means the initial
+  signature/structural matching stage missed the pair, but ABC CEC/SAT later
+  proved exact Boolean equivalence.
+- **ODC-valid contextual correspondence** means globally different internal
+  functions can be substituted without changing primary outputs.
+- **Exact contextual approximation** is non-equivalent substitution with
+  exhaustively measured low output error.
+- **Sampled contextual approximation** is non-equivalent substitution with low
+  observed output error only on sampled patterns.
+- **Global approximate near-match** measures truth-table distance for non-equivalent
   candidates, so rejected candidates can still be ranked by functional closeness.
 - **Unresolved** means no current layer found a reliable or near correspondence.
   This is not necessarily a failure; it can indicate that context, don't-cares,
@@ -89,8 +99,8 @@ metadata so these cases are not confused with formal truth-table equality.
 ## 6. ISCAS-85 Non-Exact Recovery Results
 
 Adding ISCAS-85 changed the research story. The original small benchmark set had
-no verified rank-1 non-exact recoveries, but larger ISCAS circuits exposed real
-non-exact internal correspondences.
+no SAT/CEC-proven rank-1 structural-mismatch recoveries, but larger ISCAS
+circuits exposed real internally equivalent pairs missed by the initial matcher.
 
 The expanded rank-1 SAT run produced:
 
@@ -112,7 +122,7 @@ mainly in:
 - `c5315`
 - `c432`
 
-This means heuristic ranking can recover real non-exact correspondences on
+This means heuristic ranking can recover real SAT/CEC-proven structural-mismatch correspondences on
 larger benchmarks, but it is noisy. Many high-score candidates still fail formal
 SAT validation, so the heuristic must be treated as a ranking signal rather than
 proof.
@@ -126,6 +136,10 @@ For two node functions `f` and `g`, the prototype measures:
 distance(f, g) = count_x[f(x) != g(x)] / 2^n
 similarity(f, g) = 1 - distance(f, g)
 ```
+
+`global_error_rate` compares the optimized target-node function against the
+original candidate-node function under aligned primary-input assignments. It is
+independent of the later contextual substitution test.
 
 The current run analyzed 2,609 ISCAS candidate pairs:
 
@@ -156,7 +170,7 @@ It extracts a structural longest path from optimized BLIFs and maps each path
 node back to the original circuit using this priority:
 
 ```text
-exact -> complemented -> SAT-verified non-exact -> approximate near-match -> unresolved
+  exact signature match -> complemented equivalence -> SAT/CEC-proven equivalence after structural mismatch -> global approximate near-match -> unresolved
 ```
 
 This is not a real timing path yet. Structural depth is used as a proxy so the
@@ -167,11 +181,11 @@ On the ISCAS case-study circuits `c432`, `c2670`, and `c6288`, the prototype
 analyzed 1,686 structural critical-path nodes:
 
 ```text
-exact:                     1136  (67.4%)
-complemented:                 0   (0.0%)
-SAT-verified non-exact:     145   (8.6%)
-approximate near-match:       8   (0.5%)
-unresolved:                 397  (23.5%)
+exact signature match:                      1136  (67.4%)
+complemented equivalence:                      0   (0.0%)
+SAT/CEC-proven equivalent after mismatch:    145   (8.6%)
+global approximate near-match:                 8   (0.5%)
+unresolved:                                  397  (23.5%)
 ```
 
 Overall:
@@ -188,7 +202,7 @@ points using a layered exact/formal/approximate strategy.
 ## 9. Main Findings
 
 1. Exact matching is reliable when internal nodes survive optimization.
-2. ISCAS-85 shows that real non-exact recovered correspondences do exist.
+2. ISCAS-85 shows that real SAT/CEC-proven recoveries after structural mismatch do exist.
 3. Heuristic ranking is useful but noisy; SAT/CEC validation is necessary before
    claiming exact functional correspondence.
 4. Approximate distance explains why some rejected candidates still look
@@ -245,7 +259,7 @@ The most important next steps are:
 
 This project has evolved from measuring exact internal-node preservation into a
 layered correspondence-recovery flow. Exact anchors validate the SAT wrapper,
-ISCAS-85 shows that real non-exact recoveries exist, and approximate distance
+ISCAS-85 shows that real recoveries after structural mismatch exist, and approximate distance
 shows that many SAT-rejected high-score candidates are still functionally close.
 The main methodological point is that heuristic similarity is useful for
 ranking, but formal SAT/CEC validation is still required for equivalence claims.
@@ -253,7 +267,7 @@ ranking, but formal SAT/CEC validation is still required for equivalence claims.
 Recent iterations extend this toward the final engineering use case. The
 critical-path back-mapping prototype uses structural longest paths as a timing
 proxy and maps optimized path nodes back to original nodes using exact,
-complemented, SAT-verified, and approximate layers. On `c432`, `c2670`, and
+complemented, SAT/CEC-proven, and approximate layers. On `c432`, `c2670`, and
 `c6288`, it maps 76.5% of 1,686 structural critical-path nodes.
 
 The newest contextual error-metric prototype builds experimental substituted

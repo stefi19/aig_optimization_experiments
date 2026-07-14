@@ -160,7 +160,7 @@ research-plots:
 	@$(PYTHON) research_plots.py
 
 iscas-analysis:
-	@echo "Analyzing SAT-verified non-exact ISCAS-85 matches"
+	@echo "Analyzing SAT/CEC-proven ISCAS-85 structural-mismatch matches"
 	@$(PYTHON) scripts/analyze_iscas_verified_matches.py
 
 # Regenerates variants first because the distance script evaluates candidate

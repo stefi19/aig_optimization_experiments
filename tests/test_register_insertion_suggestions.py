@@ -18,7 +18,7 @@ def row(**overrides):
         "optimized_node": "new_n20",
         "path_index": "5",
         "path_length": "9",
-        "mapping_category": "exact",
+        "mapping_category": "exact_signature_match",
         "confidence": "1.0",
         "distance": "",
         "combined_score": "1.0",
@@ -36,16 +36,21 @@ def test_split_balance_prefers_middle():
 
 
 def test_mapping_preference_order_affects_score():
-    exact = reg.score_candidate(row(mapping_category="exact"))
-    sat = reg.score_candidate(row(mapping_category="sat_verified_nonexact"))
-    approx = reg.score_candidate(row(mapping_category="approximate_near_match", distance="0.03"))
+    exact = reg.score_candidate(row(mapping_category="exact_signature_match"))
+    sat = reg.score_candidate(row(mapping_category="sat_cec_proven_equivalent"))
+    approx = reg.score_candidate(row(mapping_category="global_approximate_near_match", distance="0.03"))
     assert exact > sat > approx
+
+
+def test_legacy_mapping_categories_are_normalized_for_scoring():
+    assert reg.score_candidate(row(mapping_category="exact")) == reg.score_candidate(row(mapping_category="exact_signature_match"))
+    assert reg.score_candidate(row(mapping_category="sat_verified_nonexact")) == reg.score_candidate(row(mapping_category="sat_cec_proven_equivalent"))
 
 
 def test_unresolved_nodes_are_avoided():
     rows = [
         row(mapping_category="unresolved", mapped_original_node="", path_index="5"),
-        row(mapping_category="exact", mapped_original_node="new_n11", path_index="4"),
+        row(mapping_category="exact_signature_match", mapped_original_node="new_n11", path_index="4"),
     ]
     suggestions = reg.build_suggestions(rows)
     assert len(suggestions) == 1

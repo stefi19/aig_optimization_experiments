@@ -44,8 +44,26 @@ def test_classification_thresholds_and_formality():
     assert cem.classify_candidate(0.0, True, 0.0, True, "not_run", 0.01) == "globally_exact"
     assert cem.classify_candidate(0.0, False, 0.0, False, "verified_equivalent", 0.01) == "unresolved"
     assert cem.classify_candidate(0.5, True, 0.0, True, "verified_equivalent", 0.01) == "odc_valid_correspondence"
-    assert cem.classify_candidate(0.5, True, 0.005, True, "rejected_non_equivalent", 0.01) == "contextually_approximate"
+    assert cem.classify_candidate(0.5, True, 0.005, True, "rejected_non_equivalent", 0.01) == "contextually_approximate_exact"
+    assert cem.classify_candidate(0.5, False, 0.005, False, "rejected_non_equivalent", 0.01) == "contextually_approximate_sampled"
     assert cem.classify_candidate(0.5, True, 0.25, True, "rejected_non_equivalent", 0.01) == "unsafe_candidate"
+    assert cem.classify_candidate(0.5, False, 0.0, False, "rejected_non_equivalent", 0.01) == "contextually_approximate_sampled"
+    assert cem.classify_candidate(0.5, True, 0.0, True, "not_run", 0.01) == "unresolved"
+
+
+def test_legacy_category_normalization_and_labels():
+    assert cem.normalize_mapping_category("sat_verified_nonexact") == "sat_cec_proven_equivalent"
+    assert cem.normalize_mapping_category("SAT-verified non-exact") == "sat_cec_proven_equivalent"
+    assert cem.normalize_mapping_category("approximate_near_match") == "global_approximate_near_match"
+    assert cem.normalize_mapping_category("contextually_approximate") == "contextually_approximate_sampled"
+    assert cem.category_display_label("sat_verified_nonexact") == "SAT/CEC-proven equivalent"
+    assert cem.category_display_label("contextually_approximate_sampled") == "Sampled contextual approximation"
+
+
+def test_contextual_evidence_levels_are_explicit():
+    assert cem.contextual_evidence_level("odc_valid_correspondence", False, "verified_equivalent") == "formal_cec"
+    assert cem.contextual_evidence_level("contextually_approximate_exact", True, "rejected_non_equivalent") == "formal_exhaustive"
+    assert cem.contextual_evidence_level("contextually_approximate_sampled", False, "rejected_non_equivalent") == "sampled_estimate"
 
 
 def test_temp_node_renaming_and_substitution(tmp_path):
@@ -81,6 +99,136 @@ def test_temp_node_renaming_and_substitution(tmp_path):
     assert result.status == "ok"
     assert result.network is not None
     assert any(node.output == "__ctx_orig_g" for node in result.network.nodes)
+    assert result.network.outputs == opt_net.outputs
+
+
+def test_substitution_rejects_missing_outputs(tmp_path):
+    optimized = write_blif(
+        tmp_path,
+        "opt_missing_output",
+        """.model opt_missing_output
+.inputs a b
+.outputs y
+.names a b v
+11 1
+.end
+""",
+    )
+    original = write_blif(
+        tmp_path,
+        "orig_missing_output",
+        """.model orig_missing_output
+.inputs a b
+.outputs out
+.names a b g
+11 1
+.names g out
+1 1
+.end
+""",
+    )
+    metrics, _, _ = cem.evaluate_contextual_pair(original, optimized, "v", "g", 12, 16, 1, 0.01)
+    assert metrics["substitution_status"] == "skipped"
+    assert "missing primary output values" in metrics["reason"]
+
+
+def test_substitution_rejects_duplicate_primary_outputs(tmp_path):
+    optimized = write_blif(
+        tmp_path,
+        "opt_dup_outputs",
+        """.model opt_dup_outputs
+.inputs a b
+.outputs y y
+.names a b v
+11 1
+.names v y
+1 1
+.end
+""",
+    )
+    original = write_blif(
+        tmp_path,
+        "orig_dup_outputs",
+        """.model orig_dup_outputs
+.inputs a b
+.outputs y
+.names a b g
+11 1
+.names g y
+1 1
+.end
+""",
+    )
+    result = cem.substitute_candidate(parse_blif(optimized), parse_blif(original), "v", "g")
+    assert result.status == "skipped"
+    assert "primary output names are not unique" in result.reason
+
+
+def test_substitution_allows_different_original_output_names(tmp_path):
+    optimized = write_blif(
+        tmp_path,
+        "opt_output_name",
+        """.model opt_output_name
+.inputs a b
+.outputs opt_y
+.names a b v
+11 1
+.names v opt_y
+1 1
+.end
+""",
+    )
+    original = write_blif(
+        tmp_path,
+        "orig_output_name",
+        """.model orig_output_name
+.inputs a b
+.outputs orig_y
+.names a b g
+11 1
+.names g orig_y
+1 1
+.end
+""",
+    )
+    result = cem.substitute_candidate(parse_blif(optimized), parse_blif(original), "v", "g")
+    assert result.status == "ok"
+    assert result.network is not None
+    assert result.network.outputs == ["opt_y"]
+
+
+def test_substitution_rejects_cloned_candidate_cone_collision(tmp_path):
+    optimized = write_blif(
+        tmp_path,
+        "opt_collision",
+        """.model opt_collision
+.inputs a b
+.outputs y
+.names a __ctx_orig_g
+11 1
+.names a b v
+11 1
+.names v y
+1 1
+.end
+""",
+    )
+    original = write_blif(
+        tmp_path,
+        "orig_collision",
+        """.model orig_collision
+.inputs a b
+.outputs y
+.names a b g
+11 1
+.names g y
+1 1
+.end
+""",
+    )
+    result = cem.substitute_candidate(parse_blif(optimized), parse_blif(original), "v", "g")
+    assert result.status == "skipped"
+    assert "collides with optimized network name" in result.reason
 
 
 def test_invalid_substitution_missing_node(tmp_path):
@@ -243,4 +391,4 @@ def test_case_d_contextually_approximate(tmp_path):
     )
     metrics, _, _ = cem.evaluate_contextual_pair(original, optimized, "v", "g", 12, 16, 1, 0.20)
     assert metrics["contextual_output_error_rate"] == 0.1875
-    assert cem.classify_candidate(metrics["global_error_rate"], True, 0.1875, True, "rejected_non_equivalent", 0.20) == "contextually_approximate"
+    assert cem.classify_candidate(metrics["global_error_rate"], True, 0.1875, True, "rejected_non_equivalent", 0.20) == "contextually_approximate_exact"

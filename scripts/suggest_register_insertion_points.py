@@ -8,11 +8,16 @@ import csv
 import math
 import shutil
 import struct
+import sys
 import zlib
 from dataclasses import dataclass
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from contextual_error_metrics import category_display_label, normalize_mapping_category  # noqa: E402
+
 RESULTS = ROOT / "results"
 PLOTS = RESULTS / "plots"
 PRESENTATION_PLOTS = ROOT / "docs" / "presentation" / "assets" / "plots"
@@ -36,18 +41,24 @@ OUTPUT_COLUMNS = [
 ]
 
 CATEGORY_CONFIDENCE = {
-    "exact": 1.00,
-    "complemented": 0.95,
-    "sat_verified_nonexact": 0.90,
-    "approximate_near_match": 0.65,
+    "exact_signature_match": 1.00,
+    "complemented_equivalence": 0.95,
+    "sat_cec_proven_equivalent": 0.90,
+    "odc_valid_correspondence": 0.85,
+    "contextually_approximate_exact": 0.75,
+    "contextually_approximate_sampled": 0.60,
+    "global_approximate_near_match": 0.55,
     "unresolved": 0.00,
 }
 
 CATEGORY_LABEL = {
-    "exact": "exact correspondence",
-    "complemented": "complemented SAT correspondence",
-    "sat_verified_nonexact": "SAT-verified non-exact correspondence",
-    "approximate_near_match": "approximate near-match",
+    "exact_signature_match": "signature match",
+    "complemented_equivalence": "complemented equivalence",
+    "sat_cec_proven_equivalent": "SAT/CEC-proven equivalent correspondence",
+    "odc_valid_correspondence": "ODC-valid contextual correspondence",
+    "contextually_approximate_exact": "exact contextual approximation",
+    "contextually_approximate_sampled": "sampled contextual approximation",
+    "global_approximate_near_match": "global approximate near-match",
 }
 
 
@@ -116,7 +127,7 @@ def split_balance_score(path_index: int, path_length: int) -> float:
 
 
 def category_confidence(category: str) -> float:
-    return CATEGORY_CONFIDENCE.get(category, 0.0)
+    return CATEGORY_CONFIDENCE.get(normalize_mapping_category(category), 0.0)
 
 
 def heuristic_support(row: dict[str, str]) -> float:
@@ -132,7 +143,7 @@ def heuristic_support(row: dict[str, str]) -> float:
 
 
 def score_candidate(row: dict[str, str]) -> float:
-    category = row.get("mapping_category", "")
+    category = normalize_mapping_category(row.get("mapping_category", ""))
     if category == "unresolved" or not row.get("mapped_original_node"):
         return 0.0
     path_index = parse_int(row.get("path_index"))
@@ -142,7 +153,7 @@ def score_candidate(row: dict[str, str]) -> float:
     existing_confidence = max(0.0, min(parse_float(row.get("confidence")), 1.0))
     support_score = heuristic_support(row)
     distance = parse_float(row.get("distance"), default=0.0)
-    distance_penalty = min(max(distance, 0.0), 1.0) * 0.15 if category == "approximate_near_match" else 0.0
+    distance_penalty = min(max(distance, 0.0), 1.0) * 0.15 if category == "global_approximate_near_match" else 0.0
     score = (
         0.45 * balance
         + 0.40 * category_score
@@ -154,12 +165,12 @@ def score_candidate(row: dict[str, str]) -> float:
 
 
 def candidate_caveats(row: dict[str, str]) -> str:
-    category = row.get("mapping_category", "")
+    category = normalize_mapping_category(row.get("mapping_category", ""))
     caveats = [
         "Research prototype only; no RTL rewrite or sequential verification performed.",
         "Engineer must check latency, control/data dependencies, reset, and enables.",
     ]
-    if category == "approximate_near_match":
+    if category in {"contextually_approximate_sampled", "global_approximate_near_match"}:
         caveats.append("Mapping is approximate and should not be treated as proof.")
     if row.get("distance"):
         caveats.append(f"Approximate/global distance recorded as {row['distance']}.")
@@ -170,7 +181,7 @@ def candidate_explanation(row: dict[str, str], score: float) -> str:
     path_index = parse_int(row.get("path_index"))
     path_length = parse_int(row.get("path_length"))
     balance = split_balance_score(path_index, path_length)
-    category = row.get("mapping_category", "")
+    category = normalize_mapping_category(row.get("mapping_category", ""))
     label = CATEGORY_LABEL.get(category, category or "mapped")
     return (
         f"Candidate is near the path midpoint ({path_index}/{path_length}, "
@@ -193,6 +204,7 @@ def build_suggestions(rows: list[dict[str, str]], top_per_path: int = 1, min_pat
         path_length = parse_int(row.get("path_length"))
         if path_length < min_path_length:
             continue
+        row["mapping_category"] = normalize_mapping_category(row.get("mapping_category", ""))
         if row.get("mapping_category") == "unresolved" or not row.get("mapped_original_node"):
             continue
         grouped.setdefault(group_key(row), []).append(row)
@@ -222,7 +234,7 @@ def build_suggestions(rows: list[dict[str, str]], top_per_path: int = 1, min_pat
                     path_index=path_index,
                     path_length=path_length,
                     split_balance_score=split_balance_score(path_index, path_length),
-                    mapping_category=row.get("mapping_category", ""),
+                    mapping_category=normalize_mapping_category(row.get("mapping_category", "")),
                     confidence_score=score,
                     explanation=candidate_explanation(row, score),
                     caveats=candidate_caveats(row),
@@ -248,7 +260,7 @@ def write_markdown(suggestions: list[Suggestion], path: Path, example_count: int
         "These rows are candidate locations for engineer review. They are not automatic RTL edits.",
         "",
         f"- Suggestions generated: `{len(suggestions)}`",
-        "- Scoring favors path-midpoint balance, exact/SAT-backed mappings, existing confidence, and support/simulation signals.",
+        "- Scoring favors path-midpoint balance, formal or higher-confidence mappings, existing confidence, and support/simulation signals.",
         "- Unresolved path nodes are excluded.",
         "",
         "## Example Suggestions",
@@ -260,7 +272,7 @@ def write_markdown(suggestions: list[Suggestion], path: Path, example_count: int
         lines.append(
             f"| `{suggestion.benchmark}` | `{suggestion.optimization}` | "
             f"`{suggestion.suggested_original_node}` | `{suggestion.optimized_path_node}` | "
-            f"`{suggestion.path_index}/{suggestion.path_length}` | `{suggestion.mapping_category}` | "
+            f"`{suggestion.path_index}/{suggestion.path_length}` | {category_display_label(suggestion.mapping_category)} (`{suggestion.mapping_category}`) | "
             f"`{suggestion.confidence_score:.3f}` |"
         )
     if not suggestions:

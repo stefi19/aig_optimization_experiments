@@ -18,8 +18,11 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from contextual_error_metrics import (  # noqa: E402
+    category_display_label,
     classify_candidate,
+    contextual_evidence_level,
     evaluate_contextual_pair,
+    normalize_mapping_category,
     run_abc_cec,
     write_blif,
 )
@@ -71,6 +74,7 @@ DETAIL_COLUMNS = [
     "worst_case_absolute_output_error",
     "cec_status",
     "classification",
+    "evidence_level",
     "is_formal_global",
     "is_formal_contextual",
     "substitution_status",
@@ -266,6 +270,7 @@ def empty_detail_row(candidate: Candidate, status: str, reason: str, runtime: fl
         "worst_case_absolute_output_error": "",
         "cec_status": "not_run",
         "classification": "unresolved",
+        "evidence_level": "unresolved",
         "is_formal_global": "false",
         "is_formal_contextual": "false",
         "substitution_status": status,
@@ -315,9 +320,15 @@ def analyze_candidate(candidate: Candidate, args: argparse.Namespace, abc_bin: s
             args.contextual_error_threshold,
             str(metrics["substitution_status"]),
         )
+        metrics["evidence_level"] = contextual_evidence_level(
+            str(metrics["classification"]),
+            bool(metrics["is_formal_contextual"]),
+            cec_status,
+        )
         metrics["reason"] = cec_reason or "substitution constructed and CEC completed"
     else:
         metrics["cec_status"] = "not_run"
+        metrics["evidence_level"] = metrics.get("evidence_level", "unresolved")
 
     runtime = time.perf_counter() - start
     return {
@@ -340,6 +351,7 @@ def analyze_candidate(candidate: Candidate, args: argparse.Namespace, abc_bin: s
         "worst_case_absolute_output_error": metrics.get("worst_case_absolute_output_error", ""),
         "cec_status": metrics.get("cec_status", cec_status),
         "classification": metrics.get("classification", "unresolved"),
+        "evidence_level": metrics.get("evidence_level", "unresolved"),
         "is_formal_global": str(metrics.get("is_formal_global", False)).lower(),
         "is_formal_contextual": str(metrics.get("is_formal_contextual", False)).lower(),
         "substitution_status": metrics.get("substitution_status", "skipped"),
@@ -359,11 +371,12 @@ def write_rows(path: Path, rows: list[dict[str, object]], columns: list[str]) ->
 
 
 def summarize(rows: list[dict[str, object]]) -> list[dict[str, object]]:
-    counters = Counter(str(row.get("classification", "")) for row in rows)
+    counters = Counter(normalize_mapping_category(row.get("classification", "")) for row in rows)
     modes = Counter(str(row.get("contextual_error_mode", "") or "skipped") for row in rows)
     cec = Counter(str(row.get("cec_status", "")) for row in rows)
+    evidence = Counter(str(row.get("evidence_level", "") or "unresolved") for row in rows)
     out = []
-    for kind, counter in [("classification", counters), ("contextual_mode", modes), ("cec_status", cec)]:
+    for kind, counter in [("classification", counters), ("contextual_mode", modes), ("cec_status", cec), ("evidence_level", evidence)]:
         for name, count in sorted(counter.items()):
             out.append({"summary_type": kind, "name": name, "count": count})
     by_circuit = Counter(str(row.get("circuit", "")) for row in rows)
@@ -376,12 +389,19 @@ def summarize(rows: list[dict[str, object]]) -> list[dict[str, object]]:
 
 
 def write_markdown(rows: list[dict[str, object]], summary_rows: list[dict[str, object]]) -> None:
-    classifications = Counter(str(row.get("classification", "")) for row in rows)
+    classifications = Counter(normalize_mapping_category(row.get("classification", "")) for row in rows)
     substitutions = Counter(str(row.get("substitution_status", "")) for row in rows)
     modes = Counter(str(row.get("contextual_error_mode", "") or "skipped") for row in rows)
+    evidence = Counter(str(row.get("evidence_level", "") or "unresolved") for row in rows)
     examples = [
         row for row in rows
-        if row.get("classification") in {"odc_valid_correspondence", "contextually_approximate", "unsafe_candidate", "globally_exact"}
+        if normalize_mapping_category(row.get("classification")) in {
+            "odc_valid_correspondence",
+            "contextually_approximate_exact",
+            "contextually_approximate_sampled",
+            "unsafe_candidate",
+            "globally_exact",
+        }
     ][:10]
     lines = [
         "# Contextual Error Metrics",
@@ -390,16 +410,23 @@ def write_markdown(rows: list[dict[str, object]], summary_rows: list[dict[str, o
         "Exact exhaustive rows are formal for the reported distance. Sampled rows are estimates.",
         "CEC equivalence results are formal when ABC reports equivalence.",
         "",
+        "Global distance compares the original candidate function and the optimized target function under the same aligned primary-input assignments. It is independent of the subsequent contextual substitution test.",
+        "",
+        "Some candidates produced zero observed contextual error over sampled patterns while ABC CEC still found a counterexample. These rows are classified as sampled contextual approximations, not ODC-valid or output-equivalent correspondences.",
+        "",
         f"- Total candidate pairs: `{len(rows)}`",
         f"- Successfully substituted pairs: `{substitutions.get('ok', 0)}`",
         f"- Skipped/unresolved substitutions: `{len(rows) - substitutions.get('ok', 0)}`",
         f"- Globally exact pairs: `{classifications.get('globally_exact', 0)}`",
+        f"- SAT/CEC-proven equivalent after structural mismatch: `{classifications.get('sat_cec_proven_equivalent', 0)}`",
         f"- ODC-valid correspondences: `{classifications.get('odc_valid_correspondence', 0)}`",
-        f"- Contextually approximate pairs: `{classifications.get('contextually_approximate', 0)}`",
+        f"- Exact contextual approximations: `{classifications.get('contextually_approximate_exact', 0)}`",
+        f"- Sampled contextual approximations: `{classifications.get('contextually_approximate_sampled', 0)}`",
         f"- Unsafe candidates: `{classifications.get('unsafe_candidate', 0)}`",
         f"- Unresolved pairs: `{classifications.get('unresolved', 0)}`",
         f"- Exact contextual rows: `{modes.get('exact', 0)}`",
         f"- Sampled contextual rows: `{modes.get('sampled', 0)}`",
+        f"- Sampled-estimate evidence rows: `{evidence.get('sampled_estimate', 0)}`",
         "",
         "## Classification Counts",
         "",
@@ -407,13 +434,18 @@ def write_markdown(rows: list[dict[str, object]], summary_rows: list[dict[str, o
         "| --- | ---: |",
     ]
     for name, count in sorted(classifications.items()):
+        lines.append(f"| {category_display_label(name)} (`{name}`) | {count} |")
+    lines.extend(["", "## Evidence Levels", "", "| Evidence level | Count |", "| --- | ---: |"])
+    for name, count in sorted(evidence.items()):
         lines.append(f"| `{name}` | {count} |")
-    lines.extend(["", "## Examples", "", "| Circuit | Optimization | Optimized node | Candidate | Global error | Contextual error | CEC | Classification |", "| --- | --- | --- | --- | ---: | ---: | --- | --- |"])
+    lines.extend(["", "## Examples", "", "| Circuit | Optimization | Optimized node | Candidate | Global error | Contextual error | CEC | Classification | Evidence |", "| --- | --- | --- | --- | ---: | ---: | --- | --- | --- |"])
     for row in examples:
+        cls = normalize_mapping_category(row.get("classification"))
         lines.append(
             f"| `{row.get('circuit')}` | `{row.get('optimization')}` | `{row.get('optimized_node')}` | "
             f"`{row.get('candidate_original_node')}` | {float(row.get('global_error_rate') or 0):.4f} | "
-            f"{float(row.get('contextual_output_error_rate') or 0):.4f} | `{row.get('cec_status')}` | `{row.get('classification')}` |"
+            f"{float(row.get('contextual_output_error_rate') or 0):.4f} | `{row.get('cec_status')}` | "
+            f"{category_display_label(cls)} (`{cls}`) | `{row.get('evidence_level')}` |"
         )
     lines.extend(
         [
@@ -423,7 +455,8 @@ def write_markdown(rows: list[dict[str, object]], summary_rows: list[dict[str, o
             "- Numerical output error treats primary outputs as a binary vector in BLIF output order.",
             "- `globally_exact` is assigned only for exhaustive global distance rows.",
             "- `odc_valid_correspondence` requires global error greater than zero and ABC CEC output equivalence.",
-            "- Sampled contextual error can rank candidates but is not a formal proof.",
+            "- `contextually_approximate_exact` means ABC rejected equivalence and exhaustive contextual output error is below threshold.",
+            "- `contextually_approximate_sampled` means ABC rejected equivalence and the sampled contextual output error estimate is below threshold. It is not a formal proof.",
         ]
     )
     SUMMARY_MD.write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -482,7 +515,8 @@ def write_scatter_png(path: Path, rows: list[dict[str, object]]) -> None:
     colors = {
         "globally_exact": (84, 162, 75),
         "odc_valid_correspondence": (54, 144, 192),
-        "contextually_approximate": (245, 133, 24),
+        "contextually_approximate_exact": (232, 112, 74),
+        "contextually_approximate_sampled": (245, 166, 35),
         "unsafe_candidate": (180, 70, 70),
         "unresolved": (145, 145, 145),
     }
@@ -502,7 +536,7 @@ def write_scatter_png(path: Path, rows: list[dict[str, object]]) -> None:
     for row in usable:
         x = left + int((right - left) * float(row["global_error_rate"]) / max_x)
         y = bottom - int((bottom - top) * float(row["contextual_output_error_rate"]) / max_y)
-        rect(x - 3, y - 3, x + 4, y + 4, colors.get(str(row.get("classification")), (145, 145, 145)))
+        rect(x - 3, y - 3, x + 4, y + 4, colors.get(normalize_mapping_category(row.get("classification")), (145, 145, 145)))
 
     def chunk(kind: bytes, data: bytes) -> bytes:
         return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data) & 0xFFFFFFFF)
@@ -527,7 +561,11 @@ def plot_outputs(rows: list[dict[str, object]]) -> None:
     write_png(PLOTS / "contextual_classification_counts.png", class_values, max(class_values) if class_values else 1, (76, 120, 168))
     recoveries = defaultdict(int)
     for row in rows:
-        if row.get("classification") in {"odc_valid_correspondence", "contextually_approximate"}:
+        if normalize_mapping_category(row.get("classification")) in {
+            "odc_valid_correspondence",
+            "contextually_approximate_exact",
+            "contextually_approximate_sampled",
+        }:
             recoveries[str(row.get("optimization"))] += 1
     recovery_values = [recoveries[key] for key in sorted(recoveries)]
     write_png(PLOTS / "contextual_recovery_by_optimization.png", recovery_values, max(recovery_values) if recovery_values else 1, (84, 162, 75))
@@ -545,11 +583,20 @@ def plot_outputs(rows: list[dict[str, object]]) -> None:
 
 def contextual_lookup(rows: list[dict[str, object]]) -> dict[tuple[str, str, str], dict[str, object]]:
     best: dict[tuple[str, str, str], dict[str, object]] = {}
-    priority = {"odc_valid_correspondence": 0, "contextually_approximate": 1, "globally_exact": 2, "unsafe_candidate": 3, "unresolved": 4}
+    priority = {
+        "odc_valid_correspondence": 0,
+        "contextually_approximate_exact": 1,
+        "contextually_approximate_sampled": 2,
+        "globally_exact": 3,
+        "unsafe_candidate": 4,
+        "unresolved": 5,
+    }
     for row in rows:
         key = (f"external_iscas85_{row.get('circuit')}", str(row.get("optimization")), str(row.get("optimized_node")))
         current = best.get(key)
-        if current is None or priority.get(str(row.get("classification")), 99) < priority.get(str(current.get("classification")), 99):
+        row_class = normalize_mapping_category(row.get("classification"))
+        current_class = normalize_mapping_category(current.get("classification")) if current else ""
+        if current is None or priority.get(row_class, 99) < priority.get(current_class, 99):
             best[key] = row
     return best
 
@@ -566,26 +613,31 @@ def write_contextual_critical_path(rows: list[dict[str, object]]) -> None:
         original_rows = list(reader)
     extra = ["contextual_candidate_original_node", "contextual_classification", "contextual_error_rate", "contextual_cec_status"]
     out_rows = []
-    recovered_odc = recovered_approx = still_unresolved = 0
+    recovered_odc = recovered_exact_approx = recovered_sampled_approx = still_unresolved = 0
     for row in original_rows:
         out = dict(row)
+        out["mapping_category"] = normalize_mapping_category(out.get("mapping_category", ""))
         key = (row.get("benchmark", ""), row.get("optimization", ""), row.get("optimized_node", ""))
         contextual = lookup.get(key)
-        if row.get("mapping_category") in {"unresolved", "approximate_near_match"} and contextual:
-            cls = str(contextual.get("classification"))
+        if out.get("mapping_category") in {"unresolved", "global_approximate_near_match"} and contextual:
+            cls = normalize_mapping_category(contextual.get("classification"))
             if cls == "odc_valid_correspondence":
-                out["mapping_category"] = "odc_valid_contextual"
+                out["mapping_category"] = "odc_valid_correspondence"
                 out["mapped_original_node"] = str(contextual.get("candidate_original_node"))
                 recovered_odc += 1
-            elif cls == "contextually_approximate":
-                out["mapping_category"] = "contextually_approximate"
+            elif cls == "contextually_approximate_exact":
+                out["mapping_category"] = "contextually_approximate_exact"
                 out["mapped_original_node"] = str(contextual.get("candidate_original_node"))
-                recovered_approx += 1
+                recovered_exact_approx += 1
+            elif cls == "contextually_approximate_sampled":
+                out["mapping_category"] = "contextually_approximate_sampled"
+                out["mapped_original_node"] = str(contextual.get("candidate_original_node"))
+                recovered_sampled_approx += 1
         if out.get("mapping_category") == "unresolved":
             still_unresolved += 1
         if contextual:
             out["contextual_candidate_original_node"] = contextual.get("candidate_original_node", "")
-            out["contextual_classification"] = contextual.get("classification", "")
+            out["contextual_classification"] = normalize_mapping_category(contextual.get("classification", ""))
             out["contextual_error_rate"] = contextual.get("contextual_output_error_rate", "")
             out["contextual_cec_status"] = contextual.get("cec_status", "")
         else:
@@ -597,7 +649,12 @@ def write_contextual_critical_path(rows: list[dict[str, object]]) -> None:
     columns = list(original_rows[0].keys()) + extra if original_rows else extra
     write_rows(CRIT_CSV, out_rows, columns)
     PLOTS.mkdir(parents=True, exist_ok=True)
-    write_png(PLOTS / "critical_path_contextual_recovery.png", [recovered_odc, recovered_approx, still_unresolved], max([recovered_odc, recovered_approx, still_unresolved, 1]), (245, 133, 24))
+    write_png(
+        PLOTS / "critical_path_contextual_recovery.png",
+        [recovered_odc, recovered_exact_approx, recovered_sampled_approx, still_unresolved],
+        max([recovered_odc, recovered_exact_approx, recovered_sampled_approx, still_unresolved, 1]),
+        (245, 133, 24),
+    )
     PRESENTATION_PLOTS.mkdir(parents=True, exist_ok=True)
     shutil.copy2(PLOTS / "critical_path_contextual_recovery.png", PRESENTATION_PLOTS / "critical_path_contextual_recovery.png")
     CRIT_MD.write_text(
@@ -608,7 +665,8 @@ def write_contextual_critical_path(rows: list[dict[str, object]]) -> None:
                 "This file preserves the existing critical-path mapping and adds contextual classification columns.",
                 "",
                 f"- Previously unresolved or approximate nodes recovered through ODC-valid matching: `{recovered_odc}`",
-                f"- Newly recovered through contextual approximation: `{recovered_approx}`",
+                f"- Newly recovered through exact contextual approximation: `{recovered_exact_approx}`",
+                f"- Newly recovered through sampled contextual approximation: `{recovered_sampled_approx}`",
                 f"- Still unresolved: `{still_unresolved}`",
                 "",
                 "The result is versioned separately from `critical_path_mapping.csv` to preserve backwards compatibility.",

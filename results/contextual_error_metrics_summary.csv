@@ -1,8 +1,9 @@
 summary_type,name,count
-classification,contextually_approximate,35
+classification,contextually_approximate_sampled,35
 classification,unsafe_candidate,5
 contextual_mode,sampled,40
 cec_status,rejected_non_equivalent,40
+evidence_level,sampled_estimate,40
 circuit,c2670,40
 optimization,compress2rs,8
 optimization,dc2,3

@@ -104,7 +104,7 @@ def test_mapping_priority_exact_before_sat_and_approximate():
 
     choice = cpmap.choose_mapping_for_node("b", "rewrite", "n", exact, empty(), sat, approx)
 
-    assert choice.category == "exact"
+    assert choice.category == "exact_signature_match"
     assert choice.original_node == "orig_exact"
 
 
@@ -140,7 +140,7 @@ def test_complemented_priority_before_sat_verified():
 
     choice = cpmap.choose_mapping_for_node("b", "balance", "n", empty(), complemented, sat, empty())
 
-    assert choice.category == "complemented"
+    assert choice.category == "complemented_equivalence"
     assert choice.original_node == "orig_not"
 
 
@@ -180,7 +180,7 @@ def test_output_schema_for_mapping_rows(tmp_path, monkeypatch):
     monkeypatch.setattr(cpmap, "ROOT", tmp_path)
     monkeypatch.setattr(cpmap, "load_exact_candidates", lambda: empty())
     monkeypatch.setattr(cpmap, "load_complemented_candidates", lambda: empty())
-    monkeypatch.setattr(cpmap, "load_sat_verified_nonexact", lambda: empty())
+    monkeypatch.setattr(cpmap, "load_sat_cec_proven_equivalent_candidates", lambda: empty())
     monkeypatch.setattr(cpmap, "load_approximate_candidates", lambda threshold: empty())
 
     rows = cpmap.build_mapping_rows([("external_iscas85_c432", "rewrite")], threshold=0.05)
@@ -204,3 +204,21 @@ def test_output_schema_for_mapping_rows(tmp_path, monkeypatch):
     }
     assert expected.issubset(rows.columns)
     assert set(rows["mapping_category"]) == {"unresolved"}
+
+
+def test_choice_from_row_normalizes_legacy_sat_category():
+    sat_row = pd.Series(
+        {
+            "original_candidate": "orig_sat",
+            "combined_score": 0.9,
+            "support_overlap": 1.0,
+            "simulation_similarity": 0.9,
+        }
+    )
+    choice = cpmap.choice_from_row(
+        "sat_verified_nonexact",
+        sat_row,
+        "legacy category",
+    )
+    assert choice.category == "sat_cec_proven_equivalent"
+    assert choice.confidence == 1.0

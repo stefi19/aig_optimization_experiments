@@ -51,7 +51,7 @@ For each selected benchmark and optimization, the baseline records:
 The comparison script then joins these rows to existing custom results:
 
 - preservation rate from exact/sampled signature matching,
-- SAT-verified non-exact matches,
+- SAT/CEC-proven equivalences after structural mismatch,
 - approximate near-match availability,
 - critical-path mapped fraction when present.
 
@@ -104,4 +104,3 @@ iteration follows that advice conservatively. It probes what the local ABC build
 exposes, runs small native sweep flows, compares them to existing custom
 correspondence results, and documents the boundary between network reduction and
 explicit node correspondence.
-

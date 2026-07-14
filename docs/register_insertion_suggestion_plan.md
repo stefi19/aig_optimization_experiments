@@ -45,7 +45,7 @@ A useful candidate row should report:
 - optimized path node that motivated the suggestion;
 - path index and path length;
 - estimated before/after split balance;
-- mapping category: exact, complemented, SAT-verified, approximate, or unresolved;
+- mapping category: exact signature, complemented, SAT/CEC-proven, approximate, or unresolved;
 - confidence score;
 - approximate distance when applicable;
 - unresolved risk around the candidate;
@@ -71,7 +71,7 @@ Where:
 
 - `split_balance` is highest at the middle of the path;
 - exact and complemented mappings receive the highest category confidence;
-- SAT-verified non-exact mappings are preferred over approximate near-matches;
+- SAT/CEC-proven equivalent mappings after structural mismatch are preferred over approximate near-matches;
 - approximate matches are penalized by their distance;
 - unresolved nodes are excluded.
 

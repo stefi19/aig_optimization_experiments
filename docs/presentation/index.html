@@ -315,13 +315,14 @@
         <h2>Four useful ways to relate nodes</h2>
         <div class="match-table">
           <div>Match type</div><div>Meaning</div><div>Example</div>
-          <div>Exact</div><div><code>f == g</code></div><div><code>a AND b</code> vs <code>b AND a</code></div>
-          <div>Complemented</div><div><code>f == NOT g</code></div><div>a node vs its inversion</div>
-          <div>SAT-verified non-exact</div><div>Different name/signature, formally equivalent</div><div>Recovered by SAT/CEC</div>
-          <div>Approximate</div><div>Not equal, but close</div><div>Differs on a few truth-table rows</div>
+          <div>Signature match</div><div><code>f == g</code> on evaluated signatures</div><div><code>a AND b</code> vs <code>b AND a</code></div>
+          <div>Complemented equivalence</div><div><code>f == NOT g</code></div><div>a node vs its inversion</div>
+          <div>SAT/CEC-proven equivalence after structural mismatch</div><div>Initial matching missed it; SAT/CEC proves equality</div><div>Recovered by formal checking</div>
+          <div>Approximation</div><div>Not equal, evidence level explicit</div><div>Exact or sampled low output error</div>
         </div>
+        <div class="meaning-box wide"><strong>Key distinction:</strong> not found by structural/signature matching does not mean functionally non-equivalent.</div>
       </div>
-      <aside class="notes">This is the central vocabulary slide. The later critical-path mapper uses exactly this priority order.</aside>
+      <aside class="notes">This is the central vocabulary slide. Say the distinction out loud: non-initial discovery is not Boolean non-equivalence. SAT/CEC-proven rows compute the same Boolean function.</aside>
     </section>
 
     <section class="slide">
@@ -329,7 +330,7 @@
         <p class="eyebrow">Layered flow</p>
         <h2>Use the strongest evidence first</h2>
         <div class="flowchart vertical">
-          <div class="flow-node start">Optimized node</div><div class="flow-node exact">Exact match?</div><div class="flow-node complement">Complemented match?</div><div class="flow-node sat">SAT-verified non-exact match?</div><div class="flow-node approx">Approximate near-match?</div><div class="flow-node unresolved">Unresolved</div>
+          <div class="flow-node start">Optimized node</div><div class="flow-node exact">Signature match?</div><div class="flow-node complement">Complemented equivalence?</div><div class="flow-node sat">SAT/CEC-proven equivalence after mismatch?</div><div class="flow-node approx">Exact contextual approximation?</div><div class="flow-node approx">Sampled contextual approximation?</div><div class="flow-node approx">Global approximate near-match?</div><div class="flow-node unresolved">Unresolved</div>
         </div>
       </div>
       <aside class="notes">Transition from theory to method: the project does not rely on one signal; it layers increasingly weaker forms of evidence.</aside>
@@ -363,7 +364,7 @@
 
     <section class="slide">
       <div class="slide-content split-result">
-        <div><p class="eyebrow">ISCAS changed the story</p><h2>Small benchmarks were too limited</h2><div class="result-card muted-card"><h3>Before ISCAS</h3><p class="big-number">0</p><p>verified rank-1 non-exact recoveries on the small benchmark pool</p></div></div>
+        <div><p class="eyebrow">ISCAS changed the story</p><h2>Small benchmarks were too limited</h2><div class="result-card muted-card"><h3>Before ISCAS</h3><p class="big-number">0</p><p>SAT/CEC-proven rank-1 structural-mismatch recoveries on the small benchmark pool</p></div></div>
         <div><h2 class="spacer">With ISCAS</h2><div class="result-card"><h3>Expanded rank-1 SAT run</h3><p><span class="verified-text">609 verified</span></p><p><span class="rejected-text">9030 rejected</span></p><p>0 inconclusive</p></div></div>
         <div class="meaning-box wide"><strong>What this means:</strong> recovery is possible on real benchmark circuits, but it is not universal.</div>
       </div>
@@ -461,7 +462,7 @@
     <section class="slide">
       <div class="slide-content two-column">
         <div><p class="eyebrow">Formal metric</p><h2>Global node distance</h2><pre class="code-block">global_error_rate(f, g)
-  = count_x[f(x) != g(x)] / 2^n</pre><p>This treats two internal nodes as standalone Boolean functions.</p></div>
+  = count_x[f(x) != g(x)] / 2^n</pre><p>This compares the optimized target-node function with the original candidate-node function under aligned primary inputs, independent of contextual substitution.</p></div>
         <div class="meaning-box"><strong>Important:</strong> this is formal only when the input space is exhausted. Sampled rows are estimates.</div>
       </div>
       <aside class="notes">This slide states the first equation. If the support is small, exhaustive truth-table distance is formal. If support is large, the prototype switches to deterministic sampled patterns.</aside>
@@ -488,18 +489,18 @@
       <div class="slide-content">
         <p class="eyebrow">Classification hierarchy</p>
         <h2>What each result means</h2>
-        <table class="mini-table"><tr><th>Global</th><th>Context</th><th>CEC</th><th>Class</th></tr><tr><td>exact zero</td><td>zero</td><td>any</td><td>globally exact</td></tr><tr><td>nonzero</td><td>zero</td><td>equivalent</td><td>ODC-valid</td></tr><tr><td>nonzero</td><td>small</td><td>rejected</td><td>contextually approximate</td></tr><tr><td>nonzero</td><td>large</td><td>rejected</td><td>unsafe</td></tr></table>
+        <table class="mini-table"><tr><th>Global</th><th>Context</th><th>CEC</th><th>Class</th></tr><tr><td>exact zero</td><td>zero</td><td>any</td><td>globally exact</td></tr><tr><td>nonzero</td><td>zero</td><td>equivalent</td><td>ODC-valid</td></tr><tr><td>nonzero</td><td>small exhaustive</td><td>rejected</td><td>exact contextual approximation</td></tr><tr><td>nonzero</td><td>small sampled</td><td>rejected</td><td>sampled contextual approximation</td></tr><tr><td>nonzero</td><td>large</td><td>rejected</td><td>unsafe</td></tr></table>
       </div>
-      <aside class="notes">Keep the hierarchy crisp. Globally exact requires exhaustive global distance. ODC-valid requires formal CEC equivalence. Contextually approximate can be sampled or exact, but only exact rows are formal distances.</aside>
+      <aside class="notes">Keep the hierarchy crisp. Globally exact requires exhaustive global distance. ODC-valid requires formal CEC equivalence. Sampled zero output error is not output equivalence if CEC finds a counterexample.</aside>
     </section>
 
     <section class="slide">
       <div class="slide-content plot-slide">
-        <div><p class="eyebrow">Contextual prototype results</p><h2>40 selected ISCAS candidates analyzed</h2><div class="inline-stats"><span>40 substituted</span><span>35 approximate</span><span>5 unsafe</span><span>0 ODC-valid</span></div></div>
+        <div><p class="eyebrow">Contextual prototype results</p><h2>40 selected ISCAS candidates analyzed</h2><div class="inline-stats"><span>40 substituted</span><span>35 sampled approximations</span><span>0 exact approximations</span><span>5 unsafe</span><span>0 ODC-valid</span></div></div>
         <div class="plot-pair"><img src="assets/plots/contextual_classification_counts.png" alt="Contextual classification counts"><img src="assets/plots/contextual_recovery_by_optimization.png" alt="Contextual recovery by optimization"></div>
-        <div class="meaning-box"><strong>Careful reading:</strong> all contextual distances in this lightweight run are sampled estimates. ABC CEC did reject the non-equivalent substituted circuits.</div>
+        <div class="meaning-box"><strong>Careful reading:</strong> sampled zero contextual error is not output equivalence. ABC CEC rejected these substituted circuits, so they are sampled approximations.</div>
       </div>
-      <aside class="notes">Report the actual committed run: 40 candidates, all sampled contextual rows, 35 below threshold, 5 unsafe, no ODC-valid correspondences found in the lightweight default.</aside>
+      <aside class="notes">Report the actual committed run: 40 candidates, all sampled contextual rows, 35 sampled approximations below threshold, 5 unsafe, no exact contextual approximations, no ODC-valid correspondences.</aside>
     </section>
 
     <section class="slide">
@@ -536,7 +537,7 @@
 
     <section class="slide">
       <div class="slide-content two-column">
-        <div><p class="eyebrow">Critical-path prototype</p><h2>First end-to-end mapping flow</h2><ol class="steps"><li>Extract structural longest path in optimized BLIF.</li><li>Map each node using the layered flow.</li><li>Report exact, SAT-verified, approximate, or unresolved.</li></ol><p class="warning">This is structural depth, not real timing yet.</p></div>
+        <div><p class="eyebrow">Critical-path prototype</p><h2>First end-to-end mapping flow</h2><ol class="steps"><li>Extract structural longest path in optimized BLIF.</li><li>Map each node using the layered flow.</li><li>Report signature, complemented, SAT/CEC-proven, approximate, or unresolved.</li></ol><p class="warning">This is structural depth, not real timing yet.</p></div>
         <svg class="backmap-svg" viewBox="0 0 640 360" role="img" aria-label="Critical path nodes back mapped to original circuit nodes">
           <text x="50" y="35">Optimized path</text><text x="430" y="35">Original nodes</text>
           <g class="path-list"><rect x="65" y="70" width="130" height="42" rx="8"></rect><rect x="65" y="128" width="130" height="42" rx="8"></rect><rect x="65" y="186" width="130" height="42" rx="8"></rect><rect x="65" y="244" width="130" height="42" rx="8"></rect><text x="102" y="97">m12</text><text x="102" y="155">m31</text><text x="102" y="213">m57</text><text x="102" y="271">m88</text></g>
@@ -549,7 +550,7 @@
 
     <section class="slide">
       <div class="slide-content plot-slide">
-        <div><p class="eyebrow">Critical-path mapping results</p><h2>76.5% of structural path nodes mapped</h2><div class="inline-stats"><span>1686 nodes</span><span>1136 exact</span><span>145 SAT-verified</span><span>8 approximate</span><span>397 unresolved</span></div></div>
+        <div><p class="eyebrow">Critical-path mapping results</p><h2>76.5% of structural path nodes mapped</h2><div class="inline-stats"><span>1686 nodes</span><span>1136 signature</span><span>145 SAT/CEC-proven</span><span>8 approximate</span><span>397 unresolved</span></div></div>
         <img src="assets/plots/critical_path_mapping_categories.png" alt="Critical-path mapping categories">
         <div class="meaning-box"><strong>What this means:</strong> the flow can already map most structural path nodes, while unresolved nodes show where better matching is needed.</div>
       </div>

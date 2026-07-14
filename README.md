@@ -664,7 +664,7 @@ original node even when truth tables have completely changed.
 **Top-K recovery on the original 21-benchmark baseline:**
 
 - **880 total** benchmark × optimization × K entries in `topk_recovery.csv`
-- **0 / 880** have MRR > 0 — no non-exact candidate was SAT-verified in this run
+- **0 / 880** have MRR > 0 — no structural-mismatch candidate was SAT/CEC-proven equivalent in this run
 - **K=1 node recovery**: 0 / 5,350 nodes recovered at rank 1 (**0.0%**)
 - **Below-rank-1 high-score SAT recovery**: 0 / 1,993 verified (**0.0%**)
 
@@ -1172,7 +1172,7 @@ Outputs:
 - `results/plots/abc_native_vs_custom_recovery.png`
 
 The comparison joins ABC-native node/level reductions with the existing custom metrics:
-preserved signature fraction, SAT-verified non-exact matches, approximate near-match
+preserved signature fraction, SAT/CEC-proven equivalences after structural mismatch, approximate near-match
 availability, and critical-path mapped fraction where available.
 
 The main caveat is that ordinary `fraig` output gives swept networks and statistics. It does
@@ -1457,8 +1457,9 @@ Outputs:
 The scoring is intentionally simple:
 
 - prefer mapped nodes near the middle of a long critical path;
-- prefer mapping categories in this order: exact, complemented, SAT-verified non-exact,
-  approximate near-match;
+- prefer mapping categories in this order: exact signature match, complemented equivalence,
+  SAT/CEC-proven equivalence after structural mismatch, exact contextual approximation,
+  sampled contextual approximation, and global approximate near-match;
 - exclude unresolved nodes;
 - use existing confidence/support/simulation fields as small tie-breakers;
 - penalize approximate near-matches by their recorded distance.
@@ -1483,6 +1484,10 @@ Global normalized truth-table distance:
 global_error_rate(f, g)
     = count_x[f(x) != g(x)] / 2^n
 ```
+
+Global distance compares the original candidate-node function and the optimized
+target-node function under the same aligned primary-input assignments. It is
+independent of the subsequent contextual substitution test.
 
 Contextual output error:
 
@@ -1519,9 +1524,24 @@ Classification hierarchy:
 | --- | --- | --- | --- |
 | exhaustive zero | zero | any | `globally_exact` |
 | greater than zero | zero | `verified_equivalent` | `odc_valid_correspondence` |
-| nonzero allowed | <= threshold | `rejected_non_equivalent` | `contextually_approximate` |
+| nonzero allowed | <= threshold and exhaustive | `rejected_non_equivalent` | `contextually_approximate_exact` |
+| nonzero allowed | <= threshold and sampled | `rejected_non_equivalent` | `contextually_approximate_sampled` |
 | nonzero allowed | > threshold | rejected or high-error result | `unsafe_candidate` |
 | unavailable | unavailable | inconclusive/skipped | `unresolved` |
+
+Terminology used by the current result files:
+
+| Term | Meaning |
+| --- | --- |
+| Exact signature match | Same function identified directly through exhaustive or sampled signature matching, with formal status recorded separately |
+| SAT/CEC-proven equivalent after structural mismatch | Not recovered by the initial matching stage, but later formally proven functionally equivalent |
+| ODC-valid contextual correspondence | Globally different internal functions whose substitution preserves primary outputs |
+| Exact contextual approximation | Non-equivalent substitution with exhaustively measured low output error |
+| Sampled contextual approximation | Non-equivalent substitution with low observed error only on sampled patterns |
+
+"After structural mismatch" means that the pair was not identified by the initial
+signature or structural matching stage. SAT/CEC later proved that the two nodes
+compute the same Boolean function.
 
 Current lightweight run:
 
@@ -1530,13 +1550,16 @@ Current lightweight run:
 - exact contextual rows: `0`;
 - sampled contextual rows: `40`;
 - ODC-valid correspondences: `0`;
-- contextually approximate candidates: `35`;
+- exact contextual approximations: `0`;
+- sampled contextual approximations: `35`;
 - unsafe candidates: `5`;
 - contextual critical-path recoveries: `0`.
 
 Interpretation: the current default run is useful as a prototype of the substitution engine
 and output-error accounting, but the reported contextual distances are sampled estimates, not
-formal proof. ABC CEC is formal when it reports equivalence or non-equivalence. The
+formal proof. Some rows have zero observed contextual error over sampled patterns while ABC
+CEC still rejects equivalence; these rows are sampled contextual approximations, not ODC-valid
+or output-equivalent correspondences. ABC CEC is formal when it reports equivalence or non-equivalence. The
 controlled unit tests include exact small examples for globally exact, ODC-valid, unsafe, and
 contextually approximate behavior. See also
 `docs/classical_synthesis_and_error_metrics.md`.
@@ -2057,14 +2080,22 @@ deep optimized logic chain.
 The mapper uses the correspondence layers in this priority order:
 
 ```text
-exact -> complemented -> SAT-verified non-exact -> approximate near-match -> unresolved
+exact signature match
+-> complemented equivalence
+-> SAT/CEC-proven equivalence after structural mismatch
+-> ODC-valid contextual correspondence
+-> exact contextual approximation
+-> sampled contextual approximation
+-> global approximate near-match
+-> unresolved
 ```
 
-Approximate near-matches are only used after exact and SAT-verified layers fail.
+Approximate near-matches are only used after signature, complemented, SAT/CEC-proven, and
+contextual layers fail.
 The default threshold is `distance <= 0.05`, configurable with
 `--approx-threshold`. Exact-distance rows are formal only when
 `is_formal_distance = True`; sampled approximate rows are still estimates. The
-`exact` mapping category reuses the existing exact-anchor layer, so for
+`exact_signature_match` mapping category reuses the existing exact-anchor layer, so for
 large-input ISCAS cases the CSV explanation/metadata should be checked to see
 whether the anchor came from formal exact mode or simulation-pattern mode.
 

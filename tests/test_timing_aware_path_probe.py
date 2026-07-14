@@ -113,7 +113,7 @@ def test_timing_path_output_schema(tmp_path, monkeypatch):
         node_delay=1.0,
         arrival_time=1.0,
         mapped_original_node="n1",
-        mapping_category="exact",
+        mapping_category="exact_signature_match",
         confidence=1.0,
         distance=None,
         explanation="test",

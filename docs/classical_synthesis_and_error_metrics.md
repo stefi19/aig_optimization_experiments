@@ -73,7 +73,22 @@ global internal distance asks whether f and g differ as standalone functions;
 contextual output distance asks whether replacing f with g changes circuit outputs.
 ```
 
+In the result files, `global_error_rate` compares the optimized target-node
+function against the original candidate-node function under the same aligned
+primary-input assignments. It is independent of the subsequent contextual
+substitution test.
+
 This connects classical don't-care optimization to the correspondence problem. A node pair
 can fail global equivalence but still be valid under observability don't-cares, or it can be
 approximately safe if the output error is small and explicitly labeled as an estimate or an
 exhaustive result.
+
+## Current Terminology
+
+| Term | Meaning |
+| --- | --- |
+| Exact signature match | Same function identified directly through exhaustive or sampled signature matching, with formal status recorded separately |
+| SAT/CEC-proven equivalent after structural mismatch | Not recovered by the initial matching stage, but later formally proven functionally equivalent |
+| ODC-valid contextual correspondence | Globally different internal functions whose substitution preserves primary outputs |
+| Exact contextual approximation | Non-equivalent substitution with exhaustively measured low output error |
+| Sampled contextual approximation | Non-equivalent substitution with low observed error only on sampled patterns |

@@ -14,6 +14,6 @@ Required follow-up work:
 
 - preserve Yosys `src` attributes and signal names during original BLIF generation;
 - relate Yosys JSON netnames/cells to BLIF `.names` outputs;
-- propagate mapping confidence from exact, SAT-verified, and approximate layers;
+- propagate mapping confidence from exact signature, SAT/CEC-proven, and approximate layers;
 - report source locations on critical-path rows;
 - verify any future register insertion with sequential equivalence or an explicit latency contract.

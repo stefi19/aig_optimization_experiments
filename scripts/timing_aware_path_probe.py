@@ -19,6 +19,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from analyze_blif_matches import BlifNetwork, BlifNode, parse_blif  # noqa: E402
 from abc_native_sat_sweep_baseline import OPT_COMMANDS  # noqa: E402
+from contextual_error_metrics import normalize_mapping_category  # noqa: E402
 from probe_abc_sat_sweeping import find_abc, run_abc_script  # noqa: E402
 
 
@@ -299,9 +300,10 @@ def best_ranked_row(rows: list[dict[str, str]]) -> dict[str, str] | None:
 
 
 def choice_from_row(category: str, row: dict[str, str], explanation: str) -> MappingChoice:
+    category = normalize_mapping_category(category)
     distance = maybe_float(row.get("distance"))
     similarity = maybe_float(row.get("similarity"))
-    confidence = 1.0 if category in {"exact", "complemented", "sat_verified_nonexact"} else similarity
+    confidence = 1.0 if category in {"exact_signature_match", "complemented_equivalence", "sat_cec_proven_equivalent"} else similarity
     if confidence is None:
         confidence = maybe_float(row.get("combined_score"))
     return MappingChoice(category, row.get("original_candidate", ""), confidence, distance, explanation)
@@ -310,22 +312,26 @@ def choice_from_row(category: str, row: dict[str, str], explanation: str) -> Map
 def map_node(benchmark: str, optimization: str, optimized_node: str, tables: dict[str, list[dict[str, str]]]) -> MappingChoice:
     row = best_ranked_row(matching_rows(tables["exact"], benchmark, optimization, optimized_node))
     if row is not None:
-        return choice_from_row("exact", row, "Exact anchor from top_candidates.")
+        return choice_from_row("exact_signature_match", row, "Signature match from top_candidates.")
     row = best_ranked_row(matching_rows(tables["complemented"], benchmark, optimization, optimized_node))
     if row is not None:
-        return choice_from_row("complemented", row, "Complemented equivalence was verified.")
+        return choice_from_row("complemented_equivalence", row, "Complemented equivalence was verified.")
     row = best_ranked_row(matching_rows(tables["sat_verified"], benchmark, optimization, optimized_node))
     if row is not None:
-        return choice_from_row("sat_verified_nonexact", row, "SAT/CEC verified non-exact correspondence.")
+        return choice_from_row(
+            "sat_cec_proven_equivalent",
+            row,
+            "SAT/CEC proved equivalence after the initial structural/signature matching stage missed the pair.",
+        )
     approx_rows = matching_rows(tables["approximate"], benchmark, optimization, optimized_node)
     if approx_rows:
         row = sorted(approx_rows, key=lambda item: (maybe_float(item.get("distance")) or 1.0, -(maybe_float(item.get("combined_score")) or 0.0)))[0]
-        return choice_from_row("approximate_near_match", row, "Closest approximate-distance candidate.")
-    return MappingChoice("unresolved", explanation="No exact, complemented, SAT-verified, or near-distance candidate was available.")
+        return choice_from_row("global_approximate_near_match", row, "Closest approximate-distance candidate.")
+    return MappingChoice("unresolved", explanation="No signature, complemented, SAT/CEC-proven, or near-distance candidate was available.")
 
 
 def mapped_fraction(categories: list[str]) -> float:
-    return sum(category != "unresolved" for category in categories) / len(categories) if categories else 0.0
+    return sum(normalize_mapping_category(category) != "unresolved" for category in categories) / len(categories) if categories else 0.0
 
 
 def path_proxy_delay(path_nodes: list[str], lookup: dict[str, BlifNode], fanin_penalty: float) -> float:
