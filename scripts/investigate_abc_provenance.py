@@ -18,13 +18,6 @@ import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
-try:
-    from PIL import Image, ImageDraw, ImageFont
-except Exception:  # pragma: no cover - exercised only on minimal environments.
-    Image = None
-    ImageDraw = None
-    ImageFont = None
-
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
@@ -539,7 +532,9 @@ def write_markdown(rows: list[ProvenanceRow], abc_bin: str, path: Path = PROVENA
 
 
 def write_plot(rows: list[ProvenanceRow], path: Path = PROVENANCE_PLOT) -> Path | None:
-    if Image is None or ImageDraw is None:
+    try:
+        from PIL import Image, ImageDraw, ImageFont
+    except Exception:  # pragma: no cover - exercised only on minimal environments.
         return None
     path.parent.mkdir(parents=True, exist_ok=True)
     width, height = 1100, 620

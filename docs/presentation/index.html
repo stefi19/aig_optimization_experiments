@@ -488,8 +488,24 @@
     </section>
 
     <section class="slide">
+      <div class="slide-content plot-slide">
+        <div>
+          <p class="eyebrow">Timing-aware investigation</p>
+          <h2>Structural depth is not real timing</h2>
+          <div class="inline-stats"><span>ABC levels supported</span><span><code>stime</code> available</span><span>real path not extracted</span><span>proxy overlap 1.000</span></div>
+        </div>
+        <div class="plot-pair">
+          <img src="assets/plots/timing_vs_structural_path_overlap.png" alt="Timing versus structural path overlap">
+          <img src="assets/plots/timing_path_mapped_fraction_by_circuit.png" alt="Timing path mapped fraction by circuit">
+        </div>
+        <div class="meaning-box"><strong>What this means:</strong> with the current AIG-like BLIFs, a simple fanin-delay proxy selects the same paths as structural depth. Real library-based timing remains future work.</div>
+      </div>
+      <aside class="notes">This is a careful timing slide. ABC can report levels and some timing-related information, but we did not yet extract a full technology-library critical path. The proxy result is still valuable because it shows the current structural path is unchanged under this simple delay model.</aside>
+    </section>
+
+    <section class="slide">
       <div class="slide-content two-column">
-        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Structural path, not real timing path.</p><p>Sampled approximate distance is calibrated but still not formal.</p><p>Approximate distance is global and context-free until ODC-aware matching is integrated.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>No RTL source-location mapping or automatic register insertion yet.</p></div></div>
+        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate distance is calibrated but still not formal.</p><p>Approximate distance is global and context-free until ODC-aware matching is integrated.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>No RTL source-location mapping or automatic register insertion yet.</p></div></div>
         <div class="callout"><h3>Important idea</h3><p>Unresolved nodes are not simply failures. They show where context, observability don't-cares, or deeper ABC integration may be needed.</p></div>
       </div>
       <aside class="notes">Use this slide to show research maturity. The ABC-native baseline is a meaningful addition, but it does not remove the need for a correspondence layer.</aside>
@@ -521,17 +537,17 @@
 
     <section class="slide title-slide">
       <div class="slide-content title-grid">
-        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, and opens an ODC-aware matching direction.</p></div>
-        <div class="takeaway-chain"><div>Optimized critical path</div><div>Correspondence recovery</div><div>Calibrated approximate ranking</div><div>ODC-aware future matching</div></div>
+        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, and now probes timing-aware path selection.</p></div>
+        <div class="takeaway-chain"><div>Optimized critical path</div><div>Correspondence recovery</div><div>Timing proxy comparison</div><div>RTL/register direction</div></div>
       </div>
-      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is now a standard-flow baseline, sampled approximate distance has calibration, and ODC-aware matching is the next context-sensitive direction.</aside>
+      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is now a standard-flow baseline, sampled approximate distance has calibration, and timing-aware path extraction is the next engineering bridge toward RTL/register suggestions.</aside>
     </section>
   </main>
 
   <footer class="controls">
     <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
     <button id="prev" type="button" aria-label="Previous slide">Prev</button>
-    <span id="slide-number">1 / 35</span>
+    <span id="slide-number">1 / 36</span>
     <button id="next" type="button" aria-label="Next slide">Next</button>
     <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
   </footer>

@@ -2,7 +2,7 @@ ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 PYTHON ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; else echo python3; fi)
 
-.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance research-plots iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
+.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance abc-timing-probe research-plots iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map timing-path-probe full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -147,6 +147,14 @@ abc-provenance:
 	fi
 	@PYTHONDONTWRITEBYTECODE=1 ABC=$${ABC:-$(PWD)/$(ABC_BIN)} $(PYTHON) scripts/investigate_abc_provenance.py
 
+abc-timing-probe:
+	@echo "Probing ABC timing / delay / level command support"
+	@if [ ! -x "$(ABC_BIN)" ] && [ -z "$$ABC" ]; then \
+		echo "ABC binary not found. Run 'make build-abc' or set ABC=/path/to/abc"; \
+		exit 1; \
+	fi
+	@PYTHONDONTWRITEBYTECODE=1 ABC=$${ABC:-$(PWD)/$(ABC_BIN)} $(PYTHON) scripts/probe_abc_timing_commands.py
+
 research-plots:
 	@echo "Generating research plots → results/plots/"
 	@$(PYTHON) research_plots.py
@@ -176,6 +184,14 @@ odc-probe:
 critical-path-map: approx-distance
 	@echo "Mapping structural critical paths back to original ISCAS-85 nodes"
 	@$(PYTHON) scripts/critical_path_back_mapping.py
+
+timing-path-probe:
+	@echo "Comparing structural and delay-weighted critical-path back-mapping"
+	@if [ ! -x "$(ABC_BIN)" ] && [ -z "$$ABC" ]; then \
+		echo "ABC binary not found. Run 'make build-abc' or set ABC=/path/to/abc"; \
+		exit 1; \
+	fi
+	@PYTHONDONTWRITEBYTECODE=1 ABC=$${ABC:-$(PWD)/$(ABC_BIN)} $(PYTHON) scripts/timing_aware_path_probe.py
 
 full-research-pipeline: generate-variants analyze benchmark-manifest sat-pipeline topk-eval ablation region cegar-refine research-plots test
 	@echo ""
@@ -209,6 +225,9 @@ clean-results:
 		results/abc_native_sweep_baseline.csv results/abc_native_sweep_baseline.md \
 		results/abc_native_vs_custom_comparison.csv results/abc_native_vs_custom_comparison.md \
 		results/abc_provenance_probe.csv results/abc_provenance_probe.md \
+		results/abc_timing_command_probe.csv results/abc_timing_command_probe.md \
+		results/timing_path_probe.csv results/timing_path_probe.md \
+		results/timing_vs_structural_mapping.csv results/timing_vs_structural_mapping.md \
 		results/topk_recovery.csv results/topk_recovery.md \
 		results/ablation_summary.csv results/ablation_summary.md \
 		results/region_candidates.csv results/region_summary.csv results/region_summary.md \

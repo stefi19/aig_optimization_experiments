@@ -46,9 +46,10 @@ https://stefi19.github.io/aig_optimization_experiments/presentation/
 21. [ABC Provenance Investigation](#abc-provenance-investigation)
 22. [Approximate-Distance Sampling Calibration](#approximate-distance-sampling-calibration)
 23. [Toward ODC-Aware Approximate Matching](#toward-odc-aware-approximate-matching)
-24. [Dependencies](#20-dependencies)
-25. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
-26. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
+24. [Timing-Aware Critical-Path Investigation](#timing-aware-critical-path-investigation)
+25. [Dependencies](#20-dependencies)
+26. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+27. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -977,7 +978,8 @@ aig_optimization_experiments/
 │   ├── abc_sat_sweeping_extension.md  Design notes for the ABC hybrid validation flow
 │   ├── abc_native_sat_sweeping_plan.md Native FRAIG baseline plan
 │   ├── abc_provenance_investigation.md ABC provenance / equivalence-class note
-│   └── odc_aware_matching_plan.md      Plan for context-aware matching
+│   ├── odc_aware_matching_plan.md      Plan for context-aware matching
+│   └── timing_aware_back_mapping_plan.md Timing-aware path plan
 │
 ├── tests/                         pytest unit tests
 │   ├── test_topk_recovery.py
@@ -1000,7 +1002,9 @@ aig_optimization_experiments/
 │   ├── compare_abc_native_vs_custom.py    Exploratory comparison with custom results
 │   ├── investigate_abc_provenance.py      ABC provenance visibility probe
 │   ├── calibrate_approximate_distance_sampling.py Sampling calibration
-│   └── odc_aware_match_probe.py           Tiny ODC-aware matching probe
+│   ├── odc_aware_match_probe.py           Tiny ODC-aware matching probe
+│   ├── probe_abc_timing_commands.py       ABC timing command capability probe
+│   └── timing_aware_path_probe.py         Delay-weighted path comparison
 │
 ├── analyze_blif_matches.py        Main analysis: parse BLIF, simulate, compare, rank
 ├── visualize_results.py           Legacy per-benchmark node-count plots
@@ -1294,6 +1298,70 @@ Current controlled findings:
 This is only a controlled prototype. General ODC-aware matching still needs automatic
 candidate substitution inside arbitrary original/optimized networks and careful
 primary-output alignment. See `docs/odc_aware_matching_plan.md` for the research plan.
+
+---
+
+## Timing-Aware Critical-Path Investigation
+
+The current critical-path mapper uses structural longest path as a proxy for timing. That
+is a useful first step, but a real critical path depends on cell delays, mapping libraries,
+loads, slew, and timing analysis. This iteration investigates what the local ABC build can
+expose and adds a lightweight delay-weighted fallback when real timing paths are not
+available.
+
+Run the ABC timing command probe with:
+
+```bash
+make abc-timing-probe
+```
+
+Current local probe result:
+
+- supported: `ps`, `print_stats`, `print_level`, `print_fanio`, `stime`, and a
+  `read_library` + `map` flow on a tiny generated library;
+- unsupported or failed: `topo`, `print_delay`, `read_lib`, and `map` without a loaded
+  library.
+
+The probe shows that ABC can report levels/statistics and can map a tiny example with a
+library, but this iteration does not yet extract a full real critical timing path from ABC.
+
+Run the delay-weighted path comparison with:
+
+```bash
+make timing-path-probe
+```
+
+The default comparison uses `rewrite` variants of `c432`, `c2670`, and `c6288`. It computes
+both the structural longest path and a delay-weighted path using a simple BLIF `.names`
+delay model:
+
+- constants: delay `0`,
+- buffer / inverter / simple 2-input logic: delay `1`,
+- wider LUT-like nodes: `1 + 0.2 * max(0, fanin - 2)`.
+
+Outputs:
+
+- `results/abc_timing_command_probe.csv`
+- `results/abc_timing_command_probe.md`
+- `results/timing_path_probe.csv`
+- `results/timing_path_probe.md`
+- `results/timing_vs_structural_mapping.csv`
+- `results/timing_vs_structural_mapping.md`
+- `results/plots/timing_vs_structural_path_overlap.png`
+- `results/plots/timing_path_mapping_categories.png`
+- `results/plots/timing_path_mapped_fraction_by_circuit.png`
+
+Current delay-weighted proxy result:
+
+- case studies: `c432/rewrite`, `c2670/rewrite`, `c6288/rewrite`,
+- mean structural mapped fraction: `0.868`,
+- mean delay-weighted mapped fraction: `0.868`,
+- mean structural/delay path overlap: `1.000`.
+
+Interpretation: for these AIG-like optimized BLIFs, the simple fanin-based delay model
+selects the same paths as structural depth. That is an honest limitation of the proxy and a
+reason to continue toward real library-based timing extraction. See
+`docs/timing_aware_back_mapping_plan.md` for the plan.
 
 ---
 

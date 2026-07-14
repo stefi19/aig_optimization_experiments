@@ -1,0 +1,4 @@
+benchmark,circuit,optimization,structural_path_length,delay_weighted_path_length,structural_mapped_fraction,delay_weighted_mapped_fraction,structural_unresolved_fraction,delay_weighted_unresolved_fraction,shared_node_count,shared_node_jaccard,delay_path_total_delay,structural_path_total_proxy_delay
+external_iscas85_c432,c432,rewrite,41,41,0.7804878048780488,0.7804878048780488,0.2195121951219512,0.2195121951219512,41,1.0,41.0,41.0
+external_iscas85_c2670,c2670,rewrite,21,21,0.8571428571428571,0.8571428571428571,0.1428571428571429,0.1428571428571429,21,1.0,21.0,21.0
+external_iscas85_c6288,c6288,rewrite,117,117,0.9658119658119658,0.9658119658119658,0.03418803418803418,0.03418803418803418,117,1.0,117.0,117.0
