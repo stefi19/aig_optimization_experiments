@@ -196,7 +196,12 @@ points using a layered exact/formal/approximate strategy.
    positives.
 5. The critical-path back-mapping prototype shows the first practical use case:
    mapping optimized path nodes back to original-circuit points.
-6. Aggressive optimization still leaves many unresolved nodes, which is useful
+6. The contextual error-metric prototype separates global internal distance from
+   output-observable error after substitution. In the lightweight run, it
+   analyzed 40 sampled contextual candidates: 35 were below the default output
+   error threshold and 5 were unsafe. These are estimates, not formal distance
+   proofs.
+7. Aggressive optimization still leaves many unresolved nodes, which is useful
    evidence for future ODC-aware and timing-aware work.
 
 ## 10. Limitations
@@ -204,13 +209,19 @@ points using a layered exact/formal/approximate strategy.
 - The current critical path is a structural longest path, not a real timing path
   from static timing analysis.
 - Approximate distance is global and context-free; it does not account for
-  observability don't-cares.
+  observability don't-cares unless the new contextual substitution prototype is
+  used.
 - Large-support approximate distances use sampled estimates and must not be
   called formal.
+- Contextual output distances in the current lightweight run are sampled
+  estimates; only exhaustive rows or ABC CEC equivalence results should be
+  described as formal.
+- Numerical output error depends on the BLIF primary-output ordering.
 - The `exact` mapping category can include sampled-pattern anchors for large
   circuits, so the formal-mode metadata must be checked.
 - There is no direct RTL source-location mapping yet.
-- There is no automatic register insertion or timing-fix suggestion yet.
+- Register insertion suggestions are ranked review hints, not automatic RTL
+  edits.
 - The method is not exhaustive; it analyzes selected ranked candidates and
   selected case-study circuits.
 
@@ -219,9 +230,9 @@ points using a layered exact/formal/approximate strategy.
 The most important next steps are:
 
 1. Add timing-aware path extraction from ABC timing reports or a real STA flow.
-2. Add observability-don't-care-aware approximate matching, so context-dependent
-   correspondences are not rejected only because global truth-table distance is
-   nonzero.
+2. Deepen observability-don't-care-aware approximate matching beyond the current
+   contextual substitution prototype, so context-dependent correspondences can
+   be recovered more systematically.
 3. Replace or complement sampled approximate distance with a more formal backend
    such as BDDs, exact model counting, or approximate model counting.
 4. Connect mapped BLIF/AIG nodes back to RTL or source-level locations.
@@ -239,9 +250,18 @@ shows that many SAT-rejected high-score candidates are still functionally close.
 The main methodological point is that heuristic similarity is useful for
 ranking, but formal SAT/CEC validation is still required for equivalence claims.
 
-The newest result is a critical-path back-mapping prototype. It uses structural
-longest paths as a timing proxy and maps optimized path nodes back to original
-nodes using exact, complemented, SAT-verified, and approximate layers. On `c432`,
-`c2670`, and `c6288`, it maps 76.5% of 1,686 structural critical-path nodes.
-The next research step is to replace the structural proxy with real timing
-paths and add observability-don't-care-aware approximate matching.
+Recent iterations extend this toward the final engineering use case. The
+critical-path back-mapping prototype uses structural longest paths as a timing
+proxy and maps optimized path nodes back to original nodes using exact,
+complemented, SAT-verified, and approximate layers. On `c432`, `c2670`, and
+`c6288`, it maps 76.5% of 1,686 structural critical-path nodes.
+
+The newest contextual error-metric prototype builds experimental substituted
+circuits and compares global internal-node distance with output-observable
+error. The committed lightweight run analyzes 40 selected ISCAS candidates with
+sampled contextual patterns: 35 fall below the default contextual error
+threshold and 5 are unsafe. No ODC-valid CEC-equivalent correspondence was found
+in this lightweight run, and no critical-path nodes were newly recovered. The
+result is still valuable because it formalizes the next question: which
+globally rejected internal correspondences are harmless or low-error in their
+circuit context?

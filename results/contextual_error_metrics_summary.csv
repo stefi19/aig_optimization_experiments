@@ -1,0 +1,12 @@
+summary_type,name,count
+classification,contextually_approximate,35
+classification,unsafe_candidate,5
+contextual_mode,sampled,40
+cec_status,rejected_non_equivalent,40
+circuit,c2670,40
+optimization,compress2rs,8
+optimization,dc2,3
+optimization,refactor,8
+optimization,refactor_z,7
+optimization,resyn2,7
+optimization,resyn2_like,7

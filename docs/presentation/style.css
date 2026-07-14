@@ -648,6 +648,34 @@ svg .caption {
   font-weight: 850;
 }
 
+.code-block {
+  background: #111827;
+  color: #f8fafc;
+  border-radius: 8px;
+  padding: 18px 20px;
+  font-size: 1.05rem;
+  line-height: 1.45;
+  overflow: auto;
+}
+
+.mini-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.05rem;
+}
+
+.mini-table th,
+.mini-table td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  padding: 14px 16px;
+  text-align: left;
+}
+
+.mini-table th {
+  color: var(--text);
+  font-weight: 850;
+}
+
 .pipeline {
   display: grid;
   grid-template-columns: repeat(6, 1fr);

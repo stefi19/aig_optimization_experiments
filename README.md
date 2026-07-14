@@ -49,9 +49,10 @@ https://stefi19.github.io/aig_optimization_experiments/presentation/
 24. [Timing-Aware Critical-Path Investigation](#timing-aware-critical-path-investigation)
 25. [Toward RTL/Source-Level Back-Mapping](#toward-rtlsource-level-back-mapping)
 26. [Register Insertion Suggestion Prototype](#register-insertion-suggestion-prototype)
-27. [Dependencies](#20-dependencies)
-28. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
-29. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
+27. [Formal Error Metrics and Context-Aware Correspondence](#formal-error-metrics-and-context-aware-correspondence)
+28. [Dependencies](#20-dependencies)
+29. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+30. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -956,6 +957,10 @@ aig_optimization_experiments/
 │   ├── region_summary.md              Human-readable region report
 │   ├── cegar_refined_candidates.csv   CEGAR-penalised candidate scores
 │   ├── cegar_summary.md               Human-readable CEGAR report
+│   ├── contextual_error_metrics.csv   Global/contextual substitution metrics
+│   ├── contextual_error_metrics.md    Human-readable contextual metrics report
+│   ├── contextual_critical_path_mapping.csv  Versioned critical-path contextual mapping
+│   ├── register_insertion_suggestions.csv    Ranked register-suggestion prototype rows
 │   ├── hybrid/                        ABC SAT sweep / hybrid validation outputs
 │   │   ├── hybrid_validated_candidates.csv   Candidates annotated with ABC verdicts
 │   │   ├── hybrid_validation_summary.md      Human-readable hybrid report
@@ -980,7 +985,10 @@ aig_optimization_experiments/
 │   ├── abc_sat_sweeping_extension.md  Design notes for the ABC hybrid validation flow
 │   ├── abc_native_sat_sweeping_plan.md Native FRAIG baseline plan
 │   ├── abc_provenance_investigation.md ABC provenance / equivalence-class note
+│   ├── classical_synthesis_and_error_metrics.md Classical synthesis context note
 │   ├── odc_aware_matching_plan.md      Plan for context-aware matching
+│   ├── register_insertion_suggestion_plan.md Register suggestion prototype plan
+│   ├── rtl_source_mapping_plan.md      RTL/source metadata mapping plan
 │   └── timing_aware_back_mapping_plan.md Timing-aware path plan
 │
 ├── tests/                         pytest unit tests
@@ -1006,8 +1014,11 @@ aig_optimization_experiments/
 │   ├── calibrate_approximate_distance_sampling.py Sampling calibration
 │   ├── odc_aware_match_probe.py           Tiny ODC-aware matching probe
 │   ├── probe_abc_timing_commands.py       ABC timing command capability probe
-│   └── timing_aware_path_probe.py         Delay-weighted path comparison
+│   ├── timing_aware_path_probe.py         Delay-weighted path comparison
+│   ├── contextual_correspondence_analysis.py Contextual error analysis
+│   └── suggest_register_insertion_points.py Register suggestion prototype
 │
+├── contextual_error_metrics.py     Reusable global/contextual error metric engine
 ├── analyze_blif_matches.py        Main analysis: parse BLIF, simulate, compare, rank
 ├── visualize_results.py           Legacy per-benchmark node-count plots
 ├── research_plots.py              Research-quality plots (10 PNGs)
@@ -1456,6 +1467,82 @@ The generated Markdown shows example suggestions from the ISCAS-85 critical-path
 should be read as "start looking here" hints, not automatic transformations. Correct register
 insertion still requires RTL edits, sequential/latency-aware verification, and control/data
 dependency analysis. See `docs/register_insertion_suggestion_plan.md`.
+
+---
+
+## Formal Error Metrics and Context-Aware Correspondence
+
+The approximate-distance layer measured how close two internal nodes are as standalone
+Boolean functions. This iteration adds a context-aware prototype inspired by approximate
+computing: instead of only asking whether two internal nodes are equal, it asks how much the
+primary outputs change if one candidate is substituted into the optimized circuit context.
+
+Global normalized truth-table distance:
+
+```text
+global_error_rate(f, g)
+    = count_x[f(x) != g(x)] / 2^n
+```
+
+Contextual output error:
+
+```text
+contextual_output_error_rate
+    = count_x[Y_baseline(x) != Y_substituted(x)] / 2^n
+```
+
+For multi-output circuits, the prototype also reports mean/worst output Hamming distance and
+mean/worst absolute numeric output error. Numeric output error depends on the BLIF
+primary-output ordering.
+
+Run the lightweight contextual experiment with:
+
+```bash
+make contextual-error-analysis
+```
+
+Outputs:
+
+- `results/contextual_error_metrics.csv`
+- `results/contextual_error_metrics_summary.csv`
+- `results/contextual_error_metrics.md`
+- `results/contextual_critical_path_mapping.csv`
+- `results/contextual_critical_path_mapping.md`
+- `results/plots/global_vs_contextual_error.png`
+- `results/plots/contextual_classification_counts.png`
+- `results/plots/contextual_recovery_by_optimization.png`
+- `results/plots/critical_path_contextual_recovery.png`
+
+Classification hierarchy:
+
+| Global distance | Contextual distance | CEC result | Classification |
+| --- | --- | --- | --- |
+| exhaustive zero | zero | any | `globally_exact` |
+| greater than zero | zero | `verified_equivalent` | `odc_valid_correspondence` |
+| nonzero allowed | <= threshold | `rejected_non_equivalent` | `contextually_approximate` |
+| nonzero allowed | > threshold | rejected or high-error result | `unsafe_candidate` |
+| unavailable | unavailable | inconclusive/skipped | `unresolved` |
+
+Current lightweight run:
+
+- candidate pairs: `40`;
+- successful substitutions: `40`;
+- exact contextual rows: `0`;
+- sampled contextual rows: `40`;
+- ODC-valid correspondences: `0`;
+- contextually approximate candidates: `35`;
+- unsafe candidates: `5`;
+- contextual critical-path recoveries: `0`.
+
+Interpretation: the current default run is useful as a prototype of the substitution engine
+and output-error accounting, but the reported contextual distances are sampled estimates, not
+formal proof. ABC CEC is formal when it reports equivalence or non-equivalence. The
+controlled unit tests include exact small examples for globally exact, ODC-valid, unsafe, and
+contextually approximate behavior. See also
+`docs/classical_synthesis_and_error_metrics.md`.
+
+Limitations: structural critical paths are still not real STA timing paths, sampled distances
+are estimates, and the contextual substitution engine is still experimental.
 
 ---
 

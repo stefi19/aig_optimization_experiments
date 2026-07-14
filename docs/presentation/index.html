@@ -452,6 +452,75 @@
 
     <section class="slide">
       <div class="slide-content two-column">
+        <div><p class="eyebrow">Approximate-computing lens</p><h2>Not every wrong internal node is equally bad</h2><p>Approximate computing uses error metrics to say how far a candidate is from the exact behavior.</p><p>For correspondence, that means separating local internal mismatch from output-visible error.</p></div>
+        <div class="callout"><h3>New question</h3><p>Can a globally rejected internal-node candidate still be harmless, or low-error, in its circuit context?</p></div>
+      </div>
+      <aside class="notes">Introduce the motivation: exact equivalence is still the strongest result, but rejected candidates can be studied with measured error. Be explicit that sampled error is not formal.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Formal metric</p><h2>Global node distance</h2><pre class="code-block">global_error_rate(f, g)
+  = count_x[f(x) != g(x)] / 2^n</pre><p>This treats two internal nodes as standalone Boolean functions.</p></div>
+        <div class="meaning-box"><strong>Important:</strong> this is formal only when the input space is exhausted. Sampled rows are estimates.</div>
+      </div>
+      <aside class="notes">This slide states the first equation. If the support is small, exhaustive truth-table distance is formal. If support is large, the prototype switches to deterministic sampled patterns.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Contextual metric</p><h2>Output error after substitution</h2><pre class="code-block">contextual_output_error_rate
+  = count_x[Y_base(x) != Y_sub(x)] / 2^n</pre><p>The substituted circuit preserves primary inputs and output ordering, then replaces one optimized node with a candidate function.</p></div>
+        <div class="plot-card"><img src="assets/plots/global_vs_contextual_error.png" alt="Global versus contextual error plot"><p>Global distance and output-visible error can diverge.</p></div>
+      </div>
+      <aside class="notes">Explain that the prototype constructs a baseline optimized network and a substituted network. Output numeric error depends on BLIF output order.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">ODC-valid example</p><h2>Different internally, equivalent at outputs</h2><div class="odc-mini"><div><code>f = a AND b</code></div><div><code>g = a OR b</code></div><div><code>z = 0</code></div><div><code>y = f AND z</code></div></div><p>Replacing <code>f</code> with <code>g</code> changes the internal function but leaves <code>y</code> unchanged.</p></div>
+        <div class="meaning-box"><strong>Classification:</strong> if global error is nonzero and ABC CEC proves output equivalence, the pair is <code>odc_valid_correspondence</code>.</div>
+      </div>
+      <aside class="notes">This is the controlled ODC case. Stress that sampled output error alone cannot prove ODC validity; the classification needs CEC equivalence.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content">
+        <p class="eyebrow">Classification hierarchy</p>
+        <h2>What each result means</h2>
+        <table class="mini-table"><tr><th>Global</th><th>Context</th><th>CEC</th><th>Class</th></tr><tr><td>exact zero</td><td>zero</td><td>any</td><td>globally exact</td></tr><tr><td>nonzero</td><td>zero</td><td>equivalent</td><td>ODC-valid</td></tr><tr><td>nonzero</td><td>small</td><td>rejected</td><td>contextually approximate</td></tr><tr><td>nonzero</td><td>large</td><td>rejected</td><td>unsafe</td></tr></table>
+      </div>
+      <aside class="notes">Keep the hierarchy crisp. Globally exact requires exhaustive global distance. ODC-valid requires formal CEC equivalence. Contextually approximate can be sampled or exact, but only exact rows are formal distances.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Contextual prototype results</p><h2>40 selected ISCAS candidates analyzed</h2><div class="inline-stats"><span>40 substituted</span><span>35 approximate</span><span>5 unsafe</span><span>0 ODC-valid</span></div></div>
+        <div class="plot-pair"><img src="assets/plots/contextual_classification_counts.png" alt="Contextual classification counts"><img src="assets/plots/contextual_recovery_by_optimization.png" alt="Contextual recovery by optimization"></div>
+        <div class="meaning-box"><strong>Careful reading:</strong> all contextual distances in this lightweight run are sampled estimates. ABC CEC did reject the non-equivalent substituted circuits.</div>
+      </div>
+      <aside class="notes">Report the actual committed run: 40 candidates, all sampled contextual rows, 35 below threshold, 5 unsafe, no ODC-valid correspondences found in the lightweight default.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Critical-path integration</p><h2>Contextual recovery is versioned separately</h2><div class="inline-stats"><span>0 ODC recoveries</span><span>0 contextual approximate path recoveries</span><span>397 still unresolved</span></div></div>
+        <img src="assets/plots/critical_path_contextual_recovery.png" alt="Critical path contextual recovery">
+        <div class="meaning-box"><strong>What this means:</strong> the integration path exists, but this lightweight candidate set did not recover additional critical-path nodes.</div>
+      </div>
+      <aside class="notes">Avoid overclaiming. The new CSV preserves the original critical-path mapping and adds contextual columns. This run proves the mechanism, not a new recovery result.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Limitations</p><h2>Formal only when justified</h2><div class="checklist future"><p>Sampled contextual error is an estimate.</p><p>CEC equivalence is formal when ABC proves it.</p><p>Numerical output error depends on output bit order.</p><p>The substitution engine is still experimental.</p></div></div>
+        <div class="callout"><h3>Next research step</h3><p>Target unresolved critical-path nodes directly and search for CEC-proven ODC-valid correspondences.</p></div>
+      </div>
+      <aside class="notes">This limitations slide is specific to the contextual iteration. It reinforces the methodology: do not confuse sampled estimates with formal guarantees.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
         <div><p class="eyebrow">Critical path</p><h2>The path that limits speed</h2><p>A critical path is the longest or slowest chain of logic between two timing points.</p><p>If it is too slow, the clock period must be longer.</p></div>
         <svg class="path-svg" viewBox="0 0 640 360" role="img" aria-label="Critical path through gates">
           <text x="40" y="55">input</text><text x="530" y="55">output</text>
@@ -601,7 +670,7 @@
   <footer class="controls">
     <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
     <button id="prev" type="button" aria-label="Previous slide">Prev</button>
-    <span id="slide-number">1 / 38</span>
+    <span id="slide-number">1 / 46</span>
     <button id="next" type="button" aria-label="Next slide">Next</button>
     <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
   </footer>
