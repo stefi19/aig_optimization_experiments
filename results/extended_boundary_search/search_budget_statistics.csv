@@ -1,0 +1,5 @@
+anchor_mode,max_search_states,rows,search_mode,total_cycle_pruned_states,total_pruned_states,total_search_states
+exact_only,17,16,cost_guided,0,0,50
+exact_only,1,16,first_frontier,0,0,16
+formal_all,17,16,cost_guided,0,0,50
+formal_all,1,16,first_frontier,0,0,16

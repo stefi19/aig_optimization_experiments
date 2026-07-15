@@ -222,3 +222,54 @@ The old `8 / 48` number remains useful as a diagnostic artifact, but it mixed
 algorithmic attempts with invalid COIs and missing circuit infrastructure. The
 corrected recovery rate is computed only over valid, executable, attempted
 cases.
+
+## Extended-Boundary Validation Under Optimization
+
+Identity recovery keeps the strict contract:
+
+```text
+recovered EBI    = original BI
+recovered EBO    = original BO
+recovered region = original region
+extension ratio  = 0
+```
+
+Optimized recovery uses a different validation profile. A recovered boundary may
+be larger than the original COI boundary if it is a valid extended boundary:
+
+```text
+original COI region is contained in the extended region
+all incoming edges into the extended region cross recovered EBI
+all outgoing edges from the extended region exit through recovered EBO
+all recovered boundary nodes are formally anchored
+mapped implementation boundary is cycle-free
+extended region is non-empty and not the whole design
+```
+
+Bypass validation is relative to the recovered extended region:
+
+```text
+incoming bypass = u -> v, u outside extended region, v inside, u not in EBI
+outgoing bypass = u -> v, u inside extended region, v outside, u not in EBO
+```
+
+The cost-guided search keeps the old `first_frontier` mode as a baseline and
+adds bounded candidate-frontier enumeration. Candidate cuts are ordered
+lexicographically by extension node count, total boundary distance, boundary
+node count, complemented-anchor count, and canonical node names.
+
+Current measured result:
+
+```text
+first_frontier:                    20 / 32
+cost_guided:                       20 / 32
+exact_only:                        20 / 32
+formal_all:                        20 / 32
+strict-equality false negatives:    0
+fixed by cost-guided search:        0
+selected SAT/CEC frontier anchors:  0
+```
+
+The result does not justify logic grafting yet. The remaining failures are
+better explained by missing relevant formal anchors or extension-limit/whole
+design candidates than by strict-boundary equality alone.

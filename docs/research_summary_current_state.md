@@ -372,6 +372,38 @@ the canonical eligible set and `formal_all` still ties `exact_only`, the next
 useful research step is likely ODC-aware or speculative anchor generation unless
 future cases show relevant anchors exist but cut search fails.
 
+## 8.9 Extended-Boundary Correctness and Cost-Guided Search
+
+The extended-boundary milestone keeps the identity gate exact, but changes the
+optimized interpretation. Optimized recovery no longer fails merely because the
+recovered BI, EBO, or region differs from the original COI. Instead, success
+requires the recovered extended region to contain the original COI, have valid
+formally anchored input and output cuts, have zero incoming/outgoing bypasses
+relative to the recovered region, be cycle-free in the mapped implementation
+boundary, and avoid whole-design expansion.
+
+Measured result on the corrected executable set:
+
+```text
+strategy rows:                            64
+first_frontier valid rows:                20 / 32
+cost_guided valid rows:                   20 / 32
+exact_only valid rows:                    20 / 32
+formal_all valid rows:                    20 / 32
+previous strict-equality false negatives:  0
+previous failures fixed by cost-guided:    0
+selected SAT/CEC frontier anchors:         0
+cost-guided search states:               100 total, 17 max
+remaining blocked by missing anchors:      22 rows
+remaining blocked by extension limits:      2 rows
+```
+
+The 12 previous optimized failures are therefore not simply valid extended
+boundaries rejected by exact-boundary comparison. Cost-guided search reduces
+some incoming-bypass symptoms in the adder rows, but does not produce a valid
+formal cut on this subset. The measured next step is still ODC-aware or
+speculative anchor generation, not logic grafting.
+
 ## 9. Main Findings
 
 1. Exact matching is reliable when internal nodes survive optimization.

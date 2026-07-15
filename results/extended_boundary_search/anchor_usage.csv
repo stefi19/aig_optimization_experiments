@@ -1,0 +1,5 @@
+anchor_mode,available_sat_cec_frontier_candidates,rows,search_mode,selected_complemented_anchor_count,selected_exact_anchor_count,selected_sat_cec_anchor_count
+exact_only,0,16,cost_guided,0,94,0
+exact_only,0,16,first_frontier,0,92,0
+formal_all,0,16,cost_guided,0,94,0
+formal_all,0,16,first_frontier,0,92,0

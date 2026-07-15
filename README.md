@@ -2393,6 +2393,67 @@ Outputs:
 
 Semantics plots are written as `results/plots/boundary_sem_*.png`.
 
+### Extended-Boundary Correctness and Cost-Guided Search
+
+The next boundary-recovery milestone separates identity exactness from optimized
+extended-boundary validity. Identity still requires exact BI/EBO/region equality
+and zero extension. Under optimization, a recovered boundary is valid when it
+encloses the original component and forms formally anchored input and output
+cuts, even if the recovered boundary differs from the original component
+boundary.
+
+Optimized extended-boundary success requires:
+
+- the original COI region is contained in the recovered region;
+- recovered EBI/EBO are valid cuts for the recovered extended region;
+- incoming and outgoing bypass counts are zero relative to the recovered region;
+- all selected boundary nodes have formal anchors;
+- the mapped boundary is cycle-free;
+- the recovered region is non-empty and not the whole design.
+
+Run:
+
+```bash
+make extended-boundary-validation
+make extended-boundary-search
+make extended-boundary-comparison
+make extended-boundary-plots
+make check-extended-boundary-results
+```
+
+Current measured result:
+
+- Strategy rows: 64 total.
+- `first_frontier`: 20 / 32 valid extended boundaries.
+- `cost_guided`: 20 / 32 valid extended boundaries.
+- `exact_only`: 20 / 32.
+- `formal_all`: 20 / 32.
+- Previous false negatives from strict boundary equality: 0.
+- Previous failures fixed by cost-guided search: 0.
+- Selected SAT/CEC frontier anchors: 0.
+- Cost-guided search explored 100 states total, max 17 states in one row.
+- Remaining failed rows: 22 blocked by missing relevant formal anchors, 2
+  blocked by whole-design/extension-limit candidates.
+
+This result is useful even without an improved recovery count: it shows that the
+12 previous optimized failures were not merely valid extended boundaries rejected
+by exact set equality. The bottleneck remains anchored frontier availability for
+these cases, so ODC-aware or speculative anchor generation is the likely next
+research direction. Region enclosure is still region-level evidence; it does not
+claim internal-node equivalence for every node inside the recovered region.
+
+Outputs:
+
+- `results/extended_boundary_search/extended_boundary_cases.csv`
+- `results/extended_boundary_search/extended_boundary_validation.csv`
+- `results/extended_boundary_search/search_strategy_comparison.csv`
+- `results/extended_boundary_search/remaining_failure_analysis.csv`
+- `results/extended_boundary_search/anchor_usage.csv`
+- `results/extended_boundary_search/search_budget_statistics.csv`
+- `results/extended_boundary_search/extended_boundary_summary.md`
+
+Plots are written as `results/plots/extended_boundary_*.png`.
+
 ---
 
 ## Critical-Path Back-Mapping Prototype

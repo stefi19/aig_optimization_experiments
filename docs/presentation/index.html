@@ -849,7 +849,58 @@ BO = inside R, fanout outside R or PO</pre>
 
     <section class="slide">
       <div class="slide-content two-column">
-        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, and sensitivity features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Boundary recovery is region-level evidence, not direct internal-node equivalence.</p><p>Corrected semantics fix identity, but optimized recovery is still sparse on harder cases.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>RTL source mapping is a metadata prototype, not integrated back-mapping yet.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
+        <div>
+          <p class="eyebrow">Extended boundary</p>
+          <h2>Optimized recovery need not match the original boundary</h2>
+          <p>After synthesis, a valid recovered boundary may enclose the original COI plus extra logic.</p>
+          <div class="checklist future"><p>Original COI contained.</p><p>Recovered EBI and EBO are formal anchored cuts.</p><p>No bypasses relative to the recovered region.</p><p>Mapped boundary is cycle-free and non-whole-design.</p></div>
+        </div>
+        <div class="meaning-box"><strong>Key distinction:</strong> identity requires exact equality; optimized recovery requires a valid extended boundary.</div>
+      </div>
+      <aside class="notes">This fixes a possible over-strict interpretation. Boundary mismatch is diagnostic under optimization, not automatically a failure. The recovered region is still region-level evidence, not proof that every internal node corresponds.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Bypass validation</p>
+          <h2>Bypasses are checked against the recovered region</h2>
+          <pre class="code-block">incoming: u outside Rext -> v inside Rext, u not in EBI
+outgoing: u inside Rext -> v outside Rext, u not in EBO</pre>
+          <p>The validator reports incoming and outgoing bypass counts separately.</p>
+        </div>
+        <div class="callout"><h3>Why it matters</h3><p>A boundary can differ from the original and still be valid, but only if all logic entering and leaving the recovered region crosses the recovered cuts.</p></div>
+      </div>
+      <aside class="notes">Use this slide to clarify why the old combined bypass label was not enough. Incoming and outgoing bypasses point to different cut-quality problems.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Search strategies</p><h2>Cost-guided search ties first-frontier here</h2><div class="inline-stats"><span>first-frontier 20/32</span><span>cost-guided 20/32</span><span>false negatives fixed: 0</span><span>SAT/CEC anchors selected: 0</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/extended_boundary_success_by_search_mode.png" alt="Extended boundary success by search mode">
+          <img src="assets/plots/extended_boundary_remaining_failures.png" alt="Extended boundary remaining failures">
+        </div>
+        <div class="meaning-box"><strong>Interpretation:</strong> the remaining rows are not simply valid extended boundaries rejected by exact-boundary equality.</div>
+      </div>
+      <aside class="notes">Cost-guided search explores alternatives deterministically, but the measured subset does not improve. This is a null result, not a failure of the experiment.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Search cost</p><h2>More search, same formal frontier limit</h2><div class="inline-stats"><span>100 cost-guided states</span><span>max 17 in one row</span><span>exact-only 20/32</span><span>formal-all 20/32</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/extended_boundary_search_states.png" alt="Extended boundary search states">
+          <img src="assets/plots/extended_boundary_anchor_usage.png" alt="Extended boundary anchor usage">
+        </div>
+        <div class="meaning-box"><strong>Decision:</strong> because formal-all still adds no selected SAT/CEC frontier anchors, the next milestone should investigate ODC-aware or speculative anchor generation.</div>
+      </div>
+      <aside class="notes">The cost-guided search has bounded overhead on this set. Since it does not find new valid cuts and selects no SAT/CEC anchors, grafting is not yet justified.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, and sensitivity features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Boundary recovery is region-level evidence, not direct internal-node equivalence.</p><p>Extended-boundary search ties first-frontier on the corrected subset.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>RTL source mapping is a metadata prototype, not integrated back-mapping yet.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
         <div class="callout"><h3>Important idea</h3><p>Unresolved nodes are not simply failures. They show where context, observability don't-cares, or deeper ABC integration may be needed.</p></div>
       </div>
       <aside class="notes">Use this slide to show research maturity. The ABC-native baseline is a meaningful addition, but it does not remove the need for a correspondence layer. The cofactor/sensitivity milestone adds feature instrumentation, but the committed lightweight subset does not show improvement. The RTL/source and register-suggestion prototypes clarify the final engineering direction without claiming automatic correctness.</aside>
@@ -891,7 +942,7 @@ BO = inside R, fanout outside R or PO</pre>
   <footer class="controls">
     <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
     <button id="prev" type="button" aria-label="Previous slide">Prev</button>
-    <span id="slide-number">1 / 60</span>
+    <span id="slide-number">1 / 64</span>
     <button id="next" type="button" aria-label="Next slide">Next</button>
     <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
   </footer>
