@@ -329,6 +329,49 @@ seed suite: additional SAT/CEC-proven anchors are not present on usable
 frontiers here. This does not prove that SAT/CEC anchors are generally
 unhelpful.
 
+## 8.8 Repaired COI Semantics and Identity Baseline
+
+The semantics-repair milestone establishes one canonical COI model:
+
+```text
+R  = internal region nodes
+BI = nodes outside R with at least one fanout into R
+BO = nodes inside R that are primary outputs or have fanout outside R
+```
+
+Boundary inputs are outside the region; boundary outputs are region members.
+All BI/BO sets are derived from graph connectivity rather than node names. The
+pipeline now repairs or excludes legacy COIs, generates micro-benchmark COIs,
+checks circuit availability separately, and runs an exact S-versus-S identity
+gate before optimized-flow recovery.
+
+Corrected results:
+
+```text
+canonical COIs:                         14
+micro-benchmark COIs:                   10
+COI audit rows:                         16
+repaired legacy rows:                    3
+excluded rows:                           2
+identity successes:                     14 / 14
+zero-extension identity cases:          14 / 14
+exact EBI matches:                      14 / 14
+exact EBO matches:                      14 / 14
+exact region matches:                   14 / 14
+corrected optimized attempts:           32
+corrected optimized successes:          20  (62.5%)
+exact_only optimized recovery:          10 / 16
+formal_all optimized recovery:          10 / 16
+valid generated critical-path COIs:      0 / 99
+```
+
+The earlier `8 / 48` result should therefore be read as a pre-repair diagnostic
+result, not a clean algorithmic recovery rate. The corrected denominator
+excludes invalid COIs and infrastructure skips. Since identity is now perfect on
+the canonical eligible set and `formal_all` still ties `exact_only`, the next
+useful research step is likely ODC-aware or speculative anchor generation unless
+future cases show relevant anchors exist but cut search fails.
+
 ## 9. Main Findings
 
 1. Exact matching is reliable when internal nodes survive optimization.
@@ -352,8 +395,9 @@ unhelpful.
 9. Boundary recovery can enclose some generated MUX-tree regions with formal
    anchors, but this first conservative run does not yet recover arithmetic COIs
    or critical-path unresolved nodes.
-10. Boundary-recovery diagnosis shows the identity baseline is not yet clean, so
-    COI definitions and recovery semantics should be fixed before logic grafting.
+10. Boundary-recovery diagnosis showed the identity baseline was not clean; the
+    repaired semantics milestone now makes identity exact on 14 / 14 canonical
+    eligible COIs.
 
 ## 10. Limitations
 

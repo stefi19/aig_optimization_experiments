@@ -1,0 +1,336 @@
+{
+  "cois": [
+    {
+      "benchmark": "micro_diamond",
+      "boundary_inputs": [
+        "a",
+        "a"
+      ],
+      "boundary_membership_convention": "BI outside R; BO subset of R",
+      "boundary_outputs": [
+        "n3"
+      ],
+      "coi_name": "diamond_reconvergence",
+      "coi_schema_version": "coi_schema_v1",
+      "generation_method": "micro_benchmark",
+      "optimization": "*",
+      "original_manifest_status": "new_micro_case",
+      "region_nodes": [
+        "n1",
+        "n2",
+        "n3"
+      ],
+      "repair_notes": "Canonical micro-benchmark COI.",
+      "source": "automatically_derived"
+    },
+    {
+      "benchmark": "micro_linear_chain",
+      "boundary_inputs": [
+        "n1"
+      ],
+      "boundary_membership_convention": "BI outside R; BO subset of R",
+      "boundary_outputs": [
+        "n2"
+      ],
+      "coi_name": "linear_middle",
+      "coi_schema_version": "coi_schema_v1",
+      "generation_method": "micro_benchmark",
+      "optimization": "*",
+      "original_manifest_status": "new_micro_case",
+      "region_nodes": [
+        "n2"
+      ],
+      "repair_notes": "Canonical micro-benchmark COI.",
+      "source": "automatically_derived"
+    },
+    {
+      "benchmark": "micro_multi_input",
+      "boundary_inputs": [
+        "a",
+        "b",
+        "c"
+      ],
+      "boundary_membership_convention": "BI outside R; BO subset of R",
+      "boundary_outputs": [
+        "n2"
+      ],
+      "coi_name": "multi_input_cone",
+      "coi_schema_version": "coi_schema_v1",
+      "generation_method": "micro_benchmark",
+      "optimization": "*",
+      "original_manifest_status": "new_micro_case",
+      "region_nodes": [
+        "n1",
+        "n2"
+      ],
+      "repair_notes": "Canonical micro-benchmark COI.",
+      "source": "automatically_derived"
+    },
+    {
+      "benchmark": "micro_multi_output",
+      "boundary_inputs": [
+        "a",
+        "b"
+      ],
+      "boundary_membership_convention": "BI outside R; BO subset of R",
+      "boundary_outputs": [
+        "n2",
+        "n3"
+      ],
+      "coi_name": "multi_output_region",
+      "coi_schema_version": "coi_schema_v1",
+      "generation_method": "micro_benchmark",
+      "optimization": "*",
+      "original_manifest_status": "new_micro_case",
+      "region_nodes": [
+        "n1",
+        "n2",
+        "n3"
+      ],
+      "repair_notes": "Canonical micro-benchmark COI.",
+      "source": "automatically_derived"
+    },
+    {
+      "benchmark": "micro_nested",
+      "boundary_inputs": [
+        "n1"
+      ],
+      "boundary_membership_convention": "BI outside R; BO subset of R",
+      "boundary_outputs": [
+        "n2"
+      ],
+      "coi_name": "nested_inner",
+      "coi_schema_version": "coi_schema_v1",
+      "generation_method": "micro_benchmark",
+      "optimization": "*",
+      "original_manifest_status": "new_micro_case",
+      "region_nodes": [
+        "n2"
+      ],
+      "repair_notes": "Canonical micro-benchmark COI.",
+      "source": "automatically_derived"
+    },
+    {
+      "benchmark": "micro_nested",
+      "boundary_inputs": [
+        "a"
+      ],
+      "boundary_membership_convention": "BI outside R; BO subset of R",
+      "boundary_outputs": [
+        "n3"
+      ],
+      "coi_name": "nested_outer",
+      "coi_schema_version": "coi_schema_v1",
+      "generation_method": "micro_benchmark",
+      "optimization": "*",
+      "original_manifest_status": "new_micro_case",
+      "region_nodes": [
+        "n1",
+        "n2",
+        "n3"
+      ],
+      "repair_notes": "Canonical micro-benchmark COI.",
+      "source": "automatically_derived"
+    },
+    {
+      "benchmark": "micro_pi_boundary",
+      "boundary_inputs": [
+        "a",
+        "b"
+      ],
+      "boundary_membership_convention": "BI outside R; BO subset of R",
+      "boundary_outputs": [
+        "n1"
+      ],
+      "coi_name": "pi_boundary_region",
+      "coi_schema_version": "coi_schema_v1",
+      "generation_method": "micro_benchmark",
+      "optimization": "*",
+      "original_manifest_status": "new_micro_case",
+      "region_nodes": [
+        "n1"
+      ],
+      "repair_notes": "Canonical micro-benchmark COI.",
+      "source": "automatically_derived"
+    },
+    {
+      "benchmark": "micro_po_boundary",
+      "boundary_inputs": [
+        "n1"
+      ],
+      "boundary_membership_convention": "BI outside R; BO subset of R",
+      "boundary_outputs": [
+        "y"
+      ],
+      "coi_name": "po_boundary_region",
+      "coi_schema_version": "coi_schema_v1",
+      "generation_method": "micro_benchmark",
+      "optimization": "*",
+      "original_manifest_status": "new_micro_case",
+      "region_nodes": [
+        "y"
+      ],
+      "repair_notes": "Canonical micro-benchmark COI.",
+      "source": "automatically_derived"
+    },
+    {
+      "benchmark": "micro_shared_fanout",
+      "boundary_inputs": [
+        "a",
+        "b"
+      ],
+      "boundary_membership_convention": "BI outside R; BO subset of R",
+      "boundary_outputs": [
+        "n1",
+        "n2"
+      ],
+      "coi_name": "shared_fanout_region",
+      "coi_schema_version": "coi_schema_v1",
+      "generation_method": "micro_benchmark",
+      "optimization": "*",
+      "original_manifest_status": "new_micro_case",
+      "region_nodes": [
+        "n1",
+        "n2"
+      ],
+      "repair_notes": "Canonical micro-benchmark COI.",
+      "source": "automatically_derived"
+    },
+    {
+      "benchmark": "micro_whole_design",
+      "boundary_inputs": [
+        "a",
+        "b"
+      ],
+      "boundary_membership_convention": "BI outside R; BO subset of R",
+      "boundary_outputs": [
+        "y"
+      ],
+      "coi_name": "whole_design_region",
+      "coi_schema_version": "coi_schema_v1",
+      "generation_method": "micro_benchmark",
+      "optimization": "*",
+      "original_manifest_status": "new_micro_case",
+      "region_nodes": [
+        "n1",
+        "y"
+      ],
+      "repair_notes": "Canonical micro-benchmark COI.",
+      "source": "automatically_derived"
+    },
+    {
+      "benchmark": "generated_adder_4",
+      "boundary_inputs": [
+        "a0",
+        "b0",
+        "cin",
+        "new_n17",
+        "new_n21",
+        "new_n22"
+      ],
+      "boundary_membership_convention": "BI outside R; BO subset of R",
+      "boundary_outputs": [
+        "new_n23",
+        "new_n26",
+        "sum1"
+      ],
+      "coi_name": "adder_bit1_carry_sum_region",
+      "coi_schema_version": "coi_schema_v1",
+      "generation_method": "canonical_repair",
+      "optimization": "*",
+      "original_manifest_status": "invalid_manual_boundary",
+      "region_nodes": [
+        "new_n23",
+        "new_n24",
+        "new_n25",
+        "new_n26",
+        "new_n27",
+        "new_n28",
+        "sum1"
+      ],
+      "repair_notes": "BI/BO derived from canonical graph semantics.",
+      "source": "generated_ground_truth"
+    },
+    {
+      "benchmark": "generated_multiplier_2",
+      "boundary_inputs": [
+        "a0",
+        "a1",
+        "b0",
+        "b1"
+      ],
+      "boundary_membership_convention": "BI outside R; BO subset of R",
+      "boundary_outputs": [
+        "new_n10",
+        "new_n11",
+        "p1"
+      ],
+      "coi_name": "multiplier_middle_products",
+      "coi_schema_version": "coi_schema_v1",
+      "generation_method": "canonical_repair",
+      "optimization": "*",
+      "original_manifest_status": "invalid_manual_boundary",
+      "region_nodes": [
+        "new_n10",
+        "new_n11",
+        "new_n12",
+        "new_n13",
+        "p1"
+      ],
+      "repair_notes": "BI/BO derived from canonical graph semantics.",
+      "source": "generated_ground_truth"
+    },
+    {
+      "benchmark": "generated_mux_tree_4",
+      "boundary_inputs": [
+        "new_n10",
+        "new_n13",
+        "s0",
+        "s0"
+      ],
+      "boundary_membership_convention": "BI outside R; BO subset of R",
+      "boundary_outputs": [
+        "out"
+      ],
+      "coi_name": "mux_tree_root",
+      "coi_schema_version": "coi_schema_v1",
+      "generation_method": "canonical_repair",
+      "optimization": "*",
+      "original_manifest_status": "valid",
+      "region_nodes": [
+        "new_n14",
+        "new_n15",
+        "out"
+      ],
+      "repair_notes": "BI/BO derived from canonical graph semantics.",
+      "source": "generated_ground_truth"
+    },
+    {
+      "benchmark": "generated_mux_tree_8",
+      "boundary_inputs": [
+        "new_n21",
+        "new_n28",
+        "new_n29",
+        "s0",
+        "s0"
+      ],
+      "boundary_membership_convention": "BI outside R; BO subset of R",
+      "boundary_outputs": [
+        "out"
+      ],
+      "coi_name": "mux_tree_upper_root",
+      "coi_schema_version": "coi_schema_v1",
+      "generation_method": "canonical_repair",
+      "optimization": "*",
+      "original_manifest_status": "invalid_manual_boundary",
+      "region_nodes": [
+        "new_n30",
+        "new_n31",
+        "new_n32",
+        "out"
+      ],
+      "repair_notes": "BI/BO derived from canonical graph semantics.",
+      "source": "generated_ground_truth"
+    }
+  ]
+}

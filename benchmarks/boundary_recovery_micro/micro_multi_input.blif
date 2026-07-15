@@ -1,0 +1,11 @@
+.model micro_multi_input
+.inputs a b c
+.outputs y
+.names a b n1
+11 1
+.names n1 c n2
+1- 1
+-1 1
+.names n2 y
+1 1
+.end

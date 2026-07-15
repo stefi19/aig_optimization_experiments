@@ -2319,6 +2319,80 @@ Outputs:
 
 Diagnosis plots are written as `results/plots/boundary_diag_*.png`.
 
+### Repaired COI Semantics and Identity Gate
+
+The semantics-repair milestone fixes the interpretability problem found by the
+diagnosis step. The initial `8 / 48` result is preserved as a historical
+pre-repair diagnostic result: its denominator mixed valid attempts, invalid or
+inconsistent COIs, and unavailable external circuits. The corrected pipeline
+uses a canonical COI model before evaluating optimized recovery.
+
+Canonical convention:
+
+```text
+R  = internal region nodes
+BI = nodes outside R with at least one fanout into R
+BO = nodes inside R that are primary outputs or have fanout outside R
+```
+
+Thus `BI` is outside the region and `BO` is part of the region. The repaired
+pipeline derives BI/BO from graph connectivity, validates the COI, runs
+S-versus-S identity recovery through the normal anchor/cut/extraction path, and
+requires exact equality before optimized-flow evaluation.
+
+Run:
+
+```bash
+make boundary-recovery-micro-benchmarks
+make boundary-recovery-repair-cois
+make boundary-recovery-check-circuits
+make boundary-recovery-identity-fixed
+make boundary-recovery-corrected-analysis
+make boundary-recovery-critical-path-fixed
+make boundary-recovery-semantics-plots
+make check-boundary-recovery-semantics
+```
+
+Current repaired results:
+
+- Canonical COIs: 14.
+- COI audit rows: 16 total; 3 repaired, 2 excluded, 14 finally valid.
+- Micro-benchmark COIs added: 10.
+- Circuit availability rows: 70 declared, 30 available, 40 infrastructure
+  skips.
+- Identity gate: 14 / 14 successful.
+- Zero-extension identity cases: 14 / 14.
+- Exact EBI matches: 14 / 14.
+- Exact EBO matches: 14 / 14.
+- Exact region matches: 14 / 14.
+- Corrected optimized denominator: 32 valid attempted rows.
+- Corrected optimized recovery: 20 / 32, or 62.5%.
+- `exact_only`: 10 / 16.
+- `formal_all`: 10 / 16.
+- Critical-path COI validation rows: 99; valid generated critical-path COIs: 0
+  because the current critical-path rows still point to unavailable external
+  BLIFs.
+
+Corrected optimized failures are now algorithmic rows only:
+
+- `ebi_mismatch;region_mismatch;bypass_edges`: 8.
+- `ebi_mismatch;ebo_mismatch;region_mismatch;bypass_edges`: 4.
+
+Outputs:
+
+- `results/boundary_recovery_semantics/coi_repair_audit.csv`
+- `results/boundary_recovery_semantics/coi_canonical_manifest.json`
+- `results/boundary_recovery_semantics/coi_validation_results.csv`
+- `results/boundary_recovery_semantics/circuit_availability.csv`
+- `results/boundary_recovery_semantics/identity_exact_match_results.csv`
+- `results/boundary_recovery_semantics/identity_summary.md`
+- `results/boundary_recovery_semantics/optimized_recovery_corrected.csv`
+- `results/boundary_recovery_semantics/optimized_recovery_corrected_summary.md`
+- `results/boundary_recovery_semantics/critical_path_coi_validation.csv`
+- `results/boundary_recovery_semantics/boundary_semantics_summary.md`
+
+Semantics plots are written as `results/plots/boundary_sem_*.png`.
+
 ---
 
 ## Critical-Path Back-Mapping Prototype

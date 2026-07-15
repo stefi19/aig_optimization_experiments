@@ -1,0 +1,8 @@
+.model micro_po_boundary
+.inputs a
+.outputs y
+.names a n1
+1 1
+.names n1 y
+1 1
+.end

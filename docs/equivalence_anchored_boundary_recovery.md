@@ -176,3 +176,49 @@ The identity baseline is the primary decision gate. Since identity recovery is
 not effectively perfect, the next implementation step should fix COI definitions
 or recovery semantics before interpreting optimized-flow failures as evidence
 that formal anchors are insufficient.
+
+## Repaired Canonical COI Semantics
+
+The semantics-repair milestone introduces schema `coi_schema_v1` and makes the
+region convention explicit:
+
+```text
+R  = internal region nodes
+BI = nodes outside R with at least one fanout into R
+BO = nodes inside R that are primary outputs or have fanout outside R
+```
+
+Under this convention, `BI ∩ R = ∅` and `BO ⊆ R`. The reusable derivation
+functions are:
+
+```text
+derive_boundary_inputs(graph, region_nodes)
+derive_boundary_outputs(graph, region_nodes)
+normalize_coi(graph, region_nodes)
+validate_coi(graph, coi)
+extract_region_from_boundaries(graph, ebi, ebo, required_nodes)
+```
+
+The fixed identity baseline uses identity anchors with `proof_mode = identity`
+and still runs through anchor selection, EBI/EBO discovery, region extraction,
+and exact-match validation. It does not return the original COI directly.
+
+Current repaired results:
+
+```text
+canonical COIs:                    14
+identity successes:                14 / 14
+zero-extension identity cases:     14 / 14
+exact EBI matches:                 14 / 14
+exact EBO matches:                 14 / 14
+exact region matches:              14 / 14
+corrected optimized attempts:      32
+corrected optimized successes:     20 / 32
+exact_only:                        10 / 16
+formal_all:                        10 / 16
+```
+
+The old `8 / 48` number remains useful as a diagnostic artifact, but it mixed
+algorithmic attempts with invalid COIs and missing circuit infrastructure. The
+corrected recovery rate is computed only over valid, executable, attempted
+cases.

@@ -1,0 +1,12 @@
+.model micro_shared_fanout
+.inputs a b
+.outputs y z
+.names a b n1
+11 1
+.names n1 n2
+1 1
+.names n2 y
+1 1
+.names n1 z
+1 1
+.end

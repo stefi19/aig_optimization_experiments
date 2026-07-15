@@ -2,7 +2,7 @@ ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 PYTHON ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; else echo python3; fi)
 
-.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance abc-timing-probe yosys-source-probe source-map-prototype register-suggestions contextual-error-analysis contextual-critical-path-map contextual-research-plots research-plots cofactor-sensitivity-analysis functional-ranking-ablation functional-ranking-plots enhanced-critical-path-map check-functional-ranking-results boundary-recovery-benchmarks boundary-recovery-analysis boundary-recovery-critical-path boundary-recovery-plots check-boundary-recovery-results boundary-recovery boundary-recovery-identity boundary-recovery-diagnosis boundary-recovery-critical-path-cois boundary-recovery-diagnosis-plots check-boundary-recovery-diagnosis boundary-recovery-diagnosis-all iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map timing-path-probe full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
+.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance abc-timing-probe yosys-source-probe source-map-prototype register-suggestions contextual-error-analysis contextual-critical-path-map contextual-research-plots research-plots cofactor-sensitivity-analysis functional-ranking-ablation functional-ranking-plots enhanced-critical-path-map check-functional-ranking-results boundary-recovery-benchmarks boundary-recovery-analysis boundary-recovery-critical-path boundary-recovery-plots check-boundary-recovery-results boundary-recovery boundary-recovery-identity boundary-recovery-diagnosis boundary-recovery-critical-path-cois boundary-recovery-diagnosis-plots check-boundary-recovery-diagnosis boundary-recovery-diagnosis-all boundary-recovery-micro-benchmarks boundary-recovery-repair-cois boundary-recovery-check-circuits boundary-recovery-identity-fixed boundary-recovery-corrected-analysis boundary-recovery-critical-path-fixed boundary-recovery-semantics-plots check-boundary-recovery-semantics boundary-recovery-semantics-all iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map timing-path-probe full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -279,6 +279,43 @@ check-boundary-recovery-diagnosis:
 
 boundary-recovery-diagnosis-all: boundary-recovery-identity boundary-recovery-diagnosis boundary-recovery-critical-path-cois boundary-recovery-diagnosis-plots check-boundary-recovery-diagnosis
 	@echo "Boundary recovery diagnosis pipeline complete."
+
+boundary-recovery-micro-benchmarks:
+	@echo "Generating boundary-recovery micro benchmarks and COIs"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/generate_boundary_recovery_micro_benchmarks.py
+
+boundary-recovery-repair-cois: boundary-recovery-micro-benchmarks
+	@echo "Repairing and normalizing COIs under canonical semantics"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/repair_boundary_recovery_cois.py
+
+boundary-recovery-check-circuits: boundary-recovery-repair-cois
+	@echo "Checking canonical COI circuit availability"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_boundary_recovery_circuits.py
+
+boundary-recovery-identity-fixed: boundary-recovery-check-circuits
+	@echo "Running fixed exact identity boundary recovery"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_boundary_recovery_identity_fixed.py
+
+boundary-recovery-corrected-analysis: boundary-recovery-identity-fixed
+	@echo "Running corrected optimized boundary recovery over eligible COIs"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_boundary_recovery_corrected_analysis.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/summarize_boundary_recovery_semantics.py
+
+boundary-recovery-critical-path-fixed: boundary-recovery-identity-fixed
+	@echo "Generating canonical critical-path COI validation rows"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_boundary_recovery_critical_path_fixed.py
+
+boundary-recovery-semantics-plots: boundary-recovery-corrected-analysis boundary-recovery-critical-path-fixed
+	@echo "Generating repaired boundary semantics plots"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/summarize_boundary_recovery_semantics.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/boundary_recovery_semantics_plots.py
+
+check-boundary-recovery-semantics:
+	@echo "Checking repaired boundary semantics outputs"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_boundary_recovery_semantics.py
+
+boundary-recovery-semantics-all: boundary-recovery-micro-benchmarks boundary-recovery-repair-cois boundary-recovery-check-circuits boundary-recovery-identity-fixed boundary-recovery-corrected-analysis boundary-recovery-critical-path-fixed boundary-recovery-semantics-plots check-boundary-recovery-semantics
+	@echo "Boundary recovery semantics repair pipeline complete."
 
 full-research-pipeline: generate-variants analyze benchmark-manifest sat-pipeline topk-eval ablation region cegar-refine research-plots test
 	@echo ""

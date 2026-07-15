@@ -1,0 +1,15 @@
+benchmark,coi_name,coi_schema_version,derived_bi,derived_bo,errors,included_in_canonical_manifest,source,valid,warnings,whole_design_region
+micro_diamond,diamond_reconvergence,coi_schema_v1,a,n3,,True,automatically_derived,True,,False
+micro_linear_chain,linear_middle,coi_schema_v1,n1,n2,,True,automatically_derived,True,,False
+micro_multi_input,multi_input_cone,coi_schema_v1,a;b;c,n2,,True,automatically_derived,True,,False
+micro_multi_output,multi_output_region,coi_schema_v1,a;b,n2;n3,,True,automatically_derived,True,,False
+micro_nested,nested_inner,coi_schema_v1,n1,n2,,True,automatically_derived,True,,False
+micro_nested,nested_outer,coi_schema_v1,a,n3,,True,automatically_derived,True,,False
+micro_pi_boundary,pi_boundary_region,coi_schema_v1,a;b,n1,,True,automatically_derived,True,,False
+micro_po_boundary,po_boundary_region,coi_schema_v1,n1,y,,True,automatically_derived,True,,False
+micro_shared_fanout,shared_fanout_region,coi_schema_v1,a;b,n1;n2,,True,automatically_derived,True,,False
+micro_whole_design,whole_design_region,coi_schema_v1,a;b,y,,True,automatically_derived,True,whole_design_region,True
+generated_adder_4,adder_bit1_carry_sum_region,coi_schema_v1,a0;b0;cin;new_n17;new_n21;new_n22,new_n23;new_n26;sum1,,True,generated_ground_truth,True,,False
+generated_multiplier_2,multiplier_middle_products,coi_schema_v1,a0;a1;b0;b1,new_n10;new_n11;p1,,True,generated_ground_truth,True,,False
+generated_mux_tree_4,mux_tree_root,coi_schema_v1,new_n10;new_n13;s0,out,,True,generated_ground_truth,True,,False
+generated_mux_tree_8,mux_tree_upper_root,coi_schema_v1,new_n21;new_n28;new_n29;s0,out,,True,generated_ground_truth,True,,False

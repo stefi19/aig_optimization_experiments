@@ -1,0 +1,15 @@
+case_id,benchmark,coi_name,eligible,executable,structurally_valid,attempted,algorithmic_success,top_level_classification,boundary_extension_ratio,ebi_exact_match,ebo_exact_match,region_exact_match,missing_ebi_nodes,extra_ebi_nodes,missing_ebo_nodes,extra_ebo_nodes,missing_region_nodes,extra_region_nodes,failure_reason
+micro_diamond|diamond_reconvergence|identity_exact,micro_diamond,diamond_reconvergence,True,True,True,True,True,success,0.0,True,True,True,,,,,,,valid
+micro_linear_chain|linear_middle|identity_exact,micro_linear_chain,linear_middle,True,True,True,True,True,success,0.0,True,True,True,,,,,,,valid
+micro_multi_input|multi_input_cone|identity_exact,micro_multi_input,multi_input_cone,True,True,True,True,True,success,0.0,True,True,True,,,,,,,valid
+micro_multi_output|multi_output_region|identity_exact,micro_multi_output,multi_output_region,True,True,True,True,True,success,0.0,True,True,True,,,,,,,valid
+micro_nested|nested_inner|identity_exact,micro_nested,nested_inner,True,True,True,True,True,success,0.0,True,True,True,,,,,,,valid
+micro_nested|nested_outer|identity_exact,micro_nested,nested_outer,True,True,True,True,True,success,0.0,True,True,True,,,,,,,valid
+micro_pi_boundary|pi_boundary_region|identity_exact,micro_pi_boundary,pi_boundary_region,True,True,True,True,True,success,0.0,True,True,True,,,,,,,valid
+micro_po_boundary|po_boundary_region|identity_exact,micro_po_boundary,po_boundary_region,True,True,True,True,True,success,0.0,True,True,True,,,,,,,valid
+micro_shared_fanout|shared_fanout_region|identity_exact,micro_shared_fanout,shared_fanout_region,True,True,True,True,True,success,0.0,True,True,True,,,,,,,valid
+micro_whole_design|whole_design_region|identity_exact,micro_whole_design,whole_design_region,True,True,True,True,True,success,0.0,True,True,True,,,,,,,valid
+generated_adder_4|adder_bit1_carry_sum_region|identity_exact,generated_adder_4,adder_bit1_carry_sum_region,True,True,True,True,True,success,0.0,True,True,True,,,,,,,valid
+generated_multiplier_2|multiplier_middle_products|identity_exact,generated_multiplier_2,multiplier_middle_products,True,True,True,True,True,success,0.0,True,True,True,,,,,,,valid
+generated_mux_tree_4|mux_tree_root|identity_exact,generated_mux_tree_4,mux_tree_root,True,True,True,True,True,success,0.0,True,True,True,,,,,,,valid
+generated_mux_tree_8|mux_tree_upper_root|identity_exact,generated_mux_tree_8,mux_tree_upper_root,True,True,True,True,True,success,0.0,True,True,True,,,,,,,valid
