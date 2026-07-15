@@ -2454,6 +2454,72 @@ Outputs:
 
 Plots are written as `results/plots/extended_boundary_*.png`.
 
+### Formal ODC-Aware Boundary Anchors
+
+The ODC-aware milestone adds a new contextual anchor category:
+
+```text
+formal_odc_valid_anchor
+```
+
+These anchors are formally proven interchangeable only under a specified
+observation context. They are not globally equivalent anchors and are not labeled
+as `sat_cec_proven_equivalent`.
+
+Two context modes are evaluated:
+
+- `global_output_odc`: all primary outputs are observable.
+- `coi_output_odc`: the original canonical COI boundary outputs are observable.
+
+The formal query builds a baseline implementation circuit and a substituted
+implementation circuit, restricts both to the selected observable outputs, and
+runs ABC CEC. Only ABC-proven equivalent observable-output circuits become
+`formal_odc_valid_anchor` rows with `evidence_level = formal_contextual` and
+`equivalence_scope = contextual`. Sampled candidates, timeouts, tool errors, and
+disproved candidates are never loaded into `formal_plus_odc`.
+
+Run:
+
+```bash
+make odc-anchor-candidates
+make odc-anchor-proofs
+make odc-boundary-recovery
+make odc-anchor-comparison
+make odc-anchor-plots
+make check-odc-anchor-results
+```
+
+Current measured result:
+
+- Candidate pairs generated: 164.
+- Formal checks attempted: 164.
+- Formal ODC anchors proven: 10.
+- Candidates disproved: 118.
+- Alignment failures: 36.
+- Timeouts/tool errors: 0.
+- `formal_all` on the failed-case rows: 0 / 24.
+- `formal_plus_odc`: 6 / 24.
+- `global_output_odc` successful rows: 4.
+- `coi_output_odc` successful rows: 2.
+- Selected ODC anchors across recovery rows: 16.
+- Unique recovered benchmark/optimization/COI triples: 3.
+
+Every ODC-enabled successful boundary also passed a complete boundary-level
+contextual validation over the same observable-output set. This result supports
+ODC-aware anchor generation as useful, but the evidence remains contextual:
+region enclosure is not internal-node equivalence for all nodes in the recovered
+region.
+
+Outputs:
+
+- `results/odc_anchor_generation/odc_candidate_features.csv`
+- `results/odc_anchor_generation/odc_formal_proofs.csv`
+- `results/odc_anchor_generation/odc_proven_anchors.csv`
+- `results/odc_anchor_generation/odc_boundary_recovery_cases.csv`
+- `results/odc_anchor_generation/odc_anchor_summary.md`
+
+Plots are written as `results/plots/odc_*.png`.
+
 ---
 
 ## Critical-Path Back-Mapping Prototype

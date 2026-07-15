@@ -900,7 +900,62 @@ outgoing: u inside Rext -> v outside Rext, u not in EBO</pre>
 
     <section class="slide">
       <div class="slide-content two-column">
-        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, and sensitivity features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Boundary recovery is region-level evidence, not direct internal-node equivalence.</p><p>Extended-boundary search ties first-frontier on the corrected subset.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>RTL source mapping is a metadata prototype, not integrated back-mapping yet.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
+        <div>
+          <p class="eyebrow">ODC-aware anchors</p>
+          <h2>Contextual interchangeability is not global equivalence</h2>
+          <p>A formal ODC-valid anchor is proven only for a named observation context.</p>
+          <pre class="code-block">mapping_category  = formal_odc_valid_anchor
+evidence_level    = formal_contextual
+equivalence_scope = contextual</pre>
+        </div>
+        <div class="callout"><h3>Rule</h3><p>Do not label ODC-valid anchors as SAT/CEC-proven global equivalence. Do not use sampled contextual candidates as formal anchors.</p></div>
+      </div>
+      <aside class="notes">This is the key evidence distinction. ABC CEC is still the proof engine, but the proposition being proven is contextual output preservation, not node-level global equivalence.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Contextual miter</p>
+          <h2>Replace one boundary candidate, observe selected outputs</h2>
+          <pre class="code-block">baseline implementation
+vs.
+implementation with impl_node replaced
+by the spec_node cone</pre>
+          <p>ABC CEC must prove the observable-output circuits equivalent.</p>
+        </div>
+        <div class="checklist future"><p>global_output_odc: all primary outputs.</p><p>coi_output_odc: fixed COI boundary outputs.</p><p>Boundary-level contextual validation is required for recovered ODC boundaries.</p></div>
+      </div>
+      <aside class="notes">The global-output mode is safer. The COI-output mode is intentionally weaker and must stay tied to the COI and observable output set.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">ODC proof funnel</p><h2>10 contextual anchors proven</h2><div class="inline-stats"><span>164 candidates</span><span>164 formal checks</span><span>10 proven</span><span>118 disproved</span><span>0 timeouts</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/odc_candidate_funnel.png" alt="ODC candidate funnel">
+          <img src="assets/plots/odc_proof_outcomes.png" alt="ODC proof outcomes">
+        </div>
+        <div class="meaning-box"><strong>Evidence:</strong> proven rows are contextual only and retain context mode, observable outputs, polarity, and proof metadata.</div>
+      </div>
+      <aside class="notes">There are also alignment failures. Those are not proof failures; they are rejected before proof because the candidate cannot be soundly checked.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">ODC recovery</p><h2>formal_plus_odc recovers new rows</h2><div class="inline-stats"><span>formal_all 0/24</span><span>formal_plus_odc 6/24</span><span>global ODC 4 rows</span><span>COI ODC 2 rows</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/odc_recovery_by_anchor_mode.png" alt="ODC recovery by anchor mode">
+          <img src="assets/plots/odc_remaining_failures.png" alt="ODC remaining failures">
+        </div>
+        <div class="meaning-box"><strong>Decision:</strong> ODC-aware anchors are now useful enough to justify a logic-grafting prototype with context-appropriate formal validation.</div>
+      </div>
+      <aside class="notes">The improvement is measured on the previously failed boundary rows. It is not a claim that all remaining failures are solved.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, and sensitivity features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Boundary recovery is region-level evidence, not direct internal-node equivalence.</p><p>ODC anchors are contextual, not global node equivalence.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>RTL source mapping is a metadata prototype, not integrated back-mapping yet.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
         <div class="callout"><h3>Important idea</h3><p>Unresolved nodes are not simply failures. They show where context, observability don't-cares, or deeper ABC integration may be needed.</p></div>
       </div>
       <aside class="notes">Use this slide to show research maturity. The ABC-native baseline is a meaningful addition, but it does not remove the need for a correspondence layer. The cofactor/sensitivity milestone adds feature instrumentation, but the committed lightweight subset does not show improvement. The RTL/source and register-suggestion prototypes clarify the final engineering direction without claiming automatic correctness.</aside>
@@ -942,7 +997,7 @@ outgoing: u inside Rext -> v outside Rext, u not in EBO</pre>
   <footer class="controls">
     <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
     <button id="prev" type="button" aria-label="Previous slide">Prev</button>
-    <span id="slide-number">1 / 64</span>
+    <span id="slide-number">1 / 68</span>
     <button id="next" type="button" aria-label="Next slide">Next</button>
     <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
   </footer>

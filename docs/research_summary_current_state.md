@@ -404,6 +404,47 @@ some incoming-bypass symptoms in the adder rows, but does not produce a valid
 formal cut on this subset. The measured next step is still ODC-aware or
 speculative anchor generation, not logic grafting.
 
+## 8.10 Formal ODC-Aware Boundary Anchors
+
+The ODC milestone adds formally proven contextual anchors. These anchors are
+not global equivalences. A `formal_odc_valid_anchor` is valid only for its
+recorded context mode and observable-output set.
+
+The formal query compares the optimized implementation against a version where
+one implementation node is replaced by a specification-node cone, then restricts
+both circuits to the selected observable outputs and runs ABC CEC. Proven rows
+use:
+
+```text
+mapping_category  = formal_odc_valid_anchor
+evidence_level    = formal_contextual
+equivalence_scope = contextual
+```
+
+Measured result:
+
+```text
+candidate pairs generated:       164
+formal checks attempted:         164
+formal ODC anchors proven:        10
+candidates disproved:            118
+alignment failures:               36
+timeouts/tool errors:              0
+formal_all failed-case rows:       0 / 24
+formal_plus_odc rows:              6 / 24
+global_output_odc successes:       4 rows
+coi_output_odc successes:          2 rows
+selected ODC anchors:             16 across recovery rows
+unique recovered triples:          3 benchmark/optimization/COI triples
+```
+
+Every ODC-enabled success also passed a complete boundary-level contextual
+validation under the same observation context. This is the first boundary
+milestone where contextual anchors improve the recovered set. The natural next
+step is logic grafting with context-appropriate formal validation on the
+ODC-recovered subset, while keeping speculative reduction as a fallback for
+remaining failures.
+
 ## 9. Main Findings
 
 1. Exact matching is reliable when internal nodes survive optimization.

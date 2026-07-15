@@ -1,0 +1,9 @@
+context_mode,anchor_mode,search_mode,rows,successes,selected_odc_anchor_count
+coi_output_odc,formal_all,cost_guided,6,0,0
+coi_output_odc,formal_all,first_frontier,6,0,0
+coi_output_odc,formal_plus_odc,cost_guided,6,1,3
+coi_output_odc,formal_plus_odc,first_frontier,6,1,3
+global_output_odc,formal_all,cost_guided,6,0,0
+global_output_odc,formal_all,first_frontier,6,0,0
+global_output_odc,formal_plus_odc,cost_guided,6,3,5
+global_output_odc,formal_plus_odc,first_frontier,6,1,5

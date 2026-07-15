@@ -273,3 +273,42 @@ selected SAT/CEC frontier anchors:  0
 The result does not justify logic grafting yet. The remaining failures are
 better explained by missing relevant formal anchors or extension-limit/whole
 design candidates than by strict-boundary equality alone.
+
+## ODC-Aware Contextual Anchors
+
+The `formal_plus_odc` anchor mode extends `formal_all` with proven contextual
+anchors:
+
+```text
+mapping_category  = formal_odc_valid_anchor
+evidence_level    = formal_contextual
+equivalence_scope = contextual
+```
+
+These anchors are not global equivalences. They are valid only for the recorded
+benchmark, optimization, COI, context mode, observable outputs, polarity, and
+circuit fingerprints.
+
+The primary proof mode is a replacement miter:
+
+```text
+baseline implementation
+vs.
+implementation with impl_node replaced by the spec_node cone
+```
+
+Both sides are restricted to either all primary outputs (`global_output_odc`) or
+the fixed COI boundary outputs (`coi_output_odc`). ABC CEC must prove the two
+observable-output circuits equivalent. A second complete boundary-level
+contextual validation is required before any ODC-enabled recovered boundary is
+counted.
+
+Current result:
+
+```text
+formal ODC anchors proven: 10
+formal_all failed-case rows: 0 / 24
+formal_plus_odc rows:        6 / 24
+selected ODC anchors:       16 across recovery rows
+unique recovered triples:    3
+```

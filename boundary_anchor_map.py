@@ -21,6 +21,7 @@ ANCHOR_MODES = {
     "exact_only": {"exact_signature_match"},
     "exact_plus_complemented": {"exact_signature_match", "complemented_equivalence"},
     "formal_all": {"exact_signature_match", "complemented_equivalence", "sat_cec_proven_equivalent"},
+    "formal_plus_odc": {"exact_signature_match", "complemented_equivalence", "sat_cec_proven_equivalent", "formal_odc_valid_anchor"},
 }
 
 CATEGORY_PRIORITY = {
@@ -40,6 +41,12 @@ class Anchor:
     proof_mode: str
     source_result_file: str
     confidence_or_status: str
+    equivalence_scope: str = "global"
+    context_mode: str = ""
+    observable_outputs: str = ""
+    coi_name: str = ""
+    context_compatible: bool = True
+    context_mismatch_reason: str = ""
     selected: bool = False
     selection_reason: str = ""
 
@@ -101,6 +108,11 @@ def load_anchor_map(
     impl_inputs: list[str] | tuple[str, ...] = (),
     spec_outputs: list[str] | tuple[str, ...] = (),
     impl_outputs: list[str] | tuple[str, ...] = (),
+    coi_name: str = "",
+    context_mode: str = "",
+    observable_outputs: list[str] | tuple[str, ...] = (),
+    spec_fingerprint: str = "",
+    impl_fingerprint: str = "",
 ) -> AnchorMap:
     if anchor_mode not in ANCHOR_MODES:
         raise ValueError(f"unknown anchor mode {anchor_mode!r}")
@@ -203,11 +215,46 @@ def load_anchor_map(
                     )
                 )
 
+    odc_path = results_dir / "odc_anchor_generation" / "odc_proven_anchors.csv"
+    if odc_path.exists() and "formal_odc_valid_anchor" in allowed:
+        requested_outputs = ";".join(sorted(observable_outputs))
+        for row in _read_rows(odc_path):
+            if row.get("benchmark") != benchmark or row.get("optimization") != optimization:
+                continue
+            compatible, reason = _odc_context_compatible(
+                row,
+                coi_name=coi_name,
+                context_mode=context_mode,
+                observable_outputs=requested_outputs,
+                spec_fingerprint=spec_fingerprint,
+                impl_fingerprint=impl_fingerprint,
+            )
+            if not compatible:
+                continue
+            anchors.append(
+                Anchor(
+                    spec_node=str(row["spec_node"]),
+                    impl_node=str(row["impl_node"]),
+                    polarity="inverted" if row.get("proven_polarity") == "inverted" else "same",
+                    mapping_category="formal_odc_valid_anchor",
+                    evidence_level="formal_contextual",
+                    proof_mode=str(row.get("proof_mode", "abc_cec_contextual_miter")),
+                    source_result_file="results/odc_anchor_generation/odc_proven_anchors.csv",
+                    confidence_or_status=str(row.get("proof_status", "")),
+                    equivalence_scope="contextual",
+                    context_mode=str(row.get("context_mode", "")),
+                    observable_outputs=str(row.get("observable_outputs", "")),
+                    coi_name=str(row.get("coi_name", "")),
+                    context_compatible=compatible,
+                    context_mismatch_reason=reason,
+                )
+            )
+
     filtered = [
         anchor
         for anchor in anchors
         if anchor.mapping_category in allowed
-        and anchor.evidence_level in {"formal_exhaustive", "formal_cec"}
+        and anchor.evidence_level in {"formal_exhaustive", "formal_cec", "formal_contextual"}
     ]
     return AnchorMap(filtered)
 
@@ -216,3 +263,29 @@ def load_anchor_map(
 def _read_rows(path: Path) -> list[dict[str, str]]:
     with path.open(newline="", encoding="utf-8") as fh:
         return list(csv.DictReader(fh))
+
+
+def _odc_context_compatible(
+    row: dict[str, str],
+    *,
+    coi_name: str,
+    context_mode: str,
+    observable_outputs: str,
+    spec_fingerprint: str,
+    impl_fingerprint: str,
+) -> tuple[bool, str]:
+    if row.get("mapping_category") != "formal_odc_valid_anchor":
+        return False, "mapping_category_mismatch"
+    if row.get("evidence_level") != "formal_contextual" or row.get("proof_status") != "proven_odc_valid":
+        return False, "not_formal_contextual"
+    if context_mode and row.get("context_mode") != context_mode:
+        return False, "context_mode_mismatch"
+    if coi_name and row.get("context_mode") == "coi_output_odc" and row.get("coi_name") != coi_name:
+        return False, "coi_mismatch"
+    if observable_outputs and row.get("observable_outputs") != observable_outputs:
+        return False, "observable_outputs_mismatch"
+    if spec_fingerprint and row.get("spec_fingerprint") != spec_fingerprint:
+        return False, "spec_fingerprint_mismatch"
+    if impl_fingerprint and row.get("impl_fingerprint") != impl_fingerprint:
+        return False, "impl_fingerprint_mismatch"
+    return True, ""
