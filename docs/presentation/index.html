@@ -522,6 +522,73 @@
 
     <section class="slide">
       <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Ranking limitation</p>
+          <h2>Support overlap is not enough</h2>
+          <p>Two candidates can share inputs and look close under simulation, but react differently when one input is fixed.</p>
+          <div class="callout"><h3>New question</h3><p>Can cofactor and sensitivity features rank structurally mismatched but SAT/CEC-proven equivalent nodes earlier?</p></div>
+        </div>
+        <svg class="backmap-svg" viewBox="0 0 640 360" role="img" aria-label="Cofactor feature intuition">
+          <rect class="gate" x="55" y="70" width="160" height="54" rx="8"></rect><text x="85" y="103">candidate g</text>
+          <rect class="gate" x="425" y="70" width="160" height="54" rx="8"></rect><text x="455" y="103">target f</text>
+          <path class="map-arrow green" d="M215 97 H425"></path>
+          <rect class="gate" x="80" y="190" width="120" height="44" rx="8"></rect><text x="103" y="218">x = 0</text>
+          <rect class="gate" x="80" y="250" width="120" height="44" rx="8"></rect><text x="103" y="278">x = 1</text>
+          <rect class="gate" x="440" y="190" width="120" height="44" rx="8"></rect><text x="463" y="218">x = 0</text>
+          <rect class="gate" x="440" y="250" width="120" height="44" rx="8"></rect><text x="463" y="278">x = 1</text>
+          <text class="small-label" x="230" y="224">compare cofactor branches</text>
+        </svg>
+      </div>
+      <aside class="notes">Introduce the motivation. Existing features already use support and simulation signatures. Cofactors ask whether the candidate behaves consistently when a variable is fixed, which can reveal instability hidden by one global score.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Functional features</p>
+          <h2>Cofactors and Boolean difference</h2>
+          <pre class="code-block">f_x0 = f with x fixed to 0
+f_x1 = f with x fixed to 1
+df/dx = f_x1 XOR f_x0</pre>
+          <p>Sensitivity estimates how often changing input <code>x</code> changes the node output.</p>
+        </div>
+        <div class="checklist future">
+          <p>Cofactor consistency score</p>
+          <p>Mean and worst cofactor error</p>
+          <p>Sensitivity cosine similarity</p>
+          <p>Boolean-difference signature similarity</p>
+          <p>Dominant-variable agreement</p>
+        </div>
+      </div>
+      <aside class="notes">Keep this beginner friendly. Support says a variable may matter. Boolean difference estimates whether it actually changes the node. These are features for ranking, not formal correspondence proof.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Ranking ablation</p><h2>Enhanced ranking ties the baseline on the lightweight subset</h2><div class="inline-stats"><span>65 seed-target groups</span><span>88 feature rows</span><span>precision@1 = 0.3385</span><span>MRR = 1.00</span><span>22 recoveries</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/functional_precision_at_k_by_mode.png" alt="Functional ranking precision at K">
+          <img src="assets/plots/functional_mrr_by_mode.png" alt="Functional ranking mean reciprocal rank">
+        </div>
+        <div class="meaning-box"><strong>What this means:</strong> the small labeled subset is already saturated by the baseline, so the new features add instrumentation rather than demonstrated improvement here.</div>
+      </div>
+      <aside class="notes">Do not oversell this result. The generated metrics show no ranking improvement on the committed lightweight subset. The value is that the experiment is now measurable and can be expanded to harder candidate pools.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Evidence boundary</p><h2>Feature similarity is not proof</h2><div class="inline-stats"><span>sampled rows labeled estimates</span><span>SAT/CEC remains authoritative</span><span>rank stability checked</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/functional_cofactor_consistency_by_status.png" alt="Cofactor consistency by status">
+          <img src="assets/plots/functional_sensitivity_similarity_by_status.png" alt="Sensitivity similarity by status">
+        </div>
+        <div class="meaning-box"><strong>Rule:</strong> high cofactor or sensitivity score can move a candidate earlier in the queue, but only SAT/CEC or exhaustive comparison establishes equivalence.</div>
+      </div>
+      <aside class="notes">Use this slide to reinforce evidence labeling. Sampled cofactor and sensitivity measurements are estimates. Structural mismatch still does not imply non-equivalence; SAT/CEC is the step that proves exact Boolean equivalence.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
         <div><p class="eyebrow">Critical path</p><h2>The path that limits speed</h2><p>A critical path is the longest or slowest chain of logic between two timing points.</p><p>If it is too slow, the clock period must be longer.</p></div>
         <svg class="path-svg" viewBox="0 0 640 360" role="img" aria-label="Critical path through gates">
           <text x="40" y="55">input</text><text x="530" y="55">output</text>
@@ -629,10 +696,10 @@
 
     <section class="slide">
       <div class="slide-content two-column">
-        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate distance is calibrated but still not formal.</p><p>Approximate distance is global and context-free until ODC-aware matching is integrated.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>RTL source mapping is a metadata prototype, not integrated back-mapping yet.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
+        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, and sensitivity features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Approximate distance is global and context-free until ODC-aware matching is integrated.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>RTL source mapping is a metadata prototype, not integrated back-mapping yet.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
         <div class="callout"><h3>Important idea</h3><p>Unresolved nodes are not simply failures. They show where context, observability don't-cares, or deeper ABC integration may be needed.</p></div>
       </div>
-      <aside class="notes">Use this slide to show research maturity. The ABC-native baseline is a meaningful addition, but it does not remove the need for a correspondence layer. The RTL/source and register-suggestion prototypes clarify the final engineering direction without claiming automatic correctness.</aside>
+      <aside class="notes">Use this slide to show research maturity. The ABC-native baseline is a meaningful addition, but it does not remove the need for a correspondence layer. The cofactor/sensitivity milestone adds feature instrumentation, but the committed lightweight subset does not show improvement. The RTL/source and register-suggestion prototypes clarify the final engineering direction without claiming automatic correctness.</aside>
     </section>
 
     <section class="slide">
@@ -661,17 +728,17 @@
 
     <section class="slide title-slide">
       <div class="slide-content title-grid">
-        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, probes timing-aware path selection, sketches the RTL/source bridge, and now demonstrates register-suggestion ranking.</p></div>
+        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, probes timing-aware path selection, sketches the RTL/source bridge, and demonstrates register-suggestion ranking.</p></div>
         <div class="takeaway-chain"><div>Optimized critical path</div><div>Correspondence recovery</div><div>Original RTL/source location</div><div>Register suggestion list</div></div>
       </div>
-      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, timing-aware path extraction has a first probe, source metadata identifies the RTL bridge, and register suggestions show the final tool shape.</aside>
+      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, cofactor and sensitivity features now have an ablation harness, timing-aware path extraction has a first probe, source metadata identifies the RTL bridge, and register suggestions show the final tool shape.</aside>
     </section>
   </main>
 
   <footer class="controls">
     <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
     <button id="prev" type="button" aria-label="Previous slide">Prev</button>
-    <span id="slide-number">1 / 46</span>
+    <span id="slide-number">1 / 50</span>
     <button id="next" type="button" aria-label="Next slide">Next</button>
     <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
   </footer>

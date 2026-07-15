@@ -199,6 +199,61 @@ This demonstrates the first end-to-end version of the intended workflow:
 identify important optimized nodes and map most of them back to original-circuit
 points using a layered exact/formal/approximate strategy.
 
+## 8.5 Cofactor- and Sensitivity-Aware Ranking
+
+The newest correspondence-ranking milestone adds two functional feature families
+without changing the formal evidence model.
+
+Shannon cofactor features compare a candidate pair under:
+
+```text
+f_x0 = f with input x fixed to 0
+f_x1 = f with input x fixed to 1
+```
+
+This can expose pairs that look globally similar but behave differently in
+conditioned input regions. Boolean-difference sensitivity features use:
+
+```text
+df/dx = f_x1 XOR f_x0
+```
+
+to estimate how strongly each primary input affects each node. The feature layer
+records cosine similarity, L1/L2 distance, dominant-variable agreement,
+inactive-variable agreement, rank correlation, and Boolean-difference signature
+similarity.
+
+Evidence labels are explicit. Exhaustive cofactor/sensitivity rows are
+`formal_exhaustive` for the evaluated support. Sampled rows are
+`sampled_estimate` and are ranking heuristics only. SAT/CEC remains the
+authority for exact functional equivalence.
+
+The committed lightweight ablation uses 65 seed-target groups and 88
+candidate-feature rows from `c432`, `c2670`, and `c6288` across available
+`balance`, `rewrite`, `resyn2`, and `dc2` rows. It compares:
+
+```text
+baseline
+cofactor_only
+sensitivity_only
+cofactor_plus_sensitivity
+full_combined
+```
+
+On this subset, the enhanced rankers tie the baseline rather than improve it:
+
+```text
+precision@1:                 0.3385 for every mode
+mean reciprocal rank:        1.00 for every mode
+mean first verified rank:    1.00 for every mode
+verified recoveries budget 5: 22 for every mode
+```
+
+This means the current small labeled subset is already saturated by the
+baseline. The new contribution is the reusable feature/evidence layer and the
+ablation harness needed to test larger or harder candidate pools without
+overstating sampled estimates.
+
 ## 9. Main Findings
 
 1. Exact matching is reliable when internal nodes survive optimization.
@@ -217,6 +272,8 @@ points using a layered exact/formal/approximate strategy.
    proofs.
 7. Aggressive optimization still leaves many unresolved nodes, which is useful
    evidence for future ODC-aware and timing-aware work.
+8. Cofactor- and sensitivity-aware ranking features are now available, but the
+   lightweight ablation ties the baseline on the current small labeled subset.
 
 ## 10. Limitations
 

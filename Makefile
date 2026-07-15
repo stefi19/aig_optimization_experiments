@@ -2,7 +2,7 @@ ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 PYTHON ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; else echo python3; fi)
 
-.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance abc-timing-probe yosys-source-probe source-map-prototype register-suggestions contextual-error-analysis contextual-critical-path-map contextual-research-plots research-plots iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map timing-path-probe full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
+.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance abc-timing-probe yosys-source-probe source-map-prototype register-suggestions contextual-error-analysis contextual-critical-path-map contextual-research-plots research-plots cofactor-sensitivity-analysis functional-ranking-ablation functional-ranking-plots enhanced-critical-path-map check-functional-ranking-results iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map timing-path-probe full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -214,6 +214,25 @@ contextual-critical-path-map: contextual-error-analysis
 
 contextual-research-plots: contextual-error-analysis
 	@echo "Contextual plots written to results/plots/contextual_* and results/plots/global_vs_contextual_error.png"
+
+cofactor-sensitivity-analysis:
+	@echo "Computing Shannon-cofactor and sensitivity ranking features"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/cofactor_sensitivity_correspondence_analysis.py
+
+functional-ranking-ablation: cofactor-sensitivity-analysis
+	@echo "Comparing functional ranking ablations"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/compare_functional_ranking_ablations.py
+
+functional-ranking-plots: functional-ranking-ablation
+	@echo "Functional ranking plots written to results/plots/functional_*"
+
+enhanced-critical-path-map: cofactor-sensitivity-analysis
+	@echo "Joining enhanced ranking features onto critical-path mappings"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/enhanced_critical_path_mapping.py
+
+check-functional-ranking-results:
+	@echo "Checking functional ranking result schemas"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_functional_ranking_results.py
 
 full-research-pipeline: generate-variants analyze benchmark-manifest sat-pipeline topk-eval ablation region cegar-refine research-plots test
 	@echo ""

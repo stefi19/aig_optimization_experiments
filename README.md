@@ -2068,6 +2068,104 @@ partly-formal way to rank near-correspondences for unmatched optimized nodes.
 
 ---
 
+## Cofactor- and Sensitivity-Aware Correspondence Ranking
+
+The latest ranking milestone adds richer functional features for candidate
+ordering without changing the evidence model. A high score is still only a
+heuristic signal: **SAT/CEC or exhaustive truth-table comparison is required**
+before claiming formal equivalence.
+
+For a node function `f` and primary input `x`, the new feature layer measures
+Shannon cofactors:
+
+```text
+f_x0 = f with x fixed to 0
+f_x1 = f with x fixed to 1
+```
+
+It compares the optimized target node and original candidate under aligned
+primary-input assignments and records mean, maximum, minimum, and variance of
+cofactor branch error, a bounded cofactor-consistency score, exact/sampled branch
+counts, and best/worst cofactor variables.
+
+The Boolean-difference layer estimates sensitivity:
+
+```text
+df/dx = f_x1 XOR f_x0
+```
+
+Support overlap only says which variables may matter. Sensitivity estimates how
+strongly each variable affects the node. The new CSV therefore records
+sensitivity cosine similarity, L1/L2 distance, dominant-variable agreement,
+inactive-variable agreement, rank correlation, and Boolean-difference signature
+similarity.
+
+Evidence is explicit:
+
+- `formal_exhaustive`: feature values were computed exhaustively over the
+  evaluated support.
+- `sampled_estimate`: feature values came from deterministic sampled patterns.
+- `unresolved`: the feature could not be computed safely, with a skipped reason.
+
+The lightweight committed run uses 65 seed-target groups, 88 candidate-feature rows,
+two deterministic seeds, and the selected ISCAS-85 subset (`c432`, `c2670`,
+`c6288`) across available `balance`, `rewrite`, `resyn2`, and `dc2` rows. In
+this subset, the enhanced modes did **not** improve over the baseline: all five
+ranking modes produced precision@1 = 0.3385, mean reciprocal rank = 1.0, mean
+first verified rank = 1.0, and 22 verified recoveries under SAT/CEC budgets 1,
+3, 5, and 10. The result is still useful because it establishes a reusable
+feature/evidence layer and shows that this small subset is already saturated by
+the baseline ranking.
+
+Ranking modes:
+
+- `baseline`
+- `cofactor_only`
+- `sensitivity_only`
+- `cofactor_plus_sensitivity`
+- `full_combined`
+
+Outputs:
+
+- `results/cofactor_sensitivity/cofactor_sensitivity_features.csv`
+- `results/cofactor_sensitivity/cofactor_sensitivity_summary.md`
+- `results/ranking_ablation/ranking_ablation_overall.csv`
+- `results/ranking_ablation/ranking_ablation_by_benchmark.csv`
+- `results/ranking_ablation/ranking_ablation_by_optimization.csv`
+- `results/ranking_ablation/ranking_ablation_by_support_bucket.csv`
+- `results/ranking_ablation/ranking_ablation_seed_stability.csv`
+- `results/ranking_ablation/ranking_ablation_summary.md`
+- `results/ranking_ablation/critical_path_enhanced_ranking.csv`
+
+Plots:
+
+- `results/plots/functional_precision_at_k_by_mode.png`
+- `results/plots/functional_mrr_by_mode.png`
+- `results/plots/functional_sat_budget_recoveries.png`
+- `results/plots/functional_baseline_vs_enhanced_verified_rank.png`
+- `results/plots/functional_cofactor_consistency_by_status.png`
+- `results/plots/functional_sensitivity_similarity_by_status.png`
+- `results/plots/functional_improvement_by_optimization.png`
+- `results/plots/functional_improvement_by_support_bucket.png`
+- `results/plots/functional_seed_rank_stability.png`
+- `results/plots/functional_critical_path_unresolved_budget.png`
+
+Run:
+
+```bash
+make cofactor-sensitivity-analysis
+make functional-ranking-ablation
+make functional-ranking-plots
+make enhanced-critical-path-map
+make check-functional-ranking-results
+```
+
+The critical-path integration currently joins enhanced rank evidence onto the
+existing structural critical-path mapping. It does not rerun SAT/CEC with a new
+budget, so unresolved critical-path recovery is unchanged in this milestone.
+
+---
+
 ## Critical-Path Back-Mapping Prototype
 
 This is the first end-to-end version of the final tool idea: take a path in the

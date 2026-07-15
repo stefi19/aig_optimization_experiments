@@ -1,0 +1,12 @@
+benchmark,optimization,optimized_node,original_node,seed_count,rank_mean,rank_min,rank_max,rank_spread
+external_iscas85_c2670,dc2,new_n471,new_n553,2,1.0,1,1,0
+external_iscas85_c2670,dc2,new_n527,new_n554,2,1.0,1,1,0
+external_iscas85_c432,dc2,new_n105,new_n161,2,1.0,1,1,0
+external_iscas85_c432,dc2,new_n120,new_n149,2,1.0,1,1,0
+external_iscas85_c432,dc2,new_n134,new_n167,2,1.0,1,1,0
+external_iscas85_c432,resyn2,new_n110,new_n124,2,1.0,1,1,0
+external_iscas85_c432,resyn2,new_n111,new_n125,2,1.0,1,1,0
+external_iscas85_c432,rewrite,new_n105,new_n111,2,1.0,1,1,0
+external_iscas85_c432,rewrite,new_n106,new_n112,2,1.0,1,1,0
+external_iscas85_c432,rewrite,new_n110,new_n118,2,1.0,1,1,0
+external_iscas85_c432,rewrite,new_n111,new_n119,2,1.0,1,1,0
