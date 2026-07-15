@@ -1,0 +1,8 @@
+.model bitmanip_shift_left_w2
+.inputs a_0 a_1
+.outputs y_0 y_1
+.names y_0
+.names a_0 a_1 y_1
+10 1
+11 1
+.end

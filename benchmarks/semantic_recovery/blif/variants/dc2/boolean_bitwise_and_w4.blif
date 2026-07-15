@@ -1,0 +1,13 @@
+# Benchmark "boolean_bitwise_and_w4" written by ABC on Thu Jul 16 00:39:46 2026
+.model boolean_bitwise_and_w4
+.inputs a_0 a_1 a_2 a_3 b_0 b_1 b_2 b_3
+.outputs y_0 y_1 y_2 y_3
+.names a_0 b_0 y_0
+11 1
+.names a_1 b_1 y_1
+11 1
+.names a_2 b_2 y_2
+11 1
+.names a_3 b_3 y_3
+11 1
+.end

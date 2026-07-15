@@ -1,0 +1,9 @@
+.model bitmanip_slice_low_w3
+.inputs a_0 a_1 a_2
+.outputs y
+.names a_0 a_1 a_2 y
+100 1
+110 1
+101 1
+111 1
+.end

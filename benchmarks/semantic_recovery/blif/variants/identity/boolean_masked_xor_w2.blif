@@ -1,0 +1,14 @@
+.model boolean_masked_xor_w2
+.inputs a_0 a_1 mask
+.outputs y_0 y_1
+.names a_0 a_1 mask y_0
+100 1
+110 1
+001 1
+011 1
+.names a_0 a_1 mask y_1
+010 1
+110 1
+001 1
+101 1
+.end

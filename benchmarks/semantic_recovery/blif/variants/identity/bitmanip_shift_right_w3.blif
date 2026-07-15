@@ -1,0 +1,15 @@
+.model bitmanip_shift_right_w3
+.inputs a_0 a_1 a_2
+.outputs y_0 y_1 y_2
+.names a_0 a_1 a_2 y_0
+010 1
+110 1
+011 1
+111 1
+.names a_0 a_1 a_2 y_1
+001 1
+101 1
+011 1
+111 1
+.names y_2
+.end

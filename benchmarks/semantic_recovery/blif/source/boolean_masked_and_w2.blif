@@ -1,0 +1,10 @@
+.model boolean_masked_and_w2
+.inputs a_0 a_1 mask
+.outputs y_0 y_1
+.names a_0 a_1 mask y_0
+101 1
+111 1
+.names a_0 a_1 mask y_1
+011 1
+111 1
+.end

@@ -1,0 +1,11 @@
+# Benchmark "bitmanip_rotate_left_w3" written by ABC on Thu Jul 16 01:06:32 2026
+.model bitmanip_rotate_left_w3
+.inputs a_0 a_1 a_2
+.outputs y_0 y_1 y_2
+.names a_2 y_0
+1 1
+.names a_0 y_1
+1 1
+.names a_1 y_2
+1 1
+.end

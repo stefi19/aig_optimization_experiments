@@ -1,0 +1,13 @@
+# Benchmark "boolean_masked_and_w4" written by ABC on Thu Jul 16 00:39:51 2026
+.model boolean_masked_and_w4
+.inputs a_0 a_1 a_2 a_3 mask
+.outputs y_0 y_1 y_2 y_3
+.names a_0 mask y_0
+11 1
+.names a_1 mask y_1
+11 1
+.names a_2 mask y_2
+11 1
+.names a_3 mask y_3
+11 1
+.end

@@ -1,0 +1,133 @@
+# Benchmark "arithmetic_sub_w4" written by ABC on Thu Jul 16 00:39:30 2026
+.model arithmetic_sub_w4
+.inputs a_0 a_1 a_2 a_3 b_0 b_1 b_2 b_3
+.outputs y_0 y_1 y_2 y_3 y_4
+.names a_0 b_0 new_n14
+01 1
+.names a_0 b_0 new_n15
+10 1
+.names new_n14 new_n15 y_0
+00 0
+.names a_1 b_1 new_n17
+11 1
+.names a_1 b_1 new_n18
+00 1
+.names new_n17 new_n18 new_n19
+00 1
+.names new_n14 new_n19 new_n20
+10 1
+.names a_0 b_0 new_n21
+00 1
+.names a_0 new_n21 new_n22
+00 1
+.names new_n19 new_n22 new_n23
+10 1
+.names new_n20 new_n23 y_1
+00 0
+.names a_1 b_0 new_n25
+11 1
+.names a_0 new_n25 new_n26
+01 1
+.names a_2 b_2 new_n27
+01 1
+.names a_2 b_2 new_n28
+10 1
+.names new_n27 new_n28 new_n29
+00 1
+.names a_1 new_n29 new_n30
+10 1
+.names a_2 b_2 new_n31
+11 1
+.names a_2 b_2 new_n32
+00 1
+.names new_n31 new_n32 new_n33
+00 1
+.names b_0 new_n33 new_n34
+10 1
+.names a_0 new_n34 new_n35
+01 1
+.names new_n30 new_n35 new_n36
+00 1
+.names new_n26 new_n36 new_n37
+00 1
+.names a_1 new_n22 new_n38
+00 1
+.names new_n26 new_n38 new_n39
+00 1
+.names b_1 new_n33 new_n40
+11 1
+.names b_1 new_n33 new_n41
+00 1
+.names new_n40 new_n41 new_n42
+00 1
+.names new_n39 new_n42 new_n43
+01 1
+.names new_n37 new_n43 y_2
+00 0
+.names a_3 b_3 new_n45
+11 1
+.names a_3 b_3 new_n46
+00 1
+.names new_n45 new_n46 new_n47
+00 1
+.names a_1 b_1 new_n48
+10 1
+.names a_1 b_1 new_n49
+01 1
+.names new_n14 new_n49 new_n50
+00 1
+.names new_n48 new_n50 new_n51
+00 1
+.names new_n47 new_n51 new_n52
+01 1
+.names a_2 new_n52 new_n53
+01 1
+.names a_3 b_3 new_n54
+01 1
+.names a_3 b_3 new_n55
+10 1
+.names new_n54 new_n55 new_n56
+00 1
+.names new_n51 new_n56 new_n57
+00 1
+.names a_2 new_n57 new_n58
+11 1
+.names new_n53 new_n58 new_n59
+00 1
+.names a_0 new_n19 new_n60
+00 1
+.names b_0 new_n60 new_n61
+01 1
+.names new_n49 new_n60 new_n62
+00 1
+.names new_n61 new_n62 new_n63
+00 1
+.names a_2 new_n63 new_n64
+10 1
+.names a_2 new_n63 new_n65
+01 1
+.names new_n64 new_n65 new_n66
+00 1
+.names b_2 new_n47 new_n67
+11 1
+.names b_2 new_n47 new_n68
+00 1
+.names new_n67 new_n68 new_n69
+00 1
+.names new_n66 new_n69 new_n70
+11 1
+.names new_n59 new_n70 y_3
+10 0
+.names new_n27 new_n54 new_n72
+00 1
+.names new_n55 new_n72 new_n73
+00 1
+.names new_n33 new_n47 new_n74
+00 1
+.names new_n20 new_n49 new_n75
+00 1
+.names new_n74 new_n75 new_n76
+10 1
+.names new_n73 new_n76 y_4
+00 0
+.end

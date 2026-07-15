@@ -1,0 +1,23 @@
+# Benchmark "boolean_parity_w4" written by ABC on Thu Jul 16 01:06:41 2026
+.model boolean_parity_w4
+.inputs a_0 a_1 a_2 a_3
+.outputs y
+.names a_2 a_3 new_n6
+01 1
+.names a_2 a_3 new_n7
+10 1
+.names new_n6 new_n7 new_n8
+00 1
+.names a_0 a_1 new_n9
+11 1
+.names a_0 a_1 new_n10
+00 1
+.names new_n9 new_n10 new_n11
+00 1
+.names new_n8 new_n11 new_n12
+00 1
+.names new_n8 new_n11 new_n13
+11 1
+.names new_n12 new_n13 y
+00 0
+.end

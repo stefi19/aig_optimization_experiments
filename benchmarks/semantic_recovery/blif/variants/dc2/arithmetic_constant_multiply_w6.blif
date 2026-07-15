@@ -1,0 +1,103 @@
+# Benchmark "arithmetic_constant_multiply_w6" written by ABC on Thu Jul 16 00:39:21 2026
+.model arithmetic_constant_multiply_w6
+.inputs a_0 a_1 a_2 a_3 a_4 a_5
+.outputs y_0 y_1 y_2 y_3 y_4 y_5 y_6 y_7
+.names a_0 a_1 new_n15
+01 1
+.names a_0 a_1 new_n16
+10 1
+.names new_n15 new_n16 y_1
+00 0
+.names a_2 new_n15 new_n18
+10 1
+.names a_2 new_n15 new_n19
+01 1
+.names new_n18 new_n19 y_2
+00 0
+.names a_0 a_1 new_n21
+11 1
+.names a_2 new_n21 new_n22
+00 1
+.names a_1 a_2 new_n23
+11 1
+.names new_n22 new_n23 new_n24
+00 1
+.names a_3 new_n24 new_n25
+11 1
+.names a_3 new_n24 new_n26
+00 1
+.names new_n25 new_n26 y_3
+00 1
+.names a_3 new_n23 new_n28
+01 1
+.names a_2 a_3 new_n29
+01 1
+.names new_n28 new_n29 new_n30
+00 1
+.names a_1 a_2 new_n31
+10 1
+.names a_4 new_n31 new_n32
+00 1
+.names new_n30 new_n32 new_n33
+00 1
+.names a_4 new_n30 new_n34
+01 1
+.names new_n33 new_n34 new_n35
+00 1
+.names a_3 new_n31 new_n36
+11 1
+.names a_0 a_4 new_n37
+11 1
+.names a_0 a_4 new_n38
+00 1
+.names new_n37 new_n38 new_n39
+00 1
+.names new_n36 new_n39 new_n40
+10 1
+.names new_n35 new_n40 y_4
+00 0
+.names a_3 a_4 new_n42
+01 1
+.names a_3 a_4 new_n43
+10 1
+.names new_n21 new_n43 new_n44
+11 1
+.names new_n42 new_n44 new_n45
+00 1
+.names a_2 new_n45 new_n46
+00 1
+.names a_2 new_n43 new_n47
+11 1
+.names a_1 new_n42 new_n48
+01 1
+.names new_n47 new_n48 new_n49
+00 1
+.names a_5 new_n49 new_n50
+01 1
+.names new_n46 new_n50 new_n51
+01 1
+.names new_n23 new_n42 new_n52
+01 1
+.names new_n22 new_n43 new_n53
+01 1
+.names new_n52 new_n53 new_n54
+00 1
+.names a_5 new_n54 new_n55
+10 1
+.names new_n51 new_n55 y_5
+00 1
+.names a_4 a_5 new_n57
+00 1
+.names a_4 a_5 new_n58
+11 1
+.names new_n57 new_n58 new_n59
+00 1
+.names new_n54 new_n59 y_6
+11 1
+.names a_4 new_n53 new_n61
+00 1
+.names a_5 new_n61 y_7
+10 1
+.names a_0 y_0
+1 1
+.end

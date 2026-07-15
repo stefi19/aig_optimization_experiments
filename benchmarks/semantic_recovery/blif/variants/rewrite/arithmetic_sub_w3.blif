@@ -1,0 +1,75 @@
+# Benchmark "arithmetic_sub_w3" written by ABC on Thu Jul 16 00:39:29 2026
+.model arithmetic_sub_w3
+.inputs a_0 a_1 a_2 b_0 b_1 b_2
+.outputs y_0 y_1 y_2 y_3
+.names a_0 b_0 new_n11
+01 1
+.names a_0 b_0 new_n12
+10 1
+.names new_n11 new_n12 y_0
+00 0
+.names a_1 b_1 new_n14
+11 1
+.names a_1 b_1 new_n15
+00 1
+.names new_n14 new_n15 new_n16
+00 1
+.names new_n11 new_n16 new_n17
+10 1
+.names a_0 b_0 new_n18
+00 1
+.names a_0 new_n18 new_n19
+00 1
+.names new_n16 new_n19 new_n20
+10 1
+.names new_n17 new_n20 y_1
+00 0
+.names a_1 b_0 new_n22
+11 1
+.names a_0 new_n22 new_n23
+01 1
+.names a_2 b_2 new_n24
+01 1
+.names a_2 b_2 new_n25
+10 1
+.names new_n24 new_n25 new_n26
+00 1
+.names a_1 new_n26 new_n27
+10 1
+.names a_2 b_2 new_n28
+11 1
+.names a_2 b_2 new_n29
+00 1
+.names new_n28 new_n29 new_n30
+00 1
+.names b_0 new_n30 new_n31
+10 1
+.names a_0 new_n31 new_n32
+01 1
+.names new_n27 new_n32 new_n33
+00 1
+.names new_n23 new_n33 new_n34
+00 1
+.names a_1 new_n19 new_n35
+00 1
+.names new_n23 new_n35 new_n36
+00 1
+.names b_1 new_n30 new_n37
+11 1
+.names b_1 new_n30 new_n38
+00 1
+.names new_n37 new_n38 new_n39
+00 1
+.names new_n36 new_n39 new_n40
+01 1
+.names new_n34 new_n40 y_2
+00 0
+.names a_1 b_1 new_n42
+01 1
+.names new_n17 new_n42 new_n43
+00 1
+.names new_n25 new_n43 new_n44
+00 1
+.names new_n24 new_n44 y_3
+00 0
+.end

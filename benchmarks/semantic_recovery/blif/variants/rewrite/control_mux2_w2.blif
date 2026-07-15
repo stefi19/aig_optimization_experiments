@@ -1,0 +1,29 @@
+# Benchmark "control_mux2_w2" written by ABC on Thu Jul 16 00:40:05 2026
+.model control_mux2_w2
+.inputs a_0 a_1 b_0 b_1 sel
+.outputs y_0 y_1
+.names a_0 sel new_n8
+01 1
+.names a_0 new_n8 new_n9
+00 1
+.names b_0 new_n9 new_n10
+10 1
+.names b_0 sel new_n11
+00 1
+.names a_0 new_n11 new_n12
+11 1
+.names new_n10 new_n12 y_0
+00 0
+.names a_1 sel new_n14
+01 1
+.names a_1 new_n14 new_n15
+00 1
+.names b_1 new_n15 new_n16
+10 1
+.names b_1 sel new_n17
+00 1
+.names a_1 new_n17 new_n18
+11 1
+.names new_n16 new_n18 y_1
+00 0
+.end

@@ -445,6 +445,30 @@ step is logic grafting with context-appropriate formal validation on the
 ODC-recovered subset, while keeping speculative reduction as a fallback for
 remaining failures.
 
+### Semantic Recovery Benchmark Suite
+
+The newest milestone adds ground-truth inputs for the next layer of the work:
+verified semantic recovery from recovered gate-level regions back toward compact
+RTL-like expressions.  The generator creates 258 deterministic RTL cases across
+arithmetic, control, Boolean, comparison, and bit-manipulation families.  It
+covers the requested widths 2, 3, 4, 6, 8, 12, and 16, with additional 1-bit
+control inputs and mixed-width operands where needed.
+
+For bounded cases, it also emits exact source BLIFs and ABC flow variants:
+
+```text
+semantic cases:              258
+exact source-BLIF cases:     127
+variant rows:              2,322
+non-identity generated flow variants per flow: 54
+ABC variant failures:          0
+```
+
+The benchmark layer is intentionally not a semantic-recovery algorithm yet.  It
+records source expressions, bus widths, constants, control inputs, and boundary
+metadata so future template recovery, CEGIS validation, and cost-aware RTL
+selection can be measured against known ground truth.
+
 ## 9. Main Findings
 
 1. Exact matching is reliable when internal nodes survive optimization.
@@ -471,6 +495,8 @@ remaining failures.
 10. Boundary-recovery diagnosis showed the identity baseline was not clean; the
     repaired semantics milestone now makes identity exact on 14 / 14 canonical
     eligible COIs.
+11. The semantic-recovery benchmark suite now provides source-level ground truth
+    for later RTL-expression inference, but no recovered RTL is claimed yet.
 
 ## 10. Limitations
 
@@ -492,6 +518,8 @@ remaining failures.
   edits.
 - Boundary recovery is region-level evidence, not direct node-level equivalence
   for every internal node.
+- The semantic-recovery suite supplies ground truth and bounded variants; it
+  does not yet infer expressions from gates or prove recovered RTL templates.
 - The method is not exhaustive; it analyzes selected ranked candidates and
   selected case-study circuits.
 
@@ -512,6 +540,8 @@ The most important next steps are:
    and stable.
 7. Implement validated logic grafting only after boundary recovery is robust
    enough to avoid whole-design expansion and cycle risks.
+8. Use the semantic-recovery benchmark suite to add typed expression grammars,
+   arithmetic parameter inference, and CEGIS-based RTL candidate validation.
 
 ## Short Supervisor Summary
 
@@ -527,6 +557,12 @@ critical-path back-mapping prototype uses structural longest paths as a timing
 proxy and maps optimized path nodes back to original nodes using exact,
 complemented, SAT/CEC-proven, and approximate layers. On `c432`, `c2670`, and
 `c6288`, it maps 76.5% of 1,686 structural critical-path nodes.
+
+The latest benchmark milestone prepares the source-semantics layer: 258
+generated RTL cases with known expressions and bounded BLIF/ABC variants are now
+available under `benchmarks/semantic_recovery/` and
+`results/semantic_recovery/`.  This is infrastructure for future semantic
+template recovery, not a claim that high-level RTL has already been inferred.
 
 The newest contextual error-metric prototype builds experimental substituted
 circuits and compares global internal-node distance with output-observable

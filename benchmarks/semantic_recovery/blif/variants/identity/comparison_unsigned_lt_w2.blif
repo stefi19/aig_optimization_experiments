@@ -1,0 +1,11 @@
+.model comparison_unsigned_lt_w2
+.inputs a_0 a_1 b_0 b_1
+.outputs y
+.names a_0 a_1 b_0 b_1 y
+0010 1
+0001 1
+1001 1
+0011 1
+1011 1
+0111 1
+.end

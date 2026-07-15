@@ -1,0 +1,41 @@
+# Benchmark "control_priority_mux_w2" written by ABC on Thu Jul 16 00:40:07 2026
+.model control_priority_mux_w2
+.inputs a_0 a_1 b_0 b_1 c_0 c_1 s0 s1
+.outputs y_0 y_1
+.names s0 s1 new_n11
+01 1
+.names b_0 new_n11 new_n12
+11 1
+.names s0 new_n12 new_n13
+00 1
+.names a_0 new_n13 new_n14
+10 1
+.names a_0 b_0 new_n15
+01 1
+.names new_n11 new_n15 new_n16
+11 1
+.names new_n14 new_n16 new_n17
+00 1
+.names s0 s1 new_n18
+00 1
+.names c_0 new_n18 new_n19
+11 1
+.names new_n17 new_n19 y_0
+10 0
+.names b_1 new_n11 new_n21
+11 1
+.names s0 new_n21 new_n22
+00 1
+.names a_1 new_n22 new_n23
+10 1
+.names a_1 b_1 new_n24
+01 1
+.names new_n11 new_n24 new_n25
+11 1
+.names new_n23 new_n25 new_n26
+00 1
+.names c_1 new_n18 new_n27
+11 1
+.names new_n26 new_n27 y_1
+10 0
+.end

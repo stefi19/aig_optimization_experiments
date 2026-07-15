@@ -1,0 +1,19 @@
+# Benchmark "bitmanip_sign_extend_w2" written by ABC on Thu Jul 16 01:06:34 2026
+.model bitmanip_sign_extend_w2
+.inputs a_0 a_1
+.outputs y_0 y_1 y_2 y_3
+.names a_0 a_1 new_n7
+10 1
+.names a_0 a_1 new_n8
+11 1
+.names new_n7 new_n8 y_0
+00 0
+.names a_0 a_1 new_n10
+01 1
+.names new_n8 new_n10 y_1
+00 0
+.names y_1 y_2
+1 1
+.names y_1 y_3
+1 1
+.end

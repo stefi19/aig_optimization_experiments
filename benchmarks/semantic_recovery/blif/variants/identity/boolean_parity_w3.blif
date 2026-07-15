@@ -1,0 +1,9 @@
+.model boolean_parity_w3
+.inputs a_0 a_1 a_2
+.outputs y
+.names a_0 a_1 a_2 y
+100 1
+010 1
+001 1
+111 1
+.end

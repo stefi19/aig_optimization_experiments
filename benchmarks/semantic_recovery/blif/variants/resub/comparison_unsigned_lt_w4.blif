@@ -1,0 +1,57 @@
+# Benchmark "comparison_unsigned_lt_w4" written by ABC on Thu Jul 16 00:40:04 2026
+.model comparison_unsigned_lt_w4
+.inputs a_0 a_1 a_2 a_3 b_0 b_1 b_2 b_3
+.outputs y
+.names b_2 b_3 new_n10
+10 1
+.names a_2 new_n10 new_n11
+01 1
+.names b_3 new_n11 new_n12
+00 1
+.names a_3 new_n12 new_n13
+00 1
+.names a_2 a_3 new_n14
+01 1
+.names b_2 b_3 new_n15
+11 1
+.names new_n14 new_n15 new_n16
+11 1
+.names new_n13 new_n16 new_n17
+00 1
+.names a_3 b_3 new_n18
+11 1
+.names a_3 b_3 new_n19
+00 1
+.names new_n18 new_n19 new_n20
+00 1
+.names a_2 b_2 new_n21
+11 1
+.names a_2 b_2 new_n22
+00 1
+.names new_n21 new_n22 new_n23
+00 1
+.names new_n20 new_n23 new_n24
+00 1
+.names b_1 new_n24 new_n25
+11 1
+.names a_1 new_n25 new_n26
+01 1
+.names new_n17 new_n26 new_n27
+10 1
+.names a_1 b_1 new_n28
+11 1
+.names a_1 b_1 new_n29
+00 1
+.names new_n28 new_n29 new_n30
+00 1
+.names new_n23 new_n30 new_n31
+00 1
+.names new_n20 new_n31 new_n32
+01 1
+.names b_0 new_n32 new_n33
+11 1
+.names a_0 new_n33 new_n34
+01 1
+.names new_n27 new_n34 y
+10 0
+.end

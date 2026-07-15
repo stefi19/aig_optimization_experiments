@@ -1,0 +1,29 @@
+# Benchmark "control_nested_mux_w2" written by ABC on Thu Jul 16 00:40:06 2026
+.model control_nested_mux_w2
+.inputs a_0 a_1 b_0 b_1 c_0 c_1 sel0 sel1
+.outputs y_0 y_1
+.names sel0 sel1 new_n11
+11 1
+.names c_0 new_n11 new_n12
+11 1
+.names a_0 sel0 new_n13
+10 1
+.names sel0 sel1 new_n14
+10 1
+.names b_0 new_n14 new_n15
+11 1
+.names new_n13 new_n15 new_n16
+00 1
+.names new_n12 new_n16 y_0
+01 0
+.names c_1 new_n11 new_n18
+11 1
+.names a_1 sel0 new_n19
+10 1
+.names b_1 new_n14 new_n20
+11 1
+.names new_n19 new_n20 new_n21
+00 1
+.names new_n18 new_n21 y_1
+01 0
+.end

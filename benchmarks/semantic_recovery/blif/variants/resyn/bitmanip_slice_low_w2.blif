@@ -1,0 +1,11 @@
+# Benchmark "bitmanip_slice_low_w2" written by ABC on Thu Jul 16 01:06:35 2026
+.model bitmanip_slice_low_w2
+.inputs a_0 a_1
+.outputs y
+.names a_0 a_1 new_n4
+10 1
+.names a_0 a_1 new_n5
+11 1
+.names new_n4 new_n5 y
+00 0
+.end

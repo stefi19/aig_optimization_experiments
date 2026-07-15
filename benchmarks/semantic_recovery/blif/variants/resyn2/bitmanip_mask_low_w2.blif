@@ -1,0 +1,9 @@
+# Benchmark "bitmanip_mask_low_w2" written by ABC on Thu Jul 16 01:06:31 2026
+.model bitmanip_mask_low_w2
+.inputs a_0 a_1
+.outputs y_0 y_1
+.names y_1
+ 0
+.names a_0 y_0
+1 1
+.end

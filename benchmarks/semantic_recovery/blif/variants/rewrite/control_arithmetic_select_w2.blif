@@ -1,0 +1,39 @@
+# Benchmark "control_arithmetic_select_w2" written by ABC on Thu Jul 16 00:40:04 2026
+.model control_arithmetic_select_w2
+.inputs a_0 a_1 b_0 b_1 sel
+.outputs y_0 y_1 y_2
+.names a_0 b_0 new_n9
+01 1
+.names a_0 b_0 new_n10
+10 1
+.names new_n9 new_n10 y_0
+00 0
+.names a_1 b_1 new_n12
+01 1
+.names a_1 b_1 new_n13
+10 1
+.names new_n12 new_n13 new_n14
+00 1
+.names b_0 sel new_n15
+11 1
+.names a_0 new_n15 new_n16
+11 1
+.names new_n14 new_n16 new_n17
+01 1
+.names new_n14 new_n16 new_n18
+10 1
+.names new_n17 new_n18 y_1
+00 1
+.names a_0 b_0 new_n20
+11 1
+.names b_1 new_n20 new_n21
+00 1
+.names a_1 new_n21 new_n22
+10 1
+.names new_n12 new_n20 new_n23
+11 1
+.names new_n22 new_n23 new_n24
+00 1
+.names sel new_n24 y_2
+10 1
+.end

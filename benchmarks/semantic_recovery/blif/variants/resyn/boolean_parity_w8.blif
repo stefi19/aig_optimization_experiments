@@ -1,0 +1,47 @@
+# Benchmark "boolean_parity_w8" written by ABC on Thu Jul 16 00:39:55 2026
+.model boolean_parity_w8
+.inputs a_0 a_1 a_2 a_3 a_4 a_5 a_6 a_7
+.outputs y
+.names a_6 a_7 new_n10
+01 1
+.names a_6 a_7 new_n11
+10 1
+.names new_n10 new_n11 new_n12
+00 1
+.names a_4 a_5 new_n13
+01 1
+.names a_4 a_5 new_n14
+10 1
+.names new_n13 new_n14 new_n15
+00 1
+.names a_2 a_3 new_n16
+01 1
+.names a_2 a_3 new_n17
+10 1
+.names new_n16 new_n17 new_n18
+00 1
+.names a_0 a_1 new_n19
+01 1
+.names a_0 a_1 new_n20
+10 1
+.names new_n19 new_n20 new_n21
+00 1
+.names new_n18 new_n21 new_n22
+01 1
+.names new_n18 new_n21 new_n23
+10 1
+.names new_n22 new_n23 new_n24
+00 1
+.names new_n15 new_n24 new_n25
+01 1
+.names new_n15 new_n24 new_n26
+10 1
+.names new_n25 new_n26 new_n27
+00 1
+.names new_n12 new_n27 new_n28
+01 1
+.names new_n12 new_n27 new_n29
+10 1
+.names new_n28 new_n29 y
+00 0
+.end

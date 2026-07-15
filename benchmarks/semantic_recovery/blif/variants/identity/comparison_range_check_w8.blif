@@ -1,0 +1,9 @@
+.model comparison_range_check_w8
+.inputs a_0 a_1 a_2 a_3 a_4 a_5 a_6 a_7
+.outputs y
+.names a_0 a_1 a_2 a_3 a_4 a_5 a_6 a_7 y
+01000000 1
+11000000 1
+00100000 1
+10100000 1
+.end

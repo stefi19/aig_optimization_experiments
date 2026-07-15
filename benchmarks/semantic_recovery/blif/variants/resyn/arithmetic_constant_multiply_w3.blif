@@ -1,0 +1,37 @@
+# Benchmark "arithmetic_constant_multiply_w3" written by ABC on Thu Jul 16 01:06:27 2026
+.model arithmetic_constant_multiply_w3
+.inputs a_0 a_1 a_2
+.outputs y_0 y_1 y_2 y_3 y_4
+.names a_0 a_1 new_n9
+01 1
+.names a_0 a_1 new_n10
+10 1
+.names new_n9 new_n10 y_1
+00 0
+.names a_0 a_1 new_n12
+00 1
+.names a_0 new_n12 new_n13
+00 1
+.names a_2 new_n13 new_n14
+10 1
+.names a_1 a_2 new_n15
+10 1
+.names a_0 new_n15 new_n16
+01 1
+.names new_n14 new_n16 y_2
+00 0
+.names a_1 a_2 new_n18
+01 1
+.names new_n15 new_n18 new_n19
+00 1
+.names a_0 new_n19 new_n20
+10 1
+.names a_0 new_n18 new_n21
+01 1
+.names new_n20 new_n21 y_3
+00 0
+.names a_1 a_2 y_4
+11 1
+.names a_0 y_0
+1 1
+.end

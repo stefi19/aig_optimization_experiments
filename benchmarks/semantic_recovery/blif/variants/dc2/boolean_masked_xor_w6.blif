@@ -1,0 +1,41 @@
+# Benchmark "boolean_masked_xor_w6" written by ABC on Thu Jul 16 00:39:54 2026
+.model boolean_masked_xor_w6
+.inputs a_0 a_1 a_2 a_3 a_4 a_5 mask
+.outputs y_0 y_1 y_2 y_3 y_4 y_5
+.names a_0 mask new_n14
+00 1
+.names a_0 mask new_n15
+11 1
+.names new_n14 new_n15 y_0
+00 1
+.names a_1 mask new_n17
+00 1
+.names a_1 mask new_n18
+11 1
+.names new_n17 new_n18 y_1
+00 1
+.names a_2 mask new_n20
+00 1
+.names a_2 mask new_n21
+11 1
+.names new_n20 new_n21 y_2
+00 1
+.names a_3 mask new_n23
+00 1
+.names a_3 mask new_n24
+11 1
+.names new_n23 new_n24 y_3
+00 1
+.names a_4 mask new_n26
+00 1
+.names a_4 mask new_n27
+11 1
+.names new_n26 new_n27 y_4
+00 1
+.names a_5 mask new_n29
+00 1
+.names a_5 mask new_n30
+11 1
+.names new_n29 new_n30 y_5
+00 1
+.end

@@ -1,0 +1,93 @@
+# Benchmark "arithmetic_unsigned_add_w3" written by ABC on Thu Jul 16 00:39:32 2026
+.model arithmetic_unsigned_add_w3
+.inputs a_0 a_1 a_2 b_0 b_1 b_2
+.outputs y_0 y_1 y_2 y_3
+.names a_0 b_0 new_n11
+01 1
+.names a_0 b_0 new_n12
+10 1
+.names new_n11 new_n12 y_0
+00 0
+.names a_1 b_1 new_n14
+01 1
+.names a_1 b_1 new_n15
+10 1
+.names new_n14 new_n15 new_n16
+00 1
+.names b_0 new_n16 new_n17
+10 1
+.names a_0 new_n17 new_n18
+11 1
+.names a_1 b_1 new_n19
+00 1
+.names a_1 b_1 new_n20
+11 1
+.names new_n19 new_n20 new_n21
+00 1
+.names a_0 b_0 new_n22
+11 1
+.names new_n21 new_n22 new_n23
+00 1
+.names new_n18 new_n23 y_1
+00 1
+.names b_1 b_2 new_n25
+01 1
+.names b_1 b_2 new_n26
+10 1
+.names new_n25 new_n26 new_n27
+00 1
+.names a_2 new_n27 new_n28
+11 1
+.names a_2 new_n27 new_n29
+00 1
+.names new_n28 new_n29 new_n30
+00 1
+.names a_1 new_n22 new_n31
+00 1
+.names a_1 b_0 new_n32
+11 1
+.names a_0 new_n32 new_n33
+11 1
+.names new_n31 new_n33 new_n34
+00 1
+.names new_n30 new_n34 new_n35
+01 1
+.names a_2 b_2 new_n36
+01 1
+.names a_2 b_2 new_n37
+10 1
+.names new_n36 new_n37 new_n38
+00 1
+.names new_n22 new_n38 new_n39
+00 1
+.names a_1 new_n39 new_n40
+01 1
+.names b_0 new_n38 new_n41
+11 1
+.names a_0 a_1 new_n42
+11 1
+.names new_n41 new_n42 new_n43
+11 1
+.names new_n40 new_n43 new_n44
+00 1
+.names new_n35 new_n44 y_2
+01 0
+.names new_n16 new_n38 new_n46
+00 1
+.names b_0 new_n46 new_n47
+11 1
+.names a_0 new_n47 new_n48
+11 1
+.names b_2 new_n20 new_n49
+00 1
+.names a_2 new_n49 new_n50
+10 1
+.names b_1 b_2 new_n51
+11 1
+.names a_1 new_n51 new_n52
+11 1
+.names new_n50 new_n52 new_n53
+00 1
+.names new_n48 new_n53 y_3
+01 0
+.end

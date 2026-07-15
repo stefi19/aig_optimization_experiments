@@ -1,0 +1,19 @@
+# Benchmark "comparison_eq_w2" written by ABC on Thu Jul 16 01:06:41 2026
+.model comparison_eq_w2
+.inputs a_0 a_1 b_0 b_1
+.outputs y
+.names a_1 b_1 new_n6
+00 1
+.names a_1 b_1 new_n7
+11 1
+.names new_n6 new_n7 new_n8
+00 1
+.names a_0 b_0 new_n9
+01 1
+.names a_0 b_0 new_n10
+10 1
+.names new_n9 new_n10 new_n11
+00 1
+.names new_n8 new_n11 y
+01 1
+.end

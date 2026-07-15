@@ -1,0 +1,61 @@
+# Benchmark "arithmetic_constant_multiply_w4" written by ABC on Thu Jul 16 01:06:27 2026
+.model arithmetic_constant_multiply_w4
+.inputs a_0 a_1 a_2 a_3
+.outputs y_0 y_1 y_2 y_3 y_4 y_5
+.names a_0 a_1 new_n11
+01 1
+.names a_0 a_1 new_n12
+10 1
+.names new_n11 new_n12 y_1
+00 0
+.names a_2 new_n11 new_n14
+10 1
+.names a_1 a_2 new_n15
+10 1
+.names a_0 new_n15 new_n16
+01 1
+.names new_n14 new_n16 y_2
+00 0
+.names a_2 a_3 new_n18
+00 1
+.names a_2 a_3 new_n19
+11 1
+.names new_n18 new_n19 new_n20
+00 1
+.names a_1 new_n20 new_n21
+00 1
+.names a_0 a_2 new_n22
+10 1
+.names a_3 new_n22 new_n23
+00 1
+.names a_2 a_3 new_n24
+01 1
+.names a_0 new_n24 new_n25
+11 1
+.names new_n23 new_n25 new_n26
+00 1
+.names a_1 new_n26 new_n27
+10 1
+.names new_n21 new_n27 y_3
+00 1
+.names a_1 new_n24 new_n29
+01 1
+.names a_2 a_3 new_n30
+10 1
+.names a_1 new_n30 new_n31
+11 1
+.names new_n29 new_n31 new_n32
+00 1
+.names new_n11 new_n24 new_n33
+11 1
+.names new_n32 new_n33 y_4
+10 0
+.names a_0 new_n15 new_n35
+11 1
+.names a_2 new_n35 new_n36
+00 1
+.names a_3 new_n36 y_5
+10 1
+.names a_0 y_0
+1 1
+.end

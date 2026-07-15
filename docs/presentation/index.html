@@ -955,10 +955,39 @@ by the spec_node cone</pre>
 
     <section class="slide">
       <div class="slide-content two-column">
-        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, and sensitivity features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Boundary recovery is region-level evidence, not direct internal-node equivalence.</p><p>ODC anchors are contextual, not global node equivalence.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>RTL source mapping is a metadata prototype, not integrated back-mapping yet.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
+        <div>
+          <p class="eyebrow">Semantic recovery direction</p>
+          <h2>From matched gates to verified RTL-like expressions</h2>
+          <p>The next layer asks whether a recovered gate-level region can be explained by a compact source-level operator.</p>
+          <pre class="code-block">recovered boundary region
+-> candidate expression
+-> CEGIS / CEC validation
+-> lowest-cost verified RTL</pre>
+        </div>
+        <div class="callout"><h3>Scope of this phase</h3><p>The project now has ground-truth semantic benchmark cases. It does not yet infer RTL from arbitrary recovered regions.</p></div>
+      </div>
+      <aside class="notes">Connect this to the ICCAD-style semantic recovery direction. The important distinction is that the new milestone creates the testbed and known answers, not the full solver.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Generated suite</p>
+          <h2>258 semantic-recovery benchmark cases</h2>
+          <div class="inline-stats"><span>73 arithmetic</span><span>56 bit manipulation</span><span>52 Boolean</span><span>42 comparison</span><span>35 control</span></div>
+          <p>Widths covered: 2, 3, 4, 6, 8, 12, and 16.</p>
+        </div>
+        <div class="checklist future"><p>127 exact source-BLIF cases.</p><p>54 generated small variants per non-identity ABC flow.</p><p>2,322 compact variant-status rows.</p><p>Large truth-table and ABC variants are explicitly skipped rather than overclaimed.</p></div>
+      </div>
+      <aside class="notes">Use this as the reproducibility slide. The suite includes RTL for every case, exact BLIF for bounded-input cases, and ABC variants only where the dense truth-table representation remains small enough to be useful.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, and sensitivity features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Boundary recovery is region-level evidence, not direct internal-node equivalence.</p><p>ODC anchors are contextual, not global node equivalence.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>Semantic benchmark cases are ground truth, not recovered RTL.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
         <div class="callout"><h3>Important idea</h3><p>Unresolved nodes are not simply failures. They show where context, observability don't-cares, or deeper ABC integration may be needed.</p></div>
       </div>
-      <aside class="notes">Use this slide to show research maturity. The ABC-native baseline is a meaningful addition, but it does not remove the need for a correspondence layer. The cofactor/sensitivity milestone adds feature instrumentation, but the committed lightweight subset does not show improvement. The RTL/source and register-suggestion prototypes clarify the final engineering direction without claiming automatic correctness.</aside>
+      <aside class="notes">Use this slide to show research maturity. The ABC-native baseline is a meaningful addition, but it does not remove the need for a correspondence layer. The cofactor/sensitivity milestone adds feature instrumentation, but the committed lightweight subset does not show improvement. The semantic suite supplies known answers for future RTL recovery without claiming the solver exists yet.</aside>
     </section>
 
     <section class="slide">
@@ -987,10 +1016,10 @@ by the spec_node cone</pre>
 
     <section class="slide title-slide">
       <div class="slide-content title-grid">
-        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, probes timing-aware path selection, sketches the RTL/source bridge, and demonstrates register-suggestion ranking.</p></div>
-        <div class="takeaway-chain"><div>Optimized critical path</div><div>Correspondence recovery</div><div>Original RTL/source location</div><div>Register suggestion list</div></div>
+        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, adds ODC-aware anchors, and now prepares the benchmark layer for verified semantic recovery.</p></div>
+        <div class="takeaway-chain"><div>Optimized critical path</div><div>Recovered gate region</div><div>Verified RTL-like expression</div><div>Register or rewrite suggestion</div></div>
       </div>
-      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, cofactor and sensitivity features now have an ablation harness, boundary recovery now has repaired COI semantics and an exact identity gate, timing-aware path extraction has a first probe, source metadata identifies the RTL bridge, and register suggestions show the final tool shape.</aside>
+      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, cofactor and sensitivity features now have an ablation harness, boundary recovery now has repaired COI semantics and an exact identity gate, ODC-aware anchors recover additional contextual cases, and the semantic benchmark suite creates the testbed for verified RTL-like recovery.</aside>
     </section>
   </main>
 

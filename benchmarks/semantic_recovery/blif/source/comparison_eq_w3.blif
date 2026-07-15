@@ -1,0 +1,13 @@
+.model comparison_eq_w3
+.inputs a_0 a_1 a_2 b_0 b_1 b_2
+.outputs y
+.names a_0 a_1 a_2 b_0 b_1 b_2 y
+000000 1
+100100 1
+010010 1
+110110 1
+001001 1
+101101 1
+011011 1
+111111 1
+.end

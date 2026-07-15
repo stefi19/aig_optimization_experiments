@@ -49,10 +49,11 @@ https://stefi19.github.io/aig_optimization_experiments/presentation/
 24. [Timing-Aware Critical-Path Investigation](#timing-aware-critical-path-investigation)
 25. [Toward RTL/Source-Level Back-Mapping](#toward-rtlsource-level-back-mapping)
 26. [Register Insertion Suggestion Prototype](#register-insertion-suggestion-prototype)
-27. [Formal Error Metrics and Context-Aware Correspondence](#formal-error-metrics-and-context-aware-correspondence)
-28. [Dependencies](#20-dependencies)
-29. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
-30. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
+27. [Semantic Recovery Benchmark Suite](#semantic-recovery-benchmark-suite)
+28. [Formal Error Metrics and Context-Aware Correspondence](#formal-error-metrics-and-context-aware-correspondence)
+29. [Dependencies](#20-dependencies)
+30. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+31. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -856,7 +857,9 @@ make cegar-refine        # CEGAR-style penalty pass
 make research-plots      # generate all 10 research PNG plots
 make real-benchmarks     # convert verilog_examples/ → BLIF via Yosys (prints warning if Yosys absent)
 make generate-all-benchmarks  # synthetic + real benchmarks
-make test                # run all 414 unit tests
+make semantic-benchmarks # generate semantic-recovery RTL/BLIF cases and ABC flow status rows
+make semantic-benchmarks-check # validate semantic-recovery manifests and generated files
+make test                # run the unit test suite
 ```
 
 ### If ABC is not on your PATH
@@ -1468,6 +1471,47 @@ The generated Markdown shows example suggestions from the ISCAS-85 critical-path
 should be read as "start looking here" hints, not automatic transformations. Correct register
 insertion still requires RTL edits, sequential/latency-aware verification, and control/data
 dependency analysis. See `docs/register_insertion_suggestion_plan.md`.
+
+---
+
+## Semantic Recovery Benchmark Suite
+
+The next research direction is verified semantic recovery: infer a compact RTL-like
+expression for a recovered gate-level region and prove that it matches the region behavior.
+This iteration adds the ground-truth benchmark layer for that work.
+
+Run:
+
+```bash
+make semantic-benchmarks
+make semantic-benchmarks-check
+```
+
+Outputs:
+
+- `benchmarks/semantic_recovery/rtl/`
+- `benchmarks/semantic_recovery/blif/source/`
+- `benchmarks/semantic_recovery/blif/variants/`
+- `results/semantic_recovery/semantic_benchmark_manifest.csv`
+- `results/semantic_recovery/semantic_benchmark_variants.csv`
+- `results/semantic_recovery/semantic_benchmark_summary.md`
+
+Current generated suite:
+
+- 258 deterministic RTL cases;
+- families: arithmetic 73, bit manipulation 56, Boolean 52, comparison 42,
+  control 35;
+- requested widths covered: 2, 3, 4, 6, 8, 12, and 16;
+- 127 bounded exact source-BLIF cases;
+- 54 small cases per non-identity ABC flow for `balance`, `rewrite`, `refactor`,
+  `resub`, `resyn`, `resyn2`, `dc2`, and `compress2rs`;
+- 2,322 compact variant-status rows.
+
+Large cases are intentionally RTL-only or source-BLIF-only when truth-table or
+ABC-variant generation would be too dense. This phase does not claim RTL has
+been recovered from gates yet; it creates known source expressions, buses,
+constants, controls, and boundary metadata for later template recovery and
+CEGIS validation. See `docs/semantic_recovery_benchmark_suite.md`.
 
 ---
 

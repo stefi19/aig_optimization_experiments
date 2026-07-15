@@ -1,0 +1,7 @@
+.model comparison_range_check_w2
+.inputs a_0 a_1
+.outputs y
+.names a_0 a_1 y
+01 1
+11 1
+.end

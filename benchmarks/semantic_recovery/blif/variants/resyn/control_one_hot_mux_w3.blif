@@ -1,0 +1,23 @@
+# Benchmark "control_one_hot_mux_w3" written by ABC on Thu Jul 16 00:40:07 2026
+.model control_one_hot_mux_w3
+.inputs a_0 a_1 a_2 b_0 b_1 b_2 s0 s1
+.outputs y_0 y_1 y_2
+.names a_0 s0 new_n12
+11 1
+.names b_0 s1 new_n13
+11 1
+.names new_n12 new_n13 y_0
+00 0
+.names a_1 s0 new_n15
+11 1
+.names b_1 s1 new_n16
+11 1
+.names new_n15 new_n16 y_1
+00 0
+.names a_2 s0 new_n18
+11 1
+.names b_2 s1 new_n19
+11 1
+.names new_n18 new_n19 y_2
+00 0
+.end

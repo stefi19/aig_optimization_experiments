@@ -1,0 +1,9 @@
+.model comparison_eq_w2
+.inputs a_0 a_1 b_0 b_1
+.outputs y
+.names a_0 a_1 b_0 b_1 y
+0000 1
+1010 1
+0101 1
+1111 1
+.end

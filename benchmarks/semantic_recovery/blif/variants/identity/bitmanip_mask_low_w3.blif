@@ -1,0 +1,11 @@
+.model bitmanip_mask_low_w3
+.inputs a_0 a_1 a_2
+.outputs y_0 y_1 y_2
+.names a_0 a_1 a_2 y_0
+100 1
+110 1
+101 1
+111 1
+.names y_1
+.names y_2
+.end
