@@ -1,0 +1,7 @@
+benchmark,cases,cycle_conflict_count,mean_boundary_extension_ratio,mean_extended_region_node_count,recovery_success_count,recovery_success_rate
+external_iscas85_c2670,8,0,0.0,0.0,0,0.0
+external_iscas85_c432,8,0,0.0,0.0,0,0.0
+generated_adder_4,8,0,0.0,5.0,0,0.0
+generated_multiplier_2,8,0,0.0,2.0,0,0.0
+generated_mux_tree_4,8,0,0.2916666666666667,3.75,6,0.75
+generated_mux_tree_8,8,0,0.38235294117647056,9.0,2,0.25

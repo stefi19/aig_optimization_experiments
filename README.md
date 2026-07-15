@@ -2166,6 +2166,101 @@ budget, so unresolved critical-path recovery is unchanged in this milestone.
 
 ---
 
+## Equivalence-Anchored Boundary Recovery
+
+The next region-level milestone moves beyond one-node-at-a-time correspondence.
+Instead of asking whether one optimized node matches one original node, it asks
+whether a coherent original region can be enclosed by formally equivalent input
+and output cuts.
+
+```text
+node correspondence:
+one optimized node <-> one original node
+
+boundary recovery:
+a region is enclosed by formally equivalent cuts
+```
+
+The first prototype is documented in
+[`docs/equivalence_anchored_boundary_recovery.md`](docs/equivalence_anchored_boundary_recovery.md).
+It uses explicit COI JSON specs under `benchmarks/coi_specs/`, builds formal
+anchors from exact signature/interface matches, complemented equivalence, and
+SAT/CEC-proven equivalence after structural mismatch, then runs:
+
+```text
+anchor discovery
+-> backward EBI cut search
+-> forward EBO cut search
+-> input-cut completion
+-> cycle validation
+-> region extraction
+```
+
+Boundary inputs are cut nodes outside the recovered region. Boundary outputs are
+included as region sinks. Primary inputs and primary outputs may serve as formal
+interface anchors when names align. Complemented anchors keep explicit inverted
+polarity and are not treated as same-polarity anchors.
+
+Run:
+
+```bash
+make boundary-recovery-benchmarks
+make boundary-recovery-analysis
+make boundary-recovery-critical-path
+make boundary-recovery-plots
+make check-boundary-recovery-results
+```
+
+Current lightweight results:
+
+- Case/mode rows: 48
+- Successful formally anchored recovered boundaries: 8 (16.7%)
+- `exact_only`: 4 / 24 success, mean extension ratio 0.1123
+- `formal_all`: 4 / 24 success, mean extension ratio 0.1123
+- Cycle conflicts: 0
+- Previously unresolved critical-path nodes enclosed by recovered regions: 0
+
+The exact-only and formal-all modes tie on this small seed suite. That means the
+currently recovered cases are already explained by exact/interface anchors; the
+extra SAT/CEC-proven anchors did not reduce boundary extension in this run.
+
+Important interpretation: a node may remain unresolved individually while being
+inside a recovered region. That is region-level evidence only. It must be
+described as "enclosed by a formally anchored recovered region," not as direct
+node equivalence.
+
+Outputs:
+
+- `results/boundary_recovery/boundary_recovery_cases.csv`
+- `results/boundary_recovery/boundary_recovery_by_benchmark.csv`
+- `results/boundary_recovery/boundary_recovery_by_optimization.csv`
+- `results/boundary_recovery/boundary_recovery_by_anchor_mode.csv`
+- `results/boundary_recovery/boundary_recovery_failures.csv`
+- `results/boundary_recovery/boundary_recovery_summary.md`
+- `results/boundary_recovery/boundary_recovery_regions.json`
+- `results/boundary_recovery/critical_path_region_recovery.csv`
+- `results/boundary_recovery/critical_path_region_summary.md`
+- `results/boundary_recovery/dot/*.dot`
+
+Plots:
+
+- `results/plots/boundary_extension_by_optimization.png`
+- `results/plots/boundary_recovery_success_by_anchor_mode.png`
+- `results/plots/boundary_exact_vs_formal_extension.png`
+- `results/plots/boundary_anchor_density_vs_extension.png`
+- `results/plots/boundary_coi_vs_region_size.png`
+- `results/plots/boundary_traversal_distance_distribution.png`
+- `results/plots/boundary_failure_reasons.png`
+- `results/plots/boundary_critical_path_enclosed.png`
+- `results/plots/boundary_cycle_resolution_frequency.png`
+- `results/plots/boundary_runtime_by_circuit_size.png`
+
+This is not RTL recovery, arithmetic recognition, or logic grafting yet. Logic
+grafting remains the next implementation step after boundary validation is more
+robust.
+
+---
+
 ## Critical-Path Back-Mapping Prototype
 
 This is the first end-to-end version of the final tool idea: take a path in the

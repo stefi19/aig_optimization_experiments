@@ -1,0 +1,4452 @@
+[
+  {
+    "anchor_mode": "exact_only",
+    "anchors": [
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "cin",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "cin"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n24",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n24"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n25",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n25"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n26",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n26"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n27",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n27"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n28",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n28"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "sum1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "sum1"
+      }
+    ],
+    "benchmark": "generated_adder_4",
+    "boundary_inputs": [
+      "a1",
+      "b1",
+      "a0",
+      "b0",
+      "cin"
+    ],
+    "boundary_outputs": [
+      "sum1",
+      "new_n26"
+    ],
+    "coi_internal_nodes": [
+      "new_n23",
+      "new_n24",
+      "new_n25",
+      "new_n26",
+      "new_n27",
+      "new_n28",
+      "sum1"
+    ],
+    "coi_name": "adder_bit1_carry_sum_region",
+    "extended_boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1",
+      "cin",
+      "new_n24",
+      "new_n25",
+      "new_n27",
+      "new_n28"
+    ],
+    "extended_boundary_outputs": [
+      "new_n26",
+      "sum1"
+    ],
+    "failure_reason": "COI nodes are not enclosed by recovered region",
+    "optimization": "balance",
+    "region_nodes": [
+      "new_n26",
+      "sum1"
+    ],
+    "validation_status": "disconnected_region"
+  },
+  {
+    "anchor_mode": "formal_all",
+    "anchors": [
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "cin",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "cin"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n24",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n24"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n25",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n25"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n26",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n26"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n27",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n27"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n28",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n28"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "sum1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "sum1"
+      }
+    ],
+    "benchmark": "generated_adder_4",
+    "boundary_inputs": [
+      "a1",
+      "b1",
+      "a0",
+      "b0",
+      "cin"
+    ],
+    "boundary_outputs": [
+      "sum1",
+      "new_n26"
+    ],
+    "coi_internal_nodes": [
+      "new_n23",
+      "new_n24",
+      "new_n25",
+      "new_n26",
+      "new_n27",
+      "new_n28",
+      "sum1"
+    ],
+    "coi_name": "adder_bit1_carry_sum_region",
+    "extended_boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1",
+      "cin",
+      "new_n24",
+      "new_n25",
+      "new_n27",
+      "new_n28"
+    ],
+    "extended_boundary_outputs": [
+      "new_n26",
+      "sum1"
+    ],
+    "failure_reason": "COI nodes are not enclosed by recovered region",
+    "optimization": "balance",
+    "region_nodes": [
+      "new_n26",
+      "sum1"
+    ],
+    "validation_status": "disconnected_region"
+  },
+  {
+    "anchor_mode": "exact_only",
+    "anchors": [
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "cin",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "cin"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n15",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n24"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n18",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n25"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n21",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n26"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "sum1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "sum1"
+      }
+    ],
+    "benchmark": "generated_adder_4",
+    "boundary_inputs": [
+      "a1",
+      "b1",
+      "a0",
+      "b0",
+      "cin"
+    ],
+    "boundary_outputs": [
+      "sum1",
+      "new_n26"
+    ],
+    "coi_internal_nodes": [
+      "new_n23",
+      "new_n24",
+      "new_n25",
+      "new_n26",
+      "new_n27",
+      "new_n28",
+      "sum1"
+    ],
+    "coi_name": "adder_bit1_carry_sum_region",
+    "extended_boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1",
+      "cin",
+      "new_n24",
+      "new_n25"
+    ],
+    "extended_boundary_outputs": [
+      "new_n26",
+      "sum1"
+    ],
+    "failure_reason": "not every fanout path from 'new_n23' crosses EBO",
+    "optimization": "dc2",
+    "region_nodes": [
+      "new_n21",
+      "new_n22",
+      "new_n23",
+      "new_n26",
+      "new_n27",
+      "new_n28",
+      "sum1"
+    ],
+    "validation_status": "incomplete_output_cut"
+  },
+  {
+    "anchor_mode": "formal_all",
+    "anchors": [
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "cin",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "cin"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n15",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n24"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n18",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n25"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n21",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n26"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "sum1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "sum1"
+      }
+    ],
+    "benchmark": "generated_adder_4",
+    "boundary_inputs": [
+      "a1",
+      "b1",
+      "a0",
+      "b0",
+      "cin"
+    ],
+    "boundary_outputs": [
+      "sum1",
+      "new_n26"
+    ],
+    "coi_internal_nodes": [
+      "new_n23",
+      "new_n24",
+      "new_n25",
+      "new_n26",
+      "new_n27",
+      "new_n28",
+      "sum1"
+    ],
+    "coi_name": "adder_bit1_carry_sum_region",
+    "extended_boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1",
+      "cin",
+      "new_n24",
+      "new_n25"
+    ],
+    "extended_boundary_outputs": [
+      "new_n26",
+      "sum1"
+    ],
+    "failure_reason": "not every fanout path from 'new_n23' crosses EBO",
+    "optimization": "dc2",
+    "region_nodes": [
+      "new_n21",
+      "new_n22",
+      "new_n23",
+      "new_n26",
+      "new_n27",
+      "new_n28",
+      "sum1"
+    ],
+    "validation_status": "incomplete_output_cut"
+  },
+  {
+    "anchor_mode": "exact_only",
+    "anchors": [
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "cin",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "cin"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n15",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n24"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n18",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n25"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n21",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n26"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "sum1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "sum1"
+      }
+    ],
+    "benchmark": "generated_adder_4",
+    "boundary_inputs": [
+      "a1",
+      "b1",
+      "a0",
+      "b0",
+      "cin"
+    ],
+    "boundary_outputs": [
+      "sum1",
+      "new_n26"
+    ],
+    "coi_internal_nodes": [
+      "new_n23",
+      "new_n24",
+      "new_n25",
+      "new_n26",
+      "new_n27",
+      "new_n28",
+      "sum1"
+    ],
+    "coi_name": "adder_bit1_carry_sum_region",
+    "extended_boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1",
+      "cin",
+      "new_n24",
+      "new_n25"
+    ],
+    "extended_boundary_outputs": [
+      "new_n26",
+      "sum1"
+    ],
+    "failure_reason": "not every fanout path from 'new_n23' crosses EBO",
+    "optimization": "resyn2",
+    "region_nodes": [
+      "new_n21",
+      "new_n22",
+      "new_n23",
+      "new_n26",
+      "new_n27",
+      "new_n28",
+      "sum1"
+    ],
+    "validation_status": "incomplete_output_cut"
+  },
+  {
+    "anchor_mode": "formal_all",
+    "anchors": [
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "cin",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "cin"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n15",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n24"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n18",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n25"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n21",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n26"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "sum1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "sum1"
+      }
+    ],
+    "benchmark": "generated_adder_4",
+    "boundary_inputs": [
+      "a1",
+      "b1",
+      "a0",
+      "b0",
+      "cin"
+    ],
+    "boundary_outputs": [
+      "sum1",
+      "new_n26"
+    ],
+    "coi_internal_nodes": [
+      "new_n23",
+      "new_n24",
+      "new_n25",
+      "new_n26",
+      "new_n27",
+      "new_n28",
+      "sum1"
+    ],
+    "coi_name": "adder_bit1_carry_sum_region",
+    "extended_boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1",
+      "cin",
+      "new_n24",
+      "new_n25"
+    ],
+    "extended_boundary_outputs": [
+      "new_n26",
+      "sum1"
+    ],
+    "failure_reason": "not every fanout path from 'new_n23' crosses EBO",
+    "optimization": "resyn2",
+    "region_nodes": [
+      "new_n21",
+      "new_n22",
+      "new_n23",
+      "new_n26",
+      "new_n27",
+      "new_n28",
+      "sum1"
+    ],
+    "validation_status": "incomplete_output_cut"
+  },
+  {
+    "anchor_mode": "exact_only",
+    "anchors": [
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "cin",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "cin"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n23",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n23"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n24",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n24"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n25",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n25"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n26",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n26"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "sum1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "sum1"
+      }
+    ],
+    "benchmark": "generated_adder_4",
+    "boundary_inputs": [
+      "a1",
+      "b1",
+      "a0",
+      "b0",
+      "cin"
+    ],
+    "boundary_outputs": [
+      "sum1",
+      "new_n26"
+    ],
+    "coi_internal_nodes": [
+      "new_n23",
+      "new_n24",
+      "new_n25",
+      "new_n26",
+      "new_n27",
+      "new_n28",
+      "sum1"
+    ],
+    "coi_name": "adder_bit1_carry_sum_region",
+    "extended_boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1",
+      "cin",
+      "new_n23",
+      "new_n24",
+      "new_n25"
+    ],
+    "extended_boundary_outputs": [
+      "new_n26",
+      "sum1"
+    ],
+    "failure_reason": "not every fanout path from 'new_n23' crosses EBO",
+    "optimization": "rewrite",
+    "region_nodes": [
+      "new_n26",
+      "new_n27",
+      "new_n28",
+      "sum1"
+    ],
+    "validation_status": "incomplete_output_cut"
+  },
+  {
+    "anchor_mode": "formal_all",
+    "anchors": [
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "cin",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "cin"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n23",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n23"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n24",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n24"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n25",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n25"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n26",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n26"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "sum1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "sum1"
+      }
+    ],
+    "benchmark": "generated_adder_4",
+    "boundary_inputs": [
+      "a1",
+      "b1",
+      "a0",
+      "b0",
+      "cin"
+    ],
+    "boundary_outputs": [
+      "sum1",
+      "new_n26"
+    ],
+    "coi_internal_nodes": [
+      "new_n23",
+      "new_n24",
+      "new_n25",
+      "new_n26",
+      "new_n27",
+      "new_n28",
+      "sum1"
+    ],
+    "coi_name": "adder_bit1_carry_sum_region",
+    "extended_boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1",
+      "cin",
+      "new_n23",
+      "new_n24",
+      "new_n25"
+    ],
+    "extended_boundary_outputs": [
+      "new_n26",
+      "sum1"
+    ],
+    "failure_reason": "not every fanout path from 'new_n23' crosses EBO",
+    "optimization": "rewrite",
+    "region_nodes": [
+      "new_n26",
+      "new_n27",
+      "new_n28",
+      "sum1"
+    ],
+    "validation_status": "incomplete_output_cut"
+  },
+  {
+    "anchor_mode": "exact_only",
+    "anchors": [
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b1"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n12",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n12"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n13",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n13"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "p1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "p1"
+      }
+    ],
+    "benchmark": "generated_multiplier_2",
+    "boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1"
+    ],
+    "boundary_outputs": [
+      "p1"
+    ],
+    "coi_internal_nodes": [
+      "new_n10",
+      "new_n11",
+      "new_n12",
+      "new_n13",
+      "p1"
+    ],
+    "coi_name": "multiplier_middle_products",
+    "extended_boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1",
+      "new_n12",
+      "new_n13"
+    ],
+    "extended_boundary_outputs": [
+      "p1"
+    ],
+    "failure_reason": "COI nodes are not enclosed by recovered region",
+    "optimization": "balance",
+    "region_nodes": [
+      "p1"
+    ],
+    "validation_status": "disconnected_region"
+  },
+  {
+    "anchor_mode": "formal_all",
+    "anchors": [
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b1"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n12",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n12"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n13",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n13"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "p1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "p1"
+      }
+    ],
+    "benchmark": "generated_multiplier_2",
+    "boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1"
+    ],
+    "boundary_outputs": [
+      "p1"
+    ],
+    "coi_internal_nodes": [
+      "new_n10",
+      "new_n11",
+      "new_n12",
+      "new_n13",
+      "p1"
+    ],
+    "coi_name": "multiplier_middle_products",
+    "extended_boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1",
+      "new_n12",
+      "new_n13"
+    ],
+    "extended_boundary_outputs": [
+      "p1"
+    ],
+    "failure_reason": "COI nodes are not enclosed by recovered region",
+    "optimization": "balance",
+    "region_nodes": [
+      "p1"
+    ],
+    "validation_status": "disconnected_region"
+  },
+  {
+    "anchor_mode": "exact_only",
+    "anchors": [
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b1"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n10",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n10"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n11",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n11"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "p1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "p1"
+      }
+    ],
+    "benchmark": "generated_multiplier_2",
+    "boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1"
+    ],
+    "boundary_outputs": [
+      "p1"
+    ],
+    "coi_internal_nodes": [
+      "new_n10",
+      "new_n11",
+      "new_n12",
+      "new_n13",
+      "p1"
+    ],
+    "coi_name": "multiplier_middle_products",
+    "extended_boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1",
+      "new_n10",
+      "new_n11"
+    ],
+    "extended_boundary_outputs": [
+      "p1"
+    ],
+    "failure_reason": "not every fanout path from 'new_n10' crosses EBO",
+    "optimization": "dc2",
+    "region_nodes": [
+      "new_n12",
+      "new_n13",
+      "p1"
+    ],
+    "validation_status": "incomplete_output_cut"
+  },
+  {
+    "anchor_mode": "formal_all",
+    "anchors": [
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b1"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n10",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n10"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n11",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n11"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "p1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "p1"
+      }
+    ],
+    "benchmark": "generated_multiplier_2",
+    "boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1"
+    ],
+    "boundary_outputs": [
+      "p1"
+    ],
+    "coi_internal_nodes": [
+      "new_n10",
+      "new_n11",
+      "new_n12",
+      "new_n13",
+      "p1"
+    ],
+    "coi_name": "multiplier_middle_products",
+    "extended_boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1",
+      "new_n10",
+      "new_n11"
+    ],
+    "extended_boundary_outputs": [
+      "p1"
+    ],
+    "failure_reason": "not every fanout path from 'new_n10' crosses EBO",
+    "optimization": "dc2",
+    "region_nodes": [
+      "new_n12",
+      "new_n13",
+      "p1"
+    ],
+    "validation_status": "incomplete_output_cut"
+  },
+  {
+    "anchor_mode": "exact_only",
+    "anchors": [
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b1"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n10",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n10"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n11",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n11"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "p1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "p1"
+      }
+    ],
+    "benchmark": "generated_multiplier_2",
+    "boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1"
+    ],
+    "boundary_outputs": [
+      "p1"
+    ],
+    "coi_internal_nodes": [
+      "new_n10",
+      "new_n11",
+      "new_n12",
+      "new_n13",
+      "p1"
+    ],
+    "coi_name": "multiplier_middle_products",
+    "extended_boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1",
+      "new_n10",
+      "new_n11"
+    ],
+    "extended_boundary_outputs": [
+      "p1"
+    ],
+    "failure_reason": "not every fanout path from 'new_n10' crosses EBO",
+    "optimization": "resyn2",
+    "region_nodes": [
+      "new_n12",
+      "new_n13",
+      "p1"
+    ],
+    "validation_status": "incomplete_output_cut"
+  },
+  {
+    "anchor_mode": "formal_all",
+    "anchors": [
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b1"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n10",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n10"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n11",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n11"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "p1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "p1"
+      }
+    ],
+    "benchmark": "generated_multiplier_2",
+    "boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1"
+    ],
+    "boundary_outputs": [
+      "p1"
+    ],
+    "coi_internal_nodes": [
+      "new_n10",
+      "new_n11",
+      "new_n12",
+      "new_n13",
+      "p1"
+    ],
+    "coi_name": "multiplier_middle_products",
+    "extended_boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1",
+      "new_n10",
+      "new_n11"
+    ],
+    "extended_boundary_outputs": [
+      "p1"
+    ],
+    "failure_reason": "not every fanout path from 'new_n10' crosses EBO",
+    "optimization": "resyn2",
+    "region_nodes": [
+      "new_n12",
+      "new_n13",
+      "p1"
+    ],
+    "validation_status": "incomplete_output_cut"
+  },
+  {
+    "anchor_mode": "exact_only",
+    "anchors": [
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b1"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n12",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n12"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n13",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n13"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "p1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "p1"
+      }
+    ],
+    "benchmark": "generated_multiplier_2",
+    "boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1"
+    ],
+    "boundary_outputs": [
+      "p1"
+    ],
+    "coi_internal_nodes": [
+      "new_n10",
+      "new_n11",
+      "new_n12",
+      "new_n13",
+      "p1"
+    ],
+    "coi_name": "multiplier_middle_products",
+    "extended_boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1",
+      "new_n12",
+      "new_n13"
+    ],
+    "extended_boundary_outputs": [
+      "p1"
+    ],
+    "failure_reason": "COI nodes are not enclosed by recovered region",
+    "optimization": "rewrite",
+    "region_nodes": [
+      "p1"
+    ],
+    "validation_status": "disconnected_region"
+  },
+  {
+    "anchor_mode": "formal_all",
+    "anchors": [
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "a1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "a1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "b1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "b1"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n12",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n12"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n13",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n13"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "p1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "p1"
+      }
+    ],
+    "benchmark": "generated_multiplier_2",
+    "boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1"
+    ],
+    "boundary_outputs": [
+      "p1"
+    ],
+    "coi_internal_nodes": [
+      "new_n10",
+      "new_n11",
+      "new_n12",
+      "new_n13",
+      "p1"
+    ],
+    "coi_name": "multiplier_middle_products",
+    "extended_boundary_inputs": [
+      "a0",
+      "a1",
+      "b0",
+      "b1",
+      "new_n12",
+      "new_n13"
+    ],
+    "extended_boundary_outputs": [
+      "p1"
+    ],
+    "failure_reason": "COI nodes are not enclosed by recovered region",
+    "optimization": "rewrite",
+    "region_nodes": [
+      "p1"
+    ],
+    "validation_status": "disconnected_region"
+  },
+  {
+    "anchor_mode": "exact_only",
+    "anchors": [
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n14",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n10"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n10",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n13"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n11",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n14"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n15",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n15"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "out",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "out"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s0"
+      }
+    ],
+    "benchmark": "generated_mux_tree_4",
+    "boundary_inputs": [
+      "s0",
+      "new_n10",
+      "new_n13"
+    ],
+    "boundary_outputs": [
+      "out"
+    ],
+    "coi_internal_nodes": [
+      "new_n14",
+      "new_n15",
+      "out"
+    ],
+    "coi_name": "mux_tree_root",
+    "extended_boundary_inputs": [
+      "new_n10",
+      "new_n13",
+      "new_n14",
+      "new_n15",
+      "s0"
+    ],
+    "extended_boundary_outputs": [
+      "out"
+    ],
+    "failure_reason": "",
+    "optimization": "balance",
+    "region_nodes": [
+      "out"
+    ],
+    "validation_status": "valid"
+  },
+  {
+    "anchor_mode": "formal_all",
+    "anchors": [
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n14",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n10"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n10",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n13"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n11",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n14"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n15",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n15"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "out",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "out"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s0"
+      }
+    ],
+    "benchmark": "generated_mux_tree_4",
+    "boundary_inputs": [
+      "s0",
+      "new_n10",
+      "new_n13"
+    ],
+    "boundary_outputs": [
+      "out"
+    ],
+    "coi_internal_nodes": [
+      "new_n14",
+      "new_n15",
+      "out"
+    ],
+    "coi_name": "mux_tree_root",
+    "extended_boundary_inputs": [
+      "new_n10",
+      "new_n13",
+      "new_n14",
+      "new_n15",
+      "s0"
+    ],
+    "extended_boundary_outputs": [
+      "out"
+    ],
+    "failure_reason": "",
+    "optimization": "balance",
+    "region_nodes": [
+      "out"
+    ],
+    "validation_status": "valid"
+  },
+  {
+    "anchor_mode": "exact_only",
+    "anchors": [
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n14",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n13"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n9",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n8"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n8",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n9"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "out",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "out"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s0"
+      }
+    ],
+    "benchmark": "generated_mux_tree_4",
+    "boundary_inputs": [
+      "s0",
+      "new_n10",
+      "new_n13"
+    ],
+    "boundary_outputs": [
+      "out"
+    ],
+    "coi_internal_nodes": [
+      "new_n14",
+      "new_n15",
+      "out"
+    ],
+    "coi_name": "mux_tree_root",
+    "extended_boundary_inputs": [
+      "new_n13",
+      "new_n8",
+      "new_n9",
+      "s0"
+    ],
+    "extended_boundary_outputs": [
+      "out"
+    ],
+    "failure_reason": "",
+    "optimization": "dc2",
+    "region_nodes": [
+      "new_n10",
+      "new_n14",
+      "new_n15",
+      "out"
+    ],
+    "validation_status": "valid"
+  },
+  {
+    "anchor_mode": "formal_all",
+    "anchors": [
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n14",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n13"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n9",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n8"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n8",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n9"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "out",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "out"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s0"
+      }
+    ],
+    "benchmark": "generated_mux_tree_4",
+    "boundary_inputs": [
+      "s0",
+      "new_n10",
+      "new_n13"
+    ],
+    "boundary_outputs": [
+      "out"
+    ],
+    "coi_internal_nodes": [
+      "new_n14",
+      "new_n15",
+      "out"
+    ],
+    "coi_name": "mux_tree_root",
+    "extended_boundary_inputs": [
+      "new_n13",
+      "new_n8",
+      "new_n9",
+      "s0"
+    ],
+    "extended_boundary_outputs": [
+      "out"
+    ],
+    "failure_reason": "",
+    "optimization": "dc2",
+    "region_nodes": [
+      "new_n10",
+      "new_n14",
+      "new_n15",
+      "out"
+    ],
+    "validation_status": "valid"
+  },
+  {
+    "anchor_mode": "exact_only",
+    "anchors": [
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d2",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d2"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d3",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d3"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "out",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "out"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s1"
+      }
+    ],
+    "benchmark": "generated_mux_tree_4",
+    "boundary_inputs": [
+      "s0",
+      "new_n10",
+      "new_n13"
+    ],
+    "boundary_outputs": [
+      "out"
+    ],
+    "coi_internal_nodes": [
+      "new_n14",
+      "new_n15",
+      "out"
+    ],
+    "coi_name": "mux_tree_root",
+    "extended_boundary_inputs": [
+      "d0",
+      "d1",
+      "d2",
+      "d3",
+      "s0",
+      "s1"
+    ],
+    "extended_boundary_outputs": [
+      "out"
+    ],
+    "failure_reason": "recovered region expands to nearly the whole design",
+    "optimization": "resyn2",
+    "region_nodes": [
+      "new_n10",
+      "new_n11",
+      "new_n12",
+      "new_n13",
+      "new_n14",
+      "new_n15",
+      "new_n8",
+      "new_n9",
+      "out"
+    ],
+    "validation_status": "whole_design_boundary"
+  },
+  {
+    "anchor_mode": "formal_all",
+    "anchors": [
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d2",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d2"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d3",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d3"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "out",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "out"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s1"
+      }
+    ],
+    "benchmark": "generated_mux_tree_4",
+    "boundary_inputs": [
+      "s0",
+      "new_n10",
+      "new_n13"
+    ],
+    "boundary_outputs": [
+      "out"
+    ],
+    "coi_internal_nodes": [
+      "new_n14",
+      "new_n15",
+      "out"
+    ],
+    "coi_name": "mux_tree_root",
+    "extended_boundary_inputs": [
+      "d0",
+      "d1",
+      "d2",
+      "d3",
+      "s0",
+      "s1"
+    ],
+    "extended_boundary_outputs": [
+      "out"
+    ],
+    "failure_reason": "recovered region expands to nearly the whole design",
+    "optimization": "resyn2",
+    "region_nodes": [
+      "new_n10",
+      "new_n11",
+      "new_n12",
+      "new_n13",
+      "new_n14",
+      "new_n15",
+      "new_n8",
+      "new_n9",
+      "out"
+    ],
+    "validation_status": "whole_design_boundary"
+  },
+  {
+    "anchor_mode": "exact_only",
+    "anchors": [
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n14",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n10"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n10",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n13"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n11",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n14"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n15",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n15"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "out",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "out"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s0"
+      }
+    ],
+    "benchmark": "generated_mux_tree_4",
+    "boundary_inputs": [
+      "s0",
+      "new_n10",
+      "new_n13"
+    ],
+    "boundary_outputs": [
+      "out"
+    ],
+    "coi_internal_nodes": [
+      "new_n14",
+      "new_n15",
+      "out"
+    ],
+    "coi_name": "mux_tree_root",
+    "extended_boundary_inputs": [
+      "new_n10",
+      "new_n13",
+      "new_n14",
+      "new_n15",
+      "s0"
+    ],
+    "extended_boundary_outputs": [
+      "out"
+    ],
+    "failure_reason": "",
+    "optimization": "rewrite",
+    "region_nodes": [
+      "out"
+    ],
+    "validation_status": "valid"
+  },
+  {
+    "anchor_mode": "formal_all",
+    "anchors": [
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n14",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n10"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n10",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n13"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n11",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n14"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n15",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n15"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "out",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "out"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s0"
+      }
+    ],
+    "benchmark": "generated_mux_tree_4",
+    "boundary_inputs": [
+      "s0",
+      "new_n10",
+      "new_n13"
+    ],
+    "boundary_outputs": [
+      "out"
+    ],
+    "coi_internal_nodes": [
+      "new_n14",
+      "new_n15",
+      "out"
+    ],
+    "coi_name": "mux_tree_root",
+    "extended_boundary_inputs": [
+      "new_n10",
+      "new_n13",
+      "new_n14",
+      "new_n15",
+      "s0"
+    ],
+    "extended_boundary_outputs": [
+      "out"
+    ],
+    "failure_reason": "",
+    "optimization": "rewrite",
+    "region_nodes": [
+      "out"
+    ],
+    "validation_status": "valid"
+  },
+  {
+    "anchor_mode": "exact_only",
+    "anchors": [
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n19",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n24"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n20",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n29"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n22",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n31"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n32",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n32"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "out",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "out"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s0"
+      }
+    ],
+    "benchmark": "generated_mux_tree_8",
+    "boundary_inputs": [
+      "s0",
+      "new_n24",
+      "new_n29"
+    ],
+    "boundary_outputs": [
+      "out"
+    ],
+    "coi_internal_nodes": [
+      "new_n30",
+      "new_n31",
+      "new_n32",
+      "out"
+    ],
+    "coi_name": "mux_tree_upper_root",
+    "extended_boundary_inputs": [
+      "new_n24",
+      "new_n29",
+      "new_n31",
+      "new_n32",
+      "s0"
+    ],
+    "extended_boundary_outputs": [
+      "out"
+    ],
+    "failure_reason": "COI nodes are not enclosed by recovered region",
+    "optimization": "balance",
+    "region_nodes": [
+      "out"
+    ],
+    "validation_status": "disconnected_region"
+  },
+  {
+    "anchor_mode": "formal_all",
+    "anchors": [
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n19",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n24"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n20",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n29"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n22",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n31"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n32",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n32"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "out",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "out"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s0"
+      }
+    ],
+    "benchmark": "generated_mux_tree_8",
+    "boundary_inputs": [
+      "s0",
+      "new_n24",
+      "new_n29"
+    ],
+    "boundary_outputs": [
+      "out"
+    ],
+    "coi_internal_nodes": [
+      "new_n30",
+      "new_n31",
+      "new_n32",
+      "out"
+    ],
+    "coi_name": "mux_tree_upper_root",
+    "extended_boundary_inputs": [
+      "new_n24",
+      "new_n29",
+      "new_n31",
+      "new_n32",
+      "s0"
+    ],
+    "extended_boundary_outputs": [
+      "out"
+    ],
+    "failure_reason": "COI nodes are not enclosed by recovered region",
+    "optimization": "balance",
+    "region_nodes": [
+      "out"
+    ],
+    "validation_status": "disconnected_region"
+  },
+  {
+    "anchor_mode": "exact_only",
+    "anchors": [
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d2",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d2"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d3",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d3"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d4",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d4"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d5",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d5"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d6",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d6"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d7",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d7"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "out",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "out"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s2",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s2"
+      }
+    ],
+    "benchmark": "generated_mux_tree_8",
+    "boundary_inputs": [
+      "s0",
+      "new_n24",
+      "new_n29"
+    ],
+    "boundary_outputs": [
+      "out"
+    ],
+    "coi_internal_nodes": [
+      "new_n30",
+      "new_n31",
+      "new_n32",
+      "out"
+    ],
+    "coi_name": "mux_tree_upper_root",
+    "extended_boundary_inputs": [
+      "d0",
+      "d1",
+      "d2",
+      "d3",
+      "d4",
+      "d5",
+      "d6",
+      "d7",
+      "s0",
+      "s1",
+      "s2"
+    ],
+    "extended_boundary_outputs": [
+      "out"
+    ],
+    "failure_reason": "recovered region expands to nearly the whole design",
+    "optimization": "dc2",
+    "region_nodes": [
+      "new_n13",
+      "new_n14",
+      "new_n15",
+      "new_n16",
+      "new_n17",
+      "new_n18",
+      "new_n19",
+      "new_n20",
+      "new_n21",
+      "new_n22",
+      "new_n23",
+      "new_n24",
+      "new_n25",
+      "new_n26",
+      "new_n27",
+      "new_n28",
+      "new_n29",
+      "new_n30",
+      "new_n31",
+      "new_n32",
+      "out"
+    ],
+    "validation_status": "whole_design_boundary"
+  },
+  {
+    "anchor_mode": "formal_all",
+    "anchors": [
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d2",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d2"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d3",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d3"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d4",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d4"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d5",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d5"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d6",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d6"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "d7",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "d7"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "out",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "out"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s1"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s2",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s2"
+      }
+    ],
+    "benchmark": "generated_mux_tree_8",
+    "boundary_inputs": [
+      "s0",
+      "new_n24",
+      "new_n29"
+    ],
+    "boundary_outputs": [
+      "out"
+    ],
+    "coi_internal_nodes": [
+      "new_n30",
+      "new_n31",
+      "new_n32",
+      "out"
+    ],
+    "coi_name": "mux_tree_upper_root",
+    "extended_boundary_inputs": [
+      "d0",
+      "d1",
+      "d2",
+      "d3",
+      "d4",
+      "d5",
+      "d6",
+      "d7",
+      "s0",
+      "s1",
+      "s2"
+    ],
+    "extended_boundary_outputs": [
+      "out"
+    ],
+    "failure_reason": "recovered region expands to nearly the whole design",
+    "optimization": "dc2",
+    "region_nodes": [
+      "new_n13",
+      "new_n14",
+      "new_n15",
+      "new_n16",
+      "new_n17",
+      "new_n18",
+      "new_n19",
+      "new_n20",
+      "new_n21",
+      "new_n22",
+      "new_n23",
+      "new_n24",
+      "new_n25",
+      "new_n26",
+      "new_n27",
+      "new_n28",
+      "new_n29",
+      "new_n30",
+      "new_n31",
+      "new_n32",
+      "out"
+    ],
+    "validation_status": "whole_design_boundary"
+  },
+  {
+    "anchor_mode": "exact_only",
+    "anchors": [
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n17",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n13"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n18",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n14"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n13",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n16"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n14",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n17"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n27",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n22"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n28",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n23"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n23",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n25"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n24",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n26"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "out",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "out"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s1"
+      }
+    ],
+    "benchmark": "generated_mux_tree_8",
+    "boundary_inputs": [
+      "s0",
+      "new_n24",
+      "new_n29"
+    ],
+    "boundary_outputs": [
+      "out"
+    ],
+    "coi_internal_nodes": [
+      "new_n30",
+      "new_n31",
+      "new_n32",
+      "out"
+    ],
+    "coi_name": "mux_tree_upper_root",
+    "extended_boundary_inputs": [
+      "new_n13",
+      "new_n14",
+      "new_n16",
+      "new_n17",
+      "new_n22",
+      "new_n23",
+      "new_n25",
+      "new_n26",
+      "s0",
+      "s1"
+    ],
+    "extended_boundary_outputs": [
+      "out"
+    ],
+    "failure_reason": "",
+    "optimization": "resyn2",
+    "region_nodes": [
+      "new_n15",
+      "new_n18",
+      "new_n19",
+      "new_n20",
+      "new_n21",
+      "new_n24",
+      "new_n27",
+      "new_n28",
+      "new_n29",
+      "new_n30",
+      "new_n31",
+      "new_n32",
+      "out"
+    ],
+    "validation_status": "valid"
+  },
+  {
+    "anchor_mode": "formal_all",
+    "anchors": [
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n17",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n13"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n18",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n14"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n13",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n16"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n14",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n17"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n27",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n22"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n28",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n23"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n23",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n25"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n24",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n26"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "out",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "out"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s0"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s1",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s1"
+      }
+    ],
+    "benchmark": "generated_mux_tree_8",
+    "boundary_inputs": [
+      "s0",
+      "new_n24",
+      "new_n29"
+    ],
+    "boundary_outputs": [
+      "out"
+    ],
+    "coi_internal_nodes": [
+      "new_n30",
+      "new_n31",
+      "new_n32",
+      "out"
+    ],
+    "coi_name": "mux_tree_upper_root",
+    "extended_boundary_inputs": [
+      "new_n13",
+      "new_n14",
+      "new_n16",
+      "new_n17",
+      "new_n22",
+      "new_n23",
+      "new_n25",
+      "new_n26",
+      "s0",
+      "s1"
+    ],
+    "extended_boundary_outputs": [
+      "out"
+    ],
+    "failure_reason": "",
+    "optimization": "resyn2",
+    "region_nodes": [
+      "new_n15",
+      "new_n18",
+      "new_n19",
+      "new_n20",
+      "new_n21",
+      "new_n24",
+      "new_n27",
+      "new_n28",
+      "new_n29",
+      "new_n30",
+      "new_n31",
+      "new_n32",
+      "out"
+    ],
+    "validation_status": "valid"
+  },
+  {
+    "anchor_mode": "exact_only",
+    "anchors": [
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n19",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n24"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n20",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n29"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n22",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n31"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n32",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n32"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "out",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "out"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s0"
+      }
+    ],
+    "benchmark": "generated_mux_tree_8",
+    "boundary_inputs": [
+      "s0",
+      "new_n24",
+      "new_n29"
+    ],
+    "boundary_outputs": [
+      "out"
+    ],
+    "coi_internal_nodes": [
+      "new_n30",
+      "new_n31",
+      "new_n32",
+      "out"
+    ],
+    "coi_name": "mux_tree_upper_root",
+    "extended_boundary_inputs": [
+      "new_n24",
+      "new_n29",
+      "new_n31",
+      "new_n32",
+      "s0"
+    ],
+    "extended_boundary_outputs": [
+      "out"
+    ],
+    "failure_reason": "COI nodes are not enclosed by recovered region",
+    "optimization": "rewrite",
+    "region_nodes": [
+      "out"
+    ],
+    "validation_status": "disconnected_region"
+  },
+  {
+    "anchor_mode": "formal_all",
+    "anchors": [
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n19",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n24"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n20",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n29"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n22",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n31"
+      },
+      {
+        "confidence_or_status": "1.0",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "new_n32",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "truth_table",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "results/top_candidates.csv",
+        "spec_node": "new_n32"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "out",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_output_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "out"
+      },
+      {
+        "confidence_or_status": "interface",
+        "evidence_level": "formal_exhaustive",
+        "impl_node": "s0",
+        "mapping_category": "exact_signature_match",
+        "polarity": "same",
+        "proof_mode": "primary_input_identity",
+        "selected": true,
+        "selection_reason": "Selected by category priority exact_signature_match, sat_cec_proven_equivalent, complemented_equivalence; same polarity before complemented; then lexical implementation node.",
+        "source_result_file": "circuit_interface",
+        "spec_node": "s0"
+      }
+    ],
+    "benchmark": "generated_mux_tree_8",
+    "boundary_inputs": [
+      "s0",
+      "new_n24",
+      "new_n29"
+    ],
+    "boundary_outputs": [
+      "out"
+    ],
+    "coi_internal_nodes": [
+      "new_n30",
+      "new_n31",
+      "new_n32",
+      "out"
+    ],
+    "coi_name": "mux_tree_upper_root",
+    "extended_boundary_inputs": [
+      "new_n24",
+      "new_n29",
+      "new_n31",
+      "new_n32",
+      "s0"
+    ],
+    "extended_boundary_outputs": [
+      "out"
+    ],
+    "failure_reason": "COI nodes are not enclosed by recovered region",
+    "optimization": "rewrite",
+    "region_nodes": [
+      "out"
+    ],
+    "validation_status": "disconnected_region"
+  }
+]

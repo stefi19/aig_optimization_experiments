@@ -1,0 +1,58 @@
+{
+  "cois": [
+    {
+      "benchmark": "generated_adder_4",
+      "optimization": "*",
+      "coi_name": "adder_bit1_carry_sum_region",
+      "coi_internal_nodes": ["new_n23", "new_n24", "new_n25", "new_n26", "new_n27", "new_n28", "sum1"],
+      "boundary_inputs": ["a1", "b1", "a0", "b0", "cin"],
+      "boundary_outputs": ["sum1", "new_n26"],
+      "source": "generated_ground_truth"
+    },
+    {
+      "benchmark": "generated_multiplier_2",
+      "optimization": "*",
+      "coi_name": "multiplier_middle_products",
+      "coi_internal_nodes": ["new_n10", "new_n11", "new_n12", "new_n13", "p1"],
+      "boundary_inputs": ["a0", "a1", "b0", "b1"],
+      "boundary_outputs": ["p1"],
+      "source": "generated_ground_truth"
+    },
+    {
+      "benchmark": "generated_mux_tree_4",
+      "optimization": "*",
+      "coi_name": "mux_tree_root",
+      "coi_internal_nodes": ["new_n14", "new_n15", "out"],
+      "boundary_inputs": ["s0", "new_n10", "new_n13"],
+      "boundary_outputs": ["out"],
+      "source": "generated_ground_truth"
+    },
+    {
+      "benchmark": "generated_mux_tree_8",
+      "optimization": "*",
+      "coi_name": "mux_tree_upper_root",
+      "coi_internal_nodes": ["new_n30", "new_n31", "new_n32", "out"],
+      "boundary_inputs": ["s0", "new_n24", "new_n29"],
+      "boundary_outputs": ["out"],
+      "source": "generated_ground_truth"
+    },
+    {
+      "benchmark": "external_iscas85_c432",
+      "optimization": "*",
+      "coi_name": "manual_small_structural_region",
+      "coi_internal_nodes": ["new_n74", "new_n75"],
+      "boundary_inputs": ["new_n74"],
+      "boundary_outputs": ["new_n75"],
+      "source": "manual_case_study"
+    },
+    {
+      "benchmark": "external_iscas85_c2670",
+      "optimization": "*",
+      "coi_name": "critical_path_seed_region",
+      "coi_internal_nodes": ["new_n264", "new_n265"],
+      "boundary_inputs": ["new_n264"],
+      "boundary_outputs": ["new_n265"],
+      "source": "manual_case_study"
+    }
+  ]
+}

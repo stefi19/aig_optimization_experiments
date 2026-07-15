@@ -696,7 +696,67 @@ df/dx = f_x1 XOR f_x0</pre>
 
     <section class="slide">
       <div class="slide-content two-column">
-        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, and sensitivity features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Approximate distance is global and context-free until ODC-aware matching is integrated.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>RTL source mapping is a metadata prototype, not integrated back-mapping yet.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
+        <div>
+          <p class="eyebrow">Boundary recovery</p>
+          <h2>From nodes to regions</h2>
+          <pre class="code-block">node correspondence:
+one optimized node <-> one original node
+
+boundary recovery:
+region enclosed by equivalent cuts</pre>
+          <p>A node can remain unresolved individually while still sitting inside a formally anchored recovered region.</p>
+        </div>
+        <svg class="backmap-svg" viewBox="0 0 640 360" role="img" aria-label="Boundary recovery region diagram">
+          <rect class="gate" x="70" y="85" width="90" height="48" rx="8"></rect><text x="92" y="115">EBI</text>
+          <rect class="gate" x="70" y="210" width="90" height="48" rx="8"></rect><text x="92" y="240">EBI</text>
+          <rect class="gate" x="245" y="120" width="150" height="110" rx="8"></rect><text x="278" y="178">COI region</text>
+          <rect class="gate" x="475" y="150" width="90" height="48" rx="8"></rect><text x="497" y="180">EBO</text>
+          <path class="map-arrow green" d="M160 109 H245"></path><path class="map-arrow green" d="M160 234 H245"></path><path class="map-arrow purple" d="M395 175 H475"></path>
+          <text class="small-label" x="190" y="295">Boundary inputs are outside; boundary outputs are region sinks.</text>
+        </svg>
+      </div>
+      <aside class="notes">This slide introduces the new milestone. The key shift is from individual node pairs to a coherent region with equivalent boundary cuts. Be explicit that region enclosure does not imply every internal node has a direct match.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Boundary algorithm</p>
+          <h2>Equivalent anchors define the cuts</h2>
+          <ol class="steps">
+            <li>Load COI JSON in the original circuit.</li>
+            <li>Build exact / complemented / SAT-CEC anchors.</li>
+            <li>Search backward for EBI and forward for EBO.</li>
+            <li>Complete missing input cuts.</li>
+            <li>Reject cycle risks and invalid cuts.</li>
+          </ol>
+        </div>
+        <div class="checklist future">
+          <p><strong>COI</strong>: component of interest</p>
+          <p><strong>BI/BO</strong>: original boundary input/output</p>
+          <p><strong>EBI/EBO</strong>: extended anchored boundary</p>
+          <p><strong>Formal anchors only</strong>: exact/interface or SAT/CEC</p>
+          <p><strong>No sampled anchors</strong> in formal recovery</p>
+        </div>
+      </div>
+      <aside class="notes">Walk through the algorithm at a high level. Complemented anchors carry polarity; the current formal modes do not use sampled approximate anchors.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Boundary results</p><h2>8 of 48 boundary cases recovered</h2><div class="inline-stats"><span>16.7% success</span><span>exact-only = formal-all</span><span>mean extension 0.1123</span><span>0 cycle conflicts</span><span>0 critical-path unresolved enclosed</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/boundary_recovery_success_by_anchor_mode.png" alt="Boundary recovery success by anchor mode">
+          <img src="assets/plots/boundary_extension_by_optimization.png" alt="Boundary extension by optimization">
+        </div>
+        <div class="meaning-box"><strong>What this means:</strong> the first conservative prototype recovers some generated MUX-tree regions, but does not yet improve critical-path unresolved recovery or arithmetic-region recovery.</div>
+      </div>
+      <aside class="notes">Report the numbers honestly. Exact-only and formal-all tie, which means the current successful rows are already explained by exact/interface anchors. This is a baseline for future boundary tightening and logic grafting.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, and sensitivity features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Boundary recovery is region-level evidence, not direct internal-node equivalence.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>RTL source mapping is a metadata prototype, not integrated back-mapping yet.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
         <div class="callout"><h3>Important idea</h3><p>Unresolved nodes are not simply failures. They show where context, observability don't-cares, or deeper ABC integration may be needed.</p></div>
       </div>
       <aside class="notes">Use this slide to show research maturity. The ABC-native baseline is a meaningful addition, but it does not remove the need for a correspondence layer. The cofactor/sensitivity milestone adds feature instrumentation, but the committed lightweight subset does not show improvement. The RTL/source and register-suggestion prototypes clarify the final engineering direction without claiming automatic correctness.</aside>
@@ -728,17 +788,17 @@ df/dx = f_x1 XOR f_x0</pre>
 
     <section class="slide title-slide">
       <div class="slide-content title-grid">
-        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, probes timing-aware path selection, sketches the RTL/source bridge, and demonstrates register-suggestion ranking.</p></div>
+        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, recovers equivalence-anchored regions, probes timing-aware path selection, sketches the RTL/source bridge, and demonstrates register-suggestion ranking.</p></div>
         <div class="takeaway-chain"><div>Optimized critical path</div><div>Correspondence recovery</div><div>Original RTL/source location</div><div>Register suggestion list</div></div>
       </div>
-      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, cofactor and sensitivity features now have an ablation harness, timing-aware path extraction has a first probe, source metadata identifies the RTL bridge, and register suggestions show the final tool shape.</aside>
+      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, cofactor and sensitivity features now have an ablation harness, boundary recovery adds region-level evidence, timing-aware path extraction has a first probe, source metadata identifies the RTL bridge, and register suggestions show the final tool shape.</aside>
     </section>
   </main>
 
   <footer class="controls">
     <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
     <button id="prev" type="button" aria-label="Previous slide">Prev</button>
-    <span id="slide-number">1 / 50</span>
+    <span id="slide-number">1 / 53</span>
     <button id="next" type="button" aria-label="Next slide">Next</button>
     <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
   </footer>

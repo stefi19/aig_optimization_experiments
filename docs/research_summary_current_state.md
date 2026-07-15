@@ -254,6 +254,49 @@ baseline. The new contribution is the reusable feature/evidence layer and the
 ablation harness needed to test larger or harder candidate pools without
 overstating sampled estimates.
 
+## 8.6 Equivalence-Anchored Boundary Recovery
+
+The newest region-level milestone asks a stronger question than node
+correspondence:
+
+```text
+Can a COI be enclosed by formally equivalent input and output cuts?
+```
+
+The prototype defines COIs in JSON, builds a BLIF graph, constructs formal
+anchors from exact/interface matches, complemented equivalence, and
+SAT/CEC-proven equivalence after structural mismatch, then performs:
+
+```text
+backward EBI cut search
+forward EBO cut search
+input-cut completion
+mapped-boundary cycle check
+region extraction
+```
+
+The key interpretation is conservative. A successful recovered region does not
+prove direct equivalence for every internal node. It only means the region is
+enclosed by formally anchored cuts.
+
+Current lightweight run:
+
+```text
+case/mode rows:                         48
+successful recovered boundaries:         8  (16.7%)
+exact_only success:                      4 / 24
+formal_all success:                      4 / 24
+mean extension ratio, exact_only:        0.1123
+mean extension ratio, formal_all:        0.1123
+cycle conflicts:                         0
+unresolved critical-path nodes enclosed: 0
+```
+
+The exact-only and formal-all ablation ties on this seed suite, so the current
+successful examples are already explained by exact/interface anchors. The
+failures are mostly missing ISCAS variants, incomplete output cuts for arithmetic
+COIs, and whole-design expansion in conservative validation.
+
 ## 9. Main Findings
 
 1. Exact matching is reliable when internal nodes survive optimization.
@@ -274,6 +317,9 @@ overstating sampled estimates.
    evidence for future ODC-aware and timing-aware work.
 8. Cofactor- and sensitivity-aware ranking features are now available, but the
    lightweight ablation ties the baseline on the current small labeled subset.
+9. Boundary recovery can enclose some generated MUX-tree regions with formal
+   anchors, but this first conservative run does not yet recover arithmetic COIs
+   or critical-path unresolved nodes.
 
 ## 10. Limitations
 
@@ -293,6 +339,8 @@ overstating sampled estimates.
 - There is no direct RTL source-location mapping yet.
 - Register insertion suggestions are ranked review hints, not automatic RTL
   edits.
+- Boundary recovery is region-level evidence, not direct node-level equivalence
+  for every internal node.
 - The method is not exhaustive; it analyzes selected ranked candidates and
   selected case-study circuits.
 
@@ -311,6 +359,8 @@ The most important next steps are:
    prototype using the mapped path.
 6. Add EPFL benchmarks after the current ISCAS-based flow is fully documented
    and stable.
+7. Implement validated logic grafting only after boundary recovery is robust
+   enough to avoid whole-design expansion and cycle risks.
 
 ## Short Supervisor Summary
 

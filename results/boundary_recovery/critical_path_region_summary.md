@@ -1,0 +1,16 @@
+# Critical-Path Region Recovery Summary
+
+This analysis asks whether unresolved critical-path nodes fall inside formally anchored recovered regions. It does not reclassify those nodes as direct correspondences.
+
+- Previously unresolved critical-path nodes enclosed: 0
+
+| benchmark | coi_name | optimization | anchor_mode | critical_path_nodes_in_coi | critical_path_nodes_in_extended_region | previously_unresolved_nodes_enclosed | region_level_recovery_rate | interpretation |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| generated_mux_tree_4 | mux_tree_root | balance | exact_only | 0 | 0 | 0 | 0.0 | enclosed by a formally anchored recovered region; not direct node equivalence |
+| generated_mux_tree_4 | mux_tree_root | balance | formal_all | 0 | 0 | 0 | 0.0 | enclosed by a formally anchored recovered region; not direct node equivalence |
+| generated_mux_tree_4 | mux_tree_root | dc2 | exact_only | 0 | 0 | 0 | 0.0 | enclosed by a formally anchored recovered region; not direct node equivalence |
+| generated_mux_tree_4 | mux_tree_root | dc2 | formal_all | 0 | 0 | 0 | 0.0 | enclosed by a formally anchored recovered region; not direct node equivalence |
+| generated_mux_tree_4 | mux_tree_root | rewrite | exact_only | 0 | 0 | 0 | 0.0 | enclosed by a formally anchored recovered region; not direct node equivalence |
+| generated_mux_tree_4 | mux_tree_root | rewrite | formal_all | 0 | 0 | 0 | 0.0 | enclosed by a formally anchored recovered region; not direct node equivalence |
+| generated_mux_tree_8 | mux_tree_upper_root | resyn2 | exact_only | 0 | 0 | 0 | 0.0 | enclosed by a formally anchored recovered region; not direct node equivalence |
+| generated_mux_tree_8 | mux_tree_upper_root | resyn2 | formal_all | 0 | 0 | 0 | 0.0 | enclosed by a formally anchored recovered region; not direct node equivalence |

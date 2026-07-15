@@ -2,7 +2,7 @@ ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 PYTHON ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; else echo python3; fi)
 
-.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance abc-timing-probe yosys-source-probe source-map-prototype register-suggestions contextual-error-analysis contextual-critical-path-map contextual-research-plots research-plots cofactor-sensitivity-analysis functional-ranking-ablation functional-ranking-plots enhanced-critical-path-map check-functional-ranking-results iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map timing-path-probe full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
+.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance abc-timing-probe yosys-source-probe source-map-prototype register-suggestions contextual-error-analysis contextual-critical-path-map contextual-research-plots research-plots cofactor-sensitivity-analysis functional-ranking-ablation functional-ranking-plots enhanced-critical-path-map check-functional-ranking-results boundary-recovery-benchmarks boundary-recovery-analysis boundary-recovery-critical-path boundary-recovery-plots check-boundary-recovery-results boundary-recovery iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map timing-path-probe full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -233,6 +233,29 @@ enhanced-critical-path-map: cofactor-sensitivity-analysis
 check-functional-ranking-results:
 	@echo "Checking functional ranking result schemas"
 	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_functional_ranking_results.py
+
+boundary-recovery-benchmarks:
+	@echo "Boundary recovery COI specs available under benchmarks/coi_specs/"
+	@test -f benchmarks/coi_specs/boundary_recovery_seed_cois.json
+
+boundary-recovery-analysis: boundary-recovery-benchmarks
+	@echo "Running equivalence-anchored boundary recovery"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/recover_equivalence_anchored_boundaries.py
+
+boundary-recovery-critical-path: boundary-recovery-analysis
+	@echo "Checking critical-path nodes enclosed by recovered regions"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/boundary_recovery_critical_path.py
+
+boundary-recovery-plots: boundary-recovery-critical-path
+	@echo "Boundary recovery plots written to results/plots/boundary_*"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/boundary_recovery_plots.py
+
+check-boundary-recovery-results:
+	@echo "Checking boundary recovery result schemas"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_boundary_recovery_results.py
+
+boundary-recovery: boundary-recovery-analysis boundary-recovery-critical-path boundary-recovery-plots check-boundary-recovery-results
+	@echo "Boundary recovery pipeline complete."
 
 full-research-pipeline: generate-variants analyze benchmark-manifest sat-pipeline topk-eval ablation region cegar-refine research-plots test
 	@echo ""

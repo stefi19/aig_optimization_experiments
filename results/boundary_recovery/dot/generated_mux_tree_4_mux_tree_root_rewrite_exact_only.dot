@@ -1,0 +1,10 @@
+digraph recovered_region {
+  "new_n10" [shape=box];
+  "new_n13" [shape=box];
+  "new_n14" [shape=box];
+  "new_n15" [shape=box];
+  "out" [shape=doublecircle];
+  "s0" [shape=box];
+  "new_n14" -> "out";
+  "new_n15" -> "out";
+}
