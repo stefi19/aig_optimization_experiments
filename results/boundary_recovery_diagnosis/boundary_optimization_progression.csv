@@ -1,0 +1,7 @@
+anchor_mode,benchmark,coi_name,first_nonzero_extension_flow,first_recovery_failure_flow,last_successful_flow,maximum_successful_flow
+formal_all,external_iscas85_c2670,critical_path_seed_region,,identity,,
+formal_all,external_iscas85_c432,manual_small_structural_region,,identity,,
+formal_all,generated_adder_4,adder_bit1_carry_sum_region,,identity,,
+formal_all,generated_multiplier_2,multiplier_middle_products,,identity,,
+formal_all,generated_mux_tree_4,mux_tree_root,resyn2,resyn2,dc2,dc2
+formal_all,generated_mux_tree_8,mux_tree_upper_root,resyn2,identity,compress2rs,compress2rs

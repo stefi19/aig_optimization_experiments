@@ -297,6 +297,38 @@ successful examples are already explained by exact/interface anchors. The
 failures are mostly missing ISCAS variants, incomplete output cuts for arithmetic
 COIs, and whole-design expansion in conservative validation.
 
+## 8.7 Boundary-Recovery Failure Diagnosis
+
+The follow-up diagnosis milestone explains the 40 failed rows before moving to
+logic grafting or arithmetic extraction. It preserves the same formal evidence
+semantics: exact/interface anchors, complemented equivalence, and SAT/CEC-proven
+equivalence after structural mismatch. Region enclosure remains region-level
+evidence, not direct node equivalence.
+
+Current diagnosis outputs under `results/boundary_recovery_diagnosis/` show:
+
+```text
+identity successes:                     1 / 6
+zero-extension identity cases:          1
+seed-suite successes:                   8 / 48
+failure stages:                         load_inputs 16, extract_region 14, validate_cuts 10
+failure reasons:                        missing_spec_circuit 16,
+                                        region_not_enclosed 10,
+                                        incomplete_ebo_cut 10,
+                                        whole_design_expansion 4
+formal_all usable frontier additions:   0
+SAT/CEC anchors selected:               0
+COI audit rows:                         4 valid, 20 invalid
+seed COIs overlapping unresolved paths: 0
+generated critical-path COI rows:       36, all skipped for missing external BLIFs
+```
+
+The measured decision gate is therefore to fix recovery semantics or COI
+definitions first. The data explains why `formal_all` ties `exact_only` in this
+seed suite: additional SAT/CEC-proven anchors are not present on usable
+frontiers here. This does not prove that SAT/CEC anchors are generally
+unhelpful.
+
 ## 9. Main Findings
 
 1. Exact matching is reliable when internal nodes survive optimization.
@@ -320,6 +352,8 @@ COIs, and whole-design expansion in conservative validation.
 9. Boundary recovery can enclose some generated MUX-tree regions with formal
    anchors, but this first conservative run does not yet recover arithmetic COIs
    or critical-path unresolved nodes.
+10. Boundary-recovery diagnosis shows the identity baseline is not yet clean, so
+    COI definitions and recovery semantics should be fixed before logic grafting.
 
 ## 10. Limitations
 

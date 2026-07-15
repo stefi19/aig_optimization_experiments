@@ -755,8 +755,57 @@ region enclosed by equivalent cuts</pre>
     </section>
 
     <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Boundary diagnosis</p><h2>Why 16.7% needs a failure taxonomy</h2><div class="inline-stats"><span>failure stages recorded</span><span>identity baseline added</span><span>anchor coverage measured</span><span>critical-path COIs audited</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/boundary_diag_failure_by_stage.png" alt="Boundary diagnosis failures by stage">
+          <img src="assets/plots/boundary_diag_failure_by_reason.png" alt="Boundary diagnosis failures by reason">
+        </div>
+        <div class="meaning-box"><strong>Result:</strong> failures split into missing inputs, region extraction failures, and cut validation failures; they are no longer collapsed into unresolved rows.</div>
+      </div>
+      <aside class="notes">This is the diagnostic milestone after the first boundary recovery baseline. The point is to identify where failures happen before implementing grafting or arithmetic extraction.</aside>
+    </section>
+
+    <section class="slide">
       <div class="slide-content two-column">
-        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, and sensitivity features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Boundary recovery is region-level evidence, not direct internal-node equivalence.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>RTL source mapping is a metadata prototype, not integrated back-mapping yet.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
+        <div>
+          <p class="eyebrow">Identity sanity check</p>
+          <h2>S versus S is not clean yet</h2>
+          <div class="inline-stats"><span>1 / 6 identity success</span><span>1 zero-extension case</span><span>5 identity failures</span></div>
+          <p>If identity is not effectively perfect, the next step is to fix COI definitions or recovery semantics before blaming optimization.</p>
+        </div>
+        <img src="assets/plots/boundary_diag_identity_vs_optimized.png" alt="Identity versus optimized boundary recovery">
+      </div>
+      <aside class="notes">Identity uses exact anchors for every node and still runs through the normal recovery and validation path. Since only one seed COI succeeds, this becomes the main decision gate.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Anchor relevance</p><h2>Global anchors are not enough</h2><div class="inline-stats"><span>formal-all global additions: 0 cases</span><span>usable frontier additions: 0 cases</span><span>SAT/CEC anchors selected: 0 cases</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/boundary_diag_global_vs_relevant_anchors.png" alt="Global versus relevant anchor additions">
+          <img src="assets/plots/boundary_diag_exact_vs_formal_differential.png" alt="Exact-only versus formal-all differential">
+        </div>
+        <div class="meaning-box"><strong>Interpretation:</strong> formal-all tied exact-only because no extra SAT/CEC-proven anchors were positioned on a usable frontier for these seed COIs.</div>
+      </div>
+      <aside class="notes">Use this slide to separate anchors somewhere in the graph from anchors that can define an input or output cut. Do not conclude SAT/CEC anchors are useless in general.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Critical-path diagnosis</p>
+          <h2>Seed COIs did not test unresolved path nodes</h2>
+          <div class="checklist future"><p>Seed COIs overlap 0 unresolved critical-path nodes.</p><p>Generated path COI table has 36 bounded rows.</p><p>All generated rows are skipped because the current critical-path CSV points to missing external BLIFs.</p><p>Region enclosure is still not node equivalence.</p></div>
+        </div>
+        <img src="assets/plots/boundary_diag_critical_path_coi_recovery.png" alt="Critical-path COI recovery by segment size">
+      </div>
+      <aside class="notes">This explains the zero critical-path enclosure result. It is not yet evidence that region recovery cannot help critical paths; the seed COIs simply do not overlap unresolved path nodes, and generated path COIs are blocked by missing external variants.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, and sensitivity features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Boundary recovery is region-level evidence, not direct internal-node equivalence.</p><p>Boundary diagnosis shows identity recovery is not yet clean.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>RTL source mapping is a metadata prototype, not integrated back-mapping yet.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
         <div class="callout"><h3>Important idea</h3><p>Unresolved nodes are not simply failures. They show where context, observability don't-cares, or deeper ABC integration may be needed.</p></div>
       </div>
       <aside class="notes">Use this slide to show research maturity. The ABC-native baseline is a meaningful addition, but it does not remove the need for a correspondence layer. The cofactor/sensitivity milestone adds feature instrumentation, but the committed lightweight subset does not show improvement. The RTL/source and register-suggestion prototypes clarify the final engineering direction without claiming automatic correctness.</aside>
@@ -788,17 +837,17 @@ region enclosed by equivalent cuts</pre>
 
     <section class="slide title-slide">
       <div class="slide-content title-grid">
-        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, recovers equivalence-anchored regions, probes timing-aware path selection, sketches the RTL/source bridge, and demonstrates register-suggestion ranking.</p></div>
+        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, recovers and diagnoses equivalence-anchored regions, probes timing-aware path selection, sketches the RTL/source bridge, and demonstrates register-suggestion ranking.</p></div>
         <div class="takeaway-chain"><div>Optimized critical path</div><div>Correspondence recovery</div><div>Original RTL/source location</div><div>Register suggestion list</div></div>
       </div>
-      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, cofactor and sensitivity features now have an ablation harness, boundary recovery adds region-level evidence, timing-aware path extraction has a first probe, source metadata identifies the RTL bridge, and register suggestions show the final tool shape.</aside>
+      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, cofactor and sensitivity features now have an ablation harness, boundary recovery adds region-level evidence, the diagnosis says identity and COI semantics need attention next, timing-aware path extraction has a first probe, source metadata identifies the RTL bridge, and register suggestions show the final tool shape.</aside>
     </section>
   </main>
 
   <footer class="controls">
     <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
     <button id="prev" type="button" aria-label="Previous slide">Prev</button>
-    <span id="slide-number">1 / 53</span>
+    <span id="slide-number">1 / 57</span>
     <button id="next" type="button" aria-label="Next slide">Next</button>
     <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
   </footer>

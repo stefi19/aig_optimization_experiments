@@ -108,3 +108,71 @@ regions.
 The failures are useful: missing ISCAS variants are recorded explicitly, and
 several generated arithmetic COIs expose incomplete output cuts or whole-design
 expansion. This is expected for a first conservative prototype.
+
+## Failure Diagnosis Milestone
+
+The follow-up diagnosis asks why 40 of 48 seed rows fail before implementing
+logic grafting. The new outputs live under
+`results/boundary_recovery_diagnosis/` and add:
+
+- stage-by-stage failure taxonomy;
+- identity S-versus-S baseline;
+- progressive optimization-flow summary;
+- global versus relevant-cone anchor coverage;
+- exact-only versus formal-all differential analysis;
+- deterministic anchor-selection audit;
+- COI quality audit;
+- benchmark/variant alignment checks;
+- input-cut completion diagnosis;
+- critical-path seed overlap and bounded generated path COIs.
+
+The stage taxonomy uses stable stages:
+
+```text
+load_inputs
+validate_coi
+load_anchors
+align_variants
+analyze_relevant_cones
+recover_ebi
+recover_ebo
+complete_input_cut
+validate_cuts
+detect_cycles
+extract_region
+compute_metrics
+success
+```
+
+Current measured diagnosis:
+
+```text
+identity successes:                   1 / 6
+zero-extension identity cases:        1
+seed-suite successes:                 8 / 48
+failure stages:                       load_inputs 16, extract_region 14, validate_cuts 10
+failure reasons:                      missing_spec_circuit 16,
+                                      region_not_enclosed 10,
+                                      incomplete_ebo_cut 10,
+                                      whole_design_expansion 4
+formal_all usable frontier additions: 0
+SAT/CEC anchors selected:             0
+```
+
+The anchor-coverage diagnosis separates:
+
+- **global anchor density**: formally anchored nodes anywhere in the circuit;
+- **relevant-cone anchor density**: formally anchored nodes inside the COI's
+  TFI/TFO-related cones;
+- **usable frontier anchors**: anchors positioned where EBI/EBO cut search can
+  actually select them.
+
+This matters because `formal_all` can add proven correspondences somewhere in a
+network without helping a particular COI boundary. In the current seed suite,
+`formal_all` adds no usable frontier anchors and selects no SAT/CEC-proven
+anchors, so its tie with `exact_only` is expected.
+
+The identity baseline is the primary decision gate. Since identity recovery is
+not effectively perfect, the next implementation step should fix COI definitions
+or recovery semantics before interpreting optimized-flow failures as evidence
+that formal anchors are insufficient.

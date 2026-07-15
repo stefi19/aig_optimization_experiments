@@ -2259,6 +2259,66 @@ This is not RTL recovery, arithmetic recognition, or logic grafting yet. Logic
 grafting remains the next implementation step after boundary validation is more
 robust.
 
+### Boundary-Recovery Failure Diagnosis
+
+The follow-up diagnosis milestone explains the 40 failed rows before moving to
+logic grafting or arithmetic extraction. It adds an identity S-versus-S
+baseline, a stage-by-stage failure taxonomy, relevant-cone anchor coverage,
+anchor-mode differentials, COI validity checks, alignment checks, completion
+diagnostics, and bounded critical-path COI generation.
+
+Run:
+
+```bash
+make boundary-recovery-identity
+make boundary-recovery-diagnosis
+make boundary-recovery-critical-path-cois
+make boundary-recovery-diagnosis-plots
+make check-boundary-recovery-diagnosis
+```
+
+Current diagnosis results:
+
+- Identity baseline: 1 / 6 successful; 1 zero-extension identity case.
+- Existing seed suite: 8 / 48 successful, unchanged from the boundary-recovery
+  baseline.
+- Failure stages: `load_inputs` 16, `extract_region` 14, `validate_cuts` 10.
+- Failure reasons: `missing_spec_circuit` 16, `region_not_enclosed` 10,
+  `incomplete_ebo_cut` 10, `whole_design_expansion` 4.
+- `formal_all` adds usable frontier anchors in 0 cases and selects SAT/CEC
+  anchors in 0 cases on this seed suite.
+- COI audit: 4 valid rows and 20 invalid rows under the current strict COI
+  checks.
+- Seed COIs overlapping unresolved critical-path nodes: 0.
+- Generated critical-path diagnostic COIs: 36 rows, all skipped because the
+  current critical-path CSV refers to external circuits whose local BLIF
+  variants are absent.
+
+This diagnosis changes the next decision gate: because the identity baseline is
+not effectively perfect, the measured recommendation is to fix recovery
+semantics or COI specifications before treating optimized-flow failures as
+evidence that formal anchors are insufficient. The data also explains why
+`formal_all` tied `exact_only`: no additional SAT/CEC-proven anchors were
+available on a usable frontier for these seed COIs.
+
+Outputs:
+
+- `results/boundary_recovery_diagnosis/boundary_failure_taxonomy.csv`
+- `results/boundary_recovery_diagnosis/boundary_stage_progress.csv`
+- `results/boundary_recovery_diagnosis/boundary_identity_baseline.csv`
+- `results/boundary_recovery_diagnosis/boundary_optimization_progression.csv`
+- `results/boundary_recovery_diagnosis/boundary_anchor_coverage.csv`
+- `results/boundary_recovery_diagnosis/boundary_anchor_mode_differential.csv`
+- `results/boundary_recovery_diagnosis/boundary_anchor_selection_audit.csv`
+- `results/boundary_recovery_diagnosis/boundary_coi_audit.csv`
+- `results/boundary_recovery_diagnosis/boundary_completion_diagnosis.csv`
+- `results/boundary_recovery_diagnosis/boundary_alignment_checks.csv`
+- `results/boundary_recovery_diagnosis/boundary_critical_path_overlap.csv`
+- `results/boundary_recovery_diagnosis/boundary_generated_critical_path_cois.csv`
+- `results/boundary_recovery_diagnosis/boundary_diagnosis_summary.md`
+
+Diagnosis plots are written as `results/plots/boundary_diag_*.png`.
+
 ---
 
 ## Critical-Path Back-Mapping Prototype

@@ -2,7 +2,7 @@ ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 PYTHON ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; else echo python3; fi)
 
-.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance abc-timing-probe yosys-source-probe source-map-prototype register-suggestions contextual-error-analysis contextual-critical-path-map contextual-research-plots research-plots cofactor-sensitivity-analysis functional-ranking-ablation functional-ranking-plots enhanced-critical-path-map check-functional-ranking-results boundary-recovery-benchmarks boundary-recovery-analysis boundary-recovery-critical-path boundary-recovery-plots check-boundary-recovery-results boundary-recovery iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map timing-path-probe full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
+.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance abc-timing-probe yosys-source-probe source-map-prototype register-suggestions contextual-error-analysis contextual-critical-path-map contextual-research-plots research-plots cofactor-sensitivity-analysis functional-ranking-ablation functional-ranking-plots enhanced-critical-path-map check-functional-ranking-results boundary-recovery-benchmarks boundary-recovery-analysis boundary-recovery-critical-path boundary-recovery-plots check-boundary-recovery-results boundary-recovery boundary-recovery-identity boundary-recovery-diagnosis boundary-recovery-critical-path-cois boundary-recovery-diagnosis-plots check-boundary-recovery-diagnosis boundary-recovery-diagnosis-all iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map timing-path-probe full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -256,6 +256,29 @@ check-boundary-recovery-results:
 
 boundary-recovery: boundary-recovery-analysis boundary-recovery-critical-path boundary-recovery-plots check-boundary-recovery-results
 	@echo "Boundary recovery pipeline complete."
+
+boundary-recovery-identity: boundary-recovery-benchmarks
+	@echo "Running identity S-versus-S boundary recovery baseline"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_boundary_recovery_identity_baseline.py
+
+boundary-recovery-diagnosis: boundary-recovery
+	@echo "Diagnosing boundary-recovery failures and anchor coverage"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/diagnose_boundary_recovery_failures.py
+
+boundary-recovery-critical-path-cois:
+	@echo "Generating bounded critical-path diagnostic COIs"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/generate_critical_path_cois.py
+
+boundary-recovery-diagnosis-plots: boundary-recovery-diagnosis
+	@echo "Generating boundary diagnosis plots"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/boundary_diagnosis_plots.py
+
+check-boundary-recovery-diagnosis:
+	@echo "Checking boundary diagnosis result schemas"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_boundary_diagnosis_results.py
+
+boundary-recovery-diagnosis-all: boundary-recovery-identity boundary-recovery-diagnosis boundary-recovery-critical-path-cois boundary-recovery-diagnosis-plots check-boundary-recovery-diagnosis
+	@echo "Boundary recovery diagnosis pipeline complete."
 
 full-research-pipeline: generate-variants analyze benchmark-manifest sat-pipeline topk-eval ablation region cegar-refine research-plots test
 	@echo ""
