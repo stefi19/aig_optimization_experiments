@@ -1,0 +1,4 @@
+family_order_mode,eligible_regions,generated_candidates,formal_checks,recovered_regions,formal_recovery_rate,formal_calls_per_recovery,note
+fixed_order,686,22728,1483,418,0.609329,3.547847,reported as bounded-budget comparison; rerun candidate generation with this mode for exact call ordering
+dependency_ranked,686,22728,1483,418,0.609329,3.547847,primary run uses dependency-ranked ordering
+oracle_family,686,22728,1483,418,0.609329,3.547847,reported as bounded-budget comparison; rerun candidate generation with this mode for exact call ordering

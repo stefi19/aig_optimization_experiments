@@ -1,0 +1,3 @@
+simulation_filter_mode,simulation_checked,formal_calls,false_survivors,verified_candidates,recovered_regions,note
+no_simulation_filter,22728,22728,not_measured_without_full_formal_run,1483,418,diagnostic estimate; primary run uses simulation filtering before formal checks
+semantic_patterns,22728,1483,0,1483,418,primary measured run

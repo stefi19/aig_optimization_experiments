@@ -1110,10 +1110,75 @@ BO = inside R, PO or fanout outside R</pre>
 
     <section class="slide">
       <div class="slide-content two-column">
-        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, sensitivity, and dependency features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Boundary recovery is region-level evidence, not direct internal-node equivalence.</p><p>ODC anchors are contextual, not global node equivalence.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>Semantic benchmark, region, bus, and dependency rows are substrate, not recovered RTL.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
+        <div>
+          <p class="eyebrow">Direct semantic recovery</p>
+          <h2>Typed templates become formally checked expressions</h2>
+          <pre class="code-block">validated region
+-> inferred buses
+-> direct typed templates
+-> semantic-pattern simulation
+-> exhaustive region equivalence
+-> verified expression</pre>
+        </div>
+        <div class="callout"><h3>Scope</h3><p>This phase uses bounded direct templates only. It does not solve coefficients, run CEGIS, or search arbitrary expressions.</p></div>
+      </div>
+      <aside class="notes">Introduce Phase 4 as the first actual semantic-expression recovery layer. Emphasize that it is deliberately bounded and formally checked.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Candidate funnel</p><h2>418 regions recovered with direct templates</h2><div class="inline-stats"><span>22,728 candidates</span><span>1,560 simulation survivors</span><span>1,483 formal checks</span><span>1,483 verified</span><span>418 regions</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/semantic_direct_candidate_funnel.png" alt="Direct recovery candidate funnel">
+          <img src="assets/plots/semantic_direct_recovery_by_family.png" alt="Direct recovery by family">
+        </div>
+        <div class="meaning-box"><strong>Proof rule:</strong> accepted expressions are formally verified against the region by exhaustive truth-table comparison.</div>
+      </div>
+      <aside class="notes">Simulation prunes the search, but the recovery claim is made only after exhaustive region equivalence. The proof is region-scoped, not global circuit equivalence.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Recovery type</p><h2>Exact source text is not the only useful result</h2><div class="inline-stats"><span>formal rate 0.609</span><span>exact 0.261</span><span>canonical 0.045</span><span>alternative 0.414</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/semantic_direct_exact_vs_alternative.png" alt="Exact versus alternative verified expressions">
+          <img src="assets/plots/semantic_direct_recovery_by_operator.png" alt="Direct recovery by operator">
+        </div>
+        <div class="meaning-box"><strong>Interpretation:</strong> a different expression can be formally equivalent, but it is not counted as exact original RTL reconstruction.</div>
+      </div>
+      <aside class="notes">Make the classification distinction explicit: exact syntactic match, canonical syntactic match, and formally equivalent alternative are different outcomes.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Ablations</p><h2>Simulation sharply cuts formal calls</h2><div class="inline-stats"><span>22,728 generated</span><span>1,483 formal calls</span><span>3.55 calls / recovered region</span><span>dependency ordering measured</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/semantic_direct_dependency_ordering_ablation.png" alt="Dependency ordering ablation">
+          <img src="assets/plots/semantic_direct_simulation_filter_ablation.png" alt="Simulation filter ablation">
+        </div>
+        <div class="meaning-box"><strong>Caveat:</strong> alternate family-order modes are reported as bounded-budget comparisons; the primary measured run uses dependency-ranked ordering.</div>
+      </div>
+      <aside class="notes">This slide answers the search-cost question. The deterministic simulation filter greatly reduces formal calls, but the family ordering ablation is still a lightweight comparison.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Cost and limits</p><h2>Direct templates are compact when they apply</h2><div class="inline-stats"><span>mean cost 1.927</span><span>median cost 1.000</span><span>mean reduction 32.138%</span><span>460 over 70%</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/semantic_direct_rtl_cost_distribution.png" alt="Direct recovery RTL cost distribution">
+          <img src="assets/plots/semantic_direct_failure_taxonomy.png" alt="Direct recovery failure taxonomy">
+        </div>
+        <div class="meaning-box"><strong>Next step:</strong> arithmetic misses point to parameter and coefficient inference, then CEGIS.</div>
+      </div>
+      <aside class="notes">The cost model is Problem-A-inspired, not the official contest scorer. It is a compactness signal for verified expressions.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, sensitivity, and dependency features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Boundary recovery is region-level evidence, not direct internal-node equivalence.</p><p>ODC anchors are contextual, not global node equivalence.</p><p>Direct semantic recovery covers bounded templates only; coefficient solving and CEGIS remain future work.</p><p>Region-equivalence proofs are not global circuit equivalence.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
         <div class="callout"><h3>Important idea</h3><p>Unresolved nodes are not simply failures. They show where context, observability don't-cares, or deeper ABC integration may be needed.</p></div>
       </div>
-      <aside class="notes">Use this slide to show research maturity. The ABC-native baseline is a meaningful addition, but it does not remove the need for a correspondence layer. The cofactor/sensitivity milestone adds feature instrumentation, but the committed lightweight subset does not show improvement. The semantic benchmark, region/interface, bus, and dependency layers supply known answers and canonical features for future RTL recovery without claiming the solver exists yet.</aside>
+      <aside class="notes">Use this slide to show research maturity. The direct semantic layer now has formally verified region expressions, but only for bounded direct templates. It does not solve the full RTL recovery problem.</aside>
     </section>
 
     <section class="slide">
@@ -1142,17 +1207,17 @@ BO = inside R, PO or fanout outside R</pre>
 
     <section class="slide title-slide">
       <div class="slide-content title-grid">
-        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, adds ODC-aware anchors, and now prepares semantic regions, scalar interfaces, inferred buses, and dependency geometry for verified semantic recovery.</p></div>
+        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, adds ODC-aware anchors, and now formally verifies bounded direct semantic templates over inferred buses.</p></div>
         <div class="takeaway-chain"><div>Optimized critical path</div><div>Recovered gate region</div><div>Verified RTL-like expression</div><div>Register or rewrite suggestion</div></div>
       </div>
-      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, cofactor and sensitivity features now have an ablation harness, boundary recovery now has repaired COI semantics and an exact identity gate, ODC-aware anchors recover additional contextual cases, and the semantic benchmark plus region/interface/bus/dependency layers create the testbed for verified RTL-like recovery.</aside>
+      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, cofactor and sensitivity features now have an ablation harness, boundary recovery and ODC anchors build region evidence, and the semantic layers now recover a bounded set of formally verified direct expressions.</aside>
     </section>
   </main>
 
   <footer class="controls">
     <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
     <button id="prev" type="button" aria-label="Previous slide">Prev</button>
-    <span id="slide-number">1 / 79</span>
+    <span id="slide-number">1 / 84</span>
     <button id="next" type="button" aria-label="Next slide">Next</button>
     <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
   </footer>

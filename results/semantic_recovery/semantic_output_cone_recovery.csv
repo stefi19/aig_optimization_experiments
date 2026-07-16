@@ -1,0 +1,2 @@
+scope,group,eligible_regions,regions_with_direct_candidates,generated_candidates,canonical_candidates,simulation_checked,simulation_survivors,formal_checks,verified_candidates,recovered_regions,formal_recovery_rate,exact_syntactic_recovery_rate,canonical_syntactic_recovery_rate,equivalent_alternative_rate,mean_verified_rtl_cost,median_verified_rtl_cost,mean_reduction_rate,cases_above_70_reduction
+source_type,whole_output_cone,559,559,18261,618,18261,1426,1349,1349,353,0.631485,0.232558,0.046512,0.465116,1.935508,1.000000,34.418221,421

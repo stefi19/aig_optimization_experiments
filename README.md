@@ -52,10 +52,11 @@ https://stefi19.github.io/aig_optimization_experiments/presentation/
 27. [Semantic Recovery Benchmark Suite](#semantic-recovery-benchmark-suite)
 28. [Canonical Semantic Regions and Interfaces](#canonical-semantic-regions-and-interfaces)
 29. [Semantic Bus Inference and Dependency Geometry](#semantic-bus-inference-and-dependency-geometry)
-30. [Formal Error Metrics and Context-Aware Correspondence](#formal-error-metrics-and-context-aware-correspondence)
-31. [Dependencies](#20-dependencies)
-32. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
-33. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
+30. [Formally Verified Direct Semantic Template Recovery](#formally-verified-direct-semantic-template-recovery)
+31. [Formal Error Metrics and Context-Aware Correspondence](#formal-error-metrics-and-context-aware-correspondence)
+32. [Dependencies](#20-dependencies)
+33. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+34. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -1632,6 +1633,69 @@ descriptive and does not recover operators or synthesize expressions.
 
 See `docs/semantic_bus_and_dependency_inference.md` and
 `results/semantic_recovery/semantic_bus_dependency_summary.md`.
+
+---
+
+## Formally Verified Direct Semantic Template Recovery
+
+Phase 4 turns the semantic substrate into bounded, formally checked expression
+recovery:
+
+```text
+validated semantic region
+-> inferred buses
+-> typed direct templates
+-> deterministic simulation filter
+-> exhaustive region equivalence
+-> verified expression selection
+-> Problem-A-inspired RTL cost
+```
+
+This phase implements direct templates only. It does not implement unrestricted
+grammar search, coefficient solving, Gaussian elimination, full CEGIS, or logic
+grafting. Sampled simulation is used only as a filter. Every accepted expression
+in the committed result set is `formally_verified_region` with
+`formal_exhaustive` evidence; region equivalence is not labeled global
+equivalence.
+
+Run:
+
+```bash
+make semantic-direct-candidates
+make semantic-direct-simulation
+make semantic-direct-verification
+make semantic-direct-selection
+make semantic-direct-ablation
+make semantic-direct-plots
+make check-semantic-direct-results
+make semantic-direct-recovery-all
+```
+
+Current generated results:
+
+- eligible regions: 686;
+- regions with direct candidates: 686;
+- generated candidates: 22,728;
+- canonical candidates: 618;
+- simulation checked: 22,728;
+- simulation survivors: 1,560;
+- formal checks: 1,483;
+- verified candidates: 1,483;
+- recovered regions: 418;
+- formal recovery rate: 0.609;
+- exact syntactic recovery rate: 0.261;
+- canonical syntactic recovery rate: 0.045;
+- equivalent-alternative rate: 0.414.
+
+The direct grammar recovers many Boolean, comparison, and bit-manipulation
+regions. Arithmetic remains limited because affine forms, constants,
+coefficient choices, and wider arithmetic often need parameter solving or
+CEGIS. The Problem-A-inspired cost is a lightweight proxy, not the official
+contest score: current verified candidates have mean RTL cost 1.927, median
+cost 1.000, and mean reduction rate 32.138%.
+
+See `docs/semantic_direct_template_recovery.md` and
+`results/semantic_recovery/semantic_direct_recovery_summary.md`.
 
 ---
 

@@ -555,6 +555,63 @@ templates, coefficients, or RTL expressions.  The generated naming convention
 explains the strong bus-grouping result, while the family-ranking result shows
 that dependency geometry alone is not enough for robust semantic recovery.
 
+### Formally Verified Direct Semantic Template Recovery
+
+The newest semantic milestone adds bounded direct-template expression recovery
+over the inferred buses. It introduces a typed semantic AST, explicit width and
+signedness hypotheses, direct grammar families, deterministic semantic-pattern
+simulation, exhaustive region-equivalence checking for small interfaces, best
+verified-expression selection, and a Problem-A-inspired RTL cost proxy.
+
+The recovery pipeline is:
+
+```text
+validated semantic region
+-> inferred buses
+-> typed direct templates
+-> deterministic simulation filter
+-> exhaustive region equivalence
+-> verified expression selection
+```
+
+Accepted rows must have:
+
+```text
+formal_status = formally_verified_region
+proof_scope = region
+formal_evidence_level = formal_exhaustive
+```
+
+Sampled simulation remains a filter and is not formal proof. Region proofs are
+not labeled global equivalence. Direct recovery is limited to the bounded
+grammar; coefficient solving, unrestricted grammar search, and CEGIS remain
+future work.
+
+Current generated results:
+
+```text
+eligible regions:                  686
+regions with direct candidates:     686
+generated candidates:            22,728
+canonical candidates:               618
+simulation checked:              22,728
+simulation survivors:             1,560
+formal checks:                    1,483
+verified candidates:              1,483
+recovered regions:                  418
+
+formal recovery rate:              0.609
+exact syntactic recovery rate:     0.261
+canonical syntactic recovery rate: 0.045
+equivalent-alternative rate:       0.414
+```
+
+Recovery is strongest for comparison, Boolean, and bit-manipulation rows.
+Arithmetic direct-template recovery is lower because many generated arithmetic
+cases require parameter or coefficient inference. Verified expressions have
+mean Problem-A-inspired RTL cost `1.927`, median cost `1.000`, and mean
+reduction rate `32.138%`; 460 verified candidates exceed 70% reduction.
+
 ## 9. Main Findings
 
 1. Exact matching is reliable when internal nodes survive optimization.
