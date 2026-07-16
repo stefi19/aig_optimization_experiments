@@ -160,7 +160,9 @@ Plots are written to `results/plots/semantic_*.png` and copied into
 
 ## Remaining Limitations
 
-This phase does not recover RTL expressions. It does not infer buses for
-unknown regions, solve arithmetic coefficients, perform expression-template
-selection, or run CEGIS. The recommended next phase is inferred bus grouping and
-dependency-matrix extraction over these canonical scalar interfaces.
+This phase does not recover RTL expressions. The follow-up bus/dependency
+milestone now adds inferred bus hypotheses and dependency matrices over these
+canonical scalar interfaces; see
+`docs/semantic_bus_and_dependency_inference.md`. The remaining semantic-recovery
+work is expression-family-specific recovery, coefficient solving, and CEGIS
+validation without treating heuristic dependency features as proof.

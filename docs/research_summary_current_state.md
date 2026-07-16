@@ -517,6 +517,44 @@ expression was inferred from gates; the milestone only establishes canonical
 regions, boundaries, scalar interfaces, and ground-truth interface comparison
 for later inferred bus grouping and dependency analysis.
 
+### Semantic Bus Inference and Dependency Geometry
+
+The next semantic milestone uses the Phase 2 scalar interfaces to infer bus
+hypotheses and compute dependency geometry.  The default run uses
+`inferred_bus_mode`: ground-truth bus metadata is not used to generate the
+hypotheses, only to evaluate them after inference.
+
+The pipeline now writes bus hypotheses, best hypotheses, bus evaluation rows,
+input-role rows, bit-order evaluation rows, dependency matrices, dependency
+geometry features, broad family rankings, ablation summaries, checks, and
+plots under `results/semantic_recovery/` and `results/plots/`.
+
+Current generated results:
+
+```text
+eligible region rows:              686
+bus direction rows:              1,372
+inferred bus hypotheses:         1,712
+complete dependency matrices:      686
+family ranking rows:             5,488
+
+bus top-1 / top-3 / top-5:       1.000 / 1.000 / 1.000
+bus membership precision/recall: 0.999 / 0.999
+bit-order accuracy:              0.997
+bus MRR:                         0.939
+
+broad family top-1 / top-3:      0.246 / 0.571
+broad family MRR:                0.460
+```
+
+Dependency matrices include structural reachability, sampled simulation
+sensitivity, and bounded Boolean-difference estimates.  Sampled dependency
+values are labeled as heuristic estimates and are not formal proof.  The broad
+family ranker is intentionally descriptive; it does not recover operators,
+templates, coefficients, or RTL expressions.  The generated naming convention
+explains the strong bus-grouping result, while the family-ranking result shows
+that dependency geometry alone is not enough for robust semantic recovery.
+
 ## 9. Main Findings
 
 1. Exact matching is reliable when internal nodes survive optimization.

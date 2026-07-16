@@ -1,0 +1,5 @@
+feature_mode,region_rows,direction_rows,top_1_bus_match_rate,top_3_bus_match_rate,top_5_bus_match_rate,mean_membership_precision,mean_membership_recall,mean_bit_order_accuracy,mean_mrr,runtime_seconds
+names_only,686,1372,1.000000,1.000000,1.000000,0.999210,0.999210,0.997376,0.939389,0.261828
+structure_only,686,1372,1.000000,1.000000,1.000000,0.999210,0.999210,0.997376,0.939389,0.265000
+names_plus_structure,686,1372,1.000000,1.000000,1.000000,0.999210,0.999210,0.997376,0.939389,0.256935
+full_combined,686,1372,1.000000,1.000000,1.000000,0.999210,0.999210,0.997376,0.939389,0.256324

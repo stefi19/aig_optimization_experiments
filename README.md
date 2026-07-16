@@ -51,10 +51,11 @@ https://stefi19.github.io/aig_optimization_experiments/presentation/
 26. [Register Insertion Suggestion Prototype](#register-insertion-suggestion-prototype)
 27. [Semantic Recovery Benchmark Suite](#semantic-recovery-benchmark-suite)
 28. [Canonical Semantic Regions and Interfaces](#canonical-semantic-regions-and-interfaces)
-29. [Formal Error Metrics and Context-Aware Correspondence](#formal-error-metrics-and-context-aware-correspondence)
-30. [Dependencies](#20-dependencies)
-31. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
-32. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
+29. [Semantic Bus Inference and Dependency Geometry](#semantic-bus-inference-and-dependency-geometry)
+30. [Formal Error Metrics and Context-Aware Correspondence](#formal-error-metrics-and-context-aware-correspondence)
+31. [Dependencies](#20-dependencies)
+32. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+33. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -1577,6 +1578,60 @@ an optimized output cone no longer depends on some declared input bits. The
 phase does not infer expressions, buses, arithmetic templates, or coefficients.
 See `docs/semantic_regions_and_interfaces.md` and
 `results/semantic_recovery/semantic_region_summary.md`.
+
+---
+
+## Semantic Bus Inference and Dependency Geometry
+
+The next semantic milestone starts from the canonical scalar interfaces and
+builds research signals for later semantic recovery:
+
+```text
+scalar interface
+-> inferred bus hypotheses
+-> dependency matrices
+-> dependency geometry
+-> broad family ranking
+```
+
+Default outputs use `inferred_bus_mode`: ground-truth bus metadata is not used
+to generate hypotheses, only to evaluate them afterward. The generated
+benchmarks have deterministic scalar names, so name/index grouping is strong;
+this validates the substrate but is not a claim of arbitrary RTL recovery.
+
+Run:
+
+```bash
+make semantic-bus-inference
+make semantic-dependency
+make semantic-family-ranking
+make semantic-bus-ablation
+make semantic-dependency-plots
+make check-semantic-bus-dependency
+make semantic-bus-dependency-all
+```
+
+Current generated results:
+
+- eligible region rows: 686;
+- bus direction rows: 1,372;
+- inferred bus hypotheses: 1,712;
+- complete dependency matrices: 686;
+- family ranking rows: 5,488;
+- bus top-1/top-3/top-5 match rate: 1.000 / 1.000 / 1.000;
+- bus membership precision/recall: 0.999 / 0.999;
+- bit-order accuracy: 0.997;
+- bus MRR: 0.939;
+- broad family top-1/top-3 accuracy: 0.246 / 0.571;
+- broad family MRR: 0.460.
+
+Dependency matrices include structural reachability, sampled simulation
+sensitivity, and bounded Boolean-difference estimates. Sampled dependency
+values are heuristic evidence, not formal proof. Broad family ranking is
+descriptive and does not recover operators or synthesize expressions.
+
+See `docs/semantic_bus_and_dependency_inference.md` and
+`results/semantic_recovery/semantic_bus_dependency_summary.md`.
 
 ---
 

@@ -1042,26 +1042,78 @@ BO = inside R, PO or fanout outside R</pre>
     <section class="slide">
       <div class="slide-content two-column">
         <div>
-          <p class="eyebrow">Next semantic step</p>
-          <h2>Prepare for inferred bus grouping</h2>
+          <p class="eyebrow">Semantic bus inference</p>
+          <h2>From scalar pins to bus hypotheses</h2>
           <pre class="code-block">canonical region
 -> scalar input/output interface
 -> dependency matrix
 -> inferred bus groups
 -> later expression templates</pre>
-          <p>The current output is a deterministic substrate for later inference, not the inference itself.</p>
+          <p>The new milestone infers bus groups from scalar names and structure, then evaluates them against ground truth.</p>
         </div>
-        <div class="callout"><h3>Current limit</h3><p>No arithmetic templates, coefficient solving, CEGIS loop, or RTL expression recovery is implemented in this phase.</p></div>
+        <div class="callout"><h3>Evidence rule</h3><p>Ground truth is not used to generate inferred buses. It is only used afterward to score the hypotheses.</p></div>
       </div>
-      <aside class="notes">This should be the decision gate for Phase 3. The natural next milestone is inferred bus grouping and dependency matrices, because the scalar interface is now available and validated.</aside>
+      <aside class="notes">Explain that Phase 2 gave us scalar pins. Phase 3 asks whether those pins can be grouped back into data, control, and output buses without using ground truth during generation.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Bus results</p><h2>Inferred buses match the generated naming scheme</h2><div class="inline-stats"><span>686 regions</span><span>1,372 direction rows</span><span>1,712 hypotheses</span><span>top-1 1.000</span><span>bit order 0.997</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/semantic_bus_topk_match.png" alt="Semantic bus top-k match">
+          <img src="assets/plots/semantic_bus_accuracy_by_family.png" alt="Semantic bus accuracy by family">
+        </div>
+        <div class="meaning-box"><strong>Interpretation:</strong> the generated scalar names are deliberately regular, so this validates the bus/interface substrate rather than proving arbitrary RTL recovery.</div>
+      </div>
+      <aside class="notes">Be explicit that the strong bus result comes from deterministic generated names and canonical scalar ordering. It is a good substrate check, not a claim about arbitrary netlists.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Dependency geometry</p><h2>Describe how inputs influence outputs</h2><div class="inline-stats"><span>686 matrices</span><span>structural reachability</span><span>sampled simulation</span><span>Boolean difference</span><span>not formal proof</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/semantic_dependency_matrix_structural_example.png" alt="Structural dependency matrix example">
+          <img src="assets/plots/semantic_dependency_matrix_simulation_example.png" alt="Sampled dependency matrix example">
+        </div>
+        <div class="meaning-box"><strong>Evidence:</strong> sampled dependency estimates are useful ranking signals, but SAT/CEC or CEGIS remains the formal validation layer.</div>
+      </div>
+      <aside class="notes">Define the matrix informally: rows are scalar outputs and columns are scalar inputs. A high value means the input can affect the output under the chosen evidence source.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Broad family ranking</p><h2>Dependency geometry is useful but not enough</h2><div class="inline-stats"><span>top-1 0.246</span><span>top-3 0.571</span><span>MRR 0.460</span><span>comparison strong</span><span>Boolean/bitmanip hard</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/semantic_family_confusion_matrix.png" alt="Semantic family confusion matrix">
+          <img src="assets/plots/semantic_family_by_optimization.png" alt="Semantic family ranking by optimization">
+        </div>
+        <div class="meaning-box"><strong>Scope:</strong> this ranks broad families only. It does not recover operators, templates, coefficients, or RTL expressions.</div>
+      </div>
+      <aside class="notes">Use this as the honest result slide. The bus substrate is strong on generated names, but broad family ranking from dependency geometry alone is limited. That motivates the next phase rather than closing the problem.</aside>
     </section>
 
     <section class="slide">
       <div class="slide-content two-column">
-        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, and sensitivity features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Boundary recovery is region-level evidence, not direct internal-node equivalence.</p><p>ODC anchors are contextual, not global node equivalence.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>Semantic benchmark and region rows are ground truth/interface substrate, not recovered RTL.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
+        <div>
+          <p class="eyebrow">Ablation</p>
+          <h2>Name grouping dominates this generated suite</h2>
+          <div class="inline-stats"><span>names top-1 1.000</span><span>structure top-1 1.000</span><span>combined top-1 1.000</span><span>family top-1 0.246</span></div>
+          <p>The ablation did not show a family-ranking gain from the current bus feature modes.</p>
+        </div>
+        <div class="plot-pair">
+          <img src="assets/plots/semantic_bus_ablation.png" alt="Semantic bus ablation">
+          <img src="assets/plots/semantic_family_ablation.png" alt="Semantic family ablation">
+        </div>
+      </div>
+      <aside class="notes">State the negative result clearly. The current generated names make bus grouping easy, while broad family ranking still needs richer expression-level recovery.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, sensitivity, and dependency features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Boundary recovery is region-level evidence, not direct internal-node equivalence.</p><p>ODC anchors are contextual, not global node equivalence.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>Semantic benchmark, region, bus, and dependency rows are substrate, not recovered RTL.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
         <div class="callout"><h3>Important idea</h3><p>Unresolved nodes are not simply failures. They show where context, observability don't-cares, or deeper ABC integration may be needed.</p></div>
       </div>
-      <aside class="notes">Use this slide to show research maturity. The ABC-native baseline is a meaningful addition, but it does not remove the need for a correspondence layer. The cofactor/sensitivity milestone adds feature instrumentation, but the committed lightweight subset does not show improvement. The semantic benchmark and region/interface milestones supply known answers and canonical interfaces for future RTL recovery without claiming the solver exists yet.</aside>
+      <aside class="notes">Use this slide to show research maturity. The ABC-native baseline is a meaningful addition, but it does not remove the need for a correspondence layer. The cofactor/sensitivity milestone adds feature instrumentation, but the committed lightweight subset does not show improvement. The semantic benchmark, region/interface, bus, and dependency layers supply known answers and canonical features for future RTL recovery without claiming the solver exists yet.</aside>
     </section>
 
     <section class="slide">
@@ -1090,17 +1142,17 @@ BO = inside R, PO or fanout outside R</pre>
 
     <section class="slide title-slide">
       <div class="slide-content title-grid">
-        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, adds ODC-aware anchors, and now prepares canonical semantic regions and scalar interfaces for verified semantic recovery.</p></div>
+        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, adds ODC-aware anchors, and now prepares semantic regions, scalar interfaces, inferred buses, and dependency geometry for verified semantic recovery.</p></div>
         <div class="takeaway-chain"><div>Optimized critical path</div><div>Recovered gate region</div><div>Verified RTL-like expression</div><div>Register or rewrite suggestion</div></div>
       </div>
-      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, cofactor and sensitivity features now have an ablation harness, boundary recovery now has repaired COI semantics and an exact identity gate, ODC-aware anchors recover additional contextual cases, and the semantic benchmark plus region/interface layers create the testbed for verified RTL-like recovery.</aside>
+      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, cofactor and sensitivity features now have an ablation harness, boundary recovery now has repaired COI semantics and an exact identity gate, ODC-aware anchors recover additional contextual cases, and the semantic benchmark plus region/interface/bus/dependency layers create the testbed for verified RTL-like recovery.</aside>
     </section>
   </main>
 
   <footer class="controls">
     <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
     <button id="prev" type="button" aria-label="Previous slide">Prev</button>
-    <span id="slide-number">1 / 75</span>
+    <span id="slide-number">1 / 79</span>
     <button id="next" type="button" aria-label="Next slide">Next</button>
     <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
   </footer>
