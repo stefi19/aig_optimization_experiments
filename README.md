@@ -50,10 +50,11 @@ https://stefi19.github.io/aig_optimization_experiments/presentation/
 25. [Toward RTL/Source-Level Back-Mapping](#toward-rtlsource-level-back-mapping)
 26. [Register Insertion Suggestion Prototype](#register-insertion-suggestion-prototype)
 27. [Semantic Recovery Benchmark Suite](#semantic-recovery-benchmark-suite)
-28. [Formal Error Metrics and Context-Aware Correspondence](#formal-error-metrics-and-context-aware-correspondence)
-29. [Dependencies](#20-dependencies)
-30. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
-31. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
+28. [Canonical Semantic Regions and Interfaces](#canonical-semantic-regions-and-interfaces)
+29. [Formal Error Metrics and Context-Aware Correspondence](#formal-error-metrics-and-context-aware-correspondence)
+30. [Dependencies](#20-dependencies)
+31. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+32. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -1512,6 +1513,70 @@ ABC-variant generation would be too dense. This phase does not claim RTL has
 been recovered from gates yet; it creates known source expressions, buses,
 constants, controls, and boundary metadata for later template recovery and
 CEGIS validation. See `docs/semantic_recovery_benchmark_suite.md`.
+
+---
+
+## Canonical Semantic Regions and Interfaces
+
+The next semantic milestone establishes a reusable region/interface substrate:
+
+```text
+circuit
+-> semantic region
+-> canonical BI/BO boundary
+-> scalar input/output interface
+-> ground-truth interface comparison
+```
+
+It reuses the existing COI convention:
+
+```text
+R  = internal region nodes
+BI = nodes outside R with fanout into R
+BO = nodes inside R that are primary outputs or have fanout outside R
+```
+
+Two region sources are active:
+
+- `ground_truth_region`: source identity BLIF cases with generated semantic metadata;
+- `whole_output_cone`: a structural baseline formed from the TFI cone of declared output bits.
+
+Run:
+
+```bash
+make semantic-regions
+make semantic-interfaces
+make semantic-region-comparison
+make semantic-region-plots
+make check-semantic-regions
+make semantic-regions-all
+```
+
+Current results:
+
+- declared benchmark cases: 258;
+- available circuit variants: 559;
+- eligible region rows: 686;
+- valid ground-truth regions: 127;
+- valid whole-output-cone regions: 559;
+- infrastructure skips: 0;
+- unsupported rows: 3,958;
+- invalid regions: 0;
+- exact scalar-interface matches: 581 / 686;
+- mean input precision/recall: 1.000 / 0.934;
+- mean output precision/recall: 1.000 / 1.000;
+- input/output bit-order accuracy: 1.000 / 1.000.
+
+For the 127 comparable identity cases, ground-truth regions and whole-output
+cones match exactly, with mean Jaccard overlap 1.000. Across all valid variants,
+the mean output-cone region size is 6.106 and all 559 output-cone regions are
+whole-design regions for this baseline.
+
+This is not semantic RTL recovery. Non-exact scalar-interface rows usually mean
+an optimized output cone no longer depends on some declared input bits. The
+phase does not infer expressions, buses, arithmetic templates, or coefficients.
+See `docs/semantic_regions_and_interfaces.md` and
+`results/semantic_recovery/semantic_region_summary.md`.
 
 ---
 

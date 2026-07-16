@@ -2,7 +2,7 @@ ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 PYTHON ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; else echo python3; fi)
 
-.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants semantic-benchmarks semantic-benchmarks-check analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance abc-timing-probe yosys-source-probe source-map-prototype register-suggestions contextual-error-analysis contextual-critical-path-map contextual-research-plots research-plots cofactor-sensitivity-analysis functional-ranking-ablation functional-ranking-plots enhanced-critical-path-map check-functional-ranking-results boundary-recovery-benchmarks boundary-recovery-analysis boundary-recovery-critical-path boundary-recovery-plots check-boundary-recovery-results boundary-recovery boundary-recovery-identity boundary-recovery-diagnosis boundary-recovery-critical-path-cois boundary-recovery-diagnosis-plots check-boundary-recovery-diagnosis boundary-recovery-diagnosis-all boundary-recovery-micro-benchmarks boundary-recovery-repair-cois boundary-recovery-check-circuits boundary-recovery-identity-fixed boundary-recovery-corrected-analysis boundary-recovery-critical-path-fixed boundary-recovery-semantics-plots check-boundary-recovery-semantics boundary-recovery-semantics-all extended-boundary-validation extended-boundary-search extended-boundary-comparison extended-boundary-plots check-extended-boundary-results extended-boundary-all odc-anchor-candidates odc-anchor-proofs odc-boundary-recovery odc-anchor-comparison odc-anchor-plots check-odc-anchor-results odc-anchor-all iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map timing-path-probe full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
+.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants semantic-benchmarks semantic-benchmarks-check semantic-regions semantic-interfaces semantic-region-comparison semantic-region-plots check-semantic-regions semantic-regions-all analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance abc-timing-probe yosys-source-probe source-map-prototype register-suggestions contextual-error-analysis contextual-critical-path-map contextual-research-plots research-plots cofactor-sensitivity-analysis functional-ranking-ablation functional-ranking-plots enhanced-critical-path-map check-functional-ranking-results boundary-recovery-benchmarks boundary-recovery-analysis boundary-recovery-critical-path boundary-recovery-plots check-boundary-recovery-results boundary-recovery boundary-recovery-identity boundary-recovery-diagnosis boundary-recovery-critical-path-cois boundary-recovery-diagnosis-plots check-boundary-recovery-diagnosis boundary-recovery-diagnosis-all boundary-recovery-micro-benchmarks boundary-recovery-repair-cois boundary-recovery-check-circuits boundary-recovery-identity-fixed boundary-recovery-corrected-analysis boundary-recovery-critical-path-fixed boundary-recovery-semantics-plots check-boundary-recovery-semantics boundary-recovery-semantics-all extended-boundary-validation extended-boundary-search extended-boundary-comparison extended-boundary-plots check-extended-boundary-results extended-boundary-all odc-anchor-candidates odc-anchor-proofs odc-boundary-recovery odc-anchor-comparison odc-anchor-plots check-odc-anchor-results odc-anchor-all iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map timing-path-probe full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -37,6 +37,29 @@ semantic-benchmarks:
 semantic-benchmarks-check:
 	@echo "Checking semantic-recovery benchmark suite"
 	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_semantic_recovery_benchmarks.py
+
+semantic-regions: semantic-benchmarks semantic-benchmarks-check
+	@echo "Building canonical semantic regions"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/build_semantic_regions.py
+
+semantic-interfaces: semantic-regions
+	@echo "Extracting canonical scalar semantic interfaces"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/extract_semantic_interfaces.py
+
+semantic-region-comparison: semantic-interfaces
+	@echo "Comparing semantic region sources"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/compare_semantic_region_sources.py
+
+semantic-region-plots: semantic-region-comparison
+	@echo "Generating semantic region/interface plots"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/semantic_region_plots.py
+
+check-semantic-regions:
+	@echo "Checking semantic region/interface outputs"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_semantic_regions.py
+
+semantic-regions-all: semantic-benchmarks semantic-benchmarks-check semantic-regions semantic-interfaces semantic-region-comparison semantic-region-plots check-semantic-regions
+	@echo "Semantic region and interface pipeline complete."
 
 # ── Research iteration 2: external benchmarks (ISCAS-85 / EPFL) ───────────────
 

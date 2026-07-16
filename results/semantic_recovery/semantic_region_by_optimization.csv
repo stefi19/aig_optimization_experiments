@@ -1,0 +1,10 @@
+optimization,available_cases,valid_regions,exact_scalar_interface_matches,mean_region_size,mean_boundary_size,whole_design_output_cones,alignment_failures,skips
+balance,54,54,44,8.574,11.944,54,0,462
+compress2rs,54,54,39,5.796,8.759,54,0,462
+dc2,54,54,39,5.759,8.593,54,0,462
+identity,127,254,254,4.008,25.433,127,0,262
+refactor,54,54,39,6.778,10.130,54,0,462
+resub,54,54,39,7.315,10.426,54,0,462
+resyn,54,54,44,6.796,9.926,54,0,462
+resyn2,54,54,39,5.870,8.796,54,0,462
+rewrite,54,54,44,6.889,9.963,54,0,462

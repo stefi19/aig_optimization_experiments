@@ -1,0 +1,7894 @@
+[
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_add_add_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_add_add_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "c",
+    "case_id": "arithmetic_add_add_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "c_0",
+      "c_1"
+    ],
+    "member_signal_names": [
+      "c_0",
+      "c_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_add_add_w2",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_affine_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_affine_w2",
+    "declared_lsb": 0,
+    "declared_msb": 4,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 5
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_affine_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_affine_w3",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_affine_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_affine_w4",
+    "declared_lsb": 0,
+    "declared_msb": 6,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 7
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_affine_w6",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_affine_w6",
+    "declared_lsb": 0,
+    "declared_msb": 8,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7",
+      "y_8"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7",
+      "y_8"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 9
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_affine_w8",
+    "declared_lsb": 0,
+    "declared_msb": 7,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 8
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_affine_w8",
+    "declared_lsb": 0,
+    "declared_msb": 10,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7",
+      "y_8",
+      "y_9",
+      "y_10"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7",
+      "y_8",
+      "y_9",
+      "y_10"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 11
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_bilinear_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_bilinear_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "c",
+    "case_id": "arithmetic_bilinear_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "c_0",
+      "c_1"
+    ],
+    "member_signal_names": [
+      "c_0",
+      "c_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "d",
+    "case_id": "arithmetic_bilinear_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "d_0",
+      "d_1"
+    ],
+    "member_signal_names": [
+      "d_0",
+      "d_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_bilinear_w2",
+    "declared_lsb": 0,
+    "declared_msb": 4,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 5
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_constant_multiply_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_constant_multiply_w2",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_constant_multiply_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_constant_multiply_w3",
+    "declared_lsb": 0,
+    "declared_msb": 4,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 5
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_constant_multiply_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_constant_multiply_w4",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_constant_multiply_w6",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_constant_multiply_w6",
+    "declared_lsb": 0,
+    "declared_msb": 7,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 8
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_constant_multiply_w8",
+    "declared_lsb": 0,
+    "declared_msb": 7,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 8
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_constant_multiply_w8",
+    "declared_lsb": 0,
+    "declared_msb": 9,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7",
+      "y_8",
+      "y_9"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7",
+      "y_8",
+      "y_9"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 10
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_full_multiply_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_full_multiply_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_full_multiply_w2",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_full_multiply_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_full_multiply_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_full_multiply_w3",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_full_multiply_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_full_multiply_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_full_multiply_w4",
+    "declared_lsb": 0,
+    "declared_msb": 7,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 8
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_mixed_width_add_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_mixed_width_add_w3",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_mixed_width_add_w3",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_mixed_width_add_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_mixed_width_add_w4",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_mixed_width_add_w4",
+    "declared_lsb": 0,
+    "declared_msb": 4,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 5
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_multiply_accumulate_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_multiply_accumulate_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "c",
+    "case_id": "arithmetic_multiply_accumulate_w2",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "c_0",
+      "c_1",
+      "c_2",
+      "c_3"
+    ],
+    "member_signal_names": [
+      "c_0",
+      "c_1",
+      "c_2",
+      "c_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_multiply_accumulate_w2",
+    "declared_lsb": 0,
+    "declared_msb": 4,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 5
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_reversed_sub_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_reversed_sub_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_reversed_sub_w2",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_reversed_sub_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_reversed_sub_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_reversed_sub_w3",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_reversed_sub_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_reversed_sub_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_reversed_sub_w4",
+    "declared_lsb": 0,
+    "declared_msb": 4,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 5
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_shifted_add_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_shifted_add_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_shifted_add_w2",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_shifted_add_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_shifted_add_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_shifted_add_w3",
+    "declared_lsb": 0,
+    "declared_msb": 4,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 5
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_shifted_add_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_shifted_add_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_shifted_add_w4",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_signed_add_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_signed_add_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_signed_add_w2",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_signed_add_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_signed_add_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_signed_add_w3",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_signed_add_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_signed_add_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_signed_add_w4",
+    "declared_lsb": 0,
+    "declared_msb": 4,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 5
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_sub_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_sub_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_sub_w2",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_sub_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_sub_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_sub_w3",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_sub_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_sub_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_sub_w4",
+    "declared_lsb": 0,
+    "declared_msb": 4,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 5
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_truncated_multiply_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_truncated_multiply_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_truncated_multiply_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_truncated_multiply_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_truncated_multiply_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_truncated_multiply_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_truncated_multiply_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_truncated_multiply_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_truncated_multiply_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_unsigned_add_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_unsigned_add_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_unsigned_add_w2",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_unsigned_add_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_unsigned_add_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_unsigned_add_w3",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "arithmetic_unsigned_add_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "arithmetic_unsigned_add_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "arithmetic_unsigned_add_w4",
+    "declared_lsb": 0,
+    "declared_msb": 4,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 5
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_concat_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "bitmanip_concat_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_concat_w2",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_concat_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "bitmanip_concat_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_concat_w3",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_concat_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "bitmanip_concat_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_concat_w4",
+    "declared_lsb": 0,
+    "declared_msb": 7,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 8
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_mask_low_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_mask_low_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_mask_low_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_mask_low_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_mask_low_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_mask_low_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_mask_low_w6",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_mask_low_w6",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_mask_low_w8",
+    "declared_lsb": 0,
+    "declared_msb": 7,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 8
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_mask_low_w8",
+    "declared_lsb": 0,
+    "declared_msb": 7,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 8
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_rotate_left_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_rotate_left_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_rotate_left_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_rotate_left_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_rotate_left_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_rotate_left_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_rotate_left_w6",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_rotate_left_w6",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_rotate_left_w8",
+    "declared_lsb": 0,
+    "declared_msb": 7,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 8
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_rotate_left_w8",
+    "declared_lsb": 0,
+    "declared_msb": 7,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 8
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_shift_left_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_shift_left_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_shift_left_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_shift_left_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_shift_left_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_shift_left_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_shift_left_w6",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_shift_left_w6",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_shift_left_w8",
+    "declared_lsb": 0,
+    "declared_msb": 7,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 8
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_shift_left_w8",
+    "declared_lsb": 0,
+    "declared_msb": 7,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 8
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_shift_right_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_shift_right_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_shift_right_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_shift_right_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_shift_right_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_shift_right_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_shift_right_w6",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_shift_right_w6",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_shift_right_w8",
+    "declared_lsb": 0,
+    "declared_msb": 7,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 8
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_shift_right_w8",
+    "declared_lsb": 0,
+    "declared_msb": 7,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 8
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_sign_extend_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_sign_extend_w2",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_sign_extend_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_sign_extend_w3",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_sign_extend_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_sign_extend_w4",
+    "declared_lsb": 0,
+    "declared_msb": 7,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 8
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_sign_extend_w6",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_sign_extend_w6",
+    "declared_lsb": 0,
+    "declared_msb": 11,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7",
+      "y_8",
+      "y_9",
+      "y_10",
+      "y_11"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7",
+      "y_8",
+      "y_9",
+      "y_10",
+      "y_11"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 12
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_sign_extend_w8",
+    "declared_lsb": 0,
+    "declared_msb": 7,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 8
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_sign_extend_w8",
+    "declared_lsb": 0,
+    "declared_msb": 15,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7",
+      "y_8",
+      "y_9",
+      "y_10",
+      "y_11",
+      "y_12",
+      "y_13",
+      "y_14",
+      "y_15"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7",
+      "y_8",
+      "y_9",
+      "y_10",
+      "y_11",
+      "y_12",
+      "y_13",
+      "y_14",
+      "y_15"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 16
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_slice_low_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_slice_low_w2",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_slice_low_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_slice_low_w3",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_slice_low_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_slice_low_w4",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_slice_low_w6",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_slice_low_w6",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_slice_low_w8",
+    "declared_lsb": 0,
+    "declared_msb": 7,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 8
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_slice_low_w8",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_zero_extend_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_zero_extend_w2",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_zero_extend_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_zero_extend_w3",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_zero_extend_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_zero_extend_w4",
+    "declared_lsb": 0,
+    "declared_msb": 7,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 8
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_zero_extend_w6",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_zero_extend_w6",
+    "declared_lsb": 0,
+    "declared_msb": 11,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7",
+      "y_8",
+      "y_9",
+      "y_10",
+      "y_11"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7",
+      "y_8",
+      "y_9",
+      "y_10",
+      "y_11"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 12
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "bitmanip_zero_extend_w8",
+    "declared_lsb": 0,
+    "declared_msb": 7,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 8
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "bitmanip_zero_extend_w8",
+    "declared_lsb": 0,
+    "declared_msb": 15,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7",
+      "y_8",
+      "y_9",
+      "y_10",
+      "y_11",
+      "y_12",
+      "y_13",
+      "y_14",
+      "y_15"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5",
+      "y_6",
+      "y_7",
+      "y_8",
+      "y_9",
+      "y_10",
+      "y_11",
+      "y_12",
+      "y_13",
+      "y_14",
+      "y_15"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 16
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_bitwise_and_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "boolean_bitwise_and_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_bitwise_and_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_bitwise_and_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "boolean_bitwise_and_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_bitwise_and_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_bitwise_and_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "boolean_bitwise_and_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_bitwise_and_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_bitwise_or_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "boolean_bitwise_or_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_bitwise_or_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_bitwise_or_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "boolean_bitwise_or_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_bitwise_or_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_bitwise_or_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "boolean_bitwise_or_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_bitwise_or_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_bitwise_xnor_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "boolean_bitwise_xnor_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_bitwise_xnor_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_bitwise_xnor_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "boolean_bitwise_xnor_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_bitwise_xnor_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_bitwise_xnor_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "boolean_bitwise_xnor_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_bitwise_xnor_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_bitwise_xor_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "boolean_bitwise_xor_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_bitwise_xor_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_bitwise_xor_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "boolean_bitwise_xor_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_bitwise_xor_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_bitwise_xor_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "boolean_bitwise_xor_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_bitwise_xor_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_masked_and_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "mask",
+    "case_id": "boolean_masked_and_w2",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "mask"
+    ],
+    "member_signal_names": [
+      "mask"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_masked_and_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_masked_and_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "mask",
+    "case_id": "boolean_masked_and_w3",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "mask"
+    ],
+    "member_signal_names": [
+      "mask"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_masked_and_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_masked_and_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "mask",
+    "case_id": "boolean_masked_and_w4",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "mask"
+    ],
+    "member_signal_names": [
+      "mask"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_masked_and_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_masked_and_w6",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "mask",
+    "case_id": "boolean_masked_and_w6",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "mask"
+    ],
+    "member_signal_names": [
+      "mask"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_masked_and_w6",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_masked_xor_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "mask",
+    "case_id": "boolean_masked_xor_w2",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "mask"
+    ],
+    "member_signal_names": [
+      "mask"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_masked_xor_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_masked_xor_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "mask",
+    "case_id": "boolean_masked_xor_w3",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "mask"
+    ],
+    "member_signal_names": [
+      "mask"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_masked_xor_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_masked_xor_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "mask",
+    "case_id": "boolean_masked_xor_w4",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "mask"
+    ],
+    "member_signal_names": [
+      "mask"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_masked_xor_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_masked_xor_w6",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "mask",
+    "case_id": "boolean_masked_xor_w6",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "mask"
+    ],
+    "member_signal_names": [
+      "mask"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_masked_xor_w6",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3",
+      "y_4",
+      "y_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_parity_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_parity_w2",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_parity_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_parity_w3",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_parity_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_parity_w4",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_parity_w6",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_parity_w6",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "boolean_parity_w8",
+    "declared_lsb": 0,
+    "declared_msb": 7,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 8
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "boolean_parity_w8",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "comparison_eq_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "comparison_eq_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "comparison_eq_w2",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "comparison_eq_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "comparison_eq_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "comparison_eq_w3",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "comparison_eq_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "comparison_eq_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "comparison_eq_w4",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "comparison_neq_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "comparison_neq_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "comparison_neq_w2",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "comparison_neq_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "comparison_neq_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "comparison_neq_w3",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "comparison_neq_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "comparison_neq_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "comparison_neq_w4",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "comparison_range_check_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "comparison_range_check_w2",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "comparison_range_check_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "comparison_range_check_w3",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "comparison_range_check_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "comparison_range_check_w4",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "comparison_range_check_w6",
+    "declared_lsb": 0,
+    "declared_msb": 5,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 6
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "comparison_range_check_w6",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "comparison_range_check_w8",
+    "declared_lsb": 0,
+    "declared_msb": 7,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3",
+      "a_4",
+      "a_5",
+      "a_6",
+      "a_7"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 8
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "comparison_range_check_w8",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "comparison_signed_lt_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "comparison_signed_lt_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "comparison_signed_lt_w2",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "comparison_signed_lt_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "comparison_signed_lt_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "comparison_signed_lt_w3",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "comparison_signed_lt_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "comparison_signed_lt_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "comparison_signed_lt_w4",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "comparison_unsigned_le_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "comparison_unsigned_le_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "comparison_unsigned_le_w2",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "comparison_unsigned_le_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "comparison_unsigned_le_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "comparison_unsigned_le_w3",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "comparison_unsigned_le_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "comparison_unsigned_le_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "comparison_unsigned_le_w4",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "comparison_unsigned_lt_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "comparison_unsigned_lt_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "comparison_unsigned_lt_w2",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "comparison_unsigned_lt_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "comparison_unsigned_lt_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "comparison_unsigned_lt_w3",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "comparison_unsigned_lt_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2",
+      "a_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "comparison_unsigned_lt_w4",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2",
+      "b_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "comparison_unsigned_lt_w4",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y"
+    ],
+    "member_signal_names": [
+      "y"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "control_arithmetic_select_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "control_arithmetic_select_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "sel",
+    "case_id": "control_arithmetic_select_w2",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "sel"
+    ],
+    "member_signal_names": [
+      "sel"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "control",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "control_arithmetic_select_w2",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "control_arithmetic_select_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "control_arithmetic_select_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "sel",
+    "case_id": "control_arithmetic_select_w3",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "sel"
+    ],
+    "member_signal_names": [
+      "sel"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "control",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "control_arithmetic_select_w3",
+    "declared_lsb": 0,
+    "declared_msb": 3,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2",
+      "y_3"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 4
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "control_mux2_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "control_mux2_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "sel",
+    "case_id": "control_mux2_w2",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "sel"
+    ],
+    "member_signal_names": [
+      "sel"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "control",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "control_mux2_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "control_mux2_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "control_mux2_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "sel",
+    "case_id": "control_mux2_w3",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "sel"
+    ],
+    "member_signal_names": [
+      "sel"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "control",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "control_mux2_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "control_nested_mux_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "control_nested_mux_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "c",
+    "case_id": "control_nested_mux_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "c_0",
+      "c_1"
+    ],
+    "member_signal_names": [
+      "c_0",
+      "c_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "sel0",
+    "case_id": "control_nested_mux_w2",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "sel0"
+    ],
+    "member_signal_names": [
+      "sel0"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "control",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "sel1",
+    "case_id": "control_nested_mux_w2",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "sel1"
+    ],
+    "member_signal_names": [
+      "sel1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "control",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "control_nested_mux_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "control_one_hot_mux_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "control_one_hot_mux_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "s0",
+    "case_id": "control_one_hot_mux_w2",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "s0"
+    ],
+    "member_signal_names": [
+      "s0"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "control",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "s1",
+    "case_id": "control_one_hot_mux_w2",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "s1"
+    ],
+    "member_signal_names": [
+      "s1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "control",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "control_one_hot_mux_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "control_one_hot_mux_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1",
+      "a_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "control_one_hot_mux_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1",
+      "b_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "s0",
+    "case_id": "control_one_hot_mux_w3",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "s0"
+    ],
+    "member_signal_names": [
+      "s0"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "control",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "s1",
+    "case_id": "control_one_hot_mux_w3",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "s1"
+    ],
+    "member_signal_names": [
+      "s1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "control",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "control_one_hot_mux_w3",
+    "declared_lsb": 0,
+    "declared_msb": 2,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1",
+      "y_2"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 3
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "a",
+    "case_id": "control_priority_mux_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "a_0",
+      "a_1"
+    ],
+    "member_signal_names": [
+      "a_0",
+      "a_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "b",
+    "case_id": "control_priority_mux_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "b_0",
+      "b_1"
+    ],
+    "member_signal_names": [
+      "b_0",
+      "b_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "c",
+    "case_id": "control_priority_mux_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "c_0",
+      "c_1"
+    ],
+    "member_signal_names": [
+      "c_0",
+      "c_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "data_operand",
+    "signedness": "unsigned",
+    "width": 2
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "s0",
+    "case_id": "control_priority_mux_w2",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "s0"
+    ],
+    "member_signal_names": [
+      "s0"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "control",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "s1",
+    "case_id": "control_priority_mux_w2",
+    "declared_lsb": 0,
+    "declared_msb": 0,
+    "direction": "input",
+    "member_canonical_node_ids": [
+      "s1"
+    ],
+    "member_signal_names": [
+      "s1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "control",
+    "signedness": "unsigned",
+    "width": 1
+  },
+  {
+    "bit_order": "lsb_to_msb",
+    "bus_name": "y",
+    "case_id": "control_priority_mux_w2",
+    "declared_lsb": 0,
+    "declared_msb": 1,
+    "direction": "output",
+    "member_canonical_node_ids": [
+      "y_0",
+      "y_1"
+    ],
+    "member_signal_names": [
+      "y_0",
+      "y_1"
+    ],
+    "mode": "ground_truth_bus_mode",
+    "role": "output",
+    "signedness": "unsigned",
+    "width": 2
+  }
+]

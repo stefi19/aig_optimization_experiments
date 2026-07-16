@@ -984,10 +984,84 @@ by the spec_node cone</pre>
 
     <section class="slide">
       <div class="slide-content two-column">
-        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, and sensitivity features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Boundary recovery is region-level evidence, not direct internal-node equivalence.</p><p>ODC anchors are contextual, not global node equivalence.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>Semantic benchmark cases are ground truth, not recovered RTL.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
+        <div>
+          <p class="eyebrow">Semantic regions</p>
+          <h2>Canonical region before expression recovery</h2>
+          <pre class="code-block">R  = internal region nodes
+BI = outside R, fanout into R
+BO = inside R, PO or fanout outside R</pre>
+          <p>The new phase extracts a scalar interface for each eligible generated circuit region.</p>
+        </div>
+        <div class="checklist future">
+          <p>Active source: ground-truth identity region.</p>
+          <p>Active source: whole-output-cone baseline.</p>
+          <p>Every row records eligibility and skip reason.</p>
+          <p>Fingerprints avoid absolute-path identity.</p>
+          <p>No high-level expression is inferred yet.</p>
+        </div>
+      </div>
+      <aside class="notes">This slide introduces Phase 2. The goal is not to solve semantic recovery yet; it is to define the region and interface object that later recovery algorithms can consume.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Region funnel</p><h2>686 eligible semantic-region rows</h2><div class="inline-stats"><span>258 declared cases</span><span>559 available variants</span><span>127 ground-truth regions</span><span>559 output-cone regions</span><span>0 invalid regions</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/semantic_region_pipeline_funnel.png" alt="Semantic region pipeline funnel">
+          <img src="assets/plots/semantic_valid_regions_by_family.png" alt="Valid semantic regions by family">
+        </div>
+        <div class="meaning-box"><strong>Interpretation:</strong> skipped rows are explicit infrastructure or bounded-support cases, not failed expression recovery attempts.</div>
+      </div>
+      <aside class="notes">Call out the denominator discipline. Large truth-table or unavailable optimized variants are marked unsupported; they are not included in attempted-region denominators.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Region-source comparison</p><h2>Ground truth versus output cone</h2><div class="inline-stats"><span>127 comparable identity pairs</span><span>Jaccard 1.000</span><span>mean GT size 4.008</span><span>mean cone size 4.008</span><span>all output cones whole-design baseline</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/semantic_gt_vs_output_cone_size.png" alt="Ground-truth region versus output-cone size">
+          <img src="assets/plots/semantic_region_overlap_distribution.png" alt="Semantic region overlap distribution">
+        </div>
+        <div class="meaning-box"><strong>Boundary:</strong> a whole-output-cone region is a structural baseline; it is not recovered hierarchy.</div>
+      </div>
+      <aside class="notes">For identity cases, the generated source BLIF is a compact truth-table representation, so the output cone and ground-truth region coincide. Optimized variants use the output-cone baseline because original internal names should not be fabricated.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Scalar interface</p><h2>581 of 686 exact scalar-interface matches</h2><div class="inline-stats"><span>input precision 1.000</span><span>input recall 0.934</span><span>output precision 1.000</span><span>output recall 1.000</span><span>bit order 1.000</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/semantic_exact_interface_match_by_family.png" alt="Exact scalar-interface match by family">
+          <img src="assets/plots/semantic_interface_by_optimization.png" alt="Semantic interface extraction by optimization">
+        </div>
+        <div class="meaning-box"><strong>What this means:</strong> non-exact interface rows usually mean optimization removed declared input bits that no longer affect the output cone.</div>
+      </div>
+      <aside class="notes">Make clear that this is scalar interface alignment against ground-truth bus declarations. It is not bus inference accuracy, and it does not recover an RTL expression.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Next semantic step</p>
+          <h2>Prepare for inferred bus grouping</h2>
+          <pre class="code-block">canonical region
+-> scalar input/output interface
+-> dependency matrix
+-> inferred bus groups
+-> later expression templates</pre>
+          <p>The current output is a deterministic substrate for later inference, not the inference itself.</p>
+        </div>
+        <div class="callout"><h3>Current limit</h3><p>No arithmetic templates, coefficient solving, CEGIS loop, or RTL expression recovery is implemented in this phase.</p></div>
+      </div>
+      <aside class="notes">This should be the decision gate for Phase 3. The natural next milestone is inferred bus grouping and dependency matrices, because the scalar interface is now available and validated.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, and sensitivity features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Boundary recovery is region-level evidence, not direct internal-node equivalence.</p><p>ODC anchors are contextual, not global node equivalence.</p><p>ABC-native sweeping baseline added, but ordinary FRAIG output is not provenance.</p><p>Semantic benchmark and region rows are ground truth/interface substrate, not recovered RTL.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
         <div class="callout"><h3>Important idea</h3><p>Unresolved nodes are not simply failures. They show where context, observability don't-cares, or deeper ABC integration may be needed.</p></div>
       </div>
-      <aside class="notes">Use this slide to show research maturity. The ABC-native baseline is a meaningful addition, but it does not remove the need for a correspondence layer. The cofactor/sensitivity milestone adds feature instrumentation, but the committed lightweight subset does not show improvement. The semantic suite supplies known answers for future RTL recovery without claiming the solver exists yet.</aside>
+      <aside class="notes">Use this slide to show research maturity. The ABC-native baseline is a meaningful addition, but it does not remove the need for a correspondence layer. The cofactor/sensitivity milestone adds feature instrumentation, but the committed lightweight subset does not show improvement. The semantic benchmark and region/interface milestones supply known answers and canonical interfaces for future RTL recovery without claiming the solver exists yet.</aside>
     </section>
 
     <section class="slide">
@@ -1016,17 +1090,17 @@ by the spec_node cone</pre>
 
     <section class="slide title-slide">
       <div class="slide-content title-grid">
-        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, adds ODC-aware anchors, and now prepares the benchmark layer for verified semantic recovery.</p></div>
+        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, adds ODC-aware anchors, and now prepares canonical semantic regions and scalar interfaces for verified semantic recovery.</p></div>
         <div class="takeaway-chain"><div>Optimized critical path</div><div>Recovered gate region</div><div>Verified RTL-like expression</div><div>Register or rewrite suggestion</div></div>
       </div>
-      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, cofactor and sensitivity features now have an ablation harness, boundary recovery now has repaired COI semantics and an exact identity gate, ODC-aware anchors recover additional contextual cases, and the semantic benchmark suite creates the testbed for verified RTL-like recovery.</aside>
+      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, cofactor and sensitivity features now have an ablation harness, boundary recovery now has repaired COI semantics and an exact identity gate, ODC-aware anchors recover additional contextual cases, and the semantic benchmark plus region/interface layers create the testbed for verified RTL-like recovery.</aside>
     </section>
   </main>
 
   <footer class="controls">
     <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
     <button id="prev" type="button" aria-label="Previous slide">Prev</button>
-    <span id="slide-number">1 / 68</span>
+    <span id="slide-number">1 / 75</span>
     <button id="next" type="button" aria-label="Next slide">Next</button>
     <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
   </footer>

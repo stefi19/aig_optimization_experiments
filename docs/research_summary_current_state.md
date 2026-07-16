@@ -469,6 +469,54 @@ records source expressions, bus widths, constants, control inputs, and boundary
 metadata so future template recovery, CEGIS validation, and cost-aware RTL
 selection can be measured against known ground truth.
 
+### Canonical Semantic Regions and Interfaces
+
+The follow-up semantic milestone now extracts canonical semantic regions and
+scalar interfaces for the generated benchmark suite.  It reuses the established
+COI convention:
+
+```text
+R  = internal region nodes
+BI = nodes outside R with fanout into R
+BO = nodes inside R that are primary outputs or have fanout outside R
+```
+
+Two source types are active.  `ground_truth_region` is available for the 127
+source identity BLIF cases, and `whole_output_cone` is a structural baseline
+computed from the TFI of declared output bits across available generated
+variants.  The phase writes canonical region rows, validation rows, scalar
+interface rows, ground-truth bus metadata, source-comparison rows, summaries,
+and plots under `results/semantic_recovery/` and `results/plots/`.
+
+Current generated results:
+
+```text
+declared benchmark cases:          258
+available circuit variants:        559
+eligible region rows:              686
+valid ground-truth regions:        127
+valid whole-output-cone regions:   559
+infrastructure skips:                0
+unsupported rows:                3,958
+invalid regions:                     0
+
+exact scalar-interface matches:  581 / 686
+mean input precision / recall:   1.000 / 0.934
+mean output precision / recall:  1.000 / 1.000
+input/output order accuracy:     1.000 / 1.000
+```
+
+For the 127 comparable identity rows, ground-truth regions and whole-output
+cones are identical (`Jaccard = 1.000`).  Across all valid variants, the mean
+output-cone region size is 6.106, and all 559 output-cone baselines are marked
+as whole-design regions.  The non-exact scalar-interface rows mainly occur when
+optimized output cones no longer depend on some declared input bits.
+
+This is still not expression recovery.  No row claims that a high-level RTL
+expression was inferred from gates; the milestone only establishes canonical
+regions, boundaries, scalar interfaces, and ground-truth interface comparison
+for later inferred bus grouping and dependency analysis.
+
 ## 9. Main Findings
 
 1. Exact matching is reliable when internal nodes survive optimization.
@@ -497,6 +545,10 @@ selection can be measured against known ground truth.
     eligible COIs.
 11. The semantic-recovery benchmark suite now provides source-level ground truth
     for later RTL-expression inference, but no recovered RTL is claimed yet.
+12. The canonical semantic-region milestone validates 686 eligible region rows
+    and extracts 581 exact scalar-interface matches, establishing the substrate
+    for later bus inference and expression recovery without claiming expression
+    recovery yet.
 
 ## 10. Limitations
 
@@ -518,6 +570,8 @@ selection can be measured against known ground truth.
   edits.
 - Boundary recovery is region-level evidence, not direct node-level equivalence
   for every internal node.
+- The semantic region/interface layer extracts canonical scalar interfaces; it
+  does not infer high-level expressions or buses for unknown recovered regions.
 - The semantic-recovery suite supplies ground truth and bounded variants; it
   does not yet infer expressions from gates or prove recovered RTL templates.
 - The method is not exhaustive; it analyzes selected ranked candidates and
