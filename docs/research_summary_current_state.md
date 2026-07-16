@@ -612,6 +612,51 @@ cases require parameter or coefficient inference. Verified expressions have
 mean Problem-A-inspired RTL cost `1.927`, median cost `1.000`, and mean
 reduction rate `32.138%`; 460 verified candidates exceed 70% reduction.
 
+## Phase 5: Correspondence by Construction
+
+The next milestone tests whether a missing optimized-side internal-node
+correspondence can be constructed instead of discovered. For selected failed
+extended-boundary cases, the pipeline:
+
+```text
+unmatched optimized frontier node
+-> small optimized-side anchored cut
+-> exact target function over cut leaves
+-> additive original-side redundant wire
+-> exhaustive global proof
+-> boundary recovery with materialized anchors
+```
+
+The accepted category is explicitly separate from pre-existing node matches:
+
+```text
+anchor_origin     = materialized_wire
+mapping_category  = formal_materialized_anchor
+evidence_level    = formal_exhaustive
+equivalence_scope = global
+```
+
+Current measured result:
+
+```text
+unmatched targets attempted:       20
+anchored cuts generated:          128
+functions extracted:               20
+materialization candidates:        20
+formal checks:                     20
+proven materialized anchors:       20
+usable frontier anchors:            0
+selected materialized anchors:      0
+newly recovered boundaries:         0
+```
+
+This is a useful negative boundary-utility result. Additive materialized wires
+can be formally proven equivalent to optimized internal signals on the small
+generated cases, but because they are not reconnected into the original
+boundary graph, the existing boundary search does not encounter or select them.
+The current bottleneck is target placement and graph integration, not formal
+proof generation.
+
 ## 9. Main Findings
 
 1. Exact matching is reliable when internal nodes survive optimization.
@@ -644,6 +689,9 @@ reduction rate `32.138%`; 460 verified candidates exceed 70% reduction.
     and extracts 581 exact scalar-interface matches, establishing the substrate
     for later bus inference and expression recovery without claiming expression
     recovery yet.
+13. Anchored-cut materialization can construct formally proven redundant wires,
+    but the first additive-only run produced 0 new boundary recoveries because
+    the materialized wires are not on usable boundary frontiers.
 
 ## 10. Limitations
 
@@ -669,6 +717,10 @@ reduction rate `32.138%`; 460 verified candidates exceed 70% reduction.
   does not infer high-level expressions or buses for unknown recovered regions.
 - The semantic-recovery suite supplies ground truth and bounded variants; it
   does not yet infer expressions from gates or prove recovered RTL templates.
+- Materialized-wire anchors are newly constructed redundant signals; they are
+  not pre-existing original RTL/netlist nodes. The current additive
+  materialization does not reconnect graph fanout, so it may prove anchors that
+  are not useful to boundary recovery.
 - The method is not exhaustive; it analyzes selected ranked candidates and
   selected case-study circuits.
 
@@ -691,6 +743,9 @@ The most important next steps are:
    enough to avoid whole-design expansion and cycle risks.
 8. Use the semantic-recovery benchmark suite to add typed expression grammars,
    arithmetic parameter inference, and CEGIS-based RTL candidate validation.
+9. For correspondence by construction, add boundary-utility-aware target
+   selection or a formally checked way to expose materialized wires on relevant
+   cut frontiers.
 
 ## Short Supervisor Summary
 

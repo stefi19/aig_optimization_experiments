@@ -1,0 +1,24 @@
+.model materialized_spec
+.inputs d0 d1 d2 d3 s0 s1
+.outputs out
+.names d2 s1 new_n8
+10 1
+.names d3 s1 new_n9
+11 1
+.names new_n8 new_n9 new_n10
+00 1
+.names d0 s1 new_n11
+10 1
+.names d1 s1 new_n12
+11 1
+.names new_n11 new_n12 new_n13
+00 1
+.names s0 new_n13 new_n14
+00 1
+.names s0 new_n10 new_n15
+10 1
+.names new_n14 new_n15 out
+00 0
+.names d2 s1 materialized_generated_mux_tree_4_mux_tree_root_resyn2_new_n9_new_n9_b36d5f6dca
+00 1
+.end

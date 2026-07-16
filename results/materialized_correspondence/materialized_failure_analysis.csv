@@ -1,0 +1,3 @@
+count,failure_reason,stage
+108,hidden_support,function_extraction
+20,proven_anchor_not_on_usable_frontier,boundary_utility

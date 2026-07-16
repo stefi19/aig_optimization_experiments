@@ -1175,7 +1175,59 @@ BO = inside R, PO or fanout outside R</pre>
 
     <section class="slide">
       <div class="slide-content two-column">
-        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, sensitivity, and dependency features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Boundary recovery is region-level evidence, not direct internal-node equivalence.</p><p>ODC anchors are contextual, not global node equivalence.</p><p>Direct semantic recovery covers bounded templates only; coefficient solving and CEGIS remain future work.</p><p>Region-equivalence proofs are not global circuit equivalence.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
+        <div>
+          <p class="eyebrow">Correspondence by construction</p>
+          <h2>What if the original node does not exist?</h2>
+          <pre class="code-block">unmatched optimized node
+-> anchored optimized cut
+-> transfer cut function
+-> add redundant original wire
+-> prove global equivalence</pre>
+        </div>
+        <div class="callout"><h3>Important distinction</h3><p>A materialized wire is newly constructed. It is not claimed to have existed in the original RTL or netlist.</p></div>
+      </div>
+      <aside class="notes">Introduce Phase 5 as Carmine's adaptation idea in Boolean form: construct correspondence from existing formal anchors rather than only searching for a pre-existing node.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Anchored-cut proof</p>
+          <h2>Only global formal leaves are allowed</h2>
+          <div class="checklist"><p>Cut leaves use exact, complemented, or SAT/CEC-proven global anchors.</p><p>ODC-only contextual leaves are excluded from the primary experiment.</p><p>Leaf polarity is transferred into the materialized truth table.</p><p>The augmented original outputs must remain unchanged.</p></div>
+        </div>
+        <div class="meaning-box"><strong>Accepted label:</strong><br><code>formal_materialized_anchor</code><br><code>anchor_origin=materialized_wire</code><br><code>evidence=formal_exhaustive</code></div>
+      </div>
+      <aside class="notes">This slide is about evidence hygiene. The materialized wire is a global exhaustive proof in this lightweight run, while ODC anchors remain contextual and sampled evidence is never a proof.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Materialization funnel</p><h2>20 materialized anchors formally proven</h2><div class="inline-stats"><span>20 targets</span><span>128 cuts</span><span>20 functions</span><span>20 formal checks</span><span>20 proven</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/materialized_pipeline_funnel.png" alt="Materialized correspondence pipeline funnel">
+          <img src="assets/plots/materialized_proof_outcomes.png" alt="Materialized proof outcomes">
+        </div>
+        <div class="meaning-box"><strong>Proof scope:</strong> exhaustive global PI comparison on the small selected generated cases.</div>
+      </div>
+      <aside class="notes">Report the positive part: construction and formal proof worked for 20 small-cut candidates. Do not imply that these wires were present in the original design.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Boundary utility</p><h2>Proven does not yet mean useful</h2><div class="inline-stats"><span>0 usable frontier anchors</span><span>0 selected anchors</span><span>0 new recoveries</span><span>hidden support: 108 cuts</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/materialized_proven_vs_useful.png" alt="Proven versus useful materialized anchors">
+          <img src="assets/plots/materialized_boundary_recovery.png" alt="Boundary recovery with materialized anchors">
+        </div>
+        <div class="meaning-box"><strong>Interpretation:</strong> additive wires are not reconnected into the original boundary graph, so the current boundary search does not encounter them.</div>
+      </div>
+      <aside class="notes">This is the main negative result. The bottleneck is not formal proof generation; it is target placement, frontier utility, or a future equivalent-rewriting/grafting step.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, sensitivity, and dependency features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Boundary recovery is region-level evidence, not direct internal-node equivalence.</p><p>ODC anchors are contextual, not global node equivalence.</p><p>Direct semantic recovery covers bounded templates only; coefficient solving and CEGIS remain future work.</p><p>Materialized wires are newly constructed redundant signals, not pre-existing RTL nodes.</p><p>Current additive materialization proves anchors but does not recover new boundaries.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
         <div class="callout"><h3>Important idea</h3><p>Unresolved nodes are not simply failures. They show where context, observability don't-cares, or deeper ABC integration may be needed.</p></div>
       </div>
       <aside class="notes">Use this slide to show research maturity. The direct semantic layer now has formally verified region expressions, but only for bounded direct templates. It does not solve the full RTL recovery problem.</aside>
@@ -1207,17 +1259,17 @@ BO = inside R, PO or fanout outside R</pre>
 
     <section class="slide title-slide">
       <div class="slide-content title-grid">
-        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, adds ODC-aware anchors, and now formally verifies bounded direct semantic templates over inferred buses.</p></div>
+        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, adds ODC-aware anchors, formally verifies bounded direct semantic templates, and now tests correspondence by construction through materialized redundant wires.</p></div>
         <div class="takeaway-chain"><div>Optimized critical path</div><div>Recovered gate region</div><div>Verified RTL-like expression</div><div>Register or rewrite suggestion</div></div>
       </div>
-      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, cofactor and sensitivity features now have an ablation harness, boundary recovery and ODC anchors build region evidence, and the semantic layers now recover a bounded set of formally verified direct expressions.</aside>
+      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, cofactor and sensitivity features now have an ablation harness, boundary recovery and ODC anchors build region evidence, semantic layers recover bounded direct expressions, and materialization proves redundant wires but needs better boundary utility.</aside>
     </section>
   </main>
 
   <footer class="controls">
     <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
     <button id="prev" type="button" aria-label="Previous slide">Prev</button>
-    <span id="slide-number">1 / 84</span>
+    <span id="slide-number">1 / 88</span>
     <button id="next" type="button" aria-label="Next slide">Next</button>
     <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
   </footer>

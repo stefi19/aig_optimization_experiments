@@ -22,12 +22,22 @@ ANCHOR_MODES = {
     "exact_plus_complemented": {"exact_signature_match", "complemented_equivalence"},
     "formal_all": {"exact_signature_match", "complemented_equivalence", "sat_cec_proven_equivalent"},
     "formal_plus_odc": {"exact_signature_match", "complemented_equivalence", "sat_cec_proven_equivalent", "formal_odc_valid_anchor"},
+    "formal_plus_materialized": {"exact_signature_match", "complemented_equivalence", "sat_cec_proven_equivalent", "formal_materialized_anchor"},
+    "formal_plus_odc_plus_materialized": {
+        "exact_signature_match",
+        "complemented_equivalence",
+        "sat_cec_proven_equivalent",
+        "formal_odc_valid_anchor",
+        "formal_materialized_anchor",
+    },
 }
 
 CATEGORY_PRIORITY = {
     "exact_signature_match": 0,
     "sat_cec_proven_equivalent": 1,
     "complemented_equivalence": 2,
+    "formal_materialized_anchor": 3,
+    "formal_odc_valid_anchor": 4,
 }
 
 
@@ -47,6 +57,11 @@ class Anchor:
     coi_name: str = ""
     context_compatible: bool = True
     context_mismatch_reason: str = ""
+    anchor_origin: str = "existing_node"
+    materialized_spec_node: str = ""
+    target_impl_node: str = ""
+    cut_id: str = ""
+    expression_id: str = ""
     selected: bool = False
     selection_reason: str = ""
 
@@ -214,6 +229,36 @@ def load_anchor_map(
                         confidence_or_status="verified",
                     )
                 )
+
+    materialized_path = results_dir / "materialized_correspondence" / "proven_materialized_anchors.csv"
+    if materialized_path.exists() and "formal_materialized_anchor" in allowed:
+        for row in _read_rows(materialized_path):
+            if row.get("benchmark") != benchmark or row.get("optimization") != optimization:
+                continue
+            if row.get("proof_status") != "proven_materialized_anchor":
+                continue
+            if row.get("mapping_category") != "formal_materialized_anchor":
+                continue
+            if row.get("evidence_level") != "formal_exhaustive" or row.get("equivalence_scope") != "global":
+                continue
+            anchors.append(
+                Anchor(
+                    spec_node=str(row["materialized_spec_node"]),
+                    impl_node=str(row["target_impl_node"]),
+                    polarity="inverted" if row.get("target_polarity") == "inverted" else "same",
+                    mapping_category="formal_materialized_anchor",
+                    evidence_level="formal_exhaustive",
+                    proof_mode=str(row.get("formal_backend", "exhaustive_global_truth_table")),
+                    source_result_file="results/materialized_correspondence/proven_materialized_anchors.csv",
+                    confidence_or_status=str(row.get("proof_status", "")),
+                    equivalence_scope="global",
+                    anchor_origin="materialized_wire",
+                    materialized_spec_node=str(row["materialized_spec_node"]),
+                    target_impl_node=str(row["target_impl_node"]),
+                    cut_id=str(row.get("cut_id", "")),
+                    expression_id=str(row.get("expression_id", "")),
+                )
+            )
 
     odc_path = results_dir / "odc_anchor_generation" / "odc_proven_anchors.csv"
     if odc_path.exists() and "formal_odc_valid_anchor" in allowed:

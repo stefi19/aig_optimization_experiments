@@ -1,0 +1,21 @@
+case_id,benchmark,optimization,coi_name,target_impl_node,target_role,distance_to_failed_frontier,target_level,target_fanin_count,target_fanout_count,target_support_size,selection_reason,target_rank
+generated_adder_4|adder_bit1_carry_sum_region|dc2|new_n17,generated_adder_4,dc2,adder_bit1_carry_sum_region,new_n17,outgoing_bypass_source,0,2,2,2,2,outgoing bypass new_n17->new_n18,1
+generated_adder_4|adder_bit1_carry_sum_region|dc2|new_n19,generated_adder_4,dc2,adder_bit1_carry_sum_region,new_n19,outgoing_bypass_sink,0,3,2,1,3,outgoing bypass new_n17->new_n19,2
+generated_adder_4|adder_bit1_carry_sum_region|resyn2|new_n17,generated_adder_4,resyn2,adder_bit1_carry_sum_region,new_n17,outgoing_bypass_source,0,2,2,2,2,outgoing bypass new_n17->new_n18,1
+generated_adder_4|adder_bit1_carry_sum_region|resyn2|new_n19,generated_adder_4,resyn2,adder_bit1_carry_sum_region,new_n19,outgoing_bypass_sink,0,3,2,1,3,outgoing bypass new_n17->new_n19,2
+generated_mux_tree_4|mux_tree_root|dc2|new_n10,generated_mux_tree_4,dc2,mux_tree_root,new_n10,incoming_bypass_sink,0,2,2,1,3,incoming bypass new_n9->new_n10,1
+generated_mux_tree_4|mux_tree_root|resyn2|new_n12,generated_mux_tree_4,resyn2,mux_tree_root,new_n12,incoming_bypass_sink,0,1,2,1,2,incoming bypass d1->new_n12,1
+generated_mux_tree_4|mux_tree_root|resyn2|new_n9,generated_mux_tree_4,resyn2,mux_tree_root,new_n9,incoming_bypass_sink,0,1,2,1,2,incoming bypass d3->new_n9,2
+generated_mux_tree_4|mux_tree_root|resyn2|new_n11,generated_mux_tree_4,resyn2,mux_tree_root,new_n11,incoming_bypass_sink,0,3,2,1,4,incoming bypass d0->new_n11,3
+generated_mux_tree_8|mux_tree_upper_root|dc2|new_n18,generated_mux_tree_8,dc2,mux_tree_upper_root,new_n18,incoming_bypass_source,0,1,2,1,2,incoming bypass new_n18->new_n19,1
+generated_mux_tree_8|mux_tree_upper_root|dc2|new_n24,generated_mux_tree_8,dc2,mux_tree_upper_root,new_n24,incoming_bypass_source,0,1,2,1,2,incoming bypass new_n24->new_n29,2
+generated_mux_tree_8|mux_tree_upper_root|dc2|new_n27,generated_mux_tree_8,dc2,mux_tree_upper_root,new_n27,incoming_bypass_source,0,1,2,1,2,incoming bypass new_n27->new_n28,3
+generated_mux_tree_8|mux_tree_upper_root|dc2|new_n28,generated_mux_tree_8,dc2,mux_tree_upper_root,new_n28,incoming_bypass_sink,0,1,2,1,2,incoming bypass new_n27->new_n28,4
+generated_mux_tree_8|mux_tree_upper_root|dc2|new_n15,generated_mux_tree_8,dc2,mux_tree_upper_root,new_n15,incoming_bypass_source,0,2,2,1,3,incoming bypass new_n15->new_n20,5
+generated_mux_tree_8|mux_tree_upper_root|dc2|new_n19,generated_mux_tree_8,dc2,mux_tree_upper_root,new_n19,incoming_bypass_sink,0,2,2,1,3,incoming bypass new_n18->new_n19,6
+generated_mux_tree_8|mux_tree_upper_root|dc2|new_n29,generated_mux_tree_8,dc2,mux_tree_upper_root,new_n29,incoming_bypass_sink,0,2,2,1,3,incoming bypass new_n24->new_n29,7
+generated_mux_tree_8|mux_tree_upper_root|dc2|new_n20,generated_mux_tree_8,dc2,mux_tree_upper_root,new_n20,incoming_bypass_sink,0,3,2,1,4,incoming bypass new_n15->new_n20,8
+generated_mux_tree_8|mux_tree_upper_root|resyn2|new_n15,generated_mux_tree_8,resyn2,mux_tree_upper_root,new_n15,incoming_bypass_source,0,2,2,1,3,incoming bypass new_n15->new_n20,1
+generated_mux_tree_8|mux_tree_upper_root|resyn2|new_n19,generated_mux_tree_8,resyn2,mux_tree_upper_root,new_n19,incoming_bypass_sink,0,2,2,1,3,incoming bypass new_n18->new_n19,2
+generated_mux_tree_8|mux_tree_upper_root|resyn2|new_n29,generated_mux_tree_8,resyn2,mux_tree_upper_root,new_n29,incoming_bypass_sink,0,2,2,1,3,incoming bypass new_n24->new_n29,3
+generated_mux_tree_8|mux_tree_upper_root|resyn2|new_n20,generated_mux_tree_8,resyn2,mux_tree_upper_root,new_n20,incoming_bypass_sink,0,3,2,1,4,incoming bypass new_n15->new_n20,4

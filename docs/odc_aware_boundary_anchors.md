@@ -71,3 +71,27 @@ The recovered rows are contextual successes, not global internal-node
 equivalence. They show that ODC-aware anchors can recover some boundaries that
 global formal anchors could not recover, while remaining failures still point to
 missing relevant anchors or invalid extended boundaries.
+
+## Relation to Materialized Anchors
+
+ODC anchors and materialized anchors answer different questions:
+
+- ODC anchors are contextual and prove that a replacement preserves selected
+  observable outputs.
+- Materialized anchors are global and prove that a newly added redundant
+  original-side wire equals an optimized internal signal for every aligned
+  primary-input assignment.
+
+The materialized-anchor category is therefore recorded separately:
+
+```text
+mapping_category  = formal_materialized_anchor
+anchor_origin     = materialized_wire
+evidence_level    = formal_exhaustive
+equivalence_scope = global
+```
+
+The first materialization run proved 20 global materialized anchors, but none
+were usable by boundary recovery because additive wires are not reconnected into
+the original boundary graph. This does not weaken the ODC result; it identifies
+a separate graph-integration problem for correspondence by construction.

@@ -312,3 +312,27 @@ formal_plus_odc rows:        6 / 24
 selected ODC anchors:       16 across recovery rows
 unique recovered triples:    3
 ```
+
+## Materialized-Wire Anchors
+
+The correspondence-by-construction milestone adds a global anchor category that
+is neither an existing-node match nor an ODC contextual replacement:
+
+```text
+anchor_origin     = materialized_wire
+mapping_category  = formal_materialized_anchor
+evidence_level    = formal_exhaustive
+equivalence_scope = global
+```
+
+A materialized anchor is a newly introduced redundant original-side signal
+constructed from a small optimized-side cut whose leaves already have global
+formal anchors. It is not claimed to have existed in the original RTL or
+original BLIF.
+
+The first additive-only run proved 20 materialized anchors from 20 exhaustive
+global checks, while preserving original primary outputs. However, the
+materialized wires are appended and not reconnected into the original boundary
+graph. As a result, `formal_plus_materialized` selected 0 materialized anchors
+in boundary recovery and recovered 0 new boundaries. This points to boundary
+utility and graph integration as the next bottleneck, not proof generation.

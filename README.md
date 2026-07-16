@@ -53,10 +53,11 @@ https://stefi19.github.io/aig_optimization_experiments/presentation/
 28. [Canonical Semantic Regions and Interfaces](#canonical-semantic-regions-and-interfaces)
 29. [Semantic Bus Inference and Dependency Geometry](#semantic-bus-inference-and-dependency-geometry)
 30. [Formally Verified Direct Semantic Template Recovery](#formally-verified-direct-semantic-template-recovery)
-31. [Formal Error Metrics and Context-Aware Correspondence](#formal-error-metrics-and-context-aware-correspondence)
-32. [Dependencies](#20-dependencies)
-33. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
-34. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
+31. [Correspondence by Construction Through Anchored-Cut Wire Materialization](#correspondence-by-construction-through-anchored-cut-wire-materialization)
+32. [Formal Error Metrics and Context-Aware Correspondence](#formal-error-metrics-and-context-aware-correspondence)
+33. [Dependencies](#20-dependencies)
+34. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+35. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -1696,6 +1697,76 @@ cost 1.000, and mean reduction rate 32.138%.
 
 See `docs/semantic_direct_template_recovery.md` and
 `results/semantic_recovery/semantic_direct_recovery_summary.md`.
+
+---
+
+## Correspondence by Construction Through Anchored-Cut Wire Materialization
+
+Phase 5 explores a different response to missing internal-node correspondence:
+construct a redundant original-side wire when no pre-existing original node
+matches an optimized internal signal.
+
+```text
+unmatched optimized frontier node
+-> small optimized-side cut
+-> globally formal cut-leaf anchors
+-> exact cut truth table
+-> additive original-side wire
+-> exhaustive global proof
+-> optional boundary-recovery reuse
+```
+
+This is not destructive rewriting. The augmented original circuit keeps the
+same primary outputs and appends only the logic needed to compute the new
+wire. A materialized anchor is not claimed to have existed in the original RTL
+or original BLIF.
+
+Accepted anchors use explicit evidence fields:
+
+- `anchor_origin = materialized_wire`;
+- `mapping_category = formal_materialized_anchor`;
+- `evidence_level = formal_exhaustive`;
+- `equivalence_scope = global`;
+- `proof_status = proven_materialized_anchor`.
+
+Run:
+
+```bash
+make materialization-targets
+make anchored-cuts
+make anchored-cut-functions
+make materialized-wires
+make materialized-anchor-proofs
+make materialized-boundary-recovery
+make materialized-ablation
+make materialized-plots
+make check-materialized-results
+make materialized-correspondence-all
+```
+
+Current generated results:
+
+- unmatched targets attempted: 20;
+- anchored cuts generated: 128;
+- functions extracted: 20;
+- materialization candidates: 20;
+- formal checks: 20;
+- proven materialized anchors: 20;
+- usable frontier materialized anchors: 0;
+- selected materialized anchors: 0;
+- newly recovered boundaries: 0;
+- mean added gate count: 1.700;
+- mean proof runtime: 0.001422 seconds.
+
+The result is deliberately conservative. Small-cut materialization can construct
+and prove redundant wires on the selected generated cases, but those additive
+wires are not reconnected into the original boundary graph. The current boundary
+search therefore does not encounter or select them, so no additional boundaries
+are recovered in this run. The measured bottleneck is boundary utility and graph
+integration, not formal proof generation.
+
+See `docs/correspondence_by_construction.md` and
+`results/materialized_correspondence/materialized_correspondence_summary.md`.
 
 ---
 

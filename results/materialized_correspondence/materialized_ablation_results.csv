@@ -1,0 +1,5 @@
+ablation,cuts,formal_checks,functions_extracted,new_boundary_recoveries,proven_materialized_anchors,targets
+cut_size_le_2,106,12,12,0,12,20
+cut_size_le_3,128,20,20,0,20,20
+ranking_hybrid,128,20,20,0,20,20
+truth_table_direct,128,20,20,0,20,20
