@@ -1,0 +1,48 @@
+{
+  "schema_version": "formal_locality_barriers_config_v1",
+  "title": "Formal Locality-Barrier Certificates for Cross-Netlist Correspondence",
+  "baseline_commit": "f480fe107d33132c408ea567b6c561dfb7758440",
+  "deterministic_seed": 0,
+  "development_heldout_split": {
+    "source": "existing active-source/cross-netlist split rows",
+    "heldout_tuning": "forbidden"
+  },
+  "source_signal_universes": [
+    {
+      "mode": "U0_direct_name_intersection",
+      "locality_radius": 0,
+      "maximum_size": 16,
+      "construction_rule": "source signals whose names are also in the optimized target support, plus aligned PIs in that support"
+    },
+    {
+      "mode": "U1_source_target_support_pi",
+      "locality_radius": 1,
+      "maximum_size": 16,
+      "construction_rule": "aligned source PIs in the structural support of the optimized target vector"
+    },
+    {
+      "mode": "U5_all_source_internal",
+      "locality_radius": -1,
+      "maximum_size": 64,
+      "construction_rule": "all source internal and output signals"
+    },
+    {
+      "mode": "U6_all_aligned_primary_inputs",
+      "locality_radius": -1,
+      "maximum_size": 64,
+      "construction_rule": "all aligned primary inputs; diagnostic only, never counted as local success"
+    }
+  ],
+  "maximum_source_radius": 4,
+  "maximum_optimized_radius": 4,
+  "maximum_interface_width": 6,
+  "maximum_residual_width": 4,
+  "maximum_region_nodes": 64,
+  "maximum_hitting_set_iterations": 32,
+  "per_query_timeout_ms": 5000,
+  "per_target_timeout_ms": 30000,
+  "exact_search_threshold": 18,
+  "whole_design_diagnostic_policy": "diagnostic_not_local_success",
+  "compactness_threshold": 6,
+  "locality_threshold": 4
+}

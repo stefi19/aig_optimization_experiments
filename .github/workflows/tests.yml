@@ -100,6 +100,17 @@ jobs:
             --output-dir "$RUNNER_TEMP/cross_results" \
             --allow-no-abc
 
+      - name: Run lightweight formal locality certificates without ABC
+        env:
+          AIG_ABC: ${{ runner.temp }}/missing-abc
+        run: |
+          python scripts/run_formal_locality_barriers.py \
+            --mode controlled \
+            --output-dir "$RUNNER_TEMP/locality_results"
+          python scripts/check_formal_locality_barrier_results.py \
+            --output-dir "$RUNNER_TEMP/locality_results" \
+            --allow-no-abc
+
       - name: Verify worktree stayed clean
         run: test -z "$(git status --short)"
 
@@ -184,6 +195,14 @@ jobs:
             --bench-dir "$RUNNER_TEMP/cross_bench"
           python scripts/check_cross_netlist_transplant_results.py \
             --output-dir "$RUNNER_TEMP/cross_results"
+
+      - name: Run lightweight formal locality certificates with ABC
+        run: |
+          python scripts/run_formal_locality_barriers.py \
+            --mode controlled \
+            --output-dir "$RUNNER_TEMP/locality_results"
+          python scripts/check_formal_locality_barrier_results.py \
+            --output-dir "$RUNNER_TEMP/locality_results"
 
       - name: Verify worktree stayed clean
         run: test -z "$(git status --short)"

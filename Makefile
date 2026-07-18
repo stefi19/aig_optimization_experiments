@@ -10,6 +10,7 @@ Z3_PYTHON = $(shell if [ -x .venv-z3/bin/python ]; then echo .venv-z3/bin/python
 .PHONY: semantic-recoverability-benchmarks semantic-recoverability-trajectories semantic-recoverability-controlled semantic-recoverability-development semantic-recoverability-heldout semantic-recoverability-oracle semantic-recoverability-pass-ablations semantic-recoverability-durability semantic-recoverability-plots check-semantic-recoverability-results semantic-recoverability-all
 .PHONY: active-source-counterparts-controlled active-source-counterparts-development active-source-counterparts-heldout active-source-counterparts-durability active-source-counterparts-ablations active-source-counterparts-plots check-active-source-counterpart-results active-source-counterparts-all
 .PHONY: cross-netlist-transplant-controlled cross-netlist-transplant-development cross-netlist-transplant-heldout cross-netlist-transplant-oracle cross-netlist-transplant-durability cross-netlist-transplant-ablations cross-netlist-transplant-plots check-cross-netlist-transplant-results cross-netlist-transplant-all
+.PHONY: formal-locality-controlled formal-locality-development formal-locality-heldout formal-locality-input formal-locality-output formal-locality-whole-design-diagnostic formal-locality-transplant formal-locality-ablations formal-locality-plots check-formal-locality-results formal-locality-all
 
 all: build-abc generate-variants analyze plot
 
@@ -435,6 +436,49 @@ check-cross-netlist-transplant-results:
 
 cross-netlist-transplant-all: cross-netlist-transplant-ablations cross-netlist-transplant-plots check-cross-netlist-transplant-results
 	@echo "Cross-netlist cut transplantation pipeline complete."
+
+formal-locality-controlled:
+	@echo "Running controlled formal locality-barrier certificates"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_formal_locality_barriers.py --mode controlled
+
+formal-locality-development:
+	@echo "Running development formal locality-barrier analysis"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_formal_locality_barriers.py --mode development
+
+formal-locality-heldout:
+	@echo "Running held-out formal locality-barrier analysis"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_formal_locality_barriers.py --mode heldout
+
+formal-locality-input:
+	@echo "Running input-interface locality certificates"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_formal_locality_barriers.py --mode input
+
+formal-locality-output:
+	@echo "Running output/window locality certificates"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_formal_locality_barriers.py --mode output
+
+formal-locality-whole-design-diagnostic:
+	@echo "Running whole-design PI locality diagnostics"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_formal_locality_barriers.py --mode whole-design
+
+formal-locality-transplant:
+	@echo "Running certificate-guided transplant accounting"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_formal_locality_barriers.py --mode transplant
+
+formal-locality-ablations:
+	@echo "Running formal locality baselines and ablations"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_formal_locality_barriers.py --mode all
+
+formal-locality-plots: formal-locality-ablations
+	@echo "Generating formal locality-barrier plots"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/formal_locality_barrier_plots.py
+
+check-formal-locality-results:
+	@echo "Checking formal locality-barrier result artifacts"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/check_formal_locality_barrier_results.py
+
+formal-locality-all: formal-locality-ablations formal-locality-plots check-formal-locality-results
+	@echo "Formal locality-barrier pipeline complete."
 
 semantic-graft-plots: semantic-graft-ablation
 	@echo "Generating blind CEGIS and semantic graft plots"
