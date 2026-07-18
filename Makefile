@@ -32,7 +32,7 @@ build-abc:
 	fi
 	@git -C $(ABC_DIR) fetch origin $(ABC_REV) || git -C $(ABC_DIR) fetch origin
 	@git -C $(ABC_DIR) checkout --detach $(ABC_REV)
-	@cd $(ABC_DIR) && make -j2
+	@cd $(ABC_DIR) && make ABC_USE_NO_READLINE=1 -j2
 
 check-abc: build-abc
 	@echo "Checking pinned ABC binary"
