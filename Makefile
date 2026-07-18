@@ -219,6 +219,45 @@ semantic-graft-strategy-ablation: semantic-graft-normalization semantic-graft-ed
 semantic-graft-all: semantic-graft-strategy-ablation semantic-graft-plots check-semantic-graft-results
 	@echo "All semantic graft strategies evaluated."
 
+semantic-region-candidates:
+	@echo "Enumerating semantic replacement regions"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_region_replacement.py
+
+semantic-region-closure: semantic-region-candidates
+	@echo "Closed-region validation complete."
+
+semantic-compositional-cegis: semantic-region-closure
+	@echo "Compositional CEGIS results are in results/semantic_region_replacement/"
+
+semantic-module-proofs: semantic-compositional-cegis
+	@echo "Semantic module proof results are in compositional_formal_results.csv"
+
+semantic-module-synthesis: semantic-module-proofs
+	@echo "Replacement module synthesis/emission results are in replacement_module_synthesis.csv"
+
+semantic-region-replace: semantic-module-synthesis
+	@echo "Graph-level region replacement attempts are in replacement_attempts.csv"
+
+semantic-replacement-cec: semantic-region-replace
+	@echo "Global CEC results are in implementation_global_cec.csv"
+
+semantic-boundary-restore: semantic-replacement-cec
+	@echo "Boundary restoration results are in boundary_restoration_results.csv"
+
+semantic-replacement-ablation: semantic-boundary-restore
+	@echo "Replacement ablation results are in replacement_strategy_ablation.csv"
+
+semantic-replacement-plots: semantic-replacement-ablation
+	@echo "Generating semantic replacement plots"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/semantic_region_replacement_plots.py
+
+check-semantic-replacement-results:
+	@echo "Checking semantic region replacement results"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_semantic_replacement_results.py
+
+semantic-region-replacement-all: semantic-region-candidates semantic-region-closure semantic-compositional-cegis semantic-module-proofs semantic-module-synthesis semantic-region-replace semantic-replacement-cec semantic-boundary-restore semantic-replacement-ablation semantic-replacement-plots check-semantic-replacement-results
+	@echo "Semantic region replacement pipeline complete."
+
 semantic-graft-plots: semantic-graft-ablation
 	@echo "Generating blind CEGIS and semantic graft plots"
 	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/blind_semantic_plots.py

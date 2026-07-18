@@ -1,0 +1,18 @@
+attempt_id,region_id,abc_available,implementation_global_cec,abc_output,schema_version
+controlled_full_adder__attempt_0001,controlled_full_adder,true,equivalent,"on.blif /Users/stefi/Desktop/research/eth/aig_optimization_experiments/results/semantic_region_replacement/artifacts/controlled_full_adder.replaced.blif""
+Networks are equivalent.  Time =     0.01 sec
+",implementation_global_cec_v1
+controlled_affine__attempt_0001,controlled_affine,true,equivalent,"Desktop/research/eth/aig_optimization_experiments/results/semantic_region_replacement/artifacts/controlled_affine.replaced.blif""
+Networks are equivalent after structural hashing.  Time =     0.00 sec
+",implementation_global_cec_v1
+controlled_add_add__attempt_0001,controlled_add_add,true,equivalent,"esktop/research/eth/aig_optimization_experiments/results/semantic_region_replacement/artifacts/controlled_add_add.replaced.blif""
+Networks are equivalent after structural hashing.  Time =     0.00 sec
+",implementation_global_cec_v1
+controlled_bilinear__attempt_0001,controlled_bilinear,true,equivalent,"sktop/research/eth/aig_optimization_experiments/results/semantic_region_replacement/artifacts/controlled_bilinear.replaced.blif""
+Networks are equivalent after structural hashing.  Time =     0.00 sec
+",implementation_global_cec_v1
+controlled_mac__attempt_0001,controlled_mac,true,equivalent,"fi/Desktop/research/eth/aig_optimization_experiments/results/semantic_region_replacement/artifacts/controlled_mac.replaced.blif""
+Networks are equivalent after structural hashing.  Time =     0.00 sec
+",implementation_global_cec_v1
+negative_dangling_fanin__attempt_0001,negative_dangling_fanin,true,not_run_invalid_rewrite,,implementation_global_cec_v1
+negative_multiple_driver__attempt_0001,negative_multiple_driver,true,not_run_invalid_rewrite,,implementation_global_cec_v1

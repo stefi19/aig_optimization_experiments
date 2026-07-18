@@ -1,0 +1,33 @@
+region_id,direction,bus_name,ordered_member_nodes,width,role,inference_mode,schema_version
+controlled_full_adder,input,a,"[""a""]",1,data_operand,controlled_blind_interface,semantic_region_interface_v1
+controlled_full_adder,input,b,"[""b""]",1,data_operand,controlled_blind_interface,semantic_region_interface_v1
+controlled_full_adder,input,cin,"[""cin""]",1,data_operand,controlled_blind_interface,semantic_region_interface_v1
+controlled_full_adder,output,sum,"[""sum""]",1,output,controlled_blind_interface,semantic_region_interface_v1
+controlled_full_adder,output,cout,"[""cout""]",1,output,controlled_blind_interface,semantic_region_interface_v1
+controlled_affine,input,a,"[""a0"", ""a1""]",2,data_operand,controlled_blind_interface,semantic_region_interface_v1
+controlled_affine,input,b,"[""b0"", ""b1""]",2,data_operand,controlled_blind_interface,semantic_region_interface_v1
+controlled_affine,input,c,"[""c0"", ""c1""]",2,data_operand,controlled_blind_interface,semantic_region_interface_v1
+controlled_affine,output,y0,"[""y0""]",1,output,controlled_blind_interface,semantic_region_interface_v1
+controlled_affine,output,y1,"[""y1""]",1,output,controlled_blind_interface,semantic_region_interface_v1
+controlled_add_add,input,a,"[""a0"", ""a1""]",2,data_operand,controlled_blind_interface,semantic_region_interface_v1
+controlled_add_add,input,b,"[""b0"", ""b1""]",2,data_operand,controlled_blind_interface,semantic_region_interface_v1
+controlled_add_add,input,c,"[""c0"", ""c1""]",2,data_operand,controlled_blind_interface,semantic_region_interface_v1
+controlled_add_add,output,y0,"[""y0""]",1,output,controlled_blind_interface,semantic_region_interface_v1
+controlled_add_add,output,y1,"[""y1""]",1,output,controlled_blind_interface,semantic_region_interface_v1
+controlled_bilinear,input,a,"[""a0"", ""a1""]",2,data_operand,controlled_blind_interface,semantic_region_interface_v1
+controlled_bilinear,input,b,"[""b0"", ""b1""]",2,data_operand,controlled_blind_interface,semantic_region_interface_v1
+controlled_bilinear,input,c,"[""c0"", ""c1""]",2,data_operand,controlled_blind_interface,semantic_region_interface_v1
+controlled_bilinear,output,y0,"[""y0""]",1,output,controlled_blind_interface,semantic_region_interface_v1
+controlled_bilinear,output,y1,"[""y1""]",1,output,controlled_blind_interface,semantic_region_interface_v1
+controlled_mac,input,a,"[""a0"", ""a1""]",2,data_operand,controlled_blind_interface,semantic_region_interface_v1
+controlled_mac,input,b,"[""b0"", ""b1""]",2,data_operand,controlled_blind_interface,semantic_region_interface_v1
+controlled_mac,input,c,"[""c0"", ""c1""]",2,data_operand,controlled_blind_interface,semantic_region_interface_v1
+controlled_mac,output,y0,"[""y0""]",1,output,controlled_blind_interface,semantic_region_interface_v1
+controlled_mac,output,y1,"[""y1""]",1,output,controlled_blind_interface,semantic_region_interface_v1
+negative_dangling_fanin,input,missing,"[""missing""]",1,data_operand,controlled_blind_interface,semantic_region_interface_v1
+negative_dangling_fanin,output,sum,"[""sum""]",1,output,controlled_blind_interface,semantic_region_interface_v1
+negative_multiple_driver,input,a,"[""a""]",1,data_operand,controlled_blind_interface,semantic_region_interface_v1
+negative_multiple_driver,input,b,"[""b""]",1,data_operand,controlled_blind_interface,semantic_region_interface_v1
+negative_multiple_driver,input,cin,"[""cin""]",1,data_operand,controlled_blind_interface,semantic_region_interface_v1
+negative_multiple_driver,output,sum,"[""sum""]",1,output,controlled_blind_interface,semantic_region_interface_v1
+negative_multiple_driver,output,cout,"[""cout""]",1,output,controlled_blind_interface,semantic_region_interface_v1

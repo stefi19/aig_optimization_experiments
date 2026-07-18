@@ -1,0 +1,7 @@
+operator,regions_attempted,regions_recovered,schema_version
+add_add,1,1,semantic_region_grouped_v1
+affine,1,1,semantic_region_grouped_v1
+bilinear,1,1,semantic_region_grouped_v1
+full_adder,1,1,semantic_region_grouped_v1
+mac,1,1,semantic_region_grouped_v1
+negative,1,0,semantic_region_grouped_v1

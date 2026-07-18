@@ -1,0 +1,6 @@
+.model bad_dangling
+.inputs missing
+.outputs sum
+.names missing sum
+1 1
+.end

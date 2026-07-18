@@ -1,0 +1,20 @@
+.model full_adder_region
+.inputs a b cin
+.outputs sum cout
+.names a b xab
+10 1
+01 1
+.names xab cin sum
+10 1
+01 1
+.names a b ab
+11 1
+.names a cin ac
+11 1
+.names b cin bc
+11 1
+.names ab ac bc cout
+1-- 1
+-1- 1
+--1 1
+.end

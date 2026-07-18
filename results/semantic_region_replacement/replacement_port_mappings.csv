@@ -1,0 +1,8 @@
+region_id,module_id,input_port_map,output_port_map,schema_version
+controlled_full_adder,sem_full_adder,"{""a"": [""a""], ""b"": [""b""], ""cin"": [""cin""]}","{""cout"": [""cout""], ""sum"": [""sum""]}",replacement_port_mapping_v1
+controlled_affine,sem_controlled_affine,"{""a"": [""a0"", ""a1""], ""b"": [""b0"", ""b1""], ""c"": [""c0"", ""c1""]}","{""y0"": [""y0""], ""y1"": [""y1""]}",replacement_port_mapping_v1
+controlled_add_add,sem_controlled_add_add,"{""a"": [""a0"", ""a1""], ""b"": [""b0"", ""b1""], ""c"": [""c0"", ""c1""]}","{""y0"": [""y0""], ""y1"": [""y1""]}",replacement_port_mapping_v1
+controlled_bilinear,sem_controlled_bilinear,"{""a"": [""a0"", ""a1""], ""b"": [""b0"", ""b1""], ""c"": [""c0"", ""c1""]}","{""y0"": [""y0""], ""y1"": [""y1""]}",replacement_port_mapping_v1
+controlled_mac,sem_controlled_mac,"{""a"": [""a0"", ""a1""], ""b"": [""b0"", ""b1""], ""c"": [""c0"", ""c1""]}","{""y0"": [""y0""], ""y1"": [""y1""]}",replacement_port_mapping_v1
+negative_dangling_fanin,bad_dangling,"{""missing"": [""missing""]}","{""sum"": [""sum""]}",replacement_port_mapping_v1
+negative_multiple_driver,sem_full_adder,"{""a"": [""a""], ""b"": [""b""], ""cin"": [""cin""]}","{""cout"": [""cout""], ""sum"": [""sum""]}",replacement_port_mapping_v1
