@@ -1,0 +1,31 @@
+key,value
+baseline_head,6e6d129f16a65ada7f0a01e57cb17abdca35d944
+branch,main
+remote,origin https://github.com/stefi19/aig_optimization_experiments.git
+platform,macOS-26.5.1-arm64-arm-64bit
+system_python,Python 3.14.3
+repository_python,Python 3.11.15
+z3_version,4.16.0
+abc_version,"UC Berkeley, ABC 1.01 (compiled Jul 18 2026 19:53:19)"
+abc_source_revision,bcfdf592289a408cd67ec19260f8a60a37b085b6
+yosys_version,unavailable
+baseline_pytest,"727 passed, 4 skipped"
+z3_smoke,passed
+blind_semantic_checker,passed
+semantic_graft_checker,passed
+semantic_replacement_checker,passed
+joint_region_interface_checker,passed
+semantic_functional_refactoring_checker,passed
+exhaustive_z3_agreement,192/192
+blind_unique_recovery,10/16
+formal_smt_semantic_expression_proofs,46
+isolated_semantic_grafting,"276 attempts, 0 accepted graph-active anchors"
+fixed_semantic_region_replacement,5 controlled restored boundaries
+joint_region_interface_discovery,8 controlled restored boundaries
+functional_refactoring_controlled_experiments,13
+functional_refactoring_exact_quotients,12
+functional_refactoring_quotient_depends_on_m,11
+functional_refactoring_accepted_non_identity,10
+functional_refactoring_controlled_restored_boundaries,10
+functional_refactoring_real_development,"49 attempts, 0 restored"
+functional_refactoring_real_heldout,"9 attempts, 0 restored"
