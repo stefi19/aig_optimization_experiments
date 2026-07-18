@@ -1,0 +1,25 @@
+component,field,inference_time_access,ground_truth_derived,risk_level,evidence,blind_replacement,schema_version
+semantic_direct_recovery.py,classification,true,true,high,literal field reference `classification`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+semantic_direct_recovery.py,family,true,true,high,literal field reference `family`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+semantic_direct_recovery.py,ground_truth_bus_name_if_known,true,true,high,literal field reference `ground_truth_bus_name_if_known`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+semantic_direct_recovery.py,ground_truth_expression,true,true,high,literal field reference `ground_truth_expression`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+semantic_direct_recovery.py,ground_truth_family,true,true,high,literal field reference `ground_truth_family`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+semantic_direct_recovery.py,operator,true,true,high,literal field reference `operator`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+semantic_grammar.py,constants,true,true,high,literal field reference `constants`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+semantic_grammar.py,family,true,true,high,literal field reference `family`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+semantic_grammar.py,operator,true,true,high,literal field reference `operator`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+semantic_family_ranking.py,control_input_accuracy,true,true,high,literal field reference `control_input_accuracy`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+semantic_family_ranking.py,family,true,true,high,literal field reference `family`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+semantic_family_ranking.py,ground_truth_family,true,true,high,literal field reference `ground_truth_family`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+semantic_family_ranking.py,ground_truth_rank,true,true,high,literal field reference `ground_truth_rank`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+semantic_family_ranking.py,operator,true,true,high,literal field reference `operator`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+semantic_family_ranking.py,output_bus_accuracy,true,true,high,literal field reference `output_bus_accuracy`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+scripts/generate_semantic_direct_candidates.py,constants,true,true,high,literal field reference `constants`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+scripts/generate_semantic_direct_candidates.py,family,true,true,high,literal field reference `family`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+scripts/generate_semantic_direct_candidates.py,ground_truth_family,true,true,high,literal field reference `ground_truth_family`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+scripts/generate_semantic_direct_candidates.py,ground_truth_rank,true,true,high,literal field reference `ground_truth_rank`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+scripts/generate_semantic_direct_candidates.py,operator,true,true,high,literal field reference `operator`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+scripts/rank_semantic_families.py,family,true,true,high,literal field reference `family`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+scripts/rank_semantic_families.py,ground_truth_family,true,true,high,literal field reference `ground_truth_family`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+scripts/infer_semantic_buses.py,correct,false,true,evaluation_only,literal field reference `correct`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1
+scripts/infer_semantic_buses.py,ground_truth_match,false,true,evaluation_only,literal field reference `ground_truth_match`,blind inference schema rejects this field before prediction,blind_semantic_cegis_v1

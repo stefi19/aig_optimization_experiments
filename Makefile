@@ -2,7 +2,7 @@ ABC_DIR=.abc_build/abc_repo
 ABC_BIN=$(ABC_DIR)/abc
 PYTHON ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; else echo python3; fi)
 
-.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants semantic-benchmarks semantic-benchmarks-check semantic-regions semantic-interfaces semantic-region-comparison semantic-region-plots check-semantic-regions semantic-regions-all semantic-bus-inference semantic-dependency semantic-family-ranking semantic-bus-ablation semantic-dependency-plots check-semantic-bus-dependency semantic-bus-dependency-all semantic-direct-candidates semantic-direct-simulation semantic-direct-verification semantic-direct-selection semantic-direct-ablation semantic-direct-plots check-semantic-direct-results semantic-direct-recovery-all analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance abc-timing-probe yosys-source-probe source-map-prototype register-suggestions contextual-error-analysis contextual-critical-path-map contextual-research-plots research-plots cofactor-sensitivity-analysis functional-ranking-ablation functional-ranking-plots enhanced-critical-path-map check-functional-ranking-results boundary-recovery-benchmarks boundary-recovery-analysis boundary-recovery-critical-path boundary-recovery-plots check-boundary-recovery-results boundary-recovery boundary-recovery-identity boundary-recovery-diagnosis boundary-recovery-critical-path-cois boundary-recovery-diagnosis-plots check-boundary-recovery-diagnosis boundary-recovery-diagnosis-all boundary-recovery-micro-benchmarks boundary-recovery-repair-cois boundary-recovery-check-circuits boundary-recovery-identity-fixed boundary-recovery-corrected-analysis boundary-recovery-critical-path-fixed boundary-recovery-semantics-plots check-boundary-recovery-semantics boundary-recovery-semantics-all extended-boundary-validation extended-boundary-search extended-boundary-comparison extended-boundary-plots check-extended-boundary-results extended-boundary-all odc-anchor-candidates odc-anchor-proofs odc-boundary-recovery odc-anchor-comparison odc-anchor-plots check-odc-anchor-results odc-anchor-all materialization-targets anchored-cuts anchored-cut-functions materialized-wires materialized-anchor-proofs materialized-boundary-recovery materialized-ablation materialized-plots check-materialized-results materialized-correspondence-all iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map timing-path-probe full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
+.PHONY: all build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants semantic-benchmarks semantic-benchmarks-check semantic-regions semantic-interfaces semantic-region-comparison semantic-region-plots check-semantic-regions semantic-regions-all semantic-bus-inference semantic-dependency semantic-family-ranking semantic-bus-ablation semantic-dependency-plots check-semantic-bus-dependency semantic-bus-dependency-all semantic-direct-candidates semantic-direct-simulation semantic-direct-verification semantic-direct-selection semantic-direct-ablation semantic-direct-plots check-semantic-direct-results semantic-direct-recovery-all blind-semantic-audit blind-semantic-buses semantic-parametric-candidates semantic-cegis semantic-smt-proofs semantic-cegis-evaluation semantic-graft-targets semantic-graft-build semantic-graft-proofs semantic-graft-boundary-recovery semantic-graft-ablation semantic-graft-plots check-blind-semantic-results check-semantic-graft-results blind-semantic-cegis-all semantic-grafting-all analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance abc-timing-probe yosys-source-probe source-map-prototype register-suggestions contextual-error-analysis contextual-critical-path-map contextual-research-plots research-plots cofactor-sensitivity-analysis functional-ranking-ablation functional-ranking-plots enhanced-critical-path-map check-functional-ranking-results boundary-recovery-benchmarks boundary-recovery-analysis boundary-recovery-critical-path boundary-recovery-plots check-boundary-recovery-results boundary-recovery boundary-recovery-identity boundary-recovery-diagnosis boundary-recovery-critical-path-cois boundary-recovery-diagnosis-plots check-boundary-recovery-diagnosis boundary-recovery-diagnosis-all boundary-recovery-micro-benchmarks boundary-recovery-repair-cois boundary-recovery-check-circuits boundary-recovery-identity-fixed boundary-recovery-corrected-analysis boundary-recovery-critical-path-fixed boundary-recovery-semantics-plots check-boundary-recovery-semantics boundary-recovery-semantics-all extended-boundary-validation extended-boundary-search extended-boundary-comparison extended-boundary-plots check-extended-boundary-results extended-boundary-all odc-anchor-candidates odc-anchor-proofs odc-boundary-recovery odc-anchor-comparison odc-anchor-plots check-odc-anchor-results odc-anchor-all materialization-targets anchored-cuts anchored-cut-functions materialized-wires materialized-anchor-proofs materialized-boundary-recovery materialized-ablation materialized-plots check-materialized-results materialized-correspondence-all iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map timing-path-probe full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
 
 all: build-abc generate-variants analyze plot
 
@@ -118,6 +118,66 @@ check-semantic-direct-results:
 
 semantic-direct-recovery-all: semantic-benchmarks semantic-benchmarks-check semantic-regions-all semantic-bus-dependency-all semantic-direct-candidates semantic-direct-simulation semantic-direct-verification semantic-direct-selection semantic-direct-ablation semantic-direct-plots check-semantic-direct-results
 	@echo "Direct semantic template recovery pipeline complete."
+
+blind-semantic-audit:
+	@echo "Auditing inference-time semantic ground-truth leakage"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_blind_semantic_cegis.py audit
+
+blind-semantic-buses: blind-semantic-audit
+	@echo "Inferring source-blind bus/interface hypotheses"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_blind_semantic_cegis.py buses
+
+semantic-parametric-candidates: blind-semantic-buses
+	@echo "Enumerating blind parametric semantic candidates"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_blind_semantic_cegis.py cegis
+
+semantic-cegis: semantic-parametric-candidates
+	@echo "Running bounded blind CEGIS loop"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_blind_semantic_cegis.py cegis
+
+semantic-smt-proofs: semantic-cegis
+	@echo "Checking formal proof metadata"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_blind_semantic_results.py
+
+semantic-cegis-evaluation: semantic-smt-proofs
+	@echo "Joining evaluation-only labels after blind predictions"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_blind_semantic_cegis.py evaluate
+
+semantic-graft-targets: semantic-cegis-evaluation
+	@echo "Selecting boundary-utility-aware semantic graft targets"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_semantic_grafting.py
+
+semantic-graft-build: semantic-graft-targets
+	@echo "Building semantic graft candidates"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_semantic_grafting.py
+
+semantic-graft-proofs: semantic-graft-build
+	@echo "Checking semantic graft proof funnel"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_semantic_graft_results.py
+
+semantic-graft-boundary-recovery: semantic-graft-proofs
+	@echo "Semantic graft boundary-recovery rows are in results/semantic_grafting/"
+
+semantic-graft-ablation: semantic-graft-boundary-recovery
+	@echo "Semantic graft ablation rows are in results/semantic_grafting/target_selection_ablation.csv"
+
+semantic-graft-plots: semantic-graft-ablation
+	@echo "Generating blind CEGIS and semantic graft plots"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/blind_semantic_plots.py
+
+check-blind-semantic-results:
+	@echo "Checking blind semantic CEGIS outputs"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_blind_semantic_results.py
+
+check-semantic-graft-results:
+	@echo "Checking semantic graft outputs"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_semantic_graft_results.py
+
+blind-semantic-cegis-all: blind-semantic-audit blind-semantic-buses semantic-parametric-candidates semantic-cegis semantic-smt-proofs semantic-cegis-evaluation check-blind-semantic-results
+	@echo "Blind semantic CEGIS pipeline complete."
+
+semantic-grafting-all: blind-semantic-cegis-all semantic-graft-targets semantic-graft-build semantic-graft-proofs semantic-graft-boundary-recovery semantic-graft-ablation semantic-graft-plots check-semantic-graft-results
+	@echo "Proof-carrying semantic grafting pipeline complete."
 
 # ── Research iteration 2: external benchmarks (ISCAS-85 / EPFL) ───────────────
 
