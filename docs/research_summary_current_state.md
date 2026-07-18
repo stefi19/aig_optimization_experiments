@@ -23,7 +23,9 @@ discovery replace the failed isolated-anchor abstraction with graph-active
 semantic modules that physically drive original fanouts. The newest functional
 refactoring phase tests a different hypothesis: when no existing semantic
 region can be closed, factor an optimized window into a semantic divisor
-`M = G(X)` and exact quotient `Y = H(M, Z)`.
+`M = G(X)` and exact quotient `Y = H(M, Z)`. The recoverability-frontier phase
+then studies where these properties appear or disappear across ABC synthesis
+checkpoints, with blind and oracle diagnostic rows kept separate.
 
 ## 2. Research Problem
 
@@ -67,6 +69,7 @@ blind bus/interface hypothesis
 -> ABC global CEC for accepted replacements
 -> functional decomposition when no closed semantic region exists
 -> semantic divisor plus exact quotient refactoring
+-> synthesis-trajectory recoverability frontier
 ```
 
 Ground-truth labels are joined only after prediction/proof files are written.
@@ -108,6 +111,16 @@ the semantic divisor is on a real fanout path. The controlled run has 13 cases,
 quotient-depends-on-`M` decompositions, 10 non-identity graph-active
 ABC-equivalent refactorings, and 10 restored controlled boundaries. The real
 development/held-out split remains 0/58 restored.
+
+The recoverability-frontier phase records semantic boundaries before synthesis,
+saves checkpoints after individual ABC passes, proves checkpoint equivalence,
+and compares blind versus oracle recoverability levels. The committed run has 4
+designs, 5 source boundaries, 12 trajectories, 60 checkpoints, and 60/60
+checkpoint CEC passes. Blind structural/functional-survival rows recover 59/300
+rows, while oracle divisor/support/window diagnostics recover 81/180 rows.
+Held-out blind recovery is 16 structural/functional-survival rows; held-out
+oracle compact decomposition is 12 rows. No graph-active real restoration is
+claimed by this phase.
 
 Each layer has a different role:
 
@@ -778,6 +791,11 @@ proof generation.
     vacuous cases at the correct stages, restores 10 controlled graph-active
     non-identity boundaries with ABC CEC, and still restores 0 real boundaries
     across 49 development plus 9 held-out attempts.
+19. The semantic recoverability-frontier phase evaluates 60 CEC-equivalent
+    checkpoints across 12 ABC trajectories. It separates blind
+    structural/functional survival from oracle compact-decomposition
+    diagnostics, shows a blind-oracle gap, and reports pass-level transitions
+    without making unsupported causal claims.
 
 ## 10. Limitations
 
@@ -823,6 +841,10 @@ proof generation.
   create graph-active boundaries in distributed controlled logic, but the real
   attempts do not yet find source-blind divisor/window/residual interfaces under
   the evaluated bounds.
+- The recoverability-frontier run is a compact trajectory study. Its real rows
+  use repository hand-written BLIF and its pass-level results are associations,
+  not broad causal claims. The measured quantity is compact local
+  recoverability, not absolute preservation of semantic information.
 - The method is not exhaustive; it analyzes selected ranked candidates and
   selected case-study circuits.
 
@@ -844,12 +866,14 @@ The most important next steps are:
 7. Broaden source-blind semantic divisor discovery beyond the current ranked
    real seeds while retaining whole-design, bypass, non-vacuity, and cycle
    guards.
-8. Add scalable quotient representations beyond bounded exact truth tables,
+8. Extend the recoverability-frontier experiment to larger RTL-derived designs
+   once Yosys and source-boundary extraction are available.
+9. Add scalable quotient representations beyond bounded exact truth tables,
    such as BDD/AIG quotient synthesis with independent proof.
-9. Improve specification-side interface alignment so semantic replacement and
+10. Improve specification-side interface alignment so semantic replacement and
    refactoring can be attempted on real arithmetic COIs rather than only
    controlled cases.
-10. Extend compositional CEGIS on the real suite for add-add, bilinear, MAC,
+11. Extend compositional CEGIS on the real suite for add-add, bilinear, MAC,
     mixed-width arithmetic, and control-heavy regions without using source
     labels in blind mode.
 
@@ -874,12 +898,12 @@ blind CEGIS run agrees with exhaustive proof on 192/192 small checks, reproduces
 10/16 unique blind cases including all attempted 12/16-bit wide cases. The
 oracle-bus ablation recovers the same 10/16 unique cases in the committed run.
 
-The newest functional-refactoring prototype validates the next abstraction step
-on controlled cases. Instead of requiring an existing semantic subgraph, it
-formally decomposes an optimized window into a semantic divisor and exact
-quotient, proves the quotient independently, rewrites the graph so the divisor
-is active, and requires ABC global CEC. Ten controlled refactorings restore
-valid semantic boundaries. The real benchmark result remains 0 restored
-boundaries across 49 development and 9 held-out attempts, now with a taxonomy
-that separates missing divisor/window/interface discovery from distributed
-consumer windows and exact non-vacuous decomposition failures.
+The newest recoverability-frontier prototype studies trajectories rather than a
+single optimized endpoint. It records five source semantic boundaries, runs 12
+ABC trajectories, proves 60/60 checkpoints equivalent, and compares blind
+recoverability with oracle divisor/support/window diagnostics. The result is
+not a new graph-active real restoration claim: blind held-out rows are
+structural/functional survival, while oracle held-out rows diagnose that compact
+factorisation can still exist when the true divisor is supplied. This sharpens
+the next question from "does semantic information disappear?" to "when does
+synthesis remove compact, local, source-blind recoverability?"

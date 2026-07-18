@@ -1421,6 +1421,54 @@ ABC global CEC</pre>
     </section>
 
     <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Recoverability frontier</p>
+          <h2>Move from one endpoint to a synthesis trajectory</h2>
+          <ul class="large-list"><li>Record semantic boundaries before optimisation.</li><li>Save checkpoints after individual ABC passes.</li><li>Prove every checkpoint equivalent to the source.</li><li>Evaluate blind methods and oracle diagnostics separately.</li></ul>
+        </div>
+        <div class="callout"><h3>Precise claim</h3><p>The measured quantity is compact, local, exploitable recoverability. The full I/O function is still preserved by equivalent synthesis.</p></div>
+      </div>
+      <aside class="notes">This slide introduces the newest phase. Avoid saying synthesis destroys semantic information absolutely; the experiment studies recoverability of compact local factors.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Trajectory data</p><h2>60 checkpoints, all CEC-equivalent</h2><div class="inline-stats"><span>4 designs</span><span>5 boundaries</span><span>12 trajectories</span><span>60 / 60 CEC</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/semantic_recoverability_frontier_by_checkpoint.png" alt="Recoverability by synthesis checkpoint">
+          <img src="assets/plots/semantic_recoverability_heatmap.png" alt="Recoverability heatmap by boundary and checkpoint">
+        </div>
+        <div class="meaning-box"><strong>Methodology:</strong> checkpoint rows include hashes, structural metrics, exact command prefixes, and ABC CEC evidence before any recovery row is interpreted.</div>
+      </div>
+      <aside class="notes">Use this to show the trajectory apparatus rather than a single final optimized BLIF.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Blind versus oracle</p><h2>Oracle diagnostics expose a recoverability gap</h2><div class="inline-stats"><span>blind 59 / 300</span><span>oracle 81 / 180</span><span>held-out blind 16</span><span>held-out oracle 12</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/semantic_recoverability_blind_vs_oracle.png" alt="Blind versus oracle recoverability">
+          <img src="assets/plots/semantic_recoverability_oracle_gap.png" alt="Blind-oracle gap by split">
+        </div>
+        <div class="meaning-box"><strong>Interpretation:</strong> oracle rows are diagnostic only. They show compact factorisation can remain when blind divisor discovery fails.</div>
+      </div>
+      <aside class="notes">Keep the rows separate. Blind held-out rows here are structural or functional survival rows, not graph-active semantic restoration.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Frontier analysis</p><h2>Passes are associated with recoverability changes</h2><div class="inline-stats"><span>residual bounds tracked</span><span>window locality labelled</span><span>no causal overclaim</span><span>durability null</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/semantic_recoverability_pass_deltas.png" alt="Pass-level recoverability deltas">
+          <img src="assets/plots/semantic_recoverability_failure_taxonomy.png" alt="Recoverability frontier failure taxonomy">
+        </div>
+        <div class="meaning-box"><strong>Next bottleneck:</strong> broaden blind divisor/window discovery and repeat on larger RTL-derived trajectories once source-boundary extraction and Yosys are available.</div>
+      </div>
+      <aside class="notes">This is the final research state: trajectory frontier and oracle diagnostics, not a positive graph-active real restoration.</aside>
+    </section>
+
+    <section class="slide">
       <div class="slide-content">
         <p class="eyebrow">Glossary</p>
         <h2>Key terms in one place</h2>
@@ -1446,17 +1494,17 @@ ABC global CEC</pre>
 
     <section class="slide title-slide">
       <div class="slide-content title-grid">
-        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, adds ODC-aware anchors, formally verifies bounded direct semantic templates, adds Z3-backed blind CEGIS, validates graph-active semantic replacement, and now tests proof-carrying semantic functional refactoring.</p></div>
-        <div class="takeaway-chain"><div>Optimized logic window</div><div>Semantic divisor</div><div>Exact quotient</div><div>Graph-active refactoring</div></div>
+        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, adds ODC-aware anchors, formally verifies semantic templates, validates graph-active semantic replacement, tests functional refactoring, and now characterizes semantic recoverability across synthesis trajectories.</p></div>
+        <div class="takeaway-chain"><div>Source boundary</div><div>ABC checkpoints</div><div>Blind recovery</div><div>Oracle frontier</div></div>
       </div>
-      <aside class="notes">Close with the updated story: the controlled proof stack can introduce semantic graph structure with formal evidence, while the real benchmark split remains a zero-restoration result that now points to source-blind divisor and window discovery as the next bottleneck.</aside>
+      <aside class="notes">Close with the updated story: controlled graph restoration works, real graph restoration remains zero, and the newest trajectory experiment separates blind-search failure from oracle compact factorisation along synthesis passes.</aside>
     </section>
   </main>
 
   <footer class="controls">
     <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
     <button id="prev" type="button" aria-label="Previous slide">Prev</button>
-    <span id="slide-number">1 / 103</span>
+    <span id="slide-number">1 / 107</span>
     <button id="next" type="button" aria-label="Next slide">Next</button>
     <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
   </footer>

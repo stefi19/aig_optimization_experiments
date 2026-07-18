@@ -13,6 +13,8 @@ For proof-carrying semantic region replacement, see
 [`docs/proof_carrying_semantic_region_replacement.md`](docs/proof_carrying_semantic_region_replacement.md).
 For proof-carrying semantic functional refactoring, see
 [`docs/proof_carrying_semantic_functional_refactoring.md`](docs/proof_carrying_semantic_functional_refactoring.md).
+For the synthesis-trajectory recoverability frontier phase, see
+[`docs/semantic_recoverability_frontier.md`](docs/semantic_recoverability_frontier.md).
 
 ## Web presentation
 
@@ -65,9 +67,10 @@ https://stefi19.github.io/aig_optimization_experiments/presentation/
 34. [Proof-Carrying Semantic Region Replacement](#proof-carrying-semantic-region-replacement)
 35. [Joint Region/Interface Discovery](#joint-regioninterface-discovery)
 36. [Proof-Carrying Semantic Functional Refactoring](#proof-carrying-semantic-functional-refactoring)
-37. [Dependencies](#20-dependencies)
-38. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
-39. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
+37. [Semantic Recoverability Frontier](#semantic-recoverability-frontier)
+38. [Dependencies](#20-dependencies)
+39. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+40. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -875,6 +878,8 @@ make semantic-benchmarks # generate semantic-recovery RTL/BLIF cases and ABC flo
 make semantic-benchmarks-check # validate semantic-recovery manifests and generated files
 make semantic-functional-refactoring-all # run functional-decomposition refactoring and plots
 make check-semantic-functional-refactoring-results # validate functional-refactoring evidence
+make semantic-recoverability-all # run trajectory/frontier diagnostics and plots
+make check-semantic-recoverability-results # validate recoverability frontier evidence
 make test                # run the unit test suite
 ```
 
@@ -946,6 +951,7 @@ aig_optimization_experiments/
 │   ├── semantic_region_replacement/     Controlled semantic replacement cases
 │   ├── joint_region_interface/           Controlled joint region/interface cases
 │   ├── semantic_functional_refactoring/  Controlled decomposition/refactoring cases
+│   ├── semantic_recoverability_frontier/ Controlled trajectory-frontier cases
 │   └── external/                  External suites — iteration 2 (place files here)
 │       ├── iscas85/                  ISCAS-85 .blif files (not redistributed)
 │       ├── epfl/                     EPFL .blif files (not redistributed)
@@ -984,6 +990,7 @@ aig_optimization_experiments/
 │   ├── contextual_critical_path_mapping.csv  Versioned critical-path contextual mapping
 │   ├── register_insertion_suggestions.csv    Ranked register-suggestion prototype rows
 │   ├── semantic_functional_refactoring/       Functional decomposition/refactoring results
+│   ├── semantic_recoverability_frontier/      Synthesis trajectory recoverability results
 │   ├── hybrid/                        ABC SAT sweep / hybrid validation outputs
 │   │   ├── hybrid_validated_candidates.csv   Candidates annotated with ABC verdicts
 │   │   ├── hybrid_validation_summary.md      Human-readable hybrid report
@@ -1015,7 +1022,8 @@ aig_optimization_experiments/
 │   ├── timing_aware_back_mapping_plan.md Timing-aware path plan
 │   ├── proof_carrying_semantic_region_replacement.md Region replacement phase
 │   ├── joint_region_interface_discovery.md Joint region/interface phase
-│   └── proof_carrying_semantic_functional_refactoring.md Functional refactoring phase
+│   ├── proof_carrying_semantic_functional_refactoring.md Functional refactoring phase
+│   └── semantic_recoverability_frontier.md Recoverability frontier phase
 │
 ├── tests/                         pytest unit tests
 │   ├── test_topk_recovery.py
@@ -1045,6 +1053,9 @@ aig_optimization_experiments/
 │   ├── run_semantic_functional_refactoring.py Functional decomposition/refactoring experiment
 │   ├── check_semantic_functional_refactoring_results.py Functional-refactoring evidence checker
 │   ├── semantic_functional_refactoring_plots.py Functional-refactoring plots
+│   ├── run_semantic_recoverability_frontier.py Synthesis trajectory/frontier experiment
+│   ├── check_semantic_recoverability_results.py Recoverability frontier checker
+│   ├── semantic_recoverability_plots.py Recoverability frontier plots
 │   └── suggest_register_insertion_points.py Register suggestion prototype
 │
 ├── contextual_error_metrics.py     Reusable global/contextual error metric engine
@@ -3113,3 +3124,37 @@ failure taxonomy in
 attempts fail because no source-blind semantic divisor/window/interface is found
 under the evaluated bounds, or because consumers are distributed beyond the
 bounded quotient window.
+
+## Semantic Recoverability Frontier
+
+The latest phase asks when compact, locally exploitable semantic structure stops
+being recoverable along synthesis trajectories. It creates checkpoints after
+individual ABC passes, proves every checkpoint equivalent to its source with ABC
+CEC, keeps blind predictions separate from ground-truth boundary metadata, and
+then runs oracle diagnostics to see whether a compact decomposition still
+exists when the true semantic divisor is supplied.
+
+Run it with:
+
+```bash
+make semantic-recoverability-all
+make check-semantic-recoverability-results
+```
+
+Current committed results under
+`results/semantic_recoverability_frontier/`:
+
+- 4 designs and 5 pre-synthesis semantic boundaries;
+- 12 synthesis trajectories and 60 checkpoints;
+- checkpoint CEC: 60/60 equivalent;
+- blind recovered rows: 59/300;
+- oracle recovered rows: 81/180;
+- held-out blind recovered rows: 16 structural/functional-survival rows;
+- held-out oracle recovered rows: 12 compact decomposition rows;
+- graph-active real boundary restoration is not claimed in this phase.
+
+The frontier result does not say synthesis destroys semantic information in an
+absolute sense. It measures loss of compact, local, exploitable recoverability.
+Oracle rows diagnose the blind-oracle gap and are not merged into blind
+headline results. Whole-design factorisation rows are labelled diagnostic-only,
+not local semantic recovery.

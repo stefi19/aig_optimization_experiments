@@ -162,3 +162,20 @@ decomposition, SyGuS-style bit-vector synthesis, SAT sweeping, and ECO-style
 logic rewriting.  The contribution is the proof-carrying combination for
 creating graph-active semantic boundaries after aggressive synthesis has removed
 or distributed the original cut-points.
+
+## Successor Phase: Recoverability Frontier
+
+The functional-refactoring phase proves that the divisor/quotient/refactoring
+mechanism works when a useful divisor and window are found, but it leaves the
+real null result unresolved. The successor phase in
+[`docs/semantic_recoverability_frontier.md`](semantic_recoverability_frontier.md)
+therefore studies entire ABC synthesis trajectories. It records source
+boundaries before optimisation, saves CEC-equivalent checkpoints after passes,
+and compares blind recoverability against oracle divisor/support/window
+diagnostics.
+
+The committed frontier run has 4 designs, 5 boundaries, 12 trajectories, and
+60 CEC-equivalent checkpoints. It records 59/300 blind structural or functional
+survival rows and 81/180 oracle decomposition rows. This is not a new
+graph-active real restoration claim; it localizes the question to compact,
+local, source-blind recoverability along optimisation trajectories.
