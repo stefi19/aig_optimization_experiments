@@ -1,0 +1,12 @@
+.model ri_multi_output_region
+.inputs u0 u1
+.outputs b0 b1
+.names u0 u1 t
+10 1
+01 1
+.names t u0 u1 b0
+110 1
+101 1
+.names t u0 u1 b1
+011 1
+.end

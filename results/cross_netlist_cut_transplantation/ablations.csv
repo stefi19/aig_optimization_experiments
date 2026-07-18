@@ -1,0 +1,5 @@
+ablation,attempted,input_adapters,relational_interfaces,output_adapters,graph_valid_transplants,global_cec_passes,new_boundaries,failure_reason,schema_version
+old_target_ranking,20,0,0,0,0,0,0,no_relevant_source_consumer_window_under_bounds,cross_netlist_cut_transplantation_v1
+direct_adapter_only,17,16,0,16,12,10,9,,cross_netlist_cut_transplantation_v1
+relational_interface_enabled,17,16,3,16,15,13,12,,cross_netlist_cut_transplantation_v1
+gf2_linear_relational_baseline,34,31,0,0,0,0,0,special_case_only,cross_netlist_cut_transplantation_v1

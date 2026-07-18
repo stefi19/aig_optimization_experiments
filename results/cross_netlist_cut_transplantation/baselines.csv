@@ -1,0 +1,6 @@
+baseline,benchmark_group,attempted,input_adapters,relational_interfaces,output_adapters,graph_valid_transplants,source_cec_passes,cross_cec_passes,usable_anchors,new_boundaries,critical_path_resolved,durable_boundaries,notes,schema_version
+no_construction,real,56,0,0,0,0,0,0,0,0,0,0,baseline no transplant,cross_netlist_cut_transplantation_v1
+additive_materialization,real,20,0,0,0,0,20,20,0,0,0,0,proved but disconnected,cross_netlist_cut_transplantation_v1
+active_source_quotient,controlled,13,0,0,12,10,10,10,10,10,10,10,previous controlled source-side result,cross_netlist_cut_transplantation_v1
+cross_netlist_transplant,controlled,17,16,3,16,15,13,14,12,12,12,12,controlled transplant result,cross_netlist_cut_transplantation_v1
+cross_netlist_transplant,real,56,0,0,0,0,0,0,0,0,0,0,bounded real transplant remains negative,cross_netlist_cut_transplantation_v1

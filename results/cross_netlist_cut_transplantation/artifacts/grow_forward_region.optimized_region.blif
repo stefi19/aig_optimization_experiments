@@ -1,0 +1,15 @@
+.model ri_grow_forward_region
+.inputs u0 u1 u2
+.outputs b0 b1
+.names u0 u1 u2 t
+110 1
+111 1
+.names t u0 u1 u2 b0
+1110 1
+1111 1
+.names t u0 u1 u2 b1
+1110 1
+0001 1
+0101 1
+0011 1
+.end

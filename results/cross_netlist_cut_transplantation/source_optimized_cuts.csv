@@ -1,0 +1,18 @@
+candidate_id,source_input_cut,optimized_input_cut,source_output_cut,optimized_output_cut,input_residuals,output_residuals,cut_status,failure_reason,schema_version
+permute_invert_adapter__xplant,"[""a"", ""b""]","[""u0"", ""u1""]","[""y"", ""keep""]","[""b0""]",[],"[""z"", ""k""]",valid,,cross_netlist_cut_transplantation_v1
+xor_basis_adapter__xplant,"[""a"", ""b""]","[""u0"", ""u1""]","[""y"", ""keep""]","[""b0""]",[],"[""z"", ""k""]",valid,,cross_netlist_cut_transplantation_v1
+nonlinear_boolean_adapter__xplant,"[""a"", ""b"", ""c"", ""d""]","[""u0"", ""u1""]","[""y"", ""keep""]","[""b0""]",[],"[""z"", ""k""]",valid,,cross_netlist_cut_transplantation_v1
+multi_output_region__xplant,"[""a"", ""b""]","[""u0"", ""u1""]","[""y0"", ""y1"", ""keep""]","[""b0"", ""b1""]",[],"[""z"", ""k""]",valid,,cross_netlist_cut_transplantation_v1
+residual_output_adapter__xplant,"[""a"", ""b""]","[""u0"", ""u1""]","[""y"", ""keep""]","[""b0""]",[],"[""z"", ""k""]",valid,,cross_netlist_cut_transplantation_v1
+grow_forward_region__xplant,"[""a"", ""b"", ""c""]","[""u0"", ""u1"", ""u2""]","[""y"", ""keep""]","[""b0"", ""b1""]",[],"[""z"", ""k""]",valid,,cross_netlist_cut_transplantation_v1
+affine_transplant__xplant,"[""a0"", ""a1""]","[""u0"", ""u1""]","[""y0"", ""y1"", ""keep""]","[""b0"", ""b1""]",[],"[""z"", ""k""]",valid,,cross_netlist_cut_transplantation_v1
+add_add_transplant__xplant,"[""a0"", ""d0"", ""c0""]","[""u0"", ""u1"", ""u2""]","[""y"", ""keep""]","[""b0""]",[],"[""z"", ""k""]",valid,,cross_netlist_cut_transplantation_v1
+bilinear_transplant__xplant,"[""a"", ""b"", ""c""]","[""u0"", ""u1"", ""u2""]","[""y"", ""keep""]","[""b0""]",[],"[""z"", ""k""]",valid,,cross_netlist_cut_transplantation_v1
+mac_transplant__xplant,"[""a"", ""b"", ""c""]","[""u0"", ""u1"", ""u2""]","[""y"", ""keep""]","[""b0""]",[],"[""z"", ""k""]",valid,,cross_netlist_cut_transplantation_v1
+mux_transplant__xplant,"[""s"", ""a"", ""b""]","[""u0"", ""u1"", ""u2""]","[""y"", ""keep""]","[""b0""]",[],"[""z"", ""k""]",valid,,cross_netlist_cut_transplantation_v1
+mask_constmul_transplant__xplant,"[""a""]","[""u0""]","[""y"", ""keep""]","[""b0""]",[],"[""z"", ""k""]",valid,,cross_netlist_cut_transplantation_v1
+negative_no_input_adapter__xplant,"[""a""]","[""u0""]","[""y"", ""keep""]","[""b0""]",[],"[""k""]",valid,,cross_netlist_cut_transplantation_v1
+negative_no_output_adapter__xplant,"[""a""]","[""u0""]","[""y"", ""keep""]","[""b0""]",[],"[""k""]",valid,,cross_netlist_cut_transplantation_v1
+negative_target_not_influential__xplant,"[""a""]","[""u0""]","[""y"", ""keep""]","[""b0""]",[],"[""z"", ""k""]",valid,,cross_netlist_cut_transplantation_v1
+negative_whole_design__xplant,"[""a""]","[""u0""]","[""y""]","[""b0""]",[],[],valid,,cross_netlist_cut_transplantation_v1
+negative_global_cec__xplant,"[""a""]","[""u0""]","[""y"", ""keep""]","[""b0""]",[],"[""k""]",valid,,cross_netlist_cut_transplantation_v1

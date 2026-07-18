@@ -1,0 +1,6 @@
+.model src_negative_whole_design
+.inputs a
+.outputs y
+.names a y
+1 1
+.end

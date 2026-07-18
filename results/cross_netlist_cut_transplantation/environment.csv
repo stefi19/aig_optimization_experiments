@@ -1,0 +1,5 @@
+tool,version,path,status,schema_version
+python,3.11.15,/Users/stefi/Desktop/research/eth/aig_optimization_experiments/.venv-z3/bin/python,available,cross_netlist_cut_transplantation_v1
+z3,4.16.0,,available,cross_netlist_cut_transplantation_v1
+abc,"======== ABC command line ""version"" UC Berkeley, ABC 1.01 (compiled Jul 18 2026 19:53:19)",/Users/stefi/Desktop/research/eth/aig_optimization_experiments/.abc_build/abc_repo/abc,available,cross_netlist_cut_transplantation_v1
+yosys,,,missing,cross_netlist_cut_transplantation_v1

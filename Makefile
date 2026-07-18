@@ -8,6 +8,7 @@ Z3_PYTHON = $(shell if [ -x .venv-z3/bin/python ]; then echo .venv-z3/bin/python
 .PHONY: semantic-functional-refactoring-controlled semantic-functional-refactoring-development semantic-functional-refactoring-heldout semantic-functional-refactoring-ablations semantic-functional-refactoring-plots check-semantic-functional-refactoring-results semantic-functional-refactoring-all
 .PHONY: semantic-recoverability-benchmarks semantic-recoverability-trajectories semantic-recoverability-controlled semantic-recoverability-development semantic-recoverability-heldout semantic-recoverability-oracle semantic-recoverability-pass-ablations semantic-recoverability-durability semantic-recoverability-plots check-semantic-recoverability-results semantic-recoverability-all
 .PHONY: active-source-counterparts-controlled active-source-counterparts-development active-source-counterparts-heldout active-source-counterparts-durability active-source-counterparts-ablations active-source-counterparts-plots check-active-source-counterpart-results active-source-counterparts-all
+.PHONY: cross-netlist-transplant-controlled cross-netlist-transplant-development cross-netlist-transplant-heldout cross-netlist-transplant-oracle cross-netlist-transplant-durability cross-netlist-transplant-ablations cross-netlist-transplant-plots check-cross-netlist-transplant-results cross-netlist-transplant-all
 
 all: build-abc generate-variants analyze plot
 
@@ -392,6 +393,41 @@ check-active-source-counterpart-results:
 
 active-source-counterparts-all: active-source-counterparts-ablations active-source-counterparts-plots check-active-source-counterpart-results
 	@echo "Active source-counterpart refactoring pipeline complete."
+
+cross-netlist-transplant-controlled:
+	@echo "Running controlled cross-netlist cut transplantation"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_cross_netlist_cut_transplantation.py --mode controlled
+
+cross-netlist-transplant-development:
+	@echo "Revisiting real cross-netlist cut transplantation targets"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_cross_netlist_cut_transplantation.py --mode development
+
+cross-netlist-transplant-heldout:
+	@echo "Running held-out cross-netlist cut transplantation accounting"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_cross_netlist_cut_transplantation.py --mode heldout
+
+cross-netlist-transplant-oracle:
+	@echo "Running cross-netlist oracle-ladder diagnostics"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_cross_netlist_cut_transplantation.py --mode oracle
+
+cross-netlist-transplant-durability:
+	@echo "Running cross-netlist transplant durability strategies"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_cross_netlist_cut_transplantation.py --mode durability
+
+cross-netlist-transplant-ablations:
+	@echo "Running cross-netlist transplant baselines and ablations"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_cross_netlist_cut_transplantation.py --mode all
+
+cross-netlist-transplant-plots: cross-netlist-transplant-ablations
+	@echo "Generating cross-netlist transplant plots"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/cross_netlist_transplant_plots.py
+
+check-cross-netlist-transplant-results:
+	@echo "Checking cross-netlist transplant results"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/check_cross_netlist_transplant_results.py
+
+cross-netlist-transplant-all: cross-netlist-transplant-ablations cross-netlist-transplant-plots check-cross-netlist-transplant-results
+	@echo "Cross-netlist cut transplantation pipeline complete."
 
 semantic-graft-plots: semantic-graft-ablation
 	@echo "Generating blind CEGIS and semantic graft plots"

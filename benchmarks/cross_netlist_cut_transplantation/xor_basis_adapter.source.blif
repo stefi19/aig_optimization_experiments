@@ -1,0 +1,22 @@
+.model src_xor_basis_adapter
+.inputs a b z k
+.outputs y keep
+.names a b z k y
+0100 1
+0010 1
+1010 1
+1110 1
+0101 1
+0011 1
+1011 1
+1111 1
+.names a b z k keep
+0001 1
+1001 1
+0101 1
+1101 1
+0011 1
+1011 1
+0111 1
+1111 1
+.end

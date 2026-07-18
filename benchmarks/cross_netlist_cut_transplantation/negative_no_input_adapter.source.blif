@@ -1,0 +1,14 @@
+.model src_negative_no_input_adapter
+.inputs a b k
+.outputs y keep
+.names a b k y
+100 1
+010 1
+101 1
+011 1
+.names a b k keep
+001 1
+101 1
+011 1
+111 1
+.end

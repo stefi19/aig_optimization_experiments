@@ -1,0 +1,18 @@
+attempt_id,candidate_id,benchmark,rewrite_status,removed_source_nodes,inserted_ein_nodes,inserted_region_nodes,inserted_eout_nodes,preserved_primary_outputs,whole_design_transplant,failure_reason,schema_version
+permute_invert_adapter__xplant__rewrite,permute_invert_adapter__xplant,permute_invert_adapter,valid,"[""y"", ""keep""]",2,3,2,"[""y"", ""keep""]",false,,cross_netlist_cut_transplantation_v1
+xor_basis_adapter__xplant__rewrite,xor_basis_adapter__xplant,xor_basis_adapter,valid,"[""y"", ""keep""]",2,3,2,"[""y"", ""keep""]",false,,cross_netlist_cut_transplantation_v1
+nonlinear_boolean_adapter__xplant__rewrite,nonlinear_boolean_adapter__xplant,nonlinear_boolean_adapter,valid,"[""y"", ""keep""]",2,3,2,"[""y"", ""keep""]",false,,cross_netlist_cut_transplantation_v1
+multi_output_region__xplant__rewrite,multi_output_region__xplant,multi_output_region,valid,"[""y0"", ""y1"", ""keep""]",2,3,3,"[""y0"", ""y1"", ""keep""]",false,,cross_netlist_cut_transplantation_v1
+residual_output_adapter__xplant__rewrite,residual_output_adapter__xplant,residual_output_adapter,valid,"[""y"", ""keep""]",2,3,2,"[""y"", ""keep""]",false,,cross_netlist_cut_transplantation_v1
+grow_forward_region__xplant__rewrite,grow_forward_region__xplant,grow_forward_region,valid,"[""y"", ""keep""]",3,3,2,"[""y"", ""keep""]",false,,cross_netlist_cut_transplantation_v1
+affine_transplant__xplant__rewrite,affine_transplant__xplant,affine_transplant,valid,"[""y0"", ""y1"", ""keep""]",2,3,3,"[""y0"", ""y1"", ""keep""]",false,,cross_netlist_cut_transplantation_v1
+add_add_transplant__xplant__rewrite,add_add_transplant__xplant,add_add_transplant,valid,"[""y"", ""keep""]",3,3,2,"[""y"", ""keep""]",false,,cross_netlist_cut_transplantation_v1
+bilinear_transplant__xplant__rewrite,bilinear_transplant__xplant,bilinear_transplant,valid,"[""y"", ""keep""]",3,3,2,"[""y"", ""keep""]",false,,cross_netlist_cut_transplantation_v1
+mac_transplant__xplant__rewrite,mac_transplant__xplant,mac_transplant,valid,"[""y"", ""keep""]",3,3,2,"[""y"", ""keep""]",false,,cross_netlist_cut_transplantation_v1
+mux_transplant__xplant__rewrite,mux_transplant__xplant,mux_transplant,valid,"[""y"", ""keep""]",3,3,2,"[""y"", ""keep""]",false,,cross_netlist_cut_transplantation_v1
+mask_constmul_transplant__xplant__rewrite,mask_constmul_transplant__xplant,mask_constmul_transplant,valid,"[""y"", ""keep""]",1,3,2,"[""y"", ""keep""]",false,,cross_netlist_cut_transplantation_v1
+negative_no_input_adapter__xplant__rewrite,negative_no_input_adapter__xplant,negative_no_input_adapter,not_run,"[""y"", ""keep""]",1,3,2,"[""y"", ""keep""]",false,proof_precondition_failed,cross_netlist_cut_transplantation_v1
+negative_no_output_adapter__xplant__rewrite,negative_no_output_adapter__xplant,negative_no_output_adapter,not_run,"[""y"", ""keep""]",1,3,2,"[""y"", ""keep""]",false,proof_precondition_failed,cross_netlist_cut_transplantation_v1
+negative_target_not_influential__xplant__rewrite,negative_target_not_influential__xplant,negative_target_not_influential,valid,"[""y"", ""keep""]",1,3,2,"[""y"", ""keep""]",false,,cross_netlist_cut_transplantation_v1
+negative_whole_design__xplant__rewrite,negative_whole_design__xplant,negative_whole_design,valid,"[""y""]",1,3,1,"[""y""]",true,,cross_netlist_cut_transplantation_v1
+negative_global_cec__xplant__rewrite,negative_global_cec__xplant,negative_global_cec,valid,"[""y"", ""keep""]",1,3,2,"[""y"", ""keep""]",false,,cross_netlist_cut_transplantation_v1

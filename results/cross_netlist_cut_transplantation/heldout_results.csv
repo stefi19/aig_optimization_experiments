@@ -1,0 +1,3 @@
+split,attempted,input_adapters,relational_interfaces,output_adapters,graph_valid_transplants,source_cec_passes,cross_cec_passes,new_boundaries,failure_reasons,schema_version
+dev,45,0,0,0,0,0,0,0,"{""no_globally_anchored_cut"": 29, ""no_relevant_source_consumer_window_under_bounds"": 16}",cross_netlist_cut_transplantation_v1
+heldout,11,0,0,0,0,0,0,0,"{""no_globally_anchored_cut"": 7, ""no_relevant_source_consumer_window_under_bounds"": 4}",cross_netlist_cut_transplantation_v1

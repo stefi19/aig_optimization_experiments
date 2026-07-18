@@ -1,0 +1,20 @@
+.model cross_netlist_transplant
+.inputs a z k
+.outputs y keep
+.names a xri_u0
+1 1
+.names xri_u0 xri_t
+1 1
+.names xri_t xri_u0 xri_b0
+11 1
+.names xri_b0 z k y
+010 1
+011 1
+100 1
+101 1
+.names xri_b0 z k keep
+001 1
+011 1
+101 1
+111 1
+.end

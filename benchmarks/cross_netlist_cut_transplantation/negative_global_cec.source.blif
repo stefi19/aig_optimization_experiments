@@ -1,0 +1,10 @@
+.model src_negative_global_cec
+.inputs a k
+.outputs y keep
+.names a k y
+10 1
+11 1
+.names a k keep
+01 1
+11 1
+.end

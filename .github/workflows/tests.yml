@@ -53,3 +53,9 @@ jobs:
 
       - name: Check active source-counterpart result schemas
         run: python scripts/check_active_source_counterpart_results.py --allow-no-abc
+
+      - name: Run lightweight cross-netlist cut transplantation
+        run: python scripts/run_cross_netlist_cut_transplantation.py --mode controlled
+
+      - name: Check cross-netlist transplant result schemas
+        run: python scripts/check_cross_netlist_transplant_results.py --allow-no-abc

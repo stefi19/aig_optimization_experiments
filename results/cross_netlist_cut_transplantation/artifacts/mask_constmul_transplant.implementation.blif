@@ -1,0 +1,20 @@
+.model impl_mask_constmul_transplant
+.inputs a z k
+.outputs y keep
+.names a u0
+1 1
+.names u0 t
+1 1
+.names t u0 b0
+11 1
+.names b0 z k y
+010 1
+011 1
+100 1
+101 1
+.names b0 z k keep
+001 1
+011 1
+101 1
+111 1
+.end

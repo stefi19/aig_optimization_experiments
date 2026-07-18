@@ -1,0 +1,39 @@
+.model impl_bilinear_transplant
+.inputs a b c z k
+.outputs y keep
+.names a b c u0
+100 1
+101 1
+110 1
+111 1
+.names a b c u1
+010 1
+011 1
+110 1
+111 1
+.names a b c u2
+001 1
+011 1
+101 1
+111 1
+.names u0 u1 u2 t
+110 1
+001 1
+101 1
+011 1
+.names t u0 u1 u2 b0
+1110 1
+1001 1
+1101 1
+1011 1
+.names b0 z k y
+010 1
+011 1
+100 1
+101 1
+.names b0 z k keep
+001 1
+011 1
+101 1
+111 1
+.end

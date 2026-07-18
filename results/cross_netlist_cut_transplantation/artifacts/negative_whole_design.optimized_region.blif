@@ -1,0 +1,8 @@
+.model ri_negative_whole_design
+.inputs u0
+.outputs b0
+.names u0 t
+1 1
+.names t u0 b0
+11 1
+.end

@@ -1,0 +1,2 @@
+counterexample_id,adapter_id,candidate_id,assignment_a,assignment_b,interface_value,output_a,output_b,counterexample_reproduced,repair_action,schema_version
+negative_no_output_adapter__xplant__Eout__cex_0001,negative_no_output_adapter__xplant__Eout,negative_no_output_adapter__xplant,"{""a"": 0, ""k"": 0, ""z"": 1}",{},"[0, 0]","[0, 0]","[1, 0]",true,grow_cut_or_residual_under_budget,cross_netlist_cut_transplantation_v1

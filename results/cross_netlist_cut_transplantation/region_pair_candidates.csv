@@ -1,0 +1,18 @@
+candidate_id,benchmark,optimized_region,source_region,optimized_region_size,source_region_size,region_pair_status,proposal_operator,parent_search_state,fingerprint,schema_version
+permute_invert_adapter__xplant,permute_invert_adapter,"[""t"", ""b0""]","[""y"", ""keep""]",2,2,bounded_pair_selected,initial,seed,a78c3ea3878626fb,cross_netlist_cut_transplantation_v1
+xor_basis_adapter__xplant,xor_basis_adapter,"[""t"", ""b0""]","[""y"", ""keep""]",2,2,bounded_pair_selected,initial,seed,a858eefab26f8d18,cross_netlist_cut_transplantation_v1
+nonlinear_boolean_adapter__xplant,nonlinear_boolean_adapter,"[""t"", ""b0""]","[""y"", ""keep""]",2,2,bounded_pair_selected,initial,seed,46c5a6e86cda2549,cross_netlist_cut_transplantation_v1
+multi_output_region__xplant,multi_output_region,"[""t"", ""b0"", ""b1""]","[""y0"", ""y1"", ""keep""]",3,3,bounded_pair_selected,initial,seed,77139d6f7de02dfa,cross_netlist_cut_transplantation_v1
+residual_output_adapter__xplant,residual_output_adapter,"[""t"", ""b0""]","[""y"", ""keep""]",2,2,bounded_pair_selected,add_output_residual_after_counterexample,seed,ac3c12b52ba60410,cross_netlist_cut_transplantation_v1
+grow_forward_region__xplant,grow_forward_region,"[""t"", ""b0"", ""b1""]","[""y"", ""keep""]",3,2,bounded_pair_selected,grow_ri_forward_after_counterexample,seed,ef363c2d282854aa,cross_netlist_cut_transplantation_v1
+affine_transplant__xplant,affine_transplant,"[""t"", ""b0"", ""b1""]","[""y0"", ""y1"", ""keep""]",3,3,bounded_pair_selected,initial,seed,5a9267e23d5fe521,cross_netlist_cut_transplantation_v1
+add_add_transplant__xplant,add_add_transplant,"[""t"", ""b0""]","[""y"", ""keep""]",2,2,bounded_pair_selected,initial,seed,6cd3a08bd590e1be,cross_netlist_cut_transplantation_v1
+bilinear_transplant__xplant,bilinear_transplant,"[""t"", ""b0""]","[""y"", ""keep""]",2,2,bounded_pair_selected,initial,seed,1fc5104a3ed2cd72,cross_netlist_cut_transplantation_v1
+mac_transplant__xplant,mac_transplant,"[""t"", ""b0""]","[""y"", ""keep""]",2,2,bounded_pair_selected,initial,seed,3e4cddb50425b90e,cross_netlist_cut_transplantation_v1
+mux_transplant__xplant,mux_transplant,"[""t"", ""b0""]","[""y"", ""keep""]",2,2,bounded_pair_selected,initial,seed,07b5f0ef1b2d5d14,cross_netlist_cut_transplantation_v1
+mask_constmul_transplant__xplant,mask_constmul_transplant,"[""t"", ""b0""]","[""y"", ""keep""]",2,2,bounded_pair_selected,initial,seed,4f78a09f99837d1f,cross_netlist_cut_transplantation_v1
+negative_no_input_adapter__xplant,negative_no_input_adapter,"[""t"", ""b0""]","[""y"", ""keep""]",2,2,bounded_pair_selected,initial,seed,8e02e470ce7d647b,cross_netlist_cut_transplantation_v1
+negative_no_output_adapter__xplant,negative_no_output_adapter,"[""t"", ""b0""]","[""y"", ""keep""]",2,2,bounded_pair_selected,initial,seed,e8d4e33fcdd96bca,cross_netlist_cut_transplantation_v1
+negative_target_not_influential__xplant,negative_target_not_influential,"[""t"", ""b0""]","[""y"", ""keep""]",2,2,bounded_pair_selected,initial,seed,cd89f0d4f6774980,cross_netlist_cut_transplantation_v1
+negative_whole_design__xplant,negative_whole_design,"[""t"", ""b0""]","[""y""]",2,1,bounded_pair_selected,initial,seed,885a13438dab17ee,cross_netlist_cut_transplantation_v1
+negative_global_cec__xplant,negative_global_cec,"[""t"", ""b0""]","[""y"", ""keep""]",2,2,bounded_pair_selected,initial,seed,2962598b9164d145,cross_netlist_cut_transplantation_v1

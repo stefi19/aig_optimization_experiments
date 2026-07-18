@@ -1,0 +1,39 @@
+.model cross_netlist_transplant
+.inputs s a b z k
+.outputs y keep
+.names s a b xri_u0
+100 1
+101 1
+110 1
+111 1
+.names s a b xri_u1
+010 1
+011 1
+110 1
+111 1
+.names s a b xri_u2
+001 1
+011 1
+101 1
+111 1
+.names xri_u0 xri_u1 xri_u2 xri_t
+110 1
+001 1
+011 1
+111 1
+.names xri_t xri_u0 xri_u1 xri_u2 xri_b0
+1110 1
+1001 1
+1011 1
+1111 1
+.names xri_b0 z k y
+010 1
+011 1
+100 1
+101 1
+.names xri_b0 z k keep
+001 1
+011 1
+101 1
+111 1
+.end

@@ -1,0 +1,23 @@
+# Benchmark "cross_netlist_transplant" written by ABC on Sat Jul 18 22:48:41 2026
+.model cross_netlist_transplant
+.inputs a b c d z k
+.outputs y keep
+.names a b new_n9
+11 1
+.names z new_n9 new_n10
+10 1
+.names z new_n9 new_n11
+01 1
+.names new_n10 new_n11 new_n12
+00 1
+.names c d new_n13
+00 1
+.names new_n12 new_n13 new_n14
+11 1
+.names new_n12 new_n13 new_n15
+00 1
+.names new_n14 new_n15 y
+00 1
+.names k keep
+1 1
+.end

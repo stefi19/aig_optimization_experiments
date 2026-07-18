@@ -1,0 +1,14 @@
+.model impl_negative_global_cec
+.inputs a k
+.outputs y keep
+.names a u0
+1 1
+.names u0 t
+1 1
+.names t u0 b0
+11 1
+.names b0 k y
+10 1
+.names b0 k keep
+01 1
+.end
