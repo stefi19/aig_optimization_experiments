@@ -15,6 +15,11 @@ circuit. Exact SAT sweeping is a strong starting point, but it is incomplete:
 after rewriting, refactoring, resubstitution, and deeper resynthesis, many
 internal points no longer match exactly.
 
+The latest phase extends the work from node correspondence to source-blind
+semantic reconstruction. It asks whether a compact word-level expression can be
+inferred from the optimized region itself, formally proved, and then used as a
+graph-active boundary anchor.
+
 ## 2. Research Problem
 
 The central research question is:
@@ -43,6 +48,21 @@ exact signature match
 -> global approximate near-match
 -> unresolved
 ```
+
+The blind semantic CEGIS lane is separate:
+
+```text
+blind bus/interface hypothesis
+-> parametric expression candidate
+-> CEGIS counterexample refinement
+-> formal region proof
+-> graph-active graft validation
+-> global CEC for accepted grafts
+```
+
+Ground-truth labels are joined only after prediction/proof files are written.
+Sampled simulation remains labelled sampled; timeouts and unsupported proofs are
+not accepted.
 
 Each layer has a different role:
 

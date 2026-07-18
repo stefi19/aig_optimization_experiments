@@ -7,6 +7,8 @@ For a concise current-state mini-report, see
 [`docs/research_summary_current_state.md`](docs/research_summary_current_state.md).
 For browser slides, open
 [`docs/presentation/index.html`](docs/presentation/index.html).
+For the blind semantic CEGIS phase, see
+[`docs/blind_cegis_semantic_boundary_reconstruction.md`](docs/blind_cegis_semantic_boundary_reconstruction.md).
 
 ## Web presentation
 
@@ -55,9 +57,10 @@ https://stefi19.github.io/aig_optimization_experiments/presentation/
 30. [Formally Verified Direct Semantic Template Recovery](#formally-verified-direct-semantic-template-recovery)
 31. [Correspondence by Construction Through Anchored-Cut Wire Materialization](#correspondence-by-construction-through-anchored-cut-wire-materialization)
 32. [Formal Error Metrics and Context-Aware Correspondence](#formal-error-metrics-and-context-aware-correspondence)
-33. [Dependencies](#20-dependencies)
-34. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
-35. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
+33. [Blind CEGIS Semantic Boundary Reconstruction](#blind-cegis-semantic-boundary-reconstruction)
+34. [Dependencies](#20-dependencies)
+35. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+36. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -2930,3 +2933,28 @@ not integrated into the critical-path mapper yet.
 >   making it a more scalable follow-up to the original per-candidate CEC approach.
 > - **Region-level, ablation, and CEGAR analyses** confirm these findings from multiple angles
 >   and provide a foundation for future work on larger, real-world circuits.
+
+## Blind CEGIS Semantic Boundary Reconstruction
+
+The newest phase adds a source-blind semantic reconstruction track under
+`results/blind_semantic_cegis/` and a proof-carrying graft funnel under
+`results/semantic_grafting/`.
+
+Run it with:
+
+```bash
+make blind-semantic-cegis-all
+make semantic-grafting-all
+```
+
+Current committed lightweight metrics:
+
+- 488 blind parametric candidates.
+- 24 CEGIS iterations.
+- 3 regions formally verified by exhaustive region proof.
+- 3 proven reconstructed expressions considered for semantic grafting.
+- 0 accepted graph-active semantic graft anchors.
+
+The negative graft result is intentional evidence: a proven reconstructed
+expression is not counted as a usable boundary anchor unless it reaches a valid
+frontier and passes the required graft checks.

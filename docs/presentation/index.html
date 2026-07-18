@@ -1227,10 +1227,26 @@ BO = inside R, PO or fanout outside R</pre>
 
     <section class="slide">
       <div class="slide-content two-column">
-        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, sensitivity, and dependency features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Boundary recovery is region-level evidence, not direct internal-node equivalence.</p><p>ODC anchors are contextual, not global node equivalence.</p><p>Direct semantic recovery covers bounded templates only; coefficient solving and CEGIS remain future work.</p><p>Materialized wires are newly constructed redundant signals, not pre-existing RTL nodes.</p><p>Current additive materialization proves anchors but does not recover new boundaries.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
+        <div><p class="eyebrow">Limitations</p><h2>Honest boundaries</h2><div class="checklist future"><p>Timing-aware probe uses a simple delay proxy, not real physical timing.</p><p>Sampled approximate, cofactor, sensitivity, and dependency features are estimates.</p><p>Cofactor/sensitivity ranking tied the baseline on the lightweight subset.</p><p>Boundary recovery is region-level evidence, not direct internal-node equivalence.</p><p>ODC anchors are contextual, not global node equivalence.</p><p>Blind CEGIS is bounded and currently uses exhaustive proofs on small interfaces.</p><p>Materialized wires are newly constructed redundant signals, not pre-existing RTL nodes.</p><p>Current additive materialization proves anchors but does not recover new boundaries.</p><p>Register suggestions are ranked hints, not automatic RTL modifications.</p></div></div>
         <div class="callout"><h3>Important idea</h3><p>Unresolved nodes are not simply failures. They show where context, observability don't-cares, or deeper ABC integration may be needed.</p></div>
       </div>
       <aside class="notes">Use this slide to show research maturity. The direct semantic layer now has formally verified region expressions, but only for bounded direct templates. It does not solve the full RTL recovery problem.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Blind CEGIS</p><h2>Recover semantics without source labels</h2><ul class="large-list"><li>Audit blocks manifest family, operator, expression, bus, signedness, constants, and evaluation accuracy fields from inference.</li><li>Blind bus hypotheses are written before evaluation labels are joined.</li><li>Parametric templates are refined with counterexamples from exact region checks.</li><li>Timeouts and unsupported proofs remain unresolved.</li></ul></div>
+        <div class="metric-stack"><div><strong>488</strong><span>blind candidates</span></div><div><strong>24</strong><span>CEGIS iterations</span></div><div><strong>3</strong><span>formal region proofs</span></div></div>
+      </div>
+      <aside class="notes">This updates the older limitation: CEGIS is now implemented as a lightweight bounded phase. The main caveat is scalability: the committed run uses exhaustive exact proof because the SMT dependency was unavailable.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Semantic grafting</p><h2>A proven expression is not automatically a boundary</h2><ul class="large-list"><li>The expression is a reconstructed anchor, not evidence that the RTL had that exact wire.</li><li>It must become reachable on a valid EBI/EBO frontier.</li><li>Accepted grafts require cycle checks, bypass checks, preserved primary I/O, and global CEC.</li></ul></div>
+        <div class="callout"><h3>Current result</h3><p>3 proven expressions were considered for grafting.</p><p><strong>0</strong> became accepted graph-active semantic graft anchors.</p><p class="warning">The negative result is preserved rather than hidden.</p></div>
+      </div>
+      <aside class="notes">This explains why additive materialization produced proven wires but zero usable anchors: formal expression proof does not imply graph utility.</aside>
     </section>
 
     <section class="slide">
@@ -1259,7 +1275,7 @@ BO = inside R, PO or fanout outside R</pre>
 
     <section class="slide title-slide">
       <div class="slide-content title-grid">
-        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, adds ODC-aware anchors, formally verifies bounded direct semantic templates, and now tests correspondence by construction through materialized redundant wires.</p></div>
+        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, adds ODC-aware anchors, formally verifies bounded direct semantic templates, and now adds source-blind CEGIS semantic reconstruction with proof-carrying graft checks.</p></div>
         <div class="takeaway-chain"><div>Optimized critical path</div><div>Recovered gate region</div><div>Verified RTL-like expression</div><div>Register or rewrite suggestion</div></div>
       </div>
       <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, cofactor and sensitivity features now have an ablation harness, boundary recovery and ODC anchors build region evidence, semantic layers recover bounded direct expressions, and materialization proves redundant wires but needs better boundary utility.</aside>
