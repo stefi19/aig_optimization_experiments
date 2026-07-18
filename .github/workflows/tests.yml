@@ -35,3 +35,9 @@ jobs:
 
       - name: Check joint region/interface result schemas
         run: python scripts/check_joint_region_interface_results.py --allow-no-abc
+
+      - name: Run lightweight semantic functional refactoring
+        run: python scripts/run_semantic_functional_refactoring.py --mode controlled
+
+      - name: Check semantic functional refactoring result schemas
+        run: python scripts/check_semantic_functional_refactoring_results.py --allow-no-abc

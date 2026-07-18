@@ -1,0 +1,15 @@
+stage,queries,timeouts,total_runtime_seconds,max_runtime_seconds,schema_version
+controlled_candidate,1,false,0.134103,0.134103,semantic_functional_refactoring_v1
+controlled_candidate,1,false,0.275262,0.275262,semantic_functional_refactoring_v1
+controlled_candidate,1,false,0.264805,0.264805,semantic_functional_refactoring_v1
+controlled_candidate,1,false,0.270414,0.270415,semantic_functional_refactoring_v1
+controlled_candidate,1,false,0.044016,0.044017,semantic_functional_refactoring_v1
+controlled_candidate,1,false,0.044715,0.044716,semantic_functional_refactoring_v1
+controlled_candidate,1,false,0.045163,0.045164,semantic_functional_refactoring_v1
+controlled_candidate,1,false,0.172552,0.172553,semantic_functional_refactoring_v1
+controlled_candidate,1,false,0.047960,0.047961,semantic_functional_refactoring_v1
+controlled_candidate,1,false,0.044018,0.044018,semantic_functional_refactoring_v1
+controlled_candidate,1,false,0.001574,0.001574,semantic_functional_refactoring_v1
+controlled_candidate,1,false,0.001624,0.001624,semantic_functional_refactoring_v1
+controlled_candidate,1,false,0.002491,0.002491,semantic_functional_refactoring_v1
+total,26,0,1.348697,0.275262,semantic_functional_refactoring_v1

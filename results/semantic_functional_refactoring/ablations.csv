@@ -1,0 +1,4 @@
+ablation,attempted,decomposable,quotients_proved,graph_valid_rewrites,global_cec_passes,restored_boundaries,failure_reason,schema_version
+no_counterexample_repair,13,11,11,9,9,9,negative_non_decomposable_counterexample_not_repaired,semantic_functional_refactoring_v1
+previous_46_expressions_only,46,0,0,0,0,0,no_real_consumer_window_under_bounds,semantic_functional_refactoring_v1
+truth_table_quotient_only,13,12,12,10,10,10,,semantic_functional_refactoring_v1

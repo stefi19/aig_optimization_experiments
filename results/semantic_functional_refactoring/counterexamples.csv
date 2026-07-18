@@ -1,0 +1,2 @@
+counterexample_id,candidate_id,benchmark,assignment_a,assignment_b,divisor_value,residual_value,output_a,output_b,counterexample_reproduced,diagnostic,schema_version
+negative_information_lost__decomp__cex_0001,negative_information_lost__decomp,negative_information_lost,"{""x0"": 0, ""x1"": 1}","{""x0"": 0, ""x1"": 0}",[0],{},[1],[0],true,selected_divisor_or_residual_insufficient,semantic_functional_refactoring_v1

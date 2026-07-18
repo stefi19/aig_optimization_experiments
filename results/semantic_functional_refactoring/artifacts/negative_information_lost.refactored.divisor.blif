@@ -1,0 +1,6 @@
+.model div_negative_information_lost__divisor
+.inputs x0
+.outputs m0
+.names x0 m0
+1 1
+.end

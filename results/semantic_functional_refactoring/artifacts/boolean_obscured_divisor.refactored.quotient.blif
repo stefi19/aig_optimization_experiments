@@ -1,0 +1,12 @@
+.model quo_boolean_obscured_divisor__divisor
+.inputs m0 m1 r0
+.outputs o0 o1
+.names m0 m1 r0 o0
+001 1
+011 1
+100 1
+.names m0 m1 r0 o1
+001 1
+010 1
+101 1
+.end

@@ -1,0 +1,10 @@
+.model quo_negative_identity_divisor
+.inputs m0 m1
+.outputs o0 o1
+.names m0 m1 o0
+10 1
+11 1
+.names m0 m1 o1
+01 1
+11 1
+.end

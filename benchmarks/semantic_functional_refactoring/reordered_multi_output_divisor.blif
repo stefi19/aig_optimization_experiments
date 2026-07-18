@@ -1,0 +1,22 @@
+.model reordered_multi_output_divisor
+.inputs x0 x1 r0 r1
+.outputs o0 o1
+.names x0 x1 r0 r1 o0
+1000 1
+1100 1
+0010 1
+0110 1
+1001 1
+1101 1
+0011 1
+0111 1
+.names x0 x1 r0 r1 o1
+0100 1
+1100 1
+1010 1
+0110 1
+0001 1
+1001 1
+0011 1
+1111 1
+.end

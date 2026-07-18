@@ -1,0 +1,14 @@
+candidate_id,benchmark,original_effective_interface_width,refactored_interface_width,residual_width,semantic_width,interface_compression,original_node_count,refactored_node_count,area_delta,schema_version
+distributed_affine_divisor__decomp,distributed_affine_divisor,6,6,4,2,0.000000,4,6,2,semantic_functional_refactoring_v1
+shared_add_add_divisor__decomp,shared_add_add_divisor,8,4,2,2,0.500000,4,6,2,semantic_functional_refactoring_v1
+bilinear_divisor__decomp,bilinear_divisor,8,4,2,2,0.500000,4,6,2,semantic_functional_refactoring_v1
+mac_divisor__decomp,mac_divisor,8,4,2,2,0.500000,4,6,2,semantic_functional_refactoring_v1
+reordered_multi_output_divisor__decomp,reordered_multi_output_divisor,4,4,2,2,0.000000,2,4,2,semantic_functional_refactoring_v1
+boolean_obscured_divisor__decomp,boolean_obscured_divisor,3,3,1,2,0.000000,2,4,2,semantic_functional_refactoring_v1
+closed_region_fails_decomposition_succeeds__decomp,closed_region_fails_decomposition_succeeds,4,4,2,2,0.000000,2,4,2,semantic_functional_refactoring_v1
+joint_bypass_fails_decomposition_succeeds__decomp,joint_bypass_fails_decomposition_succeeds,8,4,2,2,0.500000,2,4,2,semantic_functional_refactoring_v1
+requires_residual_variable__decomp,requires_residual_variable,4,4,2,2,0.000000,2,4,2,semantic_functional_refactoring_v1
+requires_multi_output_m__decomp,requires_multi_output_m,3,3,1,2,0.000000,2,4,2,semantic_functional_refactoring_v1
+negative_information_lost__decomp,negative_information_lost,2,1,0,1,0.500000,1,0,-1,semantic_functional_refactoring_v1
+negative_h_ignores_m__decomp,negative_h_ignores_m,2,2,1,1,0.000000,1,0,-1,semantic_functional_refactoring_v1
+negative_identity_divisor__decomp,negative_identity_divisor,2,2,0,2,0.000000,2,0,-2,semantic_functional_refactoring_v1

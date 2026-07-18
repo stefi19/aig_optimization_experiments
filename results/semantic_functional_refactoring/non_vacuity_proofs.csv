@@ -1,0 +1,14 @@
+candidate_id,benchmark,non_vacuity_status,quotient_depends_on_m,identity_rejected,witness,schema_version
+distributed_affine_divisor__decomp,distributed_affine_divisor,non_vacuous_depends_on_m,true,false,"{""m0"": ""00"", ""m1"": ""10"", ""y0"": [0, 0, 0, 0], ""y1"": [1, 0, 1, 0], ""z"": ""0000""}",semantic_functional_refactoring_v1
+shared_add_add_divisor__decomp,shared_add_add_divisor,non_vacuous_depends_on_m,true,false,"{""m0"": ""00"", ""m1"": ""10"", ""y0"": [0, 0, 0, 0], ""y1"": [1, 0, 1, 0], ""z"": ""00""}",semantic_functional_refactoring_v1
+bilinear_divisor__decomp,bilinear_divisor,non_vacuous_depends_on_m,true,false,"{""m0"": ""00"", ""m1"": ""10"", ""y0"": [0, 0, 0, 0], ""y1"": [1, 0, 1, 0], ""z"": ""00""}",semantic_functional_refactoring_v1
+mac_divisor__decomp,mac_divisor,non_vacuous_depends_on_m,true,false,"{""m0"": ""00"", ""m1"": ""10"", ""y0"": [0, 0, 0, 0], ""y1"": [1, 0, 1, 0], ""z"": ""00""}",semantic_functional_refactoring_v1
+reordered_multi_output_divisor__decomp,reordered_multi_output_divisor,non_vacuous_depends_on_m,true,false,"{""m0"": ""00"", ""m1"": ""10"", ""y0"": [0, 0], ""y1"": [0, 1], ""z"": ""00""}",semantic_functional_refactoring_v1
+boolean_obscured_divisor__decomp,boolean_obscured_divisor,non_vacuous_depends_on_m,true,false,"{""m0"": ""00"", ""m1"": ""10"", ""y0"": [0, 0], ""y1"": [1, 0], ""z"": ""0""}",semantic_functional_refactoring_v1
+closed_region_fails_decomposition_succeeds__decomp,closed_region_fails_decomposition_succeeds,non_vacuous_depends_on_m,true,false,"{""m0"": ""00"", ""m1"": ""10"", ""y0"": [0, 0], ""y1"": [1, 0], ""z"": ""00""}",semantic_functional_refactoring_v1
+joint_bypass_fails_decomposition_succeeds__decomp,joint_bypass_fails_decomposition_succeeds,non_vacuous_depends_on_m,true,false,"{""m0"": ""00"", ""m1"": ""10"", ""y0"": [0, 0], ""y1"": [1, 0], ""z"": ""00""}",semantic_functional_refactoring_v1
+requires_residual_variable__decomp,requires_residual_variable,non_vacuous_depends_on_m,true,false,"{""m0"": ""00"", ""m1"": ""10"", ""y0"": [0, 0], ""y1"": [1, 0], ""z"": ""00""}",semantic_functional_refactoring_v1
+requires_multi_output_m__decomp,requires_multi_output_m,non_vacuous_depends_on_m,true,false,"{""m0"": ""00"", ""m1"": ""10"", ""y0"": [0, 0], ""y1"": [1, 0], ""z"": ""0""}",semantic_functional_refactoring_v1
+negative_information_lost__decomp,negative_information_lost,not_run,false,false,{},semantic_functional_refactoring_v1
+negative_h_ignores_m__decomp,negative_h_ignores_m,vacuous_h_ignores_m,false,false,{},semantic_functional_refactoring_v1
+negative_identity_divisor__decomp,negative_identity_divisor,non_vacuous_depends_on_m,true,true,"{""m0"": ""00"", ""m1"": ""10"", ""y0"": [0, 0], ""y1"": [1, 0], ""z"": """"}",semantic_functional_refactoring_v1

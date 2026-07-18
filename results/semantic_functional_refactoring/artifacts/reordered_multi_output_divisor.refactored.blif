@@ -1,0 +1,28 @@
+.model semantic_refactored
+.inputs x0 x1 r0 r1
+.outputs o0 o1
+.names x1 x0 m0
+10 1
+11 1
+.names x1 x0 m1
+01 1
+11 1
+.names m0 m1 r0 r1 o0
+0010 1
+0011 1
+0100 1
+0101 1
+1010 1
+1011 1
+1100 1
+1101 1
+.names m0 m1 r0 r1 o1
+0001 1
+0011 1
+0101 1
+0110 1
+1000 1
+1010 1
+1100 1
+1111 1
+.end

@@ -1,0 +1,7 @@
+.model quo_negative_information_lost
+.inputs m0 x1
+.outputs o0
+.names m0 x1 o0
+01 1
+10 1
+.end

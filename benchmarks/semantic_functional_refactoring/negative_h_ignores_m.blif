@@ -1,0 +1,7 @@
+.model negative_h_ignores_m
+.inputs x0 r0
+.outputs o0
+.names x0 r0 o0
+01 1
+11 1
+.end

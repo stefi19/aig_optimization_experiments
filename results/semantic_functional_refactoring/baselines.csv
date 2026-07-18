@@ -1,0 +1,6 @@
+baseline,benchmark_group,attempted,semantic_proofs,graph_active,global_cec_passes,restored_boundaries,notes,schema_version
+isolated_semantic_grafting,real,276,46,0,0,0,previous committed isolated-anchor result,semantic_functional_refactoring_v1
+semantic_region_replacement,controlled,7,6,5,5,5,fixed closed-region replacement,semantic_functional_refactoring_v1
+joint_region_interface_discovery,controlled,10,9,8,8,8,joint region/interface phase,semantic_functional_refactoring_v1
+semantic_functional_refactoring,controlled,13,12,10,10,10,formal divisor/quotient refactoring,semantic_functional_refactoring_v1
+semantic_functional_refactoring,real,58,0,0,0,0,bounded real search/accounting remains negative,semantic_functional_refactoring_v1
