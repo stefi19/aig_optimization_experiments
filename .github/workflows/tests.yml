@@ -41,3 +41,9 @@ jobs:
 
       - name: Check semantic functional refactoring result schemas
         run: python scripts/check_semantic_functional_refactoring_results.py --allow-no-abc
+
+      - name: Run lightweight semantic recoverability frontier
+        run: python scripts/run_semantic_recoverability_frontier.py --mode controlled
+
+      - name: Check semantic recoverability frontier results
+        run: python scripts/check_semantic_recoverability_results.py --allow-no-abc

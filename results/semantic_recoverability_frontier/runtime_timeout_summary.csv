@@ -1,0 +1,2 @@
+stage,queries,timeouts,total_runtime_s,max_runtime_s,schema_version
+total,480,0,4.040371,0.003360,semantic_recoverability_frontier_v1

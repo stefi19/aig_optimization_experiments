@@ -1,0 +1,12 @@
+.model controlled_and_factor
+.inputs x0 x1 r0
+.outputs y0
+.names x0 x1 r0 m0
+110 1
+111 1
+.names x0 x1 r0 m0 y0
+1101 1
+0010 1
+1010 1
+0110 1
+.end

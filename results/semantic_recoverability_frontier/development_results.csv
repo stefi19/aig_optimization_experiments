@@ -1,0 +1,2 @@
+benchmark,boundaries,trajectories,checkpoints,blind_recovered_rows,oracle_recovered_rows,failure_summary,schema_version
+full_adder,1,3,12,16,12,"{""blind_divisor_not_discovered"": 36, ""no_formally_equivalent_internal_signal_under_exhaustive_small_check"": 8, ""only_non_local_decomposition_established"": 24}",semantic_recoverability_frontier_v1

@@ -1,0 +1,17 @@
+# Benchmark "controlled_nonmonotonic_factor" written by ABC on Sat Jul 18 21:22:19 2026
+.model controlled_nonmonotonic_factor
+.inputs x0 x1 r0
+.outputs y0
+.names x1 r0 new_n5
+11 1
+.names x1 r0 new_n6
+00 1
+.names x0 new_n6 new_n7
+10 1
+.names new_n5 new_n7 new_n8
+00 1
+.names x0 new_n5 new_n9
+11 1
+.names new_n8 new_n9 y0
+00 1
+.end

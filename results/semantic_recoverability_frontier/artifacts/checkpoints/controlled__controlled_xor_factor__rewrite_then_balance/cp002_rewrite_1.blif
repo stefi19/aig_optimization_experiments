@@ -1,0 +1,21 @@
+# Benchmark "controlled_xor_factor" written by ABC on Sat Jul 18 21:22:18 2026
+.model controlled_xor_factor
+.inputs x0 x1 r0
+.outputs y0
+.names x0 x1 new_n5
+01 1
+.names x0 x1 new_n6
+10 1
+.names new_n5 new_n6 new_n7
+00 1
+.names r0 new_n7 new_n8
+11 1
+.names new_n7 new_n8 new_n9
+11 1
+.names r0 new_n7 new_n10
+00 1
+.names new_n7 new_n10 new_n11
+01 1
+.names new_n9 new_n11 y0
+00 0
+.end

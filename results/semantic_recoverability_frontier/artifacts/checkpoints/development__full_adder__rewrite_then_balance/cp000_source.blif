@@ -1,0 +1,44 @@
+# full_adder.blif
+#
+# A single 1-bit full adder.
+# Inputs:  a, b, cin
+# Outputs: sum, cout
+#
+# Truth:
+#   sum  = a XOR b XOR cin
+#   cout = majority(a, b, cin)  = (a AND b) OR (a AND cin) OR (b AND cin)
+#
+# Internal nodes: 6
+# This is the building block of any multi-bit adder.
+
+.model full_adder
+.inputs a b cin
+.outputs sum cout
+
+# a XOR b  (step 1 of sum)
+.names a b ab_xor
+01 1
+10 1
+
+# sum = ab_xor XOR cin
+.names ab_xor cin sum
+01 1
+10 1
+
+# carry generation terms
+.names a b ab_and
+11 1
+
+.names a cin a_cin_and
+11 1
+
+.names b cin b_cin_and
+11 1
+
+# cout = (a AND b) OR (a AND cin) OR (b AND cin)
+.names ab_and a_cin_and b_cin_and cout
+1-- 1
+-1- 1
+--1 1
+
+.end

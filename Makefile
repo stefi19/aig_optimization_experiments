@@ -6,6 +6,7 @@ Z3_PYTHON = $(shell if [ -x .venv-z3/bin/python ]; then echo .venv-z3/bin/python
 .PHONY: all install-z3 check-z3 build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants semantic-benchmarks semantic-benchmarks-check semantic-regions semantic-interfaces semantic-region-comparison semantic-region-plots check-semantic-regions semantic-regions-all semantic-bus-inference semantic-dependency semantic-family-ranking semantic-bus-ablation semantic-dependency-plots check-semantic-bus-dependency semantic-bus-dependency-all semantic-direct-candidates semantic-direct-simulation semantic-direct-verification semantic-direct-selection semantic-direct-ablation semantic-direct-plots check-semantic-direct-results semantic-direct-recovery-all semantic-z3-crosscheck semantic-wide-benchmarks semantic-z3-cegis semantic-blind-oracle-ablation semantic-scalability-analysis semantic-graft-diagnosis semantic-graft-normalization semantic-graft-edge-substitution semantic-graft-coi-splice semantic-graft-extended-region semantic-graft-odc semantic-graft-strategy-ablation semantic-graft-all check-semantic-z3-results blind-semantic-cegis-scalable-all blind-semantic-audit blind-semantic-buses semantic-parametric-candidates semantic-cegis semantic-smt-proofs semantic-cegis-evaluation semantic-graft-targets semantic-graft-build semantic-graft-proofs semantic-graft-boundary-recovery semantic-graft-ablation semantic-graft-plots check-blind-semantic-results check-semantic-graft-results blind-semantic-cegis-all semantic-grafting-all analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance abc-timing-probe yosys-source-probe source-map-prototype register-suggestions contextual-error-analysis contextual-critical-path-map contextual-research-plots research-plots cofactor-sensitivity-analysis functional-ranking-ablation functional-ranking-plots enhanced-critical-path-map check-functional-ranking-results boundary-recovery-benchmarks boundary-recovery-analysis boundary-recovery-critical-path boundary-recovery-plots check-boundary-recovery-results boundary-recovery boundary-recovery-identity boundary-recovery-diagnosis boundary-recovery-critical-path-cois boundary-recovery-diagnosis-plots check-boundary-recovery-diagnosis boundary-recovery-diagnosis-all boundary-recovery-micro-benchmarks boundary-recovery-repair-cois boundary-recovery-check-circuits boundary-recovery-identity-fixed boundary-recovery-corrected-analysis boundary-recovery-critical-path-fixed boundary-recovery-semantics-plots check-boundary-recovery-semantics boundary-recovery-semantics-all extended-boundary-validation extended-boundary-search extended-boundary-comparison extended-boundary-plots check-extended-boundary-results extended-boundary-all odc-anchor-candidates odc-anchor-proofs odc-boundary-recovery odc-anchor-comparison odc-anchor-plots check-odc-anchor-results odc-anchor-all materialization-targets anchored-cuts anchored-cut-functions materialized-wires materialized-anchor-proofs materialized-boundary-recovery materialized-ablation materialized-plots check-materialized-results materialized-correspondence-all iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map timing-path-probe full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
 .PHONY: joint-region-interface joint-region-interface-controlled joint-region-interface-real joint-region-interface-heldout joint-region-interface-ablations joint-region-interface-plots check-joint-region-interface-results joint-region-interface-all
 .PHONY: semantic-functional-refactoring-controlled semantic-functional-refactoring-development semantic-functional-refactoring-heldout semantic-functional-refactoring-ablations semantic-functional-refactoring-plots check-semantic-functional-refactoring-results semantic-functional-refactoring-all
+.PHONY: semantic-recoverability-benchmarks semantic-recoverability-trajectories semantic-recoverability-controlled semantic-recoverability-development semantic-recoverability-heldout semantic-recoverability-oracle semantic-recoverability-pass-ablations semantic-recoverability-durability semantic-recoverability-plots check-semantic-recoverability-results semantic-recoverability-all
 
 all: build-abc generate-variants analyze plot
 
@@ -316,6 +317,49 @@ check-semantic-functional-refactoring-results:
 
 semantic-functional-refactoring-all: semantic-functional-refactoring-ablations semantic-functional-refactoring-plots check-semantic-functional-refactoring-results
 	@echo "Semantic functional refactoring pipeline complete."
+
+semantic-recoverability-benchmarks:
+	@echo "Generating semantic recoverability benchmark manifest"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_recoverability_frontier.py --mode controlled
+
+semantic-recoverability-trajectories:
+	@echo "Generating semantic recoverability synthesis trajectories"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_recoverability_frontier.py --mode all
+
+semantic-recoverability-controlled:
+	@echo "Running controlled semantic recoverability frontier"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_recoverability_frontier.py --mode controlled
+
+semantic-recoverability-development:
+	@echo "Running development semantic recoverability frontier"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_recoverability_frontier.py --mode development
+
+semantic-recoverability-heldout:
+	@echo "Running held-out semantic recoverability frontier"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_recoverability_frontier.py --mode heldout
+
+semantic-recoverability-oracle:
+	@echo "Running oracle diagnostic semantic recoverability frontier"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_recoverability_frontier.py --mode oracle
+
+semantic-recoverability-pass-ablations:
+	@echo "Running semantic recoverability pass ablations"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_recoverability_frontier.py --mode pass-ablations
+
+semantic-recoverability-durability:
+	@echo "Running semantic recoverability durability diagnostics"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_recoverability_frontier.py --mode durability
+
+semantic-recoverability-plots: semantic-recoverability-trajectories
+	@echo "Generating semantic recoverability frontier plots"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/semantic_recoverability_plots.py
+
+check-semantic-recoverability-results:
+	@echo "Checking semantic recoverability frontier results"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/check_semantic_recoverability_results.py
+
+semantic-recoverability-all: semantic-recoverability-trajectories semantic-recoverability-plots check-semantic-recoverability-results
+	@echo "Semantic recoverability frontier pipeline complete."
 
 semantic-graft-plots: semantic-graft-ablation
 	@echo "Generating blind CEGIS and semantic graft plots"
