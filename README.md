@@ -3145,7 +3145,7 @@ Current committed results under
 `results/semantic_recoverability_frontier/`:
 
 - 4 designs and 5 pre-synthesis semantic boundaries;
-- 12 synthesis trajectories and 60 checkpoints;
+- 15 synthesis trajectories and 60 checkpoints;
 - checkpoint CEC: 60/60 equivalent;
 - blind recovered rows: 59/300;
 - oracle recovered rows: 81/180;

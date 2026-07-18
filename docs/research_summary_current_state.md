@@ -115,7 +115,7 @@ development/held-out split remains 0/58 restored.
 The recoverability-frontier phase records semantic boundaries before synthesis,
 saves checkpoints after individual ABC passes, proves checkpoint equivalence,
 and compares blind versus oracle recoverability levels. The committed run has 4
-designs, 5 source boundaries, 12 trajectories, 60 checkpoints, and 60/60
+designs, 5 source boundaries, 15 trajectories, 60 checkpoints, and 60/60
 checkpoint CEC passes. Blind structural/functional-survival rows recover 59/300
 rows, while oracle divisor/support/window diagnostics recover 81/180 rows.
 Held-out blind recovery is 16 structural/functional-survival rows; held-out
@@ -792,7 +792,7 @@ proof generation.
     non-identity boundaries with ABC CEC, and still restores 0 real boundaries
     across 49 development plus 9 held-out attempts.
 19. The semantic recoverability-frontier phase evaluates 60 CEC-equivalent
-    checkpoints across 12 ABC trajectories. It separates blind
+    checkpoints across 15 ABC trajectories. It separates blind
     structural/functional survival from oracle compact-decomposition
     diagnostics, shows a blind-oracle gap, and reports pass-level transitions
     without making unsupported causal claims.

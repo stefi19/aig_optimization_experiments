@@ -78,7 +78,7 @@ Each benchmark is run through three deterministic ABC pass trajectories:
 
 The runner saves a checkpoint after every pass, records command prefixes,
 hashes each BLIF, extracts structural metrics, and runs ABC CEC from each
-checkpoint back to the reference. The committed run has 12 trajectories and 60
+checkpoint back to the reference. The committed run has 15 trajectories and 60
 checkpoints, with 60/60 checkpoint CEC equivalence.
 
 Yosys is unavailable in the current environment, so no RTL-to-BLIF trajectory is
@@ -125,7 +125,7 @@ Current committed results under `results/semantic_recoverability_frontier/`:
 
 - designs: 4;
 - ground-truth boundaries: 5;
-- trajectories: 12;
+- trajectories: 15;
 - checkpoints: 60;
 - checkpoint CEC equivalent: 60/60;
 - blind recovered rows: 59/300;

@@ -174,7 +174,7 @@ boundaries before optimisation, saves CEC-equivalent checkpoints after passes,
 and compares blind recoverability against oracle divisor/support/window
 diagnostics.
 
-The committed frontier run has 4 designs, 5 boundaries, 12 trajectories, and
+The committed frontier run has 4 designs, 5 boundaries, 15 trajectories, and
 60 CEC-equivalent checkpoints. It records 59/300 blind structural or functional
 survival rows and 81/180 oracle decomposition rows. This is not a new
 graph-active real restoration claim; it localizes the question to compact,
