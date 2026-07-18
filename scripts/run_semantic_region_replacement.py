@@ -203,7 +203,7 @@ def _run_case(case: dict[str, object]) -> dict[str, list[dict[str, str]]]:
 def _prove_module(path: Path, module: SemanticModule) -> list[dict[str, str]]:
     rows = []
     for bus, expr in zip(module.output_buses, module.output_expressions):
-        rows.append(validate_candidate_z3(blif_path=path, input_buses=list(module.input_buses), output_bus=bus, expr=expr))
+        rows.append(validate_candidate_z3(blif_path=path, input_buses=list(module.input_buses), output_bus=bus, expr=expr, timeout_ms=5000))
     return rows
 
 
