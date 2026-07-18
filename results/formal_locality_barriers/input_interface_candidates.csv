@@ -1,0 +1,107 @@
+target_id,universe_id,iteration,candidate_interface,candidate_width,solver_status,termination,schema_version
+real_0001,real_0001::U0_direct_name_intersection,0,[],0,sat,counterexample,formal_locality_barriers_v1
+real_0001,real_0001::U0_direct_name_intersection,1,"[""a0""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0001,real_0001::U0_direct_name_intersection,2,"[""new_n17""]",1,unsat,sufficient,formal_locality_barriers_v1
+real_0002,real_0002::U0_direct_name_intersection,0,[],0,sat,counterexample,formal_locality_barriers_v1
+real_0002,real_0002::U0_direct_name_intersection,1,"[""a0""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0002,real_0002::U0_direct_name_intersection,2,"[""new_n17""]",1,unsat,sufficient,formal_locality_barriers_v1
+real_0003,real_0003::U0_direct_name_intersection,0,[],0,sat,counterexample,formal_locality_barriers_v1
+real_0003,real_0003::U0_direct_name_intersection,1,"[""a0""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0003,real_0003::U0_direct_name_intersection,2,"[""a0"", ""b0""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0003,real_0003::U0_direct_name_intersection,3,"[""a0"", ""b0"", ""cin""]",3,unsat,sufficient,formal_locality_barriers_v1
+real_0004,real_0004::U0_direct_name_intersection,0,[],0,sat,counterexample,formal_locality_barriers_v1
+real_0004,real_0004::U0_direct_name_intersection,1,"[""a0""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0004,real_0004::U0_direct_name_intersection,2,"[""new_n17""]",1,unsat,sufficient,formal_locality_barriers_v1
+real_0005,real_0005::U0_direct_name_intersection,0,[],0,sat,counterexample,formal_locality_barriers_v1
+real_0005,real_0005::U0_direct_name_intersection,1,"[""a0""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0005,real_0005::U0_direct_name_intersection,2,"[""new_n17""]",1,unsat,sufficient,formal_locality_barriers_v1
+real_0006,real_0006::U0_direct_name_intersection,0,[],0,sat,counterexample,formal_locality_barriers_v1
+real_0006,real_0006::U0_direct_name_intersection,1,"[""a0""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0006,real_0006::U0_direct_name_intersection,2,"[""a0"", ""b0""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0006,real_0006::U0_direct_name_intersection,3,"[""a0"", ""b0"", ""cin""]",3,unsat,sufficient,formal_locality_barriers_v1
+real_0007,real_0007::U0_direct_name_intersection,0,[],0,sat,counterexample,formal_locality_barriers_v1
+real_0007,real_0007::U0_direct_name_intersection,1,"[""d2""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0007,real_0007::U0_direct_name_intersection,2,"[""s0""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0007,real_0007::U0_direct_name_intersection,3,"[""d2"", ""s0""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0007,real_0007::U0_direct_name_intersection,4,"[""new_n10"", ""s0""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0007,real_0007::U0_direct_name_intersection,5,"[""d2"", ""new_n10"", ""s0""]",3,sat,counterexample,formal_locality_barriers_v1
+real_0007,real_0007::U0_direct_name_intersection,6,"[""d2"", ""s0"", ""s1""]",3,unsat,sufficient,formal_locality_barriers_v1
+real_0008,real_0008::U0_direct_name_intersection,0,[],0,sat,counterexample,formal_locality_barriers_v1
+real_0008,real_0008::U0_direct_name_intersection,1,"[""d1""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0008,real_0008::U0_direct_name_intersection,2,"[""s1""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0008,real_0008::U0_direct_name_intersection,3,"[""d1"", ""s1""]",2,unsat,sufficient,formal_locality_barriers_v1
+real_0009,real_0009::U0_direct_name_intersection,0,[],0,sat,counterexample,formal_locality_barriers_v1
+real_0009,real_0009::U0_direct_name_intersection,1,"[""d2""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0009,real_0009::U0_direct_name_intersection,2,"[""d2"", ""s1""]",2,unsat,sufficient,formal_locality_barriers_v1
+real_0010,real_0010::U0_direct_name_intersection,0,[],0,sat,counterexample,formal_locality_barriers_v1
+real_0010,real_0010::U0_direct_name_intersection,1,"[""d6""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0010,real_0010::U0_direct_name_intersection,2,"[""new_n18""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0010,real_0010::U0_direct_name_intersection,3,"[""s0""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0010,real_0010::U0_direct_name_intersection,4,"[""d6"", ""new_n18""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0010,real_0010::U0_direct_name_intersection,5,"[""d6"", ""s0""]",2,unsat,sufficient,formal_locality_barriers_v1
+real_0011,real_0011::U0_direct_name_intersection,0,[],0,sat,counterexample,formal_locality_barriers_v1
+real_0011,real_0011::U0_direct_name_intersection,1,"[""d5""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0011,real_0011::U0_direct_name_intersection,2,"[""new_n24""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0011,real_0011::U0_direct_name_intersection,3,"[""s0""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0011,real_0011::U0_direct_name_intersection,4,"[""d5"", ""new_n24""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0011,real_0011::U0_direct_name_intersection,5,"[""d5"", ""s0""]",2,unsat,sufficient,formal_locality_barriers_v1
+real_0012,real_0012::U0_direct_name_intersection,0,[],0,sat,counterexample,formal_locality_barriers_v1
+real_0012,real_0012::U0_direct_name_intersection,1,"[""d0""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0012,real_0012::U0_direct_name_intersection,2,"[""d0"", ""s0""]",2,unsat,sufficient,formal_locality_barriers_v1
+real_0013,real_0013::U0_direct_name_intersection,0,[],0,sat,counterexample,formal_locality_barriers_v1
+real_0013,real_0013::U0_direct_name_intersection,1,"[""d4""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0013,real_0013::U0_direct_name_intersection,2,"[""new_n28""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0013,real_0013::U0_direct_name_intersection,3,"[""s0""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0013,real_0013::U0_direct_name_intersection,4,"[""d4"", ""new_n28""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0013,real_0013::U0_direct_name_intersection,5,"[""d4"", ""s0""]",2,unsat,sufficient,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,0,[],0,sat,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,1,"[""d7""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,2,"[""new_n15""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,3,"[""s0""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,4,"[""s2""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,5,"[""d7"", ""new_n15""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,6,"[""d7"", ""s0""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,7,"[""d7"", ""s2""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,8,"[""new_n15"", ""s0""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,9,"[""s0"", ""s2""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,10,"[""d7"", ""new_n15"", ""s0""]",3,sat,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,11,"[""d7"", ""s0"", ""s2""]",3,unsat,sufficient,formal_locality_barriers_v1
+real_0015,real_0015::U0_direct_name_intersection,0,[],0,sat,counterexample,formal_locality_barriers_v1
+real_0015,real_0015::U0_direct_name_intersection,1,"[""d2""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0015,real_0015::U0_direct_name_intersection,2,"[""d2"", ""d6""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0015,real_0015::U0_direct_name_intersection,3,"[""d2"", ""new_n19""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0015,real_0015::U0_direct_name_intersection,4,"[""d2"", ""s0""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0015,real_0015::U0_direct_name_intersection,5,"[""d2"", ""d6"", ""new_n19""]",3,sat,counterexample,formal_locality_barriers_v1
+real_0015,real_0015::U0_direct_name_intersection,6,"[""d2"", ""d6"", ""s0""]",3,unsat,sufficient,formal_locality_barriers_v1
+real_0016,real_0016::U0_direct_name_intersection,0,[],0,sat,counterexample,formal_locality_barriers_v1
+real_0016,real_0016::U0_direct_name_intersection,1,"[""d0""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0016,real_0016::U0_direct_name_intersection,2,"[""d0"", ""d4""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0016,real_0016::U0_direct_name_intersection,3,"[""d0"", ""s0""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0016,real_0016::U0_direct_name_intersection,4,"[""d0"", ""d4"", ""s0""]",3,unsat,sufficient,formal_locality_barriers_v1
+real_0017,real_0017::U0_direct_name_intersection,0,[],0,sat,counterexample,formal_locality_barriers_v1
+real_0017,real_0017::U0_direct_name_intersection,1,"[""d4""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0017,real_0017::U0_direct_name_intersection,2,"[""d4"", ""new_n15""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0017,real_0017::U0_direct_name_intersection,3,"[""d4"", ""s1""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0017,real_0017::U0_direct_name_intersection,4,"[""d4"", ""new_n15"", ""s1""]",3,sat,counterexample,formal_locality_barriers_v1
+real_0017,real_0017::U0_direct_name_intersection,5,"[""d4"", ""s1"", ""s2""]",3,unsat,sufficient,formal_locality_barriers_v1
+real_0018,real_0018::U0_direct_name_intersection,0,[],0,sat,counterexample,formal_locality_barriers_v1
+real_0018,real_0018::U0_direct_name_intersection,1,"[""d6""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0018,real_0018::U0_direct_name_intersection,2,"[""new_n19""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0018,real_0018::U0_direct_name_intersection,3,"[""s1""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0018,real_0018::U0_direct_name_intersection,4,"[""d6"", ""new_n19""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0018,real_0018::U0_direct_name_intersection,5,"[""d6"", ""s1""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0018,real_0018::U0_direct_name_intersection,6,"[""d6"", ""s1"", ""s2""]",3,unsat,sufficient,formal_locality_barriers_v1
+real_0019,real_0019::U0_direct_name_intersection,0,[],0,sat,counterexample,formal_locality_barriers_v1
+real_0019,real_0019::U0_direct_name_intersection,1,"[""d2""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0019,real_0019::U0_direct_name_intersection,2,"[""s1""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0019,real_0019::U0_direct_name_intersection,3,"[""d2"", ""s1""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0019,real_0019::U0_direct_name_intersection,4,"[""new_n29"", ""s1""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0019,real_0019::U0_direct_name_intersection,5,"[""d2"", ""new_n29"", ""s1""]",3,sat,counterexample,formal_locality_barriers_v1
+real_0019,real_0019::U0_direct_name_intersection,6,"[""d2"", ""s1"", ""s2""]",3,unsat,sufficient,formal_locality_barriers_v1
+real_0020,real_0020::U0_direct_name_intersection,0,[],0,sat,counterexample,formal_locality_barriers_v1
+real_0020,real_0020::U0_direct_name_intersection,1,"[""d6""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0020,real_0020::U0_direct_name_intersection,2,"[""d7""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0020,real_0020::U0_direct_name_intersection,3,"[""s1""]",1,sat,counterexample,formal_locality_barriers_v1
+real_0020,real_0020::U0_direct_name_intersection,4,"[""d6"", ""d7""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0020,real_0020::U0_direct_name_intersection,5,"[""d6"", ""s1""]",2,sat,counterexample,formal_locality_barriers_v1
+real_0020,real_0020::U0_direct_name_intersection,6,"[""new_n20"", ""s1""]",2,unsat,sufficient,formal_locality_barriers_v1

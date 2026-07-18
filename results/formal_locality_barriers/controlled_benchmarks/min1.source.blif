@@ -1,0 +1,7 @@
+.model src_min1
+.inputs a b
+.outputs t
+.names a b t
+10 1
+11 1
+.end

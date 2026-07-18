@@ -1,0 +1,10 @@
+.model src_affine_bool
+.inputs a0 a1
+.outputs t0 t1
+.names a0 a1 t0
+00 1
+01 1
+.names a0 a1 t1
+01 1
+11 1
+.end

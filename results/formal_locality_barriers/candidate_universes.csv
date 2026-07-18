@@ -1,0 +1,27 @@
+universe_id,target_id,construction_mode,locality_radius,universe_size,signals,universe_hash,source_hash,optimized_hash,diagnostic_only,schema_version
+controlled::min1::U_control,min1,controlled_source_blind_fixture,1,2,"[""a"", ""b""]",0c14e561d95cb888,b1e2ad5a68b130c1,d09e4458f3d8bd8d,false,formal_locality_barriers_v1
+controlled::min2_xor::U_control,min2_xor,controlled_source_blind_fixture,1,2,"[""a"", ""b""]",c2454878ab1c1eca,1e19a742dc181c9b,86042504039a7d5b,false,formal_locality_barriers_v1
+controlled::min3_maj::U_control,min3_maj,controlled_source_blind_fixture,1,3,"[""a"", ""b"", ""c""]",e18e928a40750687,72fe90e347d379ef,e6c69aba059e9778,false,formal_locality_barriers_v1
+controlled::permute_invert::U_control,permute_invert,controlled_source_blind_fixture,1,2,"[""a"", ""b""]",9b97202156b63d7f,ae710276d6295256,004001bbd33e81eb,false,formal_locality_barriers_v1
+controlled::nonlinear_and::U_control,nonlinear_and,controlled_source_blind_fixture,1,2,"[""a"", ""b""]",2723b8c6c8851856,fd07792580edd615,a71c29cc7bddb8be,false,formal_locality_barriers_v1
+controlled::affine_bool::U_control,affine_bool,controlled_source_blind_fixture,1,2,"[""a0"", ""a1""]",bf9681e9187df0a0,b154df9c557f2add,1d66fdea32f7bb20,false,formal_locality_barriers_v1
+real_0001::U0_direct_name_intersection,real_0001,U0_direct_name_intersection,0,3,"[""a0"", ""b0"", ""new_n17""]",f9908c963d9035c7,816beedc406166dc,9a32b8a223179572,false,formal_locality_barriers_v1
+real_0002::U0_direct_name_intersection,real_0002,U0_direct_name_intersection,0,3,"[""a0"", ""b0"", ""new_n17""]",f9908c963d9035c7,816beedc406166dc,9a32b8a223179572,false,formal_locality_barriers_v1
+real_0003::U0_direct_name_intersection,real_0003,U0_direct_name_intersection,0,4,"[""a0"", ""b0"", ""cin"", ""new_n19""]",bfb04fe84b5fedb1,816beedc406166dc,9a32b8a223179572,false,formal_locality_barriers_v1
+real_0004::U0_direct_name_intersection,real_0004,U0_direct_name_intersection,0,3,"[""a0"", ""b0"", ""new_n17""]",f9908c963d9035c7,816beedc406166dc,9a32b8a223179572,false,formal_locality_barriers_v1
+real_0005::U0_direct_name_intersection,real_0005,U0_direct_name_intersection,0,3,"[""a0"", ""b0"", ""new_n17""]",f9908c963d9035c7,816beedc406166dc,9a32b8a223179572,false,formal_locality_barriers_v1
+real_0006::U0_direct_name_intersection,real_0006,U0_direct_name_intersection,0,4,"[""a0"", ""b0"", ""cin"", ""new_n19""]",bfb04fe84b5fedb1,816beedc406166dc,9a32b8a223179572,false,formal_locality_barriers_v1
+real_0007::U0_direct_name_intersection,real_0007,U0_direct_name_intersection,0,4,"[""d2"", ""new_n10"", ""s0"", ""s1""]",7e218e3203e13cb8,9d02241cce43005c,9c17f5c689a54e84,false,formal_locality_barriers_v1
+real_0008::U0_direct_name_intersection,real_0008,U0_direct_name_intersection,0,3,"[""d1"", ""new_n12"", ""s1""]",aa983555e3833049,9d02241cce43005c,ac0c6494d81e03ec,false,formal_locality_barriers_v1
+real_0009::U0_direct_name_intersection,real_0009,U0_direct_name_intersection,0,3,"[""d2"", ""new_n9"", ""s1""]",573af1bd22b08b1a,9d02241cce43005c,ac0c6494d81e03ec,false,formal_locality_barriers_v1
+real_0010::U0_direct_name_intersection,real_0010,U0_direct_name_intersection,0,3,"[""d6"", ""new_n18"", ""s0""]",0d21aaf4991c4414,eebf0e6858f7fd66,34d3b34ad2942b5b,false,formal_locality_barriers_v1
+real_0011::U0_direct_name_intersection,real_0011,U0_direct_name_intersection,0,3,"[""d5"", ""new_n24"", ""s0""]",8ca59fc6d8ba7631,eebf0e6858f7fd66,34d3b34ad2942b5b,false,formal_locality_barriers_v1
+real_0012::U0_direct_name_intersection,real_0012,U0_direct_name_intersection,0,3,"[""d0"", ""new_n27"", ""s0""]",961da7fe7ecb9996,eebf0e6858f7fd66,34d3b34ad2942b5b,false,formal_locality_barriers_v1
+real_0013::U0_direct_name_intersection,real_0013,U0_direct_name_intersection,0,3,"[""d4"", ""new_n28"", ""s0""]",1ac37573568b1eb0,eebf0e6858f7fd66,34d3b34ad2942b5b,false,formal_locality_barriers_v1
+real_0014::U0_direct_name_intersection,real_0014,U0_direct_name_intersection,0,4,"[""d7"", ""new_n15"", ""s0"", ""s2""]",d763b92162956469,eebf0e6858f7fd66,34d3b34ad2942b5b,false,formal_locality_barriers_v1
+real_0015::U0_direct_name_intersection,real_0015,U0_direct_name_intersection,0,4,"[""d2"", ""d6"", ""new_n19"", ""s0""]",9e3675b0629b4a30,eebf0e6858f7fd66,34d3b34ad2942b5b,false,formal_locality_barriers_v1
+real_0016::U0_direct_name_intersection,real_0016,U0_direct_name_intersection,0,4,"[""d0"", ""d4"", ""new_n29"", ""s0""]",1d254689624167f2,eebf0e6858f7fd66,34d3b34ad2942b5b,false,formal_locality_barriers_v1
+real_0017::U0_direct_name_intersection,real_0017,U0_direct_name_intersection,0,4,"[""d4"", ""new_n15"", ""s1"", ""s2""]",355465fdf877a52d,eebf0e6858f7fd66,25044f0097f06ad4,false,formal_locality_barriers_v1
+real_0018::U0_direct_name_intersection,real_0018,U0_direct_name_intersection,0,4,"[""d6"", ""new_n19"", ""s1"", ""s2""]",a53a0640b7b8686c,eebf0e6858f7fd66,25044f0097f06ad4,false,formal_locality_barriers_v1
+real_0019::U0_direct_name_intersection,real_0019,U0_direct_name_intersection,0,4,"[""d2"", ""new_n29"", ""s1"", ""s2""]",235b4d56b63785ad,eebf0e6858f7fd66,25044f0097f06ad4,false,formal_locality_barriers_v1
+real_0020::U0_direct_name_intersection,real_0020,U0_direct_name_intersection,0,5,"[""d6"", ""d7"", ""new_n20"", ""s1"", ""s2""]",620ea4b07e38eae6,eebf0e6858f7fd66,25044f0097f06ad4,false,formal_locality_barriers_v1

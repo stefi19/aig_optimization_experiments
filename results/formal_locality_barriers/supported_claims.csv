@@ -1,0 +1,4 @@
+claim,supported,evidence_file,notes,schema_version
+all_56_previous_failures_audited,true,development_results.csv,56 rows analysed,formal_locality_barriers_v1
+certificate_counterexamples_replayed,true,input_counterexamples.csv,all stored SAT pairs replay through concrete evaluators,formal_locality_barriers_v1
+no_real_transplant_claimed_without_global_cec,true,certificate_guided_transplant_attempts.csv,certificate-guided interface existence remains separate from transplantation success,formal_locality_barriers_v1

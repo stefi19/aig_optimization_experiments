@@ -1,0 +1,2 @@
+config_path,config_hash,deterministic_seed,maximum_interface_width,maximum_residual_width,exact_search_threshold,schema_version
+configs/formal_locality_barriers.json,c01d90606af4d322,0,6,4,18,formal_locality_barriers_v1

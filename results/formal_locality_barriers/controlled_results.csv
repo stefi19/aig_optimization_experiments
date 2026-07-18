@@ -1,0 +1,7 @@
+case_id,expected_minimum,exhaustive_minimum,z3_status,z3_counterexamples_reproduced,classification,schema_version
+min1,1,1,unsat,true,compact_exact_input_interface_found,formal_locality_barriers_v1
+min2_xor,2,2,unsat,true,compact_exact_input_interface_found,formal_locality_barriers_v1
+min3_maj,3,3,unsat,true,compact_exact_input_interface_found,formal_locality_barriers_v1
+permute_invert,2,2,unsat,true,compact_exact_input_interface_found,formal_locality_barriers_v1
+nonlinear_and,2,2,unsat,true,compact_exact_input_interface_found,formal_locality_barriers_v1
+affine_bool,2,2,unsat,true,compact_exact_input_interface_found,formal_locality_barriers_v1

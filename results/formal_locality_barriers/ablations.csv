@@ -1,0 +1,4 @@
+ablation,targets,successes,timeouts,notes,schema_version
+anchored_only_U0,20,20,0,Direct source-blind name intersection universe.,formal_locality_barriers_v1
+all_primary_inputs_U6_diagnostic,0,0,0,"Whole-PI rows are diagnostics, never compact local successes.",formal_locality_barriers_v1
+output_BZ_declared_universe,20,3,0,Exact minima are scoped to candidate optimized target and residual PI universe.,formal_locality_barriers_v1

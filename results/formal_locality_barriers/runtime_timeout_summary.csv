@@ -1,0 +1,2 @@
+stage,queries,timeouts,total_runtime_s,max_runtime_s,schema_version
+formal_locality,51495,0,5.208471,0.069459,formal_locality_barriers_v1

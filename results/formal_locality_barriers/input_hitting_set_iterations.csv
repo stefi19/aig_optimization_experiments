@@ -1,0 +1,125 @@
+target_id,universe_id,iteration,candidate_interface,candidate_width,lower_bound,exact_hitting_set_lower_bound,solver_status,solver_backend,runtime_s,counterexamples_before,counterexamples_after,counterexample_id,termination,schema_version
+min1,controlled::min1::U_control,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.000034,0,1,d829fc3e6672d614_cex,counterexample,formal_locality_barriers_v1
+min1,controlled::min1::U_control,1,"[""a""]",1,1,true,unsat,exhaustive_two_copy_miter,0.000018,1,1,,sufficient,formal_locality_barriers_v1
+min2_xor,controlled::min2_xor::U_control,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.000015,0,1,e83d95c02f64b608_cex,counterexample,formal_locality_barriers_v1
+min2_xor,controlled::min2_xor::U_control,1,"[""a""]",1,1,true,sat,exhaustive_two_copy_miter,0.000019,1,2,5db9c43ab62a9b4d_cex,counterexample,formal_locality_barriers_v1
+min2_xor,controlled::min2_xor::U_control,2,"[""a"", ""b""]",2,2,true,unsat,exhaustive_two_copy_miter,0.000016,2,2,,sufficient,formal_locality_barriers_v1
+min3_maj,controlled::min3_maj::U_control,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.000028,0,1,1cea6712c8d24dd0_cex,counterexample,formal_locality_barriers_v1
+min3_maj,controlled::min3_maj::U_control,1,"[""a""]",1,1,true,sat,exhaustive_two_copy_miter,0.000027,1,2,13c4095ca2975fb8_cex,counterexample,formal_locality_barriers_v1
+min3_maj,controlled::min3_maj::U_control,2,"[""a"", ""b""]",2,2,true,sat,exhaustive_two_copy_miter,0.000037,2,3,41dd18cf6d19e41d_cex,counterexample,formal_locality_barriers_v1
+min3_maj,controlled::min3_maj::U_control,3,"[""a"", ""b"", ""c""]",3,3,true,unsat,exhaustive_two_copy_miter,0.000039,3,3,,sufficient,formal_locality_barriers_v1
+permute_invert,controlled::permute_invert::U_control,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.000024,0,1,46810f8460d34e52_cex,counterexample,formal_locality_barriers_v1
+permute_invert,controlled::permute_invert::U_control,1,"[""a""]",1,1,true,sat,exhaustive_two_copy_miter,0.000050,1,2,2f46d7cbaa31fa18_cex,counterexample,formal_locality_barriers_v1
+permute_invert,controlled::permute_invert::U_control,2,"[""a"", ""b""]",2,2,true,unsat,exhaustive_two_copy_miter,0.000024,2,2,,sufficient,formal_locality_barriers_v1
+nonlinear_and,controlled::nonlinear_and::U_control,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.000017,0,1,41278b04c19a8996_cex,counterexample,formal_locality_barriers_v1
+nonlinear_and,controlled::nonlinear_and::U_control,1,"[""a""]",1,1,true,sat,exhaustive_two_copy_miter,0.000017,1,2,1ab2245381a82731_cex,counterexample,formal_locality_barriers_v1
+nonlinear_and,controlled::nonlinear_and::U_control,2,"[""a"", ""b""]",2,2,true,unsat,exhaustive_two_copy_miter,0.000013,2,2,,sufficient,formal_locality_barriers_v1
+affine_bool,controlled::affine_bool::U_control,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.000025,0,1,8910ceaf96f2c5b6_cex,counterexample,formal_locality_barriers_v1
+affine_bool,controlled::affine_bool::U_control,1,"[""a0""]",1,1,true,sat,exhaustive_two_copy_miter,0.000028,1,2,770332434e1f8a08_cex,counterexample,formal_locality_barriers_v1
+affine_bool,controlled::affine_bool::U_control,2,"[""a0"", ""a1""]",2,2,true,unsat,exhaustive_two_copy_miter,0.000024,2,2,,sufficient,formal_locality_barriers_v1
+real_0001,real_0001::U0_direct_name_intersection,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.000198,0,1,ccfb28a0317aae0a_cex,counterexample,formal_locality_barriers_v1
+real_0001,real_0001::U0_direct_name_intersection,1,"[""a0""]",1,1,true,sat,exhaustive_two_copy_miter,0.000876,1,2,9f47204e83f425c4_cex,counterexample,formal_locality_barriers_v1
+real_0001,real_0001::U0_direct_name_intersection,2,"[""new_n17""]",1,1,true,unsat,exhaustive_two_copy_miter,0.024454,2,2,,sufficient,formal_locality_barriers_v1
+real_0002,real_0002::U0_direct_name_intersection,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.000199,0,1,c193c30efbb41e2e_cex,counterexample,formal_locality_barriers_v1
+real_0002,real_0002::U0_direct_name_intersection,1,"[""a0""]",1,1,true,sat,exhaustive_two_copy_miter,0.000900,1,2,77bc49090a78bab3_cex,counterexample,formal_locality_barriers_v1
+real_0002,real_0002::U0_direct_name_intersection,2,"[""new_n17""]",1,1,true,unsat,exhaustive_two_copy_miter,0.024053,2,2,,sufficient,formal_locality_barriers_v1
+real_0003,real_0003::U0_direct_name_intersection,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.000199,0,1,5cec938ea52b370b_cex,counterexample,formal_locality_barriers_v1
+real_0003,real_0003::U0_direct_name_intersection,1,"[""a0""]",1,1,true,sat,exhaustive_two_copy_miter,0.000903,1,2,a205cf65f7a5cf06_cex,counterexample,formal_locality_barriers_v1
+real_0003,real_0003::U0_direct_name_intersection,2,"[""a0"", ""b0""]",2,2,true,sat,exhaustive_two_copy_miter,0.012109,2,3,0525c3ade37e5e3a_cex,counterexample,formal_locality_barriers_v1
+real_0003,real_0003::U0_direct_name_intersection,3,"[""a0"", ""b0"", ""cin""]",3,3,true,unsat,exhaustive_two_copy_miter,0.024046,3,3,,sufficient,formal_locality_barriers_v1
+real_0004,real_0004::U0_direct_name_intersection,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.000204,0,1,f39416dcbf14e0e7_cex,counterexample,formal_locality_barriers_v1
+real_0004,real_0004::U0_direct_name_intersection,1,"[""a0""]",1,1,true,sat,exhaustive_two_copy_miter,0.000909,1,2,c0480adb26c5a2f9_cex,counterexample,formal_locality_barriers_v1
+real_0004,real_0004::U0_direct_name_intersection,2,"[""new_n17""]",1,1,true,unsat,exhaustive_two_copy_miter,0.023653,2,2,,sufficient,formal_locality_barriers_v1
+real_0005,real_0005::U0_direct_name_intersection,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.000200,0,1,b999438e2959ea22_cex,counterexample,formal_locality_barriers_v1
+real_0005,real_0005::U0_direct_name_intersection,1,"[""a0""]",1,1,true,sat,exhaustive_two_copy_miter,0.000895,1,2,bcafd34d4a251e9b_cex,counterexample,formal_locality_barriers_v1
+real_0005,real_0005::U0_direct_name_intersection,2,"[""new_n17""]",1,1,true,unsat,exhaustive_two_copy_miter,0.023888,2,2,,sufficient,formal_locality_barriers_v1
+real_0006,real_0006::U0_direct_name_intersection,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.000199,0,1,4520ee67b162b121_cex,counterexample,formal_locality_barriers_v1
+real_0006,real_0006::U0_direct_name_intersection,1,"[""a0""]",1,1,true,sat,exhaustive_two_copy_miter,0.000892,1,2,6e5eaec0d830a28a_cex,counterexample,formal_locality_barriers_v1
+real_0006,real_0006::U0_direct_name_intersection,2,"[""a0"", ""b0""]",2,2,true,sat,exhaustive_two_copy_miter,0.012013,2,3,466743204142ee3d_cex,counterexample,formal_locality_barriers_v1
+real_0006,real_0006::U0_direct_name_intersection,3,"[""a0"", ""b0"", ""cin""]",3,3,true,unsat,exhaustive_two_copy_miter,0.024261,3,3,,sufficient,formal_locality_barriers_v1
+real_0007,real_0007::U0_direct_name_intersection,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.000277,0,1,a6da411f34b62250_cex,counterexample,formal_locality_barriers_v1
+real_0007,real_0007::U0_direct_name_intersection,1,"[""d2""]",1,1,true,sat,exhaustive_two_copy_miter,0.000279,1,2,6164f9f58abfa562_cex,counterexample,formal_locality_barriers_v1
+real_0007,real_0007::U0_direct_name_intersection,2,"[""s0""]",1,1,true,sat,exhaustive_two_copy_miter,0.000336,2,3,cb343e0799785de9_cex,counterexample,formal_locality_barriers_v1
+real_0007,real_0007::U0_direct_name_intersection,3,"[""d2"", ""s0""]",2,2,true,sat,exhaustive_two_copy_miter,0.000798,3,4,75622f049caef25e_cex,counterexample,formal_locality_barriers_v1
+real_0007,real_0007::U0_direct_name_intersection,4,"[""new_n10"", ""s0""]",2,2,true,sat,exhaustive_two_copy_miter,0.000856,4,5,656f7e27f613d5ca_cex,counterexample,formal_locality_barriers_v1
+real_0007,real_0007::U0_direct_name_intersection,5,"[""d2"", ""new_n10"", ""s0""]",3,3,true,sat,exhaustive_two_copy_miter,0.000916,5,6,83edd8c72272f4bb_cex,counterexample,formal_locality_barriers_v1
+real_0007,real_0007::U0_direct_name_intersection,6,"[""d2"", ""s0"", ""s1""]",3,3,true,unsat,exhaustive_two_copy_miter,0.000936,6,6,,sufficient,formal_locality_barriers_v1
+real_0008,real_0008::U0_direct_name_intersection,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.000513,0,1,b78a139f00eaceda_cex,counterexample,formal_locality_barriers_v1
+real_0008,real_0008::U0_direct_name_intersection,1,"[""d1""]",1,1,true,sat,exhaustive_two_copy_miter,0.000509,1,2,a37d080a54054fb3_cex,counterexample,formal_locality_barriers_v1
+real_0008,real_0008::U0_direct_name_intersection,2,"[""s1""]",1,1,true,sat,exhaustive_two_copy_miter,0.000540,2,3,bb6268af982d778f_cex,counterexample,formal_locality_barriers_v1
+real_0008,real_0008::U0_direct_name_intersection,3,"[""d1"", ""s1""]",2,2,true,unsat,exhaustive_two_copy_miter,0.000925,3,3,,sufficient,formal_locality_barriers_v1
+real_0009,real_0009::U0_direct_name_intersection,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.000107,0,1,58d0471ad14202f9_cex,counterexample,formal_locality_barriers_v1
+real_0009,real_0009::U0_direct_name_intersection,1,"[""d2""]",1,1,true,sat,exhaustive_two_copy_miter,0.000509,1,2,1e335ecaef09a4b0_cex,counterexample,formal_locality_barriers_v1
+real_0009,real_0009::U0_direct_name_intersection,2,"[""d2"", ""s1""]",2,2,true,unsat,exhaustive_two_copy_miter,0.000917,2,2,,sufficient,formal_locality_barriers_v1
+real_0010,real_0010::U0_direct_name_intersection,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.008228,0,1,ff4787d61f94879e_cex,counterexample,formal_locality_barriers_v1
+real_0010,real_0010::U0_direct_name_intersection,1,"[""d6""]",1,1,true,sat,exhaustive_two_copy_miter,0.008135,1,2,35f1a5a93748cde3_cex,counterexample,formal_locality_barriers_v1
+real_0010,real_0010::U0_direct_name_intersection,2,"[""new_n18""]",1,1,true,sat,exhaustive_two_copy_miter,0.008123,2,3,7f13bbee565e8b64_cex,counterexample,formal_locality_barriers_v1
+real_0010,real_0010::U0_direct_name_intersection,3,"[""s0""]",1,1,true,sat,exhaustive_two_copy_miter,0.010131,3,4,fa71b93739768d15_cex,counterexample,formal_locality_barriers_v1
+real_0010,real_0010::U0_direct_name_intersection,4,"[""d6"", ""new_n18""]",2,2,true,sat,exhaustive_two_copy_miter,0.008131,4,5,9f53a7042d751f4c_cex,counterexample,formal_locality_barriers_v1
+real_0010,real_0010::U0_direct_name_intersection,5,"[""d6"", ""s0""]",2,2,true,unsat,exhaustive_two_copy_miter,0.064669,5,5,,sufficient,formal_locality_barriers_v1
+real_0011,real_0011::U0_direct_name_intersection,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.008301,0,1,e3dbc52c786e9dab_cex,counterexample,formal_locality_barriers_v1
+real_0011,real_0011::U0_direct_name_intersection,1,"[""d5""]",1,1,true,sat,exhaustive_two_copy_miter,0.008168,1,2,94eef836f86bbeb3_cex,counterexample,formal_locality_barriers_v1
+real_0011,real_0011::U0_direct_name_intersection,2,"[""new_n24""]",1,1,true,sat,exhaustive_two_copy_miter,0.008119,2,3,66ca49ae0880f335_cex,counterexample,formal_locality_barriers_v1
+real_0011,real_0011::U0_direct_name_intersection,3,"[""s0""]",1,1,true,sat,exhaustive_two_copy_miter,0.009206,3,4,02f85a60034155a9_cex,counterexample,formal_locality_barriers_v1
+real_0011,real_0011::U0_direct_name_intersection,4,"[""d5"", ""new_n24""]",2,2,true,sat,exhaustive_two_copy_miter,0.008122,4,5,8ea82415df748700_cex,counterexample,formal_locality_barriers_v1
+real_0011,real_0011::U0_direct_name_intersection,5,"[""d5"", ""s0""]",2,2,true,unsat,exhaustive_two_copy_miter,0.064439,5,5,,sufficient,formal_locality_barriers_v1
+real_0012,real_0012::U0_direct_name_intersection,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.000135,0,1,c136fd2be1fdb1ab_cex,counterexample,formal_locality_barriers_v1
+real_0012,real_0012::U0_direct_name_intersection,1,"[""d0""]",1,1,true,sat,exhaustive_two_copy_miter,0.008050,1,2,5899de870afdcbb2_cex,counterexample,formal_locality_barriers_v1
+real_0012,real_0012::U0_direct_name_intersection,2,"[""d0"", ""s0""]",2,2,true,unsat,exhaustive_two_copy_miter,0.064577,2,2,,sufficient,formal_locality_barriers_v1
+real_0013,real_0013::U0_direct_name_intersection,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.008126,0,1,7ae6784055301ffd_cex,counterexample,formal_locality_barriers_v1
+real_0013,real_0013::U0_direct_name_intersection,1,"[""d4""]",1,1,true,sat,exhaustive_two_copy_miter,0.008091,1,2,319d9ba0149a7274_cex,counterexample,formal_locality_barriers_v1
+real_0013,real_0013::U0_direct_name_intersection,2,"[""new_n28""]",1,1,true,sat,exhaustive_two_copy_miter,0.008143,2,3,76bc26ad0c324e2a_cex,counterexample,formal_locality_barriers_v1
+real_0013,real_0013::U0_direct_name_intersection,3,"[""s0""]",1,1,true,sat,exhaustive_two_copy_miter,0.008560,3,4,b6da44c3c6add78e_cex,counterexample,formal_locality_barriers_v1
+real_0013,real_0013::U0_direct_name_intersection,4,"[""d4"", ""new_n28""]",2,2,true,sat,exhaustive_two_copy_miter,0.010169,4,5,9cc5e97009d064d0_cex,counterexample,formal_locality_barriers_v1
+real_0013,real_0013::U0_direct_name_intersection,5,"[""d4"", ""s0""]",2,2,true,unsat,exhaustive_two_copy_miter,0.065647,5,5,,sufficient,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.032275,0,1,6f160acf6eccde85_cex,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,1,"[""d7""]",1,1,true,sat,exhaustive_two_copy_miter,0.031334,1,2,fd99623545b923b1_cex,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,2,"[""new_n15""]",1,1,true,sat,exhaustive_two_copy_miter,0.031320,2,3,090d4040bb9446bf_cex,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,3,"[""s0""]",1,1,true,sat,exhaustive_two_copy_miter,0.031440,3,4,ede185670342e0fe_cex,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,4,"[""s2""]",1,1,true,sat,exhaustive_two_copy_miter,0.039270,4,5,fd42848d8f9efd53_cex,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,5,"[""d7"", ""new_n15""]",2,2,true,sat,exhaustive_two_copy_miter,0.031679,5,6,7e936153aafb2e4d_cex,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,6,"[""d7"", ""s0""]",2,2,true,sat,exhaustive_two_copy_miter,0.031904,6,7,048296531397aeeb_cex,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,7,"[""d7"", ""s2""]",2,2,true,sat,exhaustive_two_copy_miter,0.039487,7,8,7bc6f0142fc3e680_cex,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,8,"[""new_n15"", ""s0""]",2,2,true,sat,exhaustive_two_copy_miter,0.031721,8,9,896f957bd3199d49_cex,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,9,"[""s0"", ""s2""]",2,2,true,sat,exhaustive_two_copy_miter,0.044161,9,10,88172fec38837be0_cex,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,10,"[""d7"", ""new_n15"", ""s0""]",3,3,true,sat,exhaustive_two_copy_miter,0.032179,10,11,66eacef24e2cbfae_cex,counterexample,formal_locality_barriers_v1
+real_0014,real_0014::U0_direct_name_intersection,11,"[""d7"", ""s0"", ""s2""]",3,3,true,unsat,exhaustive_two_copy_miter,0.063772,11,11,,sufficient,formal_locality_barriers_v1
+real_0015,real_0015::U0_direct_name_intersection,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.000231,0,1,b5552a51b9b6e3f0_cex,counterexample,formal_locality_barriers_v1
+real_0015,real_0015::U0_direct_name_intersection,1,"[""d2""]",1,1,true,sat,exhaustive_two_copy_miter,0.008019,1,2,9908755a4c59a5d5_cex,counterexample,formal_locality_barriers_v1
+real_0015,real_0015::U0_direct_name_intersection,2,"[""d2"", ""d6""]",2,2,true,sat,exhaustive_two_copy_miter,0.008035,2,3,0b814746da360cba_cex,counterexample,formal_locality_barriers_v1
+real_0015,real_0015::U0_direct_name_intersection,3,"[""d2"", ""new_n19""]",2,2,true,sat,exhaustive_two_copy_miter,0.008076,3,4,5419b2c90e4f8380_cex,counterexample,formal_locality_barriers_v1
+real_0015,real_0015::U0_direct_name_intersection,4,"[""d2"", ""s0""]",2,2,true,sat,exhaustive_two_copy_miter,0.009870,4,5,e8e7617ae3dde1f3_cex,counterexample,formal_locality_barriers_v1
+real_0015,real_0015::U0_direct_name_intersection,5,"[""d2"", ""d6"", ""new_n19""]",3,3,true,sat,exhaustive_two_copy_miter,0.008114,5,6,be76bf6d61d91cf3_cex,counterexample,formal_locality_barriers_v1
+real_0015,real_0015::U0_direct_name_intersection,6,"[""d2"", ""d6"", ""s0""]",3,3,true,unsat,exhaustive_two_copy_miter,0.063720,6,6,,sufficient,formal_locality_barriers_v1
+real_0016,real_0016::U0_direct_name_intersection,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.000135,0,1,86600e8b572a4cc5_cex,counterexample,formal_locality_barriers_v1
+real_0016,real_0016::U0_direct_name_intersection,1,"[""d0""]",1,1,true,sat,exhaustive_two_copy_miter,0.007930,1,2,dfd242287f065b9f_cex,counterexample,formal_locality_barriers_v1
+real_0016,real_0016::U0_direct_name_intersection,2,"[""d0"", ""d4""]",2,2,true,sat,exhaustive_two_copy_miter,0.007936,2,3,65636a1dade60d85_cex,counterexample,formal_locality_barriers_v1
+real_0016,real_0016::U0_direct_name_intersection,3,"[""d0"", ""s0""]",2,2,true,sat,exhaustive_two_copy_miter,0.008456,3,4,9837a4da8c893d5a_cex,counterexample,formal_locality_barriers_v1
+real_0016,real_0016::U0_direct_name_intersection,4,"[""d0"", ""d4"", ""s0""]",3,3,true,unsat,exhaustive_two_copy_miter,0.064344,4,4,,sufficient,formal_locality_barriers_v1
+real_0017,real_0017::U0_direct_name_intersection,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.000592,0,1,eaee47827255f779_cex,counterexample,formal_locality_barriers_v1
+real_0017,real_0017::U0_direct_name_intersection,1,"[""d4""]",1,1,true,sat,exhaustive_two_copy_miter,0.015778,1,2,88be70c255b1d060_cex,counterexample,formal_locality_barriers_v1
+real_0017,real_0017::U0_direct_name_intersection,2,"[""d4"", ""new_n15""]",2,2,true,sat,exhaustive_two_copy_miter,0.015646,2,3,941a91d962901901_cex,counterexample,formal_locality_barriers_v1
+real_0017,real_0017::U0_direct_name_intersection,3,"[""d4"", ""s1""]",2,2,true,sat,exhaustive_two_copy_miter,0.031887,3,4,0f913d099d4a6930_cex,counterexample,formal_locality_barriers_v1
+real_0017,real_0017::U0_direct_name_intersection,4,"[""d4"", ""new_n15"", ""s1""]",3,3,true,sat,exhaustive_two_copy_miter,0.032077,4,5,260e8a08aa0e5f97_cex,counterexample,formal_locality_barriers_v1
+real_0017,real_0017::U0_direct_name_intersection,5,"[""d4"", ""s1"", ""s2""]",3,3,true,unsat,exhaustive_two_copy_miter,0.063147,5,5,,sufficient,formal_locality_barriers_v1
+real_0018,real_0018::U0_direct_name_intersection,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.016292,0,1,5c08b5337992f87f_cex,counterexample,formal_locality_barriers_v1
+real_0018,real_0018::U0_direct_name_intersection,1,"[""d6""]",1,1,true,sat,exhaustive_two_copy_miter,0.015634,1,2,2fc8e78ebeffbd17_cex,counterexample,formal_locality_barriers_v1
+real_0018,real_0018::U0_direct_name_intersection,2,"[""new_n19""]",1,1,true,sat,exhaustive_two_copy_miter,0.015595,2,3,57c42cbc5090f649_cex,counterexample,formal_locality_barriers_v1
+real_0018,real_0018::U0_direct_name_intersection,3,"[""s1""]",1,1,true,sat,exhaustive_two_copy_miter,0.017639,3,4,79bf7963a587168e_cex,counterexample,formal_locality_barriers_v1
+real_0018,real_0018::U0_direct_name_intersection,4,"[""d6"", ""new_n19""]",2,2,true,sat,exhaustive_two_copy_miter,0.015668,4,5,d3e9d259c0d5c7a2_cex,counterexample,formal_locality_barriers_v1
+real_0018,real_0018::U0_direct_name_intersection,5,"[""d6"", ""s1""]",2,2,true,sat,exhaustive_two_copy_miter,0.049029,5,6,2e96c0df7465e878_cex,counterexample,formal_locality_barriers_v1
+real_0018,real_0018::U0_direct_name_intersection,6,"[""d6"", ""s1"", ""s2""]",3,3,true,unsat,exhaustive_two_copy_miter,0.062952,6,6,,sufficient,formal_locality_barriers_v1
+real_0019,real_0019::U0_direct_name_intersection,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.015644,0,1,bc01a575f5934156_cex,counterexample,formal_locality_barriers_v1
+real_0019,real_0019::U0_direct_name_intersection,1,"[""d2""]",1,1,true,sat,exhaustive_two_copy_miter,0.015700,1,2,a64fef6fb45378cc_cex,counterexample,formal_locality_barriers_v1
+real_0019,real_0019::U0_direct_name_intersection,2,"[""s1""]",1,1,true,sat,exhaustive_two_copy_miter,0.015965,2,3,630b23ea4a76d343_cex,counterexample,formal_locality_barriers_v1
+real_0019,real_0019::U0_direct_name_intersection,3,"[""d2"", ""s1""]",2,2,true,sat,exhaustive_two_copy_miter,0.047700,3,4,45a46793a88f5de9_cex,counterexample,formal_locality_barriers_v1
+real_0019,real_0019::U0_direct_name_intersection,4,"[""new_n29"", ""s1""]",2,2,true,sat,exhaustive_two_copy_miter,0.047234,4,5,e78d03d7d27e6cdc_cex,counterexample,formal_locality_barriers_v1
+real_0019,real_0019::U0_direct_name_intersection,5,"[""d2"", ""new_n29"", ""s1""]",3,3,true,sat,exhaustive_two_copy_miter,0.048114,5,6,43e8f3672e488877_cex,counterexample,formal_locality_barriers_v1
+real_0019,real_0019::U0_direct_name_intersection,6,"[""d2"", ""s1"", ""s2""]",3,3,true,unsat,exhaustive_two_copy_miter,0.064292,6,6,,sufficient,formal_locality_barriers_v1
+real_0020,real_0020::U0_direct_name_intersection,0,[],0,0,true,sat,exhaustive_two_copy_miter,0.017500,0,1,67cc8ea55f07b15c_cex,counterexample,formal_locality_barriers_v1
+real_0020,real_0020::U0_direct_name_intersection,1,"[""d6""]",1,1,true,sat,exhaustive_two_copy_miter,0.017432,1,2,8eefa0795979bcd5_cex,counterexample,formal_locality_barriers_v1
+real_0020,real_0020::U0_direct_name_intersection,2,"[""d7""]",1,1,true,sat,exhaustive_two_copy_miter,0.017422,2,3,b2ba4f3ef1e38253_cex,counterexample,formal_locality_barriers_v1
+real_0020,real_0020::U0_direct_name_intersection,3,"[""s1""]",1,1,true,sat,exhaustive_two_copy_miter,0.019590,3,4,1f69165708e73320_cex,counterexample,formal_locality_barriers_v1
+real_0020,real_0020::U0_direct_name_intersection,4,"[""d6"", ""d7""]",2,2,true,sat,exhaustive_two_copy_miter,0.017573,4,5,0f67fe87ee61fd86_cex,counterexample,formal_locality_barriers_v1
+real_0020,real_0020::U0_direct_name_intersection,5,"[""d6"", ""s1""]",2,2,true,sat,exhaustive_two_copy_miter,0.054367,5,6,ae9e8165d57d8679_cex,counterexample,formal_locality_barriers_v1
+real_0020,real_0020::U0_direct_name_intersection,6,"[""new_n20"", ""s1""]",2,2,true,unsat,exhaustive_two_copy_miter,0.069459,6,6,,sufficient,formal_locality_barriers_v1

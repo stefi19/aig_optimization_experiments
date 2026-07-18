@@ -1,0 +1,4 @@
+baseline,targets,successes,evidence_scope,notes,schema_version
+previous_cross_netlist_fixed_width_search,56,0,previous_real_failures,Input/output blocker labels preserved from prior pipeline.,formal_locality_barriers_v1
+formal_locality_hitting_set_certificates,56,20,declared_universe_exact_minimum,Certificate success is not counted as graph-active recovery.,formal_locality_barriers_v1
+certificate_guided_transplant_accounting,56,0,global_cec_required,No real graph-active transplant accepted.,formal_locality_barriers_v1

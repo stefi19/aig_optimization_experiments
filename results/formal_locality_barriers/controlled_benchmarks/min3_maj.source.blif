@@ -1,0 +1,9 @@
+.model src_min3_maj
+.inputs a b c
+.outputs t
+.names a b c t
+110 1
+101 1
+011 1
+111 1
+.end

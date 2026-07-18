@@ -1,0 +1,10 @@
+.model opt_permute_invert
+.inputs a b
+.outputs t0 t1
+.names a b t0
+01 1
+11 1
+.names a b t1
+00 1
+01 1
+.end

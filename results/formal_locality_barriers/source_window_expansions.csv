@@ -1,0 +1,21 @@
+analysis_target_id,target_id,source_window_radius,source_window_size,frontier_outputs,classification,schema_version
+real_0001,generated_adder_4|adder_bit1_carry_sum_region|dc2|new_n17,0,5,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",primary_output_frontier,formal_locality_barriers_v1
+real_0002,generated_adder_4|adder_bit1_carry_sum_region|dc2|new_n17,0,5,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",primary_output_frontier,formal_locality_barriers_v1
+real_0003,generated_adder_4|adder_bit1_carry_sum_region|dc2|new_n19,0,5,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",primary_output_frontier,formal_locality_barriers_v1
+real_0004,generated_adder_4|adder_bit1_carry_sum_region|resyn2|new_n17,0,5,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",primary_output_frontier,formal_locality_barriers_v1
+real_0005,generated_adder_4|adder_bit1_carry_sum_region|resyn2|new_n17,0,5,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",primary_output_frontier,formal_locality_barriers_v1
+real_0006,generated_adder_4|adder_bit1_carry_sum_region|resyn2|new_n19,0,5,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",primary_output_frontier,formal_locality_barriers_v1
+real_0007,generated_mux_tree_4|mux_tree_root|dc2|new_n10,0,1,"[""out""]",primary_output_frontier,formal_locality_barriers_v1
+real_0008,generated_mux_tree_4|mux_tree_root|resyn2|new_n12,0,1,"[""out""]",primary_output_frontier,formal_locality_barriers_v1
+real_0009,generated_mux_tree_4|mux_tree_root|resyn2|new_n9,0,1,"[""out""]",primary_output_frontier,formal_locality_barriers_v1
+real_0010,generated_mux_tree_8|mux_tree_upper_root|dc2|new_n18,0,1,"[""out""]",primary_output_frontier,formal_locality_barriers_v1
+real_0011,generated_mux_tree_8|mux_tree_upper_root|dc2|new_n24,0,1,"[""out""]",primary_output_frontier,formal_locality_barriers_v1
+real_0012,generated_mux_tree_8|mux_tree_upper_root|dc2|new_n27,0,1,"[""out""]",primary_output_frontier,formal_locality_barriers_v1
+real_0013,generated_mux_tree_8|mux_tree_upper_root|dc2|new_n28,0,1,"[""out""]",primary_output_frontier,formal_locality_barriers_v1
+real_0014,generated_mux_tree_8|mux_tree_upper_root|dc2|new_n15,0,1,"[""out""]",primary_output_frontier,formal_locality_barriers_v1
+real_0015,generated_mux_tree_8|mux_tree_upper_root|dc2|new_n19,0,1,"[""out""]",primary_output_frontier,formal_locality_barriers_v1
+real_0016,generated_mux_tree_8|mux_tree_upper_root|dc2|new_n29,0,1,"[""out""]",primary_output_frontier,formal_locality_barriers_v1
+real_0017,generated_mux_tree_8|mux_tree_upper_root|resyn2|new_n15,0,1,"[""out""]",primary_output_frontier,formal_locality_barriers_v1
+real_0018,generated_mux_tree_8|mux_tree_upper_root|resyn2|new_n19,0,1,"[""out""]",primary_output_frontier,formal_locality_barriers_v1
+real_0019,generated_mux_tree_8|mux_tree_upper_root|resyn2|new_n29,0,1,"[""out""]",primary_output_frontier,formal_locality_barriers_v1
+real_0020,generated_mux_tree_8|mux_tree_upper_root|resyn2|new_n20,0,1,"[""out""]",primary_output_frontier,formal_locality_barriers_v1

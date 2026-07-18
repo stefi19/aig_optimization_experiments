@@ -1,0 +1,6 @@
+.model src_nonlinear_and
+.inputs a b
+.outputs t
+.names a b t
+11 1
+.end

@@ -1,0 +1,7 @@
+.model opt_min2_xor
+.inputs a b
+.outputs t
+.names a b t
+10 1
+01 1
+.end
