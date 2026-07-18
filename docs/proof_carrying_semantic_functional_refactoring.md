@@ -99,7 +99,8 @@ Current committed results under `results/semantic_functional_refactoring/`:
 - controlled decomposable candidates: 12;
 - decomposition counterexamples: 1, reproduced 1/1;
 - exact quotients synthesized and independently proved: 12;
-- non-vacuous decompositions: 11;
+- quotient-depends-on-`M` decompositions: 11;
+- non-identity accepted decompositions: 10;
 - controlled graph-active ABC-equivalent refactorings: 10;
 - controlled restored boundaries: 10;
 - real attempts: 58;

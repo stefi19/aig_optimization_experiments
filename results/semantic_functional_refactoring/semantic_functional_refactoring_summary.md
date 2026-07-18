@@ -3,7 +3,8 @@
 - Controlled experiments: 13
 - Controlled decomposable candidates: 12
 - Exact quotients synthesized/proved: 12
-- Non-vacuous decompositions: 11
+- Quotients depending on M: 11
+- Non-identity accepted decompositions: 10
 - Controlled graph-active global-CEC replacements: 10
 - Real development/held-out attempts: 58
 - Real restored boundaries: 0

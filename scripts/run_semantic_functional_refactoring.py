@@ -270,13 +270,24 @@ def _summarise(rows: dict[str, list[dict[str, str]]]) -> None:
 def _write_summary(rows: dict[str, list[dict[str, str]]]) -> None:
     controlled = rows["controlled_experiments.csv"]
     real = rows["development_experiments.csv"]
+    nonvac = {r["candidate_id"]: r for r in rows["non_vacuity_proofs.csv"]}
+    accepted_non_identity = 0
+    for row in controlled:
+        candidate_id = f"{row['benchmark']}__decomp"
+        guard = nonvac.get(candidate_id, {})
+        if (
+            row["non_vacuity_status"] == "non_vacuous_depends_on_m"
+            and guard.get("identity_rejected") != "true"
+        ):
+            accepted_non_identity += 1
     lines = [
         "# Semantic Functional Refactoring Summary",
         "",
         "- Controlled experiments: " + str(len(controlled)),
         "- Controlled decomposable candidates: " + str(sum(r["decomposition_status"] == "decomposable" for r in controlled)),
         "- Exact quotients synthesized/proved: " + str(sum(r["quotient_status"] == "synthesized_truth_table" for r in controlled)),
-        "- Non-vacuous decompositions: " + str(sum(r["non_vacuity_status"] == "non_vacuous_depends_on_m" for r in controlled)),
+        "- Quotients depending on M: " + str(sum(r["non_vacuity_status"] == "non_vacuous_depends_on_m" for r in controlled)),
+        "- Non-identity accepted decompositions: " + str(accepted_non_identity),
         "- Controlled graph-active global-CEC replacements: " + str(sum(r["restored_boundary"] == "true" for r in controlled)),
         "- Real development/held-out attempts: " + str(len(real)),
         "- Real restored boundaries: 0",

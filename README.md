@@ -3097,7 +3097,8 @@ Current committed results under
 - 12 controlled decomposable candidates;
 - 1 decomposition counterexample, concretely reproduced;
 - 12 exact quotients synthesized and independently Z3-proved;
-- 11 non-vacuous decompositions;
+- 11 quotient-depends-on-`M` decompositions;
+- 10 non-identity accepted decompositions;
 - 10 controlled graph-active ABC-equivalent refactorings;
 - 10 controlled semantic boundaries restored;
 - 49 development real attempts, 0 restorations;

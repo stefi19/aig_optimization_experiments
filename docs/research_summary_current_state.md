@@ -105,9 +105,9 @@ Z3 miter, synthesizes an exact quotient, verifies `F(X, Z) = H(G(X), Z)`,
 rejects identity or `H`-ignores-`M` decompositions, and rewrites the graph so
 the semantic divisor is on a real fanout path. The controlled run has 13 cases,
 12 decomposable candidates, 12 independently proved quotients, 11 non-vacuous
-decompositions, 10 graph-active ABC-equivalent refactorings, and 10 restored
-controlled boundaries. The real development/held-out split remains 0/58
-restored.
+quotient-depends-on-`M` decompositions, 10 non-identity graph-active
+ABC-equivalent refactorings, and 10 restored controlled boundaries. The real
+development/held-out split remains 0/58 restored.
 
 Each layer has a different role:
 
@@ -774,10 +774,10 @@ proof generation.
     structural seeds.
 18. Functional semantic refactoring replaces closed-region search with exact
     decomposition `Y = H(G(X), Z)`. It proves 12/13 controlled decomposability
-    candidates, validates 12 exact quotients, rejects 3 controlled negative or
+    candidates, validates 12 exact quotients, rejects controlled negative and
     vacuous cases at the correct stages, restores 10 controlled graph-active
-    boundaries with ABC CEC, and still restores 0 real boundaries across 49
-    development plus 9 held-out attempts.
+    non-identity boundaries with ABC CEC, and still restores 0 real boundaries
+    across 49 development plus 9 held-out attempts.
 
 ## 10. Limitations
 
