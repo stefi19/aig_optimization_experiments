@@ -1,0 +1,13 @@
+mode,operator,regions_attempted,regions_recovered,iterations,counterexamples,schema_version
+blind,add_add,2,0,6,4,z3_grouped_recovery_v1
+blind,affine,34,3,65,31,z3_grouped_recovery_v1
+blind,bilinear,2,0,6,4,z3_grouped_recovery_v1
+blind,constant_multiply,34,12,99,65,z3_grouped_recovery_v1
+blind,sign_extend,4,4,11,7,z3_grouped_recovery_v1
+blind,zero_extend,4,4,8,4,z3_grouped_recovery_v1
+oracle_bus,add_add,2,0,6,4,z3_grouped_recovery_v1
+oracle_bus,affine,34,3,65,31,z3_grouped_recovery_v1
+oracle_bus,bilinear,2,0,6,4,z3_grouped_recovery_v1
+oracle_bus,constant_multiply,34,12,89,55,z3_grouped_recovery_v1
+oracle_bus,sign_extend,4,4,10,6,z3_grouped_recovery_v1
+oracle_bus,zero_extend,4,4,8,4,z3_grouped_recovery_v1

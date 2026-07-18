@@ -229,19 +229,26 @@ def _expr(op: str, args: tuple[SemanticExpr, ...], width: int, *, constant: int 
     return SemanticExpr(op, operands=args, output_type=SemanticType("bitvector" if width > 1 else "boolean", width, signed), constant_value=constant)
 
 
-def parametric_templates(input_buses: list[BlindBus], output_width: int, *, max_constant: int = 8, max_shift: int = 4) -> list[tuple[str, SemanticExpr, dict[str, object]]]:
+def parametric_templates(input_buses: list[BlindBus], output_width: int, *, max_constant: int | None = None, max_shift: int = 4) -> list[tuple[str, SemanticExpr, dict[str, object]]]:
     """Bounded, source-blind parametric template enumeration."""
 
+    max_constant = min((1 << output_width) - 1, 31) if max_constant is None else max_constant
     inputs = [input_expr(bus.name, bus.width, bus.signed) for bus in input_buses]
     rows: list[tuple[str, SemanticExpr, dict[str, object]]] = []
     for a in inputs:
         for alpha in range(0, max_constant + 1):
             rows.append(("constant_multiply", _expr("mul", (a, const_expr(alpha, output_width)), output_width), {"alpha": alpha}))
+            rows.append(("affine_unary", _expr("add", (_expr("mul", (a, const_expr(alpha, output_width)), output_width), const_expr(alpha, output_width)), output_width), {"alpha": alpha, "beta": alpha}))
         for mask in {0, 1, (1 << min(output_width, 8)) - 1}:
             rows.append(("masked_boolean", _expr("mask_and", (a,), output_width, constant=mask), {"mask": mask}))
         for shift in range(1, min(max_shift, max(1, output_width - 1)) + 1):
             rows.append(("shift", _expr("shl", (a,), output_width, constant=shift), {"s": shift, "mode": "left"}))
             rows.append(("shift", _expr("lshr", (a,), output_width, constant=shift), {"s": shift, "mode": "right"}))
+        if output_width >= a.width:
+            rows.append(("zero_extend", _expr("zero_extend", (a,), output_width), {"extension": "zero"}))
+            rows.append(("sign_extend", _expr("sign_extend", (a,), output_width, signed=True), {"extension": "sign"}))
+        if output_width <= a.width:
+            rows.append(("slice", SemanticExpr("slice", (a,), output_type=SemanticType("bitvector" if output_width > 1 else "boolean", output_width, False), slice_range=(output_width - 1, 0)), {"hi": output_width - 1, "lo": 0}))
     for a, b in itertools.permutations(inputs, 2):
         rows.extend(
             [
@@ -250,9 +257,14 @@ def parametric_templates(input_buses: list[BlindBus], output_width: int, *, max_
                 ("truncated_multiply", _expr("mul", (a, b), output_width), {"mode": "low_bits"}),
             ]
         )
+        for alpha in range(0, min(max_constant, 15) + 1):
+            for beta in range(0, min(max_constant, 15) + 1):
+                rows.append(("affine_binary", _expr("add", (_expr("mul", (a, const_expr(alpha, output_width)), output_width), _expr("mul", (b, const_expr(beta, output_width)), output_width)), output_width), {"alpha": alpha, "beta": beta, "gamma": 0}))
         for shift in range(1, min(max_shift, max(1, output_width - 1)) + 1):
             rows.append(("shifted_arithmetic", _expr("add", (_expr("shl", (a,), output_width, constant=shift), b), output_width), {"s": shift, "form": "(a<<s)+b"}))
             rows.append(("shifted_arithmetic", _expr("sub", (_expr("shl", (a,), output_width, constant=shift), b), output_width), {"s": shift, "form": "(a<<s)-b"}))
+            rows.append(("shifted_arithmetic", _expr("add", (a, _expr("shl", (b,), output_width, constant=shift)), output_width), {"s": shift, "form": "a+(b<<s)"}))
+            rows.append(("shifted_arithmetic", _expr("sub", (a, _expr("shl", (b,), output_width, constant=shift)), output_width), {"s": shift, "form": "a-(b<<s)"}))
     for a, b, c in itertools.permutations(inputs, 3):
         rows.append(("add_add", _expr("add", (_expr("add", (a, b), output_width), c), output_width), {"permutation": [a.name, b.name, c.name]}))
         rows.append(("multiply_accumulate", _expr("add", (_expr("mul", (a, b), output_width), c), output_width), {"permutation": [a.name, b.name, c.name]}))

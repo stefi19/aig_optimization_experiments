@@ -1,0 +1,8 @@
+digraph semantic_graft_attempt {
+  rankdir=LR;
+  region [label="bitmanip_zero_extend_w6__identity__ground_truth_region"];
+  expr [label="semantic expression", shape=box];
+  frontier [label="frontier not found", color=red];
+  region -> expr;
+  expr -> frontier [style=dashed, color=red];
+}

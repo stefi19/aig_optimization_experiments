@@ -1,0 +1,7 @@
+graft_strategy,attempts,accepted,graph_active,global_cec_passed,schema_version
+in_place_implementation_semantic_normalisation,46,0,0,0,semantic_graft_strategy_ablation_v2
+equivalent_edge_substitution_spec,46,0,0,0,semantic_graft_strategy_ablation_v2
+coi_boundary_output_splice,46,0,0,0,semantic_graft_strategy_ablation_v2
+extended_region_logic_graft,46,0,0,0,semantic_graft_strategy_ablation_v2
+odc_contextual_graft,46,0,0,0,semantic_graft_strategy_ablation_v2
+boundary_utility_aware_placement_search,46,0,0,0,semantic_graft_strategy_ablation_v2
