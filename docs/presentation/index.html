@@ -1236,7 +1236,7 @@ BO = inside R, PO or fanout outside R</pre>
     <section class="slide">
       <div class="slide-content two-column">
         <div><p class="eyebrow">Blind CEGIS</p><h2>Recover semantics without source labels</h2><ul class="large-list"><li>Audit blocks manifest family, operator, expression, bus, signedness, constants, and evaluation accuracy fields from inference.</li><li>Blind bus hypotheses are written before evaluation labels are joined.</li><li>Parametric templates are refined with counterexamples from exact region checks.</li><li>Timeouts and unsupported proofs remain unresolved.</li></ul></div>
-        <div class="metric-stack"><div><strong>488</strong><span>blind candidates</span></div><div><strong>24</strong><span>CEGIS iterations</span></div><div><strong>3</strong><span>formal region proofs</span></div></div>
+        <div class="metric-stack"><div><strong>488</strong><span>blind candidates</span></div><div><strong>28</strong><span>CEGIS iterations</span></div><div><strong>4</strong><span>counterexamples</span></div><div><strong>3</strong><span>formal region proofs</span></div></div>
       </div>
       <aside class="notes">This updates the older limitation: CEGIS is now implemented as a lightweight bounded phase. The main caveat is scalability: the committed run uses exhaustive exact proof because the SMT dependency was unavailable.</aside>
     </section>

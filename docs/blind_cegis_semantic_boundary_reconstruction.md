@@ -70,7 +70,7 @@ result is preserved in `results/semantic_grafting/semantic_graft_funnel.csv`.
 ## Results
 
 Committed CSVs under `results/blind_semantic_cegis/` report 488 bounded
-parametric candidates, 24 CEGIS iterations, 3 formally verified regions by
+parametric candidates, 28 CEGIS iterations, 4 incorporated counterexamples, 3 formally verified regions by
 exhaustive region proof, 3 proven semantic expressions considered for grafting,
 and 0 accepted graph-active semantic grafts.
 

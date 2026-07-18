@@ -62,3 +62,16 @@ def test_expression_rtl_emission_from_parametric_candidate():
     assert rows[0]["generated_without_ground_truth"] == "true"
     assert rows[0]["rtl_text"]
     assert json.loads(rows[0]["expression_json"])["op"]
+
+
+def test_committed_cegis_trace_contains_counterexample_refinement():
+    path = Path(__file__).resolve().parents[1] / "results" / "blind_semantic_cegis" / "cegis_iterations.csv"
+    if not path.exists():
+        pytest.skip("blind CEGIS results have not been generated")
+    import csv
+
+    with path.open(newline="", encoding="utf-8") as fh:
+        rows = list(csv.DictReader(fh))
+    cex_rows = [row for row in rows if row["solver_status"] == "sat"]
+    assert cex_rows
+    assert all(int(row["examples_after"]) > int(row["examples_before"]) for row in cex_rows)

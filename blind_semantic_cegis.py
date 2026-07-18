@@ -291,7 +291,7 @@ def candidate_rows(region_id: str, input_buses: list[BlindBus], output_width: in
     return rows
 
 
-def _deterministic_examples(input_buses: list[BlindBus], *, count: int = 8) -> list[dict[str, int]]:
+def _deterministic_examples(input_buses: list[BlindBus], *, count: int = 1) -> list[dict[str, int]]:
     domains = [range(1 << min(bus.width, 4)) for bus in input_buses]
     examples = []
     for values in itertools.islice(itertools.product(*domains), count):

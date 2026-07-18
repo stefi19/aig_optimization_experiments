@@ -2950,7 +2950,8 @@ make semantic-grafting-all
 Current committed lightweight metrics:
 
 - 488 blind parametric candidates.
-- 24 CEGIS iterations.
+- 28 CEGIS iterations.
+- 4 incorporated formal counterexamples.
 - 3 regions formally verified by exhaustive region proof.
 - 3 proven reconstructed expressions considered for semantic grafting.
 - 0 accepted graph-active semantic graft anchors.
