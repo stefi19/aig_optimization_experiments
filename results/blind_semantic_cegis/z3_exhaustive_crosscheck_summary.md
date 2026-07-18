@@ -7,4 +7,4 @@
 - Disproven by Z3: 186
 - Validated counterexamples: 186/186
 - Encoding failures/timeouts: 0
-- Z3 runtime min/median/max: 0.000782/0.001701/0.018398
+- Z3 runtime min/median/max: 0.000819/0.001678/0.018087
