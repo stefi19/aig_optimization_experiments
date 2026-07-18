@@ -22,6 +22,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Run Z3 smoke checks
+        run: python scripts/check_z3.py
+
       - name: Run tests
         # ABC-dependent tests are guarded by @pytest.mark.skipif and will
         # skip automatically when the ABC binary is not present.

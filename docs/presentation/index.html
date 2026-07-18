@@ -1236,7 +1236,7 @@ BO = inside R, PO or fanout outside R</pre>
     <section class="slide">
       <div class="slide-content two-column">
         <div><p class="eyebrow">Blind CEGIS</p><h2>Recover semantics without source labels</h2><ul class="large-list"><li>Audit blocks manifest family, operator, expression, bus, signedness, constants, and evaluation accuracy fields from inference.</li><li>Blind bus hypotheses are written before evaluation labels are joined.</li><li>Parametric templates are refined with counterexamples from exact region checks.</li><li>Timeouts and unsupported proofs remain unresolved.</li></ul></div>
-        <div class="metric-stack"><div><strong>488</strong><span>blind candidates</span></div><div><strong>28</strong><span>CEGIS iterations</span></div><div><strong>4</strong><span>counterexamples</span></div><div><strong>3</strong><span>formal region proofs</span></div></div>
+        <div class="metric-stack"><div><strong>192/192</strong><span>Z3 agreement</span></div><div><strong>379</strong><span>Z3 CEGIS iterations</span></div><div><strong>46</strong><span>formal SMT proofs</span></div><div><strong>4/4</strong><span>wide cases recovered</span></div></div>
       </div>
       <aside class="notes">This updates the older limitation: CEGIS is now implemented as a lightweight bounded phase. The main caveat is scalability: the committed run uses exhaustive exact proof because the SMT dependency was unavailable.</aside>
     </section>
@@ -1244,7 +1244,7 @@ BO = inside R, PO or fanout outside R</pre>
     <section class="slide">
       <div class="slide-content two-column">
         <div><p class="eyebrow">Semantic grafting</p><h2>A proven expression is not automatically a boundary</h2><ul class="large-list"><li>The expression is a reconstructed anchor, not evidence that the RTL had that exact wire.</li><li>It must become reachable on a valid EBI/EBO frontier.</li><li>Accepted grafts require cycle checks, bypass checks, preserved primary I/O, and global CEC.</li></ul></div>
-        <div class="callout"><h3>Current result</h3><p>3 proven expressions were considered for grafting.</p><p><strong>0</strong> became accepted graph-active semantic graft anchors.</p><p class="warning">The negative result is preserved rather than hidden.</p></div>
+        <div class="callout"><h3>Current result</h3><p>46 proven expressions generated 276 bounded placement attempts across six strategies.</p><p><strong>0</strong> became accepted graph-active semantic graft anchors.</p><p class="warning">The negative result is preserved with a failure taxonomy.</p></div>
       </div>
       <aside class="notes">This explains why additive materialization produced proven wires but zero usable anchors: formal expression proof does not imply graph utility.</aside>
     </section>

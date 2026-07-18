@@ -2947,13 +2947,17 @@ make blind-semantic-cegis-all
 make semantic-grafting-all
 ```
 
-Current committed lightweight metrics:
+Current committed metrics:
 
-- 488 blind parametric candidates.
-- 28 CEGIS iterations.
-- 4 incorporated formal counterexamples.
+- 1,860 blind parametric candidates in the legacy exhaustive run.
+- 47 legacy exhaustive CEGIS iterations.
 - 3 regions formally verified by exhaustive region proof.
-- 3 proven reconstructed expressions considered for semantic grafting.
+- 192/192 exhaustive-versus-Z3 cross-check agreement rows.
+- Z3 blind mode: 16 unique cases attempted, 10 recovered.
+- Z3 oracle-bus mode: 16 unique cases attempted, 10 recovered.
+- 12/16-bit Z3 results: 4 wide unique cases attempted and recovered in both blind and oracle-bus mode.
+- 46 Z3-proven reconstructed expressions considered for semantic grafting.
+- 276 bounded graph-active placement attempts across six safe graft strategies.
 - 0 accepted graph-active semantic graft anchors.
 
 The negative graft result is intentional evidence: a proven reconstructed

@@ -64,6 +64,17 @@ Ground-truth labels are joined only after prediction/proof files are written.
 Sampled simulation remains labelled sampled; timeouts and unsupported proofs are
 not accepted.
 
+The scalable version now uses Z3 bit-vector miters for formal expression proof.
+The encoder agrees with exhaustive verification on 192/192 supported small
+candidate checks. The Z3 CEGIS run attempts 16 unique cases in both blind and
+oracle-bus mode, recovers 10 unique cases in each, and formally verifies 4/4
+attempted 12/16-bit wide cases in both modes.
+
+The graph-active graft result remains negative but better explained: 46 proven
+expressions generated 276 bounded placement attempts across six safe strategies,
+and all were rejected before acceptance because no real frontier placement
+satisfied the graph-active and proof requirements.
+
 Each layer has a different role:
 
 - **Exact signature match** identifies nodes whose signatures or formal truth tables match.
