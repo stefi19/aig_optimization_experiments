@@ -136,6 +136,9 @@ jobs:
       - name: Run semantic Z3 cross-check
         run: make semantic-z3-crosscheck
 
+      - name: Restore committed semantic cross-check artifacts
+        run: git restore results/blind_semantic_cegis
+
       - name: Run lightweight joint region/interface discovery with ABC
         run: |
           python scripts/run_joint_region_interface_discovery.py \
