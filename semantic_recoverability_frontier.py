@@ -132,6 +132,8 @@ class Checkpoint:
     cec_output: str
     runtime_s: float
     unsupported_reason: str = ""
+    artifact_status: str = "materialized"
+    parse_status: str = "parse_valid"
 
 
 def stable_hash(payload: object) -> str:
@@ -260,7 +262,7 @@ def generate_trajectory(
     source_out.parent.mkdir(parents=True, exist_ok=True)
     source_out.write_text(spec.source_blif.read_text(encoding="utf-8"), encoding="utf-8")
     cec, cec_output = abc_cec(abc, spec.source_blif, source_out, timeout_s)
-    checkpoints.append(Checkpoint(spec.trajectory_id, f"{spec.trajectory_id}__cp000_source", spec.benchmark, spec.split, 0, "source", 0, tuple(), source_out, cec, cec_output, 0.0))
+    checkpoints.append(Checkpoint(spec.trajectory_id, f"{spec.trajectory_id}__cp000_source", spec.benchmark, spec.split, 0, "source", 0, tuple(), source_out, cec, cec_output, 0.0, "", "materialized", "parse_valid"))
     prefix: list[str] = []
     for idx, command in enumerate(spec.pass_sequence, start=1):
         pass_name = command.split()[0]
@@ -272,7 +274,20 @@ def generate_trajectory(
             cec, cec_output = abc_cec(abc, spec.source_blif, checkpoint_path, timeout_s)
         else:
             cec, cec_output = "not_run", output
-        checkpoints.append(Checkpoint(spec.trajectory_id, f"{spec.trajectory_id}__cp{idx:03d}_{pass_name}_{occurrence[pass_name]}", spec.benchmark, spec.split, idx, pass_name, occurrence[pass_name], tuple(prefix), checkpoint_path, cec, cec_output, runtime, "" if status == "ok" else output))
+        if status == "ok":
+            artifact_status = "materialized"
+            parse_status = "parse_valid"
+        elif checkpoint_path.exists():
+            artifact_status = "materialized"
+            try:
+                parse_blif(checkpoint_path)
+                parse_status = "parse_valid"
+            except Exception:
+                parse_status = "parse_invalid"
+        else:
+            artifact_status = "unrealized"
+            parse_status = "not_run"
+        checkpoints.append(Checkpoint(spec.trajectory_id, f"{spec.trajectory_id}__cp{idx:03d}_{pass_name}_{occurrence[pass_name]}", spec.benchmark, spec.split, idx, pass_name, occurrence[pass_name], tuple(prefix), checkpoint_path, cec, cec_output, runtime, "" if status == "ok" else output, artifact_status, parse_status))
     return checkpoints
 
 

@@ -1,16 +1,16 @@
-trajectory_id,benchmark,design_family,split,flow_family,pass_sequence,checkpoint_count,deterministic_seed,schema_version
-controlled__controlled_xor_factor__mild_balance_rewrite,controlled_xor_factor,controlled_boolean,controlled,mild_balance_rewrite,"[""strash"", ""balance"", ""rewrite""]",4,0,semantic_recoverability_frontier_v1
-controlled__controlled_xor_factor__rewrite_then_balance,controlled_xor_factor,controlled_boolean,controlled,rewrite_then_balance,"[""strash"", ""rewrite"", ""balance""]",4,0,semantic_recoverability_frontier_v1
-controlled__controlled_xor_factor__refactor_dc2,controlled_xor_factor,controlled_boolean,controlled,refactor_dc2,"[""strash"", ""refactor"", ""dc2""]",4,0,semantic_recoverability_frontier_v1
-controlled__controlled_and_factor__mild_balance_rewrite,controlled_and_factor,controlled_boolean,controlled,mild_balance_rewrite,"[""strash"", ""balance"", ""rewrite""]",4,0,semantic_recoverability_frontier_v1
-controlled__controlled_and_factor__rewrite_then_balance,controlled_and_factor,controlled_boolean,controlled,rewrite_then_balance,"[""strash"", ""rewrite"", ""balance""]",4,0,semantic_recoverability_frontier_v1
-controlled__controlled_and_factor__refactor_dc2,controlled_and_factor,controlled_boolean,controlled,refactor_dc2,"[""strash"", ""refactor"", ""dc2""]",4,0,semantic_recoverability_frontier_v1
-controlled__controlled_nonmonotonic_factor__mild_balance_rewrite,controlled_nonmonotonic_factor,controlled_boolean,controlled,mild_balance_rewrite,"[""strash"", ""balance"", ""rewrite""]",4,0,semantic_recoverability_frontier_v1
-controlled__controlled_nonmonotonic_factor__rewrite_then_balance,controlled_nonmonotonic_factor,controlled_boolean,controlled,rewrite_then_balance,"[""strash"", ""rewrite"", ""balance""]",4,0,semantic_recoverability_frontier_v1
-controlled__controlled_nonmonotonic_factor__refactor_dc2,controlled_nonmonotonic_factor,controlled_boolean,controlled,refactor_dc2,"[""strash"", ""refactor"", ""dc2""]",4,0,semantic_recoverability_frontier_v1
-development__full_adder__mild_balance_rewrite,full_adder,repository_real_hand_written,development,mild_balance_rewrite,"[""strash"", ""balance"", ""rewrite""]",4,0,semantic_recoverability_frontier_v1
-development__full_adder__rewrite_then_balance,full_adder,repository_real_hand_written,development,rewrite_then_balance,"[""strash"", ""rewrite"", ""balance""]",4,0,semantic_recoverability_frontier_v1
-development__full_adder__refactor_dc2,full_adder,repository_real_hand_written,development,refactor_dc2,"[""strash"", ""refactor"", ""dc2""]",4,0,semantic_recoverability_frontier_v1
-heldout__full_adder__mild_balance_rewrite,full_adder,repository_real_hand_written,heldout,mild_balance_rewrite,"[""strash"", ""balance"", ""rewrite""]",4,0,semantic_recoverability_frontier_v1
-heldout__full_adder__rewrite_then_balance,full_adder,repository_real_hand_written,heldout,rewrite_then_balance,"[""strash"", ""rewrite"", ""balance""]",4,0,semantic_recoverability_frontier_v1
-heldout__full_adder__refactor_dc2,full_adder,repository_real_hand_written,heldout,refactor_dc2,"[""strash"", ""refactor"", ""dc2""]",4,0,semantic_recoverability_frontier_v1
+trajectory_id,benchmark,design_family,split,flow_family,pass_sequence,checkpoint_count,realized_checkpoint_count,deterministic_seed,schema_version
+controlled__controlled_xor_factor__mild_balance_rewrite,controlled_xor_factor,controlled_boolean,controlled,mild_balance_rewrite,"[""strash"", ""balance"", ""rewrite""]",4,4,0,semantic_recoverability_frontier_v1
+controlled__controlled_xor_factor__rewrite_then_balance,controlled_xor_factor,controlled_boolean,controlled,rewrite_then_balance,"[""strash"", ""rewrite"", ""balance""]",4,4,0,semantic_recoverability_frontier_v1
+controlled__controlled_xor_factor__refactor_dc2,controlled_xor_factor,controlled_boolean,controlled,refactor_dc2,"[""strash"", ""refactor"", ""dc2""]",4,4,0,semantic_recoverability_frontier_v1
+controlled__controlled_and_factor__mild_balance_rewrite,controlled_and_factor,controlled_boolean,controlled,mild_balance_rewrite,"[""strash"", ""balance"", ""rewrite""]",4,4,0,semantic_recoverability_frontier_v1
+controlled__controlled_and_factor__rewrite_then_balance,controlled_and_factor,controlled_boolean,controlled,rewrite_then_balance,"[""strash"", ""rewrite"", ""balance""]",4,4,0,semantic_recoverability_frontier_v1
+controlled__controlled_and_factor__refactor_dc2,controlled_and_factor,controlled_boolean,controlled,refactor_dc2,"[""strash"", ""refactor"", ""dc2""]",4,4,0,semantic_recoverability_frontier_v1
+controlled__controlled_nonmonotonic_factor__mild_balance_rewrite,controlled_nonmonotonic_factor,controlled_boolean,controlled,mild_balance_rewrite,"[""strash"", ""balance"", ""rewrite""]",4,4,0,semantic_recoverability_frontier_v1
+controlled__controlled_nonmonotonic_factor__rewrite_then_balance,controlled_nonmonotonic_factor,controlled_boolean,controlled,rewrite_then_balance,"[""strash"", ""rewrite"", ""balance""]",4,4,0,semantic_recoverability_frontier_v1
+controlled__controlled_nonmonotonic_factor__refactor_dc2,controlled_nonmonotonic_factor,controlled_boolean,controlled,refactor_dc2,"[""strash"", ""refactor"", ""dc2""]",4,4,0,semantic_recoverability_frontier_v1
+development__full_adder__mild_balance_rewrite,full_adder,repository_real_hand_written,development,mild_balance_rewrite,"[""strash"", ""balance"", ""rewrite""]",4,4,0,semantic_recoverability_frontier_v1
+development__full_adder__rewrite_then_balance,full_adder,repository_real_hand_written,development,rewrite_then_balance,"[""strash"", ""rewrite"", ""balance""]",4,4,0,semantic_recoverability_frontier_v1
+development__full_adder__refactor_dc2,full_adder,repository_real_hand_written,development,refactor_dc2,"[""strash"", ""refactor"", ""dc2""]",4,4,0,semantic_recoverability_frontier_v1
+heldout__full_adder__mild_balance_rewrite,full_adder,repository_real_hand_written,heldout,mild_balance_rewrite,"[""strash"", ""balance"", ""rewrite""]",4,4,0,semantic_recoverability_frontier_v1
+heldout__full_adder__rewrite_then_balance,full_adder,repository_real_hand_written,heldout,rewrite_then_balance,"[""strash"", ""rewrite"", ""balance""]",4,4,0,semantic_recoverability_frontier_v1
+heldout__full_adder__refactor_dc2,full_adder,repository_real_hand_written,heldout,refactor_dc2,"[""strash"", ""refactor"", ""dc2""]",4,4,0,semantic_recoverability_frontier_v1

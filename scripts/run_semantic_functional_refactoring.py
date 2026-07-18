@@ -37,7 +37,7 @@ from semantic_functional_refactoring import (  # noqa: E402
 )
 from semantic_region import write_csv  # noqa: E402
 from semantic_types import unsigned_bitvector  # noqa: E402
-from scripts.run_semantic_region_replacement import _abc_cec  # noqa: E402
+from scripts.run_semantic_region_replacement import _abc_cec, abc_binary  # noqa: E402
 
 try:  # pragma: no cover
     import z3
@@ -437,7 +437,7 @@ def _display_path(path: Path) -> str:
 
 
 def _environment_rows() -> list[dict[str, str]]:
-    abc = ROOT / ".abc_build" / "abc_repo" / "abc"
+    abc = abc_binary()
     return [
         {"tool": "python", "version": platform.python_version(), "path": sys.executable, "status": "available", "schema_version": SCHEMA},
         {"tool": "z3", "version": z3.get_version_string() if z3 is not None else "", "path": "", "status": "available" if z3 is not None else "missing", "schema_version": SCHEMA},

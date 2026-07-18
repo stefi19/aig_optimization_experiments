@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -33,6 +34,11 @@ OUT = ROOT / "results" / "semantic_region_replacement"
 BENCH = ROOT / "benchmarks" / "semantic_region_replacement"
 ART = OUT / "artifacts"
 ABC = ROOT / ".abc_build" / "abc_repo" / "abc"
+
+
+def abc_binary() -> Path:
+    override = os.environ.get("AIG_ABC")
+    return Path(override) if override else ABC
 
 
 FIELDS = {
@@ -208,9 +214,10 @@ def _prove_module(path: Path, module: SemanticModule) -> list[dict[str, str]]:
 
 
 def _abc_cec(left: Path, right: Path) -> tuple[str, str]:
-    if not ABC.exists():
+    abc = abc_binary()
+    if not abc.exists():
         return "abc_unavailable", ""
-    proc = subprocess.run([str(ABC), "-c", f"cec {left} {right}"], text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=10)
+    proc = subprocess.run([str(abc), "-c", f"cec {left} {right}"], text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=10)
     text = proc.stdout
     if "Networks are equivalent" in text or "Networks are equivalent after" in text:
         return "equivalent", text

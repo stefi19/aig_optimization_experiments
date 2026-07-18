@@ -174,9 +174,12 @@ make check-semantic-recoverability-results
 .venv-z3/bin/python -m pytest -q tests/test_semantic_recoverability_frontier.py
 ```
 
-The full local run requires the repository ABC binary at
-`.abc_build/abc_repo/abc`. CI may use `--allow-no-abc` for lightweight schema
-checking when ABC is unavailable.
+The full local run requires the pinned repository ABC binary at
+`.abc_build/abc_repo/abc`; build and check it with `make check-abc`. CI also
+runs a no-ABC portability path. In that mode, `--allow-no-abc` is schema and
+rejection checking only: unrealized checkpoints are recorded with
+`artifact_status`, `artifact_exists`, and `parse_status`, excluded from semantic
+analysis, and cannot contribute recovered-boundary evidence.
 
 ## Supported Claim
 

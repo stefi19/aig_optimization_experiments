@@ -94,6 +94,13 @@ def test_runner_and_checker_temp_dir(tmp_path: Path) -> None:
     subprocess.run([sys.executable, "scripts/check_semantic_recoverability_results.py", "--output-dir", str(out), "--allow-no-abc"], cwd=ROOT, check=True)
     with (out / "final_supported_claims_summary.md").open(encoding="utf-8") as fh:
         assert "ground-truth boundaries" in fh.read()
+    checkpoints = list(csv.DictReader((out / "checkpoint_hashes.csv").open()))
+    unrealized = [row for row in checkpoints if row["artifact_status"] != "materialized"]
+    if unrealized:
+        assert all(row["artifact_exists"] == "false" for row in unrealized)
+        assert all(row["sha256"] == "" for row in unrealized)
+        recovered = list(csv.DictReader((out / "blind_recovery_results.csv").open()))
+        assert not ({row["checkpoint_id"] for row in unrealized} & {row["checkpoint_id"] for row in recovered})
 
 
 def test_checker_rejects_blind_oracle_level_corruption(tmp_path: Path) -> None:
@@ -102,6 +109,22 @@ def test_checker_rejects_blind_oracle_level_corruption(tmp_path: Path) -> None:
     subprocess.run([sys.executable, "scripts/run_semantic_recoverability_frontier.py", "--mode", "controlled", "--output-dir", str(out), "--bench-dir", str(bench)], cwd=ROOT, check=True)
     blind = out / "blind_recovery_results.csv"
     rows = list(csv.DictReader(blind.open(newline="", encoding="utf-8")))
+    if not rows:
+        fields = blind.read_text(encoding="utf-8").splitlines()[0].split(",")
+        checkpoint = next(csv.DictReader((out / "checkpoint_hashes.csv").open(newline="", encoding="utf-8")))
+        rows.append({field: "" for field in fields})
+        rows[0].update(
+            {
+                "result_id": "corrupted_blind_oracle_level",
+                "boundary_id": "corrupted_boundary",
+                "checkpoint_id": checkpoint["checkpoint_id"],
+                "method": "blind",
+                "oracle_mode": "blind",
+                "recovered": "false",
+                "timeout": "false",
+                "schema_version": "semantic_recoverability_frontier_v1",
+            }
+        )
     rows[0]["recovery_level"] = "R5_oracle_divisor_compact_decomposition"
     with blind.open("w", newline="", encoding="utf-8") as fh:
         writer = csv.DictWriter(fh, fieldnames=rows[0].keys())
@@ -110,3 +133,25 @@ def test_checker_rejects_blind_oracle_level_corruption(tmp_path: Path) -> None:
     proc = subprocess.run([sys.executable, "scripts/check_semantic_recoverability_results.py", "--output-dir", str(out), "--allow-no-abc"], cwd=ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     assert proc.returncode != 0
     assert "oracle recovery level appears in blind row" in proc.stderr
+
+
+def test_checker_rejects_missing_checkpoint_artifact_claim(tmp_path: Path) -> None:
+    out = tmp_path / "out"
+    bench = tmp_path / "bench"
+    subprocess.run([sys.executable, "scripts/run_semantic_recoverability_frontier.py", "--mode", "controlled", "--output-dir", str(out), "--bench-dir", str(bench)], cwd=ROOT, check=True)
+    subprocess.run([sys.executable, "scripts/check_semantic_recoverability_results.py", "--output-dir", str(out), "--allow-no-abc"], cwd=ROOT, check=True)
+    hashes = out / "checkpoint_hashes.csv"
+    rows = list(csv.DictReader(hashes.open(newline="", encoding="utf-8")))
+    fields = list(rows[0].keys())
+    target = next(row for row in rows if row["artifact_status"] == "materialized")
+    artifact = Path(target["blif_path"])
+    if not artifact.is_absolute():
+        artifact = ROOT / artifact
+    artifact.unlink()
+    with hashes.open("w", newline="", encoding="utf-8") as fh:
+        writer = csv.DictWriter(fh, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(rows)
+    proc = subprocess.run([sys.executable, "scripts/check_semantic_recoverability_results.py", "--output-dir", str(out), "--allow-no-abc"], cwd=ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    assert proc.returncode != 0
+    assert "file is missing" in proc.stderr

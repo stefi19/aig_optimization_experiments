@@ -98,7 +98,8 @@ def main() -> int:
 
     accepted = [r for r in tables["controlled_results.csv"] if r["final_status"] == "accepted"]
     positives = [r for r in tables["controlled_results.csv"] if r["expected_outcome"].startswith("positive")]
-    if not accepted:
+    abc_recorded_available = any(row.get("tool") == "abc" and row.get("status") == "available" for row in tables["environment.csv"])
+    if not accepted and not (args.allow_no_abc and not abc_recorded_available):
         errors.append("no controlled active source-counterpart accepted")
     for row in tables["controlled_results.csv"]:
         cid = f"{row['benchmark']}__active_source_counterpart"
@@ -119,6 +120,10 @@ def main() -> int:
             errors.append(f"accepted row lacks graph activity/influence: {aid}")
         if activity.get(aid, {}).get("quotient_depends_on_w") != "true" or activity[aid]["identity_rejected"] == "true":
             errors.append(f"accepted row is vacuous, identity, or bypassed: {aid}")
+        if cec.get((aid, "S_vs_Sprime"), {}).get("abc_available") != "true":
+            errors.append(f"accepted row records ABC unavailable for source CEC: {aid}")
+        if cec.get((aid, "Sprime_vs_I"), {}).get("abc_available") != "true":
+            errors.append(f"accepted row records ABC unavailable for cross CEC: {aid}")
         if cec.get((aid, "S_vs_Sprime"), {}).get("cec_status") != "equivalent":
             errors.append(f"accepted row lacks S-vs-S' ABC CEC: {aid}")
         if cec.get((aid, "Sprime_vs_I"), {}).get("cec_status") != "equivalent":
@@ -134,6 +139,8 @@ def main() -> int:
             errors.append(f"boundary counted without source CEC: {aid}")
         if cec.get((aid, "Sprime_vs_I"), {}).get("cec_status") != "equivalent":
             errors.append(f"boundary counted without cross CEC: {aid}")
+        if cec.get((aid, "S_vs_Sprime"), {}).get("abc_available") != "true" or cec.get((aid, "Sprime_vs_I"), {}).get("abc_available") != "true":
+            errors.append(f"boundary counted with ABC unavailable evidence: {aid}")
 
     for row in tables["critical_path_utility.csv"]:
         if row["newly_resolved_critical_path_target"] == "true" and row["mapping_evidence"] != "formal_counterpart_and_global_cec":

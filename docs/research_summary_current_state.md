@@ -956,3 +956,12 @@ positive transplants are graph-active, pass local equivalence, pass `S` versus
 negative controls are rejected. On real revisits, the result remains 0/56:
 36 rows block at input-interface sufficiency and 20 at output-interface
 sufficiency. This is a bounded null result, not an impossibility claim.
+
+The CI/formal-evidence stabilization after these research phases pins ABC to
+revision `bcfdf592289a408cd67ec19260f8a60a37b085b6`, removes hardcoded
+`.venv-z3/bin/python` assumptions from tests, and splits validation into a
+portable no-ABC schema/rejection job plus a full pinned-ABC formal job.
+`--allow-no-abc` remains deliberately weak: it can validate CSV schemas and
+negative behavior, but accepted replacements, transplants, active counterparts,
+and restored boundaries still require recorded `abc_available=true` and
+equivalent global CEC evidence.

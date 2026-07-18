@@ -6,8 +6,11 @@ on:
   pull_request:
     branches: ["**"]
 
+env:
+  ABC_REV: bcfdf592289a408cd67ec19260f8a60a37b085b6
+
 jobs:
-  test:
+  portable-no-abc:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,42 +23,164 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: python -m pip install -r requirements.txt
 
       - name: Run Z3 smoke checks
         run: python scripts/check_z3.py
 
-      - name: Run tests
-        # ABC-dependent tests are guarded by @pytest.mark.skipif and will
-        # skip automatically when the ABC binary is not present.
+      - name: Run portable no-ABC regression tests
+        env:
+          AIG_ABC: ${{ runner.temp }}/missing-abc
+        run: |
+          python -m pytest -v \
+            tests/test_active_source_counterpart_refactoring.py \
+            tests/test_cross_netlist_cut_transplantation.py \
+            tests/test_joint_region_interface.py \
+            tests/test_semantic_functional_refactoring.py \
+            tests/test_semantic_recoverability_frontier.py
+
+      - name: Run lightweight joint region/interface discovery without ABC
+        env:
+          AIG_ABC: ${{ runner.temp }}/missing-abc
+        run: |
+          python scripts/run_joint_region_interface_discovery.py \
+            --mode controlled \
+            --max-real-seeds 0 \
+            --output-dir "$RUNNER_TEMP/joint_results" \
+            --bench-dir "$RUNNER_TEMP/joint_bench"
+          python scripts/check_joint_region_interface_results.py \
+            --output-dir "$RUNNER_TEMP/joint_results" \
+            --allow-no-abc
+
+      - name: Run lightweight semantic functional refactoring without ABC
+        env:
+          AIG_ABC: ${{ runner.temp }}/missing-abc
+        run: |
+          python scripts/run_semantic_functional_refactoring.py \
+            --mode controlled \
+            --output-dir "$RUNNER_TEMP/functional_results" \
+            --bench-dir "$RUNNER_TEMP/functional_bench"
+          python scripts/check_semantic_functional_refactoring_results.py \
+            --output-dir "$RUNNER_TEMP/functional_results" \
+            --allow-no-abc
+
+      - name: Run lightweight semantic recoverability frontier without ABC
+        env:
+          AIG_ABC: ${{ runner.temp }}/missing-abc
+        run: |
+          python scripts/run_semantic_recoverability_frontier.py \
+            --mode controlled \
+            --output-dir "$RUNNER_TEMP/recoverability_results" \
+            --bench-dir "$RUNNER_TEMP/recoverability_bench"
+          python scripts/check_semantic_recoverability_results.py \
+            --output-dir "$RUNNER_TEMP/recoverability_results" \
+            --allow-no-abc
+
+      - name: Run lightweight active source-counterpart refactoring without ABC
+        env:
+          AIG_ABC: ${{ runner.temp }}/missing-abc
+        run: |
+          python scripts/run_active_source_counterpart_refactoring.py \
+            --mode controlled \
+            --output-dir "$RUNNER_TEMP/active_results" \
+            --bench-dir "$RUNNER_TEMP/active_bench"
+          python scripts/check_active_source_counterpart_results.py \
+            --output-dir "$RUNNER_TEMP/active_results" \
+            --allow-no-abc
+
+      - name: Run lightweight cross-netlist cut transplantation without ABC
+        env:
+          AIG_ABC: ${{ runner.temp }}/missing-abc
+        run: |
+          python scripts/run_cross_netlist_cut_transplantation.py \
+            --mode controlled \
+            --output-dir "$RUNNER_TEMP/cross_results" \
+            --bench-dir "$RUNNER_TEMP/cross_bench"
+          python scripts/check_cross_netlist_transplant_results.py \
+            --output-dir "$RUNNER_TEMP/cross_results" \
+            --allow-no-abc
+
+      - name: Verify worktree stayed clean
+        run: test -z "$(git status --short)"
+
+  full-formal-abc:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Cache pinned ABC build
+        uses: actions/cache@v4
+        with:
+          path: .abc_build/abc_repo
+          key: abc-${{ runner.os }}-${{ env.ABC_REV }}
+
+      - name: Build and check pinned ABC
+        run: make check-abc
+
+      - name: Run Z3 smoke checks
+        run: make check-z3
+
+      - name: Run full test suite
         run: python -m pytest tests/ -v
 
-      - name: Run lightweight joint region/interface discovery
-        run: python scripts/run_joint_region_interface_discovery.py --mode controlled --max-real-seeds 0
+      - name: Run semantic Z3 cross-check
+        run: make semantic-z3-crosscheck
 
-      - name: Check joint region/interface result schemas
-        run: python scripts/check_joint_region_interface_results.py --allow-no-abc
+      - name: Run lightweight joint region/interface discovery with ABC
+        run: |
+          python scripts/run_joint_region_interface_discovery.py \
+            --mode controlled \
+            --max-real-seeds 0 \
+            --output-dir "$RUNNER_TEMP/joint_results" \
+            --bench-dir "$RUNNER_TEMP/joint_bench"
+          python scripts/check_joint_region_interface_results.py \
+            --output-dir "$RUNNER_TEMP/joint_results"
 
-      - name: Run lightweight semantic functional refactoring
-        run: python scripts/run_semantic_functional_refactoring.py --mode controlled
+      - name: Run lightweight semantic functional refactoring with ABC
+        run: |
+          python scripts/run_semantic_functional_refactoring.py \
+            --mode controlled \
+            --output-dir "$RUNNER_TEMP/functional_results" \
+            --bench-dir "$RUNNER_TEMP/functional_bench"
+          python scripts/check_semantic_functional_refactoring_results.py \
+            --output-dir "$RUNNER_TEMP/functional_results"
 
-      - name: Check semantic functional refactoring result schemas
-        run: python scripts/check_semantic_functional_refactoring_results.py --allow-no-abc
+      - name: Run lightweight semantic recoverability frontier with ABC
+        run: |
+          python scripts/run_semantic_recoverability_frontier.py \
+            --mode all \
+            --output-dir "$RUNNER_TEMP/recoverability_results" \
+            --bench-dir "$RUNNER_TEMP/recoverability_bench"
+          python scripts/check_semantic_recoverability_results.py \
+            --output-dir "$RUNNER_TEMP/recoverability_results"
 
-      - name: Run lightweight semantic recoverability frontier
-        run: python scripts/run_semantic_recoverability_frontier.py --mode controlled
+      - name: Run lightweight active source-counterpart refactoring with ABC
+        run: |
+          python scripts/run_active_source_counterpart_refactoring.py \
+            --mode controlled \
+            --output-dir "$RUNNER_TEMP/active_results" \
+            --bench-dir "$RUNNER_TEMP/active_bench"
+          python scripts/check_active_source_counterpart_results.py \
+            --output-dir "$RUNNER_TEMP/active_results"
 
-      - name: Check semantic recoverability frontier results
-        run: python scripts/check_semantic_recoverability_results.py --allow-no-abc
+      - name: Run lightweight cross-netlist cut transplantation with ABC
+        run: |
+          python scripts/run_cross_netlist_cut_transplantation.py \
+            --mode controlled \
+            --output-dir "$RUNNER_TEMP/cross_results" \
+            --bench-dir "$RUNNER_TEMP/cross_bench"
+          python scripts/check_cross_netlist_transplant_results.py \
+            --output-dir "$RUNNER_TEMP/cross_results"
 
-      - name: Run lightweight active source-counterpart refactoring
-        run: python scripts/run_active_source_counterpart_refactoring.py --mode controlled
-
-      - name: Check active source-counterpart result schemas
-        run: python scripts/check_active_source_counterpart_results.py --allow-no-abc
-
-      - name: Run lightweight cross-netlist cut transplantation
-        run: python scripts/run_cross_netlist_cut_transplantation.py --mode controlled
-
-      - name: Check cross-netlist transplant result schemas
-        run: python scripts/check_cross_netlist_transplant_results.py --allow-no-abc
+      - name: Verify worktree stayed clean
+        run: test -z "$(git status --short)"

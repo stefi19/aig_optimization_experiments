@@ -1,0 +1,13 @@
+item,baseline_or_failure,root_cause,fix
+main_test_suite,706 passed and 5 skipped before this stabilization phase,previous committed Z3 region-replacement baseline,rerun full Z3-enabled suite after fixes
+z3_version,4.16.0,validated scalable Z3 backend already present,kept dependency and smoke check active in CI
+z3_exhaustive_agreement,192/192,validated BLIF-to-Z3 agreement already present,kept cross-check target in full formal CI
+z3_counterexamples_reproduced,186/186,validated concrete reproduction already present,kept cross-check target in full formal CI
+blind_unique_cases,10/16 recovered,validated semantic recovery baseline already present,no semantic evidence category changed
+graph_active_graft_anchors,0,isolated semantic anchors could not be legally placed on graph frontiers,no positive graft claim added
+active_source_test_failures,FileNotFoundError for .venv-z3/bin/python,tests hardcoded a repository-local virtualenv path,use sys.executable in tests and CI
+cross_netlist_no_abc_failure,zero accepted rows under missing ABC but unconditional accepted-family assertions,test expected full formal CEC results in schema-only mode,assert zero accepted and no restored boundaries when ABC is intentionally unavailable
+recoverability_checkpoint_failure,FileNotFoundError parsing missing ABC checkpoint artifact,runner treated unrealized checkpoints as analyzable artifacts,record artifact_status/artifact_exists/parse_status and skip non-materialized checkpoints
+allow_no_abc_evidence_risk,checker mode could be misread as permitting accepted rows without ABC evidence,no-ABC mode intended only for schema and rejection checks,accepted/restored rows now require recorded abc_available=true and equivalent CEC rows
+ci_portability_gap,single CI job lacked explicit no-ABC/full-ABC separation,ABC-dependent and portable semantics mixed in one path,split CI into portable no-ABC and full pinned-ABC jobs with temp output dirs
+abc_revision,bcfdf592289a408cd67ec19260f8a60a37b085b6,ABC was cloned from moving upstream main,Makefile and CI now pin this revision

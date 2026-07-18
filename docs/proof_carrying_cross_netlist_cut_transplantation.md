@@ -139,6 +139,12 @@ make check-cross-netlist-transplant-results
 .venv-z3/bin/python -m pytest -q tests/test_cross_netlist_cut_transplantation.py
 ```
 
+The full formal path requires the pinned repository ABC binary at
+`.abc_build/abc_repo/abc` (`make check-abc`). `--allow-no-abc` only validates
+schemas and negative/no-acceptance behavior when ABC is unavailable. Accepted
+transplants and counted boundaries still require recorded `abc_available=true`
+and equivalent `S_vs_Sprime` and `Sprime_vs_I` global CEC rows.
+
 Artifacts are written under:
 
 - `benchmarks/cross_netlist_cut_transplantation/`;

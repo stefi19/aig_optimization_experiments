@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import os
 import shutil
 import subprocess
 import sys
@@ -21,6 +22,12 @@ from cross_netlist_cut_transplantation import (
 
 
 ROOT = Path(__file__).resolve().parents[1]
+ABC = ROOT / ".abc_build" / "abc_repo" / "abc"
+
+
+def _abc_available() -> bool:
+    override = os.environ.get("AIG_ABC")
+    return Path(override).exists() if override else ABC.exists()
 
 
 def test_cross_netlist_candidate_fingerprint_is_deterministic() -> None:
@@ -182,46 +189,106 @@ def test_controlled_runner_and_checker(tmp_path: Path) -> None:
         check=True,
     )
     cmd = [sys.executable, str(ROOT / "scripts" / "check_cross_netlist_transplant_results.py"), "--output-dir", str(out)]
-    if not (ROOT / ".abc_build" / "abc_repo" / "abc").exists():
+    if not _abc_available():
         cmd.append("--allow-no-abc")
     subprocess.run(cmd, cwd=ROOT, check=True)
     controlled = list(csv.DictReader((out / "controlled_results.csv").open()))
     accepted = [row for row in controlled if row["final_status"] == "accepted"]
-    if (ROOT / ".abc_build" / "abc_repo" / "abc").exists():
+    if _abc_available():
         assert len(accepted) == 12
-    assert any(row["family"] == "affine" and row["final_status"] == "accepted" for row in controlled)
-    assert any(row["family"] == "add_add" and row["final_status"] == "accepted" for row in controlled)
-    assert any(row["family"] == "bilinear" and row["final_status"] == "accepted" for row in controlled)
-    assert any(row["family"] == "mac" and row["final_status"] == "accepted" for row in controlled)
+        assert all(row["source_cec_status"] == "equivalent" and row["cross_cec_status"] == "equivalent" for row in accepted)
+        for family in ("affine", "add_add", "bilinear", "mac"):
+            assert any(row["family"] == family and row["final_status"] == "accepted" for row in controlled)
+    else:
+        assert not accepted
+        positives = [row for row in controlled if row["expected_outcome"].startswith("positive")]
+        assert {row["family"] for row in positives} >= {"affine", "add_add", "bilinear", "mac"}
+        assert all(row["local_proof_status"] == "equivalent" for row in positives)
+        assert all(row["source_cec_status"] != "equivalent" for row in positives)
+        assert all(row["new_recovered_boundary"] == "false" for row in controlled)
+    negatives = [row for row in controlled if row["expected_outcome"].startswith("negative")]
+    assert negatives and all(row["final_status"] == "rejected" for row in negatives)
 
 
-def test_checker_rejects_boundary_without_global_cec(tmp_path: Path) -> None:
-    if not (ROOT / ".abc_build" / "abc_repo" / "abc").exists():
-        return
+def test_controlled_runner_explicit_no_abc_schema_mode(tmp_path: Path) -> None:
     out = tmp_path / "out"
     bench = tmp_path / "bench"
+    env = {**os.environ, "AIG_ABC": str(tmp_path / "missing_abc")}
     subprocess.run(
         [sys.executable, str(ROOT / "scripts" / "run_cross_netlist_cut_transplantation.py"), "--mode", "controlled", "--output-dir", str(out), "--bench-dir", str(bench)],
         cwd=ROOT,
         check=True,
+        env=env,
     )
+    subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "check_cross_netlist_transplant_results.py"), "--output-dir", str(out), "--allow-no-abc"],
+        cwd=ROOT,
+        check=True,
+        env=env,
+    )
+    controlled = list(csv.DictReader((out / "controlled_results.csv").open()))
+    assert sum(row["final_status"] == "accepted" for row in controlled) == 0
+    assert all(row["new_recovered_boundary"] == "false" for row in controlled)
+    assert all(row["source_cec_status"] != "equivalent" for row in controlled)
+
+
+def test_checker_rejects_boundary_without_global_cec(tmp_path: Path) -> None:
+    out = tmp_path / "out"
+    bench = tmp_path / "bench"
+    env = {**os.environ, "AIG_ABC": str(tmp_path / "missing_abc")}
+    subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "run_cross_netlist_cut_transplantation.py"), "--mode", "controlled", "--output-dir", str(out), "--bench-dir", str(bench)],
+        cwd=ROOT,
+        check=True,
+        env=env,
+    )
+    subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "check_cross_netlist_transplant_results.py"), "--output-dir", str(out), "--allow-no-abc"],
+        cwd=ROOT,
+        check=True,
+        env=env,
+    )
+    controlled_path = out / "controlled_results.csv"
+    controlled = list(csv.DictReader(controlled_path.open()))
+    controlled_fields = list(controlled[0].keys())
+    for row in controlled:
+        if row["expected_outcome"].startswith("positive"):
+            row["final_status"] = "accepted"
+            row["new_recovered_boundary"] = "true"
+            break
+    with controlled_path.open("w", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=controlled_fields)
+        writer.writeheader()
+        writer.writerows(controlled)
+    boundary_path = out / "boundary_recovery.csv"
+    boundaries = list(csv.DictReader(boundary_path.open()))
+    boundary_fields = list(boundaries[0].keys())
+    boundaries[0]["usable_frontier_anchor"] = "true"
+    boundaries[0]["selected_anchor"] = "true"
+    boundaries[0]["new_recovered_boundary"] = "true"
+    with boundary_path.open("w", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=boundary_fields)
+        writer.writeheader()
+        writer.writerows(boundaries)
     path = out / "global_cec.csv"
     rows = list(csv.DictReader(path.open()))
     fields = list(rows[0].keys())
     for row in rows:
-        if row["cec_scope"] == "S_vs_Sprime" and row["cec_status"] == "equivalent":
+        if row["cec_scope"] == "S_vs_Sprime":
             row["cec_status"] = "not_run"
+            row["abc_available"] = "false"
             break
     with path.open("w", newline="") as fh:
         writer = csv.DictWriter(fh, fieldnames=fields)
         writer.writeheader()
         writer.writerows(rows)
     proc = subprocess.run(
-        [sys.executable, str(ROOT / "scripts" / "check_cross_netlist_transplant_results.py"), "--output-dir", str(out)],
+        [sys.executable, str(ROOT / "scripts" / "check_cross_netlist_transplant_results.py"), "--output-dir", str(out), "--allow-no-abc"],
         cwd=ROOT,
         text=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        env=env,
     )
     assert proc.returncode != 0
-    assert "accepted without S-vs-Sprime CEC" in proc.stderr
+    assert "S-vs-Sprime CEC" in proc.stderr or "ABC unavailable" in proc.stderr

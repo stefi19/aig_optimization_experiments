@@ -21,8 +21,8 @@ REQUIRED = {
     "benchmark_split.csv": {"benchmark", "design_family", "split", "manual_tuning_allowed", "schema_version"},
     "ground_truth_boundary_manifest.csv": {"boundary_id", "benchmark", "operator_type", "source_support", "eligible_for_blind_evaluation", "fingerprint", "schema_version"},
     "leakage_audit_results.csv": {"row_id", "oracle_mode", "forbidden_fields_present", "leakage_status", "schema_version"},
-    "synthesis_trajectories.csv": {"trajectory_id", "benchmark", "split", "pass_sequence", "checkpoint_count", "schema_version"},
-    "checkpoint_hashes.csv": {"trajectory_id", "checkpoint_id", "checkpoint_index", "sha256", "schema_version"},
+    "synthesis_trajectories.csv": {"trajectory_id", "benchmark", "split", "pass_sequence", "checkpoint_count", "realized_checkpoint_count", "schema_version"},
+    "checkpoint_hashes.csv": {"trajectory_id", "checkpoint_id", "checkpoint_index", "sha256", "artifact_status", "artifact_exists", "parse_status", "schema_version"},
     "checkpoint_cec_results.csv": {"trajectory_id", "checkpoint_id", "checkpoint_index", "cec_status", "schema_version"},
     "checkpoint_structural_metrics.csv": {"trajectory_id", "checkpoint_id", "checkpoint_index", "node_count", "level_count", "schema_version"},
     "blind_candidate_predictions.csv": {"prediction_id", "checkpoint_id", "candidate_signal", "source_blind", "schema_version"},
@@ -81,8 +81,58 @@ def main() -> int:
             errors.append(f"checkpoint without CEC evidence: {row['checkpoint_id']}")
         elif cec["cec_status"] != "equivalent" and not args.allow_no_abc:
             errors.append(f"non-equivalent checkpoint included: {row['checkpoint_id']} {cec['cec_status']}")
-        if not row["sha256"]:
-            errors.append(f"missing checkpoint hash: {row['checkpoint_id']}")
+        artifact_exists = row["artifact_exists"] == "true"
+        if cec and cec["cec_status"] == "equivalent":
+            if row["artifact_status"] != "materialized" or not artifact_exists or row["parse_status"] != "parse_valid" or not row["sha256"]:
+                errors.append(f"equivalent checkpoint lacks materialized parse-valid artifact: {row['checkpoint_id']}")
+        if row["artifact_status"] == "materialized" and (not artifact_exists or row["parse_status"] != "parse_valid"):
+            errors.append(f"materialized checkpoint is not parse-valid: {row['checkpoint_id']}")
+        if row["artifact_status"] != "materialized" and row["sha256"]:
+            errors.append(f"unrealized checkpoint has nonempty hash: {row['checkpoint_id']}")
+        if row["artifact_status"] == "materialized" and not row["sha256"]:
+            errors.append(f"materialized checkpoint missing hash: {row['checkpoint_id']}")
+        if artifact_exists:
+            artifact_path = _resolve_artifact_path(args.output_dir, row["blif_path"])
+            if not artifact_path.exists():
+                errors.append(f"checkpoint claims existing artifact but file is missing: {row['checkpoint_id']}")
+
+    unrealized = {
+        row["checkpoint_id"]
+        for row in tables["checkpoint_hashes.csv"]
+        if row["artifact_status"] != "materialized" or row["artifact_exists"] != "true" or row["parse_status"] != "parse_valid"
+    }
+    non_equivalent = {cp for cp, row in cec_by_cp.items() if row["cec_status"] != "equivalent"}
+    unavailable_for_analysis = unrealized | non_equivalent
+    for table_name in (
+        "blind_candidate_predictions.csv",
+        "blind_recovery_results.csv",
+        "oracle_ladder_results.csv",
+        "decomposition_proof_results.csv",
+        "decomposition_counterexamples.csv",
+        "residual_selection_iterations.csv",
+        "residual_bounds.csv",
+        "window_locality_results.csv",
+        "optimisation_tradeoffs.csv",
+    ):
+        for row in tables[table_name]:
+            if row["checkpoint_id"] in unavailable_for_analysis:
+                errors.append(f"{table_name} includes unrealized or non-equivalent checkpoint: {row['checkpoint_id']}")
+    for row in tables["boundary_durability_results.csv"]:
+        if row["insertion_checkpoint"] in unavailable_for_analysis or row["suffix_checkpoint"] in unavailable_for_analysis:
+            errors.append(f"durability row includes unrealized or non-equivalent checkpoint: {row['boundary_id']}")
+
+    trajectory_counts: dict[str, dict[str, int]] = {}
+    for row in tables["checkpoint_hashes.csv"]:
+        data = trajectory_counts.setdefault(row["trajectory_id"], {"planned": 0, "realized": 0})
+        data["planned"] += 1
+        if row["artifact_status"] == "materialized" and row["artifact_exists"] == "true" and row["parse_status"] == "parse_valid":
+            data["realized"] += 1
+    for row in tables["synthesis_trajectories.csv"]:
+        counts = trajectory_counts.get(row["trajectory_id"], {"planned": 0, "realized": 0})
+        if int(row["checkpoint_count"]) != counts["planned"]:
+            errors.append(f"trajectory planned checkpoint count mismatch: {row['trajectory_id']}")
+        if int(row["realized_checkpoint_count"]) != counts["realized"]:
+            errors.append(f"trajectory realized checkpoint count mismatch: {row['trajectory_id']}")
 
     for row in tables["blind_candidate_predictions.csv"]:
         if row["source_blind"] != "true":
@@ -178,6 +228,16 @@ def _finish(errors: list[str]) -> int:
         return 1
     print("Semantic recoverability frontier results validated")
     return 0
+
+
+def _resolve_artifact_path(output_dir: Path, blif_path: str) -> Path:
+    path = Path(blif_path)
+    if path.is_absolute():
+        return path
+    candidate = ROOT / path
+    if candidate.exists():
+        return candidate
+    return output_dir / path
 
 
 if __name__ == "__main__":

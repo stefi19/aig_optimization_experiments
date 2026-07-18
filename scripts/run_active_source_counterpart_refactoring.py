@@ -33,7 +33,7 @@ from active_source_counterpart_refactoring import (  # noqa: E402
 from analyze_blif_matches import parse_blif  # noqa: E402
 from scripts.run_semantic_functional_refactoring import _controlled_cases, _git_head  # noqa: E402
 import scripts.run_semantic_functional_refactoring as sfr_runner  # noqa: E402
-from scripts.run_semantic_region_replacement import _abc_cec  # noqa: E402
+from scripts.run_semantic_region_replacement import _abc_cec, abc_binary  # noqa: E402
 from semantic_functional_refactoring import (  # noqa: E402
     FunctionalDecompositionCandidate,
     RefactoringWindow,
@@ -288,7 +288,7 @@ def _run_durability(rows: dict[str, list[dict[str, str]]], artifacts: list[dict[
 
 
 def _durability_checkpoint(refactored: Path, opt_path: Path, suffix: str) -> tuple[str, bool, bool, int, int]:
-    abc = ROOT / ".abc_build" / "abc_repo" / "abc"
+    abc = abc_binary()
     if not abc.exists() or not refactored.exists():
         return "not_run_abc_unavailable", False, False, 0, 0
     try:
@@ -418,7 +418,7 @@ def _counterpart_proof_row(candidate_id, benchmark, source_nodes, target_nodes, 
 
 
 def _cec_row(attempt_id, candidate_id, benchmark, scope, status, output):
-    return {"attempt_id": attempt_id, "candidate_id": candidate_id, "benchmark": benchmark, "cec_scope": scope, "abc_available": str((ROOT / ".abc_build" / "abc_repo" / "abc").exists()).lower(), "cec_status": status, "abc_output": output[-240:].replace("\n", " "), "schema_version": SCHEMA}
+    return {"attempt_id": attempt_id, "candidate_id": candidate_id, "benchmark": benchmark, "cec_scope": scope, "abc_available": str(abc_binary().exists()).lower(), "cec_status": status, "abc_output": output[-240:].replace("\n", " "), "schema_version": SCHEMA}
 
 
 def _not_run_proof(reason: str) -> dict[str, str]:
@@ -472,7 +472,7 @@ def _fresh_targets(limit: int) -> list[dict[str, str]]:
 
 
 def _environment_rows() -> list[dict[str, str]]:
-    abc = ROOT / ".abc_build" / "abc_repo" / "abc"
+    abc = abc_binary()
     return [
         {"tool": "python", "version": platform.python_version(), "path": sys.executable, "status": "available", "schema_version": SCHEMA},
         {"tool": "z3", "version": z3.get_version_string() if z3 is not None else "", "path": "", "status": "available" if z3 is not None else "missing", "schema_version": SCHEMA},

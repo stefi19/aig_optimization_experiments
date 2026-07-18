@@ -863,7 +863,9 @@ ablation → region → CEGAR → research plots → tests.
 ### Individual steps
 
 ```bash
-make build-abc           # clone and compile ABC (skip if abc is already on PATH)
+make build-abc           # clone and compile pinned ABC into .abc_build/abc_repo
+make check-abc           # verify the pinned ABC binary can run
+make check-z3            # verify Z3 bit-vector SAT/UNSAT/model support
 make generate-variants   # create all BLIF variants via run_abc_variants.sh
 make analyze             # simulate and rank (analyze_blif_matches.py)
 make check-results       # warn if result CSVs were generated with an older schema
@@ -891,10 +893,11 @@ make check-cross-netlist-transplant-results # validate transplant proof stack
 make test                # run the unit test suite
 ```
 
-### If ABC is not on your PATH
+### ABC and Formal Modes
 
-The Makefile's `build-abc` target clones and compiles ABC automatically. After building, the
-binary is at `.abc_build/abc_repo/abc`. You can use it directly:
+The Makefile's `build-abc` target clones and compiles ABC at pinned revision
+`bcfdf592289a408cd67ec19260f8a60a37b085b6`. After building, the binary is at
+`.abc_build/abc_repo/abc`. You can use it directly:
 
 ```bash
 ABC=$(pwd)/.abc_build/abc_repo/abc make generate-variants
@@ -906,11 +909,21 @@ Or if you have ABC installed elsewhere:
 ABC=/path/to/abc make generate-variants
 ```
 
+Recent proof-carrying boundary experiments also honor `AIG_ABC=/path/to/abc`.
+Checker option `--allow-no-abc` is only for portable schema and rejection tests:
+it permits zero accepted rows when ABC is unavailable, but it never permits an
+accepted rewrite, transplant, recovered boundary, or restored boundary unless
+the result CSV records `abc_available=true` and equivalent global ABC CEC.
+
 ### Run tests only
 
 ```bash
 python3 -m pytest tests/ -v
 ```
+
+Tests use the active interpreter (`sys.executable`) rather than assuming a
+repository-local `.venv-z3`. Local research runs may still use `.venv-z3`; CI
+runs both a no-ABC portability job and a full pinned-ABC formal job.
 
 For a quick check of the recent SAT/signature-metric changes:
 

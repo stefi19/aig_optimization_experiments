@@ -101,6 +101,8 @@ def main() -> int:
             errors.append(f"restored boundary lacks graph-active divisor consumers: {attempt}")
         if cec.get(attempt, {}).get("global_cec_status") != "equivalent":
             errors.append(f"restored boundary lacks ABC global CEC: {attempt}")
+        if cec.get(attempt, {}).get("abc_available") != "true":
+            errors.append(f"restored boundary records ABC unavailable: {attempt}")
         if survival.get(attempt, {}).get("semantic_boundary_survives") != "true":
             errors.append(f"restored boundary lacks resynthesis survival evidence: {attempt}")
 
@@ -112,6 +114,9 @@ def main() -> int:
     for row in accepted:
         if row["global_cec_status"] != "equivalent" or row["graph_active"] != "true" or row["restored_boundary"] != "true":
             errors.append(f"accepted controlled refactoring lacks proof stack: {row['benchmark']}")
+        attempt = next((attempt_id for attempt_id, c in cec.items() if c.get("benchmark") == row["benchmark"] and c.get("global_cec_status") == row["global_cec_status"]), "")
+        if cec.get(attempt, {}).get("abc_available") != "true":
+            errors.append(f"accepted controlled refactoring records ABC unavailable: {row['benchmark']}")
     for row in tables["controlled_experiments.csv"]:
         if row["expected_outcome"].startswith("negative") and row["final_status"] == "accepted":
             errors.append(f"negative control accepted: {row['benchmark']}")

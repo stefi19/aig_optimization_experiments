@@ -137,8 +137,10 @@ make check-joint-region-interface-results
 .venv-z3/bin/python -m pytest -q tests/test_joint_region_interface.py
 ```
 
-Normal CI may run the checker with `--allow-no-abc`; the full local result uses
-the repository ABC binary and requires global CEC for accepted replacements.
+Normal CI may run the checker with `--allow-no-abc`; that mode is limited to
+schema and rejection checks. The full result uses the pinned repository ABC
+binary from `make check-abc`, and every accepted replacement or restored
+boundary must record `abc_available=true` plus equivalent global CEC.
 
 ## Related Work Positioning
 

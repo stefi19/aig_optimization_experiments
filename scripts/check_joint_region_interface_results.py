@@ -81,6 +81,8 @@ def main() -> int:
             errors.append(f"restored boundary lacks graph-active valid rewrite: {attempt}")
         if not cec or cec["implementation_global_cec"] != "equivalent":
             errors.append(f"restored boundary lacks equivalent global CEC: {attempt}")
+        if not cec or cec["abc_available"] != "true":
+            errors.append(f"restored boundary records ABC unavailable: {attempt}")
         if not proof or proof["formal_status"] != "formally_verified_region" or proof["formal_evidence_level"] != "formal_smt":
             errors.append(f"restored boundary lacks formal SMT region proof: {attempt}")
 
@@ -92,6 +94,9 @@ def main() -> int:
     for row in accepted:
         if row["global_cec"] != "equivalent" or row["graph_active_replacement"] != "true" or row["restored_boundary"] != "true":
             errors.append(f"accepted controlled case is missing proof stack: {row['benchmark']}")
+        attempt = next((attempt_id for attempt_id, cec in cecs.items() if cec.get("benchmark") == row["benchmark"] and cec.get("implementation_global_cec") == row["global_cec"]), "")
+        if cecs.get(attempt, {}).get("abc_available") != "true":
+            errors.append(f"accepted controlled case records ABC unavailable: {row['benchmark']}")
 
     for row in tables["controlled_benchmark_results.csv"]:
         if row["expected_outcome"].startswith("negative") and row["final_status"] == "accepted":

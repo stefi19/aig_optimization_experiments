@@ -47,7 +47,7 @@ from semantic_region_replacement import (  # noqa: E402
 )
 from semantic_types import unsigned_bitvector  # noqa: E402
 from semantic_z3_validation import validate_candidate_z3  # noqa: E402
-from scripts.run_semantic_region_replacement import _abc_cec, _arithmetic_module, _write_truth_blif  # noqa: E402
+from scripts.run_semantic_region_replacement import _abc_cec, _arithmetic_module, _write_truth_blif, abc_binary  # noqa: E402
 
 try:  # pragma: no cover
     import z3
@@ -452,7 +452,7 @@ def _evaluate_final_candidate(
             "attempt_id": attempt_id,
             "candidate_id": candidate.candidate_id,
             "benchmark": candidate.benchmark,
-            "abc_available": str((ROOT / ".abc_build" / "abc_repo" / "abc").exists() or shutil.which("abc") is not None).lower(),
+            "abc_available": str(abc_binary().exists()).lower(),
             "implementation_global_cec": cec_status,
             "specification_global_cec": cec_status if accepted else "not_claimed",
             "abc_output": cec_output[-240:].replace("\n", " "),
@@ -690,8 +690,8 @@ def _write_summary(rows: dict[str, list[dict[str, str]]]) -> None:
 
 
 def _environment_rows() -> list[dict[str, str]]:
-    abc = ROOT / ".abc_build" / "abc_repo" / "abc"
-    abc_path = str(abc) if abc.exists() else (shutil.which("abc") or "")
+    abc = abc_binary()
+    abc_path = str(abc) if abc.exists() else ""
     return [
         {"tool": "python", "version": platform.python_version(), "path": sys.executable, "status": "available", "schema_version": "joint_environment_v1"},
         {"tool": "z3", "version": z3.get_version_string() if z3 is not None else "", "path": "", "status": "available" if z3 is not None else "missing", "schema_version": "joint_environment_v1"},

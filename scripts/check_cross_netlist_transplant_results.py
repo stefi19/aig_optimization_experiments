@@ -127,11 +127,14 @@ def main() -> int:
         act = activity.get(aid, {})
         if act.get("graph_active") != "true" or act.get("functional_influence") != "true" or act.get("eout_depends_on_bi") != "true":
             errors.append(f"accepted without graph-active dependent Eout: {aid}")
-        if abc_available:
-            if cec.get((aid, "S_vs_Sprime"), {}).get("cec_status") != "equivalent":
-                errors.append(f"accepted without S-vs-Sprime CEC: {aid}")
-            if cec.get((aid, "Sprime_vs_I"), {}).get("cec_status") != "equivalent":
-                errors.append(f"accepted without Sprime-vs-I CEC: {aid}")
+        if cec.get((aid, "S_vs_Sprime"), {}).get("abc_available") != "true":
+            errors.append(f"accepted records ABC unavailable for S-vs-Sprime CEC: {aid}")
+        if cec.get((aid, "Sprime_vs_I"), {}).get("abc_available") != "true":
+            errors.append(f"accepted records ABC unavailable for Sprime-vs-I CEC: {aid}")
+        if cec.get((aid, "S_vs_Sprime"), {}).get("cec_status") != "equivalent":
+            errors.append(f"accepted without S-vs-Sprime CEC: {aid}")
+        if cec.get((aid, "Sprime_vs_I"), {}).get("cec_status") != "equivalent":
+            errors.append(f"accepted without Sprime-vs-I CEC: {aid}")
         b = boundaries.get(aid, {})
         if b.get("new_recovered_boundary") != "true" or b.get("selected_anchor") != "true" or b.get("graph_active") != "true":
             errors.append(f"accepted without boundary recovery row: {aid}")
@@ -145,11 +148,13 @@ def main() -> int:
             errors.append(f"boundary counted without selected graph-active anchor: {aid}")
         if act.get("eout_depends_on_bi") != "true":
             errors.append(f"boundary counted although output adapter ignores cloned region: {aid}")
-        if abc_available and (
+        if (
             cec.get((aid, "S_vs_Sprime"), {}).get("cec_status") != "equivalent"
             or cec.get((aid, "Sprime_vs_I"), {}).get("cec_status") != "equivalent"
         ):
             errors.append(f"boundary counted without both global CEC proofs: {aid}")
+        if cec.get((aid, "S_vs_Sprime"), {}).get("abc_available") != "true" or cec.get((aid, "Sprime_vs_I"), {}).get("abc_available") != "true":
+            errors.append(f"boundary counted with ABC unavailable evidence: {aid}")
 
     for row in tables["critical_path_utility.csv"]:
         if row["newly_resolved_critical_path_target"] == "true" and row["mapping_evidence"] != "formal_transplant_and_global_cec":

@@ -1,4 +1,5 @@
 import csv
+import os
 import subprocess
 import sys
 
@@ -21,6 +22,12 @@ from semantic_region_replacement import derive_closed_region, full_adder_module,
 
 
 ROOT = __import__("pathlib").Path(__file__).resolve().parents[1]
+ABC = ROOT / ".abc_build" / "abc_repo" / "abc"
+
+
+def _abc_available():
+    override = os.environ.get("AIG_ABC")
+    return __import__("pathlib").Path(override).exists() if override else ABC.exists()
 
 
 def write_full_adder(tmp_path):
@@ -139,21 +146,20 @@ def test_joint_controlled_pipeline_and_checker_run(tmp_path):
         check=True,
     )
     checker = [sys.executable, "scripts/check_joint_region_interface_results.py", "--output-dir", str(out_dir)]
-    if not (ROOT / ".abc_build" / "abc_repo" / "abc").exists():
+    if not _abc_available():
         checker.append("--allow-no-abc")
     subprocess.run(checker, cwd=ROOT, check=True)
     rows = list(csv.DictReader((out_dir / "controlled_benchmark_results.csv").open()))
     positives = [row for row in rows if row["expected_outcome"].startswith("positive")]
     assert positives
-    if (ROOT / ".abc_build" / "abc_repo" / "abc").exists():
+    if _abc_available():
         assert any(row["final_status"] == "accepted" for row in positives)
 
 
 def test_checker_rejects_fabricated_global_cec(tmp_path):
-    if not (ROOT / ".abc_build" / "abc_repo" / "abc").exists():
-        pytest.skip("ABC is required to create an accepted controlled row before corruption")
     out_dir = tmp_path / "joint_results"
     bench_dir = tmp_path / "joint_bench"
+    env = {**os.environ, "AIG_ABC": str(tmp_path / "missing_abc")}
     subprocess.run(
         [
             sys.executable,
@@ -169,23 +175,51 @@ def test_checker_rejects_fabricated_global_cec(tmp_path):
         ],
         cwd=ROOT,
         check=True,
+        env=env,
+    )
+    subprocess.run(
+        [sys.executable, "scripts/check_joint_region_interface_results.py", "--output-dir", str(out_dir), "--allow-no-abc"],
+        cwd=ROOT,
+        check=True,
+        env=env,
     )
     cec_path = out_dir / "global_cec_results.csv"
     rows = list(csv.DictReader(cec_path.open()))
     for row in rows:
-        if row["implementation_global_cec"] == "equivalent":
-            row["implementation_global_cec"] = "not_run"
-            break
+        row["implementation_global_cec"] = "not_run"
+        row["abc_available"] = "false"
+        break
     with cec_path.open("w", newline="", encoding="utf-8") as fh:
         writer = csv.DictWriter(fh, fieldnames=rows[0].keys(), lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
+    controlled_path = out_dir / "controlled_benchmark_results.csv"
+    controlled = list(csv.DictReader(controlled_path.open()))
+    controlled_fields = list(controlled[0].keys())
+    controlled[0]["final_status"] = "accepted"
+    controlled[0]["global_cec"] = "equivalent"
+    controlled[0]["graph_active_replacement"] = "true"
+    controlled[0]["restored_boundary"] = "true"
+    with controlled_path.open("w", newline="", encoding="utf-8") as fh:
+        writer = csv.DictWriter(fh, fieldnames=controlled_fields, lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(controlled)
+    boundary_path = out_dir / "boundary_restoration_results.csv"
+    boundaries = list(csv.DictReader(boundary_path.open()))
+    boundary_fields = list(boundaries[0].keys())
+    boundaries[0]["newly_recovered_boundary"] = "true"
+    boundaries[0]["boundary_validation_status"] = "valid"
+    with boundary_path.open("w", newline="", encoding="utf-8") as fh:
+        writer = csv.DictWriter(fh, fieldnames=boundary_fields, lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(boundaries)
     result = subprocess.run(
-        [sys.executable, "scripts/check_joint_region_interface_results.py", "--output-dir", str(out_dir)],
+        [sys.executable, "scripts/check_joint_region_interface_results.py", "--output-dir", str(out_dir), "--allow-no-abc"],
         cwd=ROOT,
         text=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        env=env,
     )
     assert result.returncode != 0
-    assert "lacks equivalent global CEC" in result.stderr
+    assert "global CEC" in result.stderr or "ABC unavailable" in result.stderr

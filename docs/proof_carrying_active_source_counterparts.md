@@ -140,8 +140,12 @@ make check-active-source-counterpart-results
 .venv-z3/bin/python -m pytest -q tests/test_active_source_counterpart_refactoring.py
 ```
 
-The full local run uses `.venv-z3`, Z3 4.16.0, and the repository ABC binary at
-`.abc_build/abc_repo/abc`.  Yosys was unavailable for this run.
+The full local run uses Z3 4.16.0 and the pinned repository ABC binary at
+`.abc_build/abc_repo/abc` (`make check-abc`). Tests use the active Python
+interpreter rather than a hardcoded `.venv-z3` path. `--allow-no-abc` is only a
+portable schema/rejection mode: no active source-side counterpart is accepted
+unless both global CEC rows record `abc_available=true` and `equivalent`. Yosys
+was unavailable for this run.
 
 ## Supported Claim
 

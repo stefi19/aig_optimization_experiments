@@ -145,6 +145,9 @@ make check-semantic-functional-refactoring-results
 The result checker rejects restored-boundary rows that lack UNSAT
 decomposability proof, independent quotient proof, non-vacuity, graph-active
 divisor consumers, ABC global CEC, and resynthesis-survival evidence.
+`--allow-no-abc` is only for portable schema/rejection checking; it does not
+permit accepted or restored rows unless the CSV evidence records
+`abc_available=true` and equivalent global CEC.
 
 ## Supported Claim
 

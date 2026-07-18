@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import platform
 import shutil
 import subprocess
@@ -55,8 +56,8 @@ FIELDS = {
     "benchmark_split.csv": ["benchmark", "design_family", "split", "split_basis", "manual_tuning_allowed", "schema_version"],
     "ground_truth_boundary_manifest.csv": ["boundary_id", "benchmark", "design_family", "split", "module", "source_location", "operator_type", "input_widths", "output_widths", "signedness", "source_support", "output_function", "consumer_count", "consumer_identities", "fanout_properties", "externally_observable", "nontrivial", "eligible_for_blind_evaluation", "fingerprint", "schema_version"],
     "leakage_audit_results.csv": ["row_id", "oracle_mode", "forbidden_fields_present", "leakage_status", "schema_version"],
-    "synthesis_trajectories.csv": ["trajectory_id", "benchmark", "design_family", "split", "flow_family", "pass_sequence", "checkpoint_count", "deterministic_seed", "schema_version"],
-    "checkpoint_hashes.csv": ["trajectory_id", "checkpoint_id", "checkpoint_index", "pass_name", "blif_path", "sha256", "schema_version"],
+    "synthesis_trajectories.csv": ["trajectory_id", "benchmark", "design_family", "split", "flow_family", "pass_sequence", "checkpoint_count", "realized_checkpoint_count", "deterministic_seed", "schema_version"],
+    "checkpoint_hashes.csv": ["trajectory_id", "checkpoint_id", "checkpoint_index", "pass_name", "blif_path", "sha256", "artifact_status", "artifact_exists", "parse_status", "schema_version"],
     "checkpoint_cec_results.csv": ["trajectory_id", "checkpoint_id", "checkpoint_index", "pass_name", "cec_status", "abc_output", "runtime_s", "unsupported_reason", "schema_version"],
     "checkpoint_structural_metrics.csv": ["trajectory_id", "checkpoint_id", "checkpoint_index", "pass_name", "node_count", "edge_count", "level_count", "input_count", "output_count", "internal_fanout_sum", "schema_version"],
     "blind_candidate_predictions.csv": ["prediction_id", "trajectory_id", "checkpoint_id", "checkpoint_index", "method", "candidate_signal", "support_size", "fanin_signature", "source_blind", "schema_version"],
@@ -87,7 +88,7 @@ def main() -> int:
     parser.add_argument("--mode", choices=["all", "controlled", "development", "heldout", "oracle", "pass-ablations", "durability"], default="all")
     parser.add_argument("--output-dir", type=Path, default=OUT)
     parser.add_argument("--bench-dir", type=Path, default=BENCH)
-    parser.add_argument("--abc", type=Path, default=ABC)
+    parser.add_argument("--abc", type=Path, default=Path(os.environ.get("AIG_ABC", ABC)))
     args = parser.parse_args()
     OUT = args.output_dir
     BENCH = args.bench_dir
@@ -111,12 +112,12 @@ def main() -> int:
     for spec in trajectories:
         cps = generate_trajectory(spec=spec, abc=args.abc, output_dir=ART / "checkpoints")
         checkpoints.extend(cps)
-        rows["synthesis_trajectories.csv"].append({"trajectory_id": spec.trajectory_id, "benchmark": spec.benchmark, "design_family": _family_for(spec.benchmark, boundaries), "split": spec.split, "flow_family": spec.flow_family, "pass_sequence": json.dumps(spec.pass_sequence), "checkpoint_count": str(len(cps)), "deterministic_seed": str(spec.deterministic_seed), "schema_version": SCHEMA_VERSION})
+        rows["synthesis_trajectories.csv"].append({"trajectory_id": spec.trajectory_id, "benchmark": spec.benchmark, "design_family": _family_for(spec.benchmark, boundaries), "split": spec.split, "flow_family": spec.flow_family, "pass_sequence": json.dumps(spec.pass_sequence), "checkpoint_count": str(len(cps)), "realized_checkpoint_count": str(sum(_checkpoint_artifact_ready(cp) for cp in cps)), "deterministic_seed": str(spec.deterministic_seed), "schema_version": SCHEMA_VERSION})
         for cp in cps:
             sha = file_sha256(cp.blif_path) if cp.blif_path.exists() else ""
-            rows["checkpoint_hashes.csv"].append({"trajectory_id": cp.trajectory_id, "checkpoint_id": cp.checkpoint_id, "checkpoint_index": str(cp.checkpoint_index), "pass_name": cp.pass_name, "blif_path": _display(cp.blif_path), "sha256": sha, "schema_version": SCHEMA_VERSION})
+            rows["checkpoint_hashes.csv"].append({"trajectory_id": cp.trajectory_id, "checkpoint_id": cp.checkpoint_id, "checkpoint_index": str(cp.checkpoint_index), "pass_name": cp.pass_name, "blif_path": _display(cp.blif_path), "sha256": sha, "artifact_status": cp.artifact_status, "artifact_exists": str(cp.blif_path.exists()).lower(), "parse_status": cp.parse_status, "schema_version": SCHEMA_VERSION})
             rows["checkpoint_cec_results.csv"].append({"trajectory_id": cp.trajectory_id, "checkpoint_id": cp.checkpoint_id, "checkpoint_index": str(cp.checkpoint_index), "pass_name": cp.pass_name, "cec_status": cp.cec_status, "abc_output": cp.cec_output, "runtime_s": f"{cp.runtime_s:.6f}", "unsupported_reason": cp.unsupported_reason, "schema_version": SCHEMA_VERSION})
-            if cp.cec_status == "equivalent":
+            if _checkpoint_ready_for_analysis(cp):
                 metrics = structural_metrics(cp.blif_path)
                 metrics_by_cp[cp.checkpoint_id] = metrics
                 rows["checkpoint_structural_metrics.csv"].append({"trajectory_id": cp.trajectory_id, "checkpoint_id": cp.checkpoint_id, "checkpoint_index": str(cp.checkpoint_index), "pass_name": cp.pass_name, **metrics, "schema_version": SCHEMA_VERSION})
@@ -125,6 +126,8 @@ def main() -> int:
     for cp in checkpoints:
         boundary = relevant.get((cp.benchmark, cp.split))
         if boundary is None:
+            continue
+        if not _checkpoint_ready_for_analysis(cp):
             continue
         blind_rows = _blind_rows(cp, boundary)
         rows["blind_recovery_results.csv"].extend(blind_rows)
@@ -288,6 +291,14 @@ def _blind_rows(cp, boundary):
         else:
             rows.append(classify_recoverability(checkpoint=cp, boundary=boundary, method=method, oracle_mode="blind", residual_support=tuple(), window_outputs=tuple(parse_blif(cp.blif_path).outputs) if cp.blif_path.exists() else boundary.output_nodes, local_threshold_nodes=8))
     return rows
+
+
+def _checkpoint_artifact_ready(cp: Checkpoint) -> bool:
+    return cp.artifact_status == "materialized" and cp.blif_path.exists() and cp.parse_status == "parse_valid"
+
+
+def _checkpoint_ready_for_analysis(cp: Checkpoint) -> bool:
+    return _checkpoint_artifact_ready(cp) and cp.cec_status == "equivalent"
 
 
 def _functional_survival_row(cp: Checkpoint, boundary: BoundaryRecord) -> dict[str, str]:
