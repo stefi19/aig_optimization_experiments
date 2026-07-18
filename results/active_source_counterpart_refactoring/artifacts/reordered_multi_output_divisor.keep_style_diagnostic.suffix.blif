@@ -1,0 +1,51 @@
+# Benchmark "semantic_refactored" written by ABC on Sat Jul 18 22:14:31 2026
+.model semantic_refactored
+.inputs x0 x1 r0 r1
+.outputs o0 o1
+.names x0 x1 new_n7
+11 1
+.names x0 x1 new_n8
+10 1
+.names new_n7 new_n8 new_n9
+00 1
+.names r0 new_n9 new_n10
+11 1
+.names r0 new_n9 new_n11
+00 1
+.names new_n10 new_n11 o0
+00 0
+.names x0 x1 new_n13
+01 1
+.names new_n7 new_n13 new_n14
+00 1
+.names r0 r1 new_n15
+11 1
+.names r0 r1 new_n16
+00 1
+.names new_n15 new_n16 new_n17
+00 1
+.names new_n9 new_n17 new_n18
+00 1
+.names r1 new_n9 new_n19
+01 1
+.names new_n18 new_n19 new_n20
+00 1
+.names new_n14 new_n20 new_n21
+00 1
+.names r0 r1 new_n22
+01 1
+.names r0 r1 new_n23
+10 1
+.names new_n22 new_n23 new_n24
+00 1
+.names new_n9 new_n24 new_n25
+00 1
+.names r1 new_n9 new_n26
+11 1
+.names new_n25 new_n26 new_n27
+00 1
+.names new_n14 new_n27 new_n28
+10 1
+.names new_n21 new_n28 o1
+00 0
+.end

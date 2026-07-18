@@ -1,0 +1,7 @@
+.model negative_information_lost
+.inputs x0 x1
+.outputs o0
+.names x0 x1 o0
+10 1
+01 1
+.end

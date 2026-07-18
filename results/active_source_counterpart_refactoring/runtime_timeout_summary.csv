@@ -1,0 +1,15 @@
+stage,queries,timeouts,total_runtime_seconds,max_runtime_seconds,schema_version
+controlled_candidate,4,false,0.146561,0.146563,active_source_counterpart_refactoring_v1
+controlled_candidate,4,false,0.531583,0.531585,active_source_counterpart_refactoring_v1
+controlled_candidate,4,false,0.464525,0.464526,active_source_counterpart_refactoring_v1
+controlled_candidate,4,false,0.480869,0.480871,active_source_counterpart_refactoring_v1
+controlled_candidate,4,false,0.084769,0.084771,active_source_counterpart_refactoring_v1
+controlled_candidate,4,false,0.087881,0.087883,active_source_counterpart_refactoring_v1
+controlled_candidate,4,false,0.085180,0.085181,active_source_counterpart_refactoring_v1
+controlled_candidate,4,false,0.336379,0.336380,active_source_counterpart_refactoring_v1
+controlled_candidate,4,false,0.088189,0.088190,active_source_counterpart_refactoring_v1
+controlled_candidate,4,false,0.088111,0.088113,active_source_counterpart_refactoring_v1
+controlled_candidate,4,false,0.002060,0.002060,active_source_counterpart_refactoring_v1
+controlled_candidate,4,false,0.003368,0.003368,active_source_counterpart_refactoring_v1
+controlled_candidate,4,false,0.002118,0.002118,active_source_counterpart_refactoring_v1
+total,39,0,2.401593,0.531585,active_source_counterpart_refactoring_v1

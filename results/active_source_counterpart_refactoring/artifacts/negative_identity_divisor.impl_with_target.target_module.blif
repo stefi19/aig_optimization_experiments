@@ -1,0 +1,10 @@
+.model impl_target_negative_identity_divisor__divisor
+.inputs x0 x1
+.outputs m0 m1
+.names x0 x1 m0
+10 1
+11 1
+.names x0 x1 m1
+01 1
+11 1
+.end

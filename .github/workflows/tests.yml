@@ -47,3 +47,9 @@ jobs:
 
       - name: Check semantic recoverability frontier results
         run: python scripts/check_semantic_recoverability_results.py --allow-no-abc
+
+      - name: Run lightweight active source-counterpart refactoring
+        run: python scripts/run_active_source_counterpart_refactoring.py --mode controlled
+
+      - name: Check active source-counterpart result schemas
+        run: python scripts/check_active_source_counterpart_results.py --allow-no-abc

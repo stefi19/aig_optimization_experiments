@@ -1,0 +1,6 @@
+baseline,benchmark_group,attempted,proved_counterparts,active_rewrites,source_cec_passes,cross_cec_passes,usable_anchors,selected_anchors,new_boundaries,critical_path_resolved,durable_final_boundaries,notes,schema_version
+no_materialization,real,20,0,0,0,0,0,0,0,0,0,no constructed source-side signal,active_source_counterpart_refactoring_v1
+old_additive_materialization,real,20,20,0,20,20,0,0,0,0,0,formally equivalent but disconnected,active_source_counterpart_refactoring_v1
+optimized_side_functional_refactoring,controlled,13,12,10,10,10,10,10,10,10,0,previous phase source-blind controlled result,active_source_counterpart_refactoring_v1
+active_source_counterpart_refactoring,controlled,13,10,10,10,10,10,10,10,10,10,"active graph rewrites only, controlled and real separated",active_source_counterpart_refactoring_v1
+active_source_counterpart_refactoring,real,56,20,0,0,0,0,0,0,0,0,bounded real source-window search remains negative,active_source_counterpart_refactoring_v1

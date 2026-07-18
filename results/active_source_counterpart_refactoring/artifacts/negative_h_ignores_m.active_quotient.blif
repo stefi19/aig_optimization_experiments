@@ -1,0 +1,7 @@
+.model active_quo_negative_h_ignores_m
+.inputs m0 r0
+.outputs o0
+.names m0 r0 o0
+01 1
+11 1
+.end

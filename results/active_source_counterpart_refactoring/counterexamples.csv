@@ -1,0 +1,2 @@
+counterexample_id,candidate_id,benchmark,assignment_a,assignment_b,divisor_value,residual_value,output_a,output_b,counterexample_reproduced,repair_action,schema_version
+negative_information_lost__active_source_counterpart__cex_0001,negative_information_lost__active_source_counterpart,negative_information_lost,"{""x0"": 0, ""x1"": 1}","{""x0"": 0, ""x1"": 0}",[0],{},[1],[0],true,grow_residual_or_reject_under_budget,active_source_counterpart_refactoring_v1

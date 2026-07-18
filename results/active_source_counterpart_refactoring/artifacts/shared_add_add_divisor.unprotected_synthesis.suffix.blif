@@ -1,0 +1,117 @@
+# Benchmark "semantic_refactored" written by ABC on Sat Jul 18 22:14:30 2026
+.model semantic_refactored
+.inputs x0 x1 y0 y1 z0 z1 r0 r1
+.outputs o0 o1 p0 p1
+.names y0 z0 new_n13
+11 1
+.names y0 z0 new_n14
+00 1
+.names new_n13 new_n14 new_n15
+00 1
+.names x0 new_n15 new_n16
+10 1
+.names y0 z0 new_n17
+01 1
+.names y0 z0 new_n18
+10 1
+.names new_n17 new_n18 new_n19
+00 1
+.names x0 new_n19 new_n20
+00 1
+.names new_n16 new_n20 new_n21
+00 1
+.names r0 new_n21 new_n22
+11 1
+.names r0 new_n21 new_n23
+00 1
+.names new_n22 new_n23 o0
+00 0
+.names y1 z1 new_n25
+01 1
+.names y1 z1 new_n26
+10 1
+.names new_n25 new_n26 new_n27
+00 1
+.names x1 y0 new_n28
+01 1
+.names new_n27 new_n28 new_n29
+00 1
+.names x0 y0 new_n30
+10 1
+.names x0 x1 new_n31
+01 1
+.names new_n30 new_n31 new_n32
+00 1
+.names new_n29 new_n32 new_n33
+11 1
+.names new_n28 new_n31 new_n34
+00 1
+.names y1 z1 new_n35
+11 1
+.names y1 z1 new_n36
+00 1
+.names new_n35 new_n36 new_n37
+00 1
+.names x0 y0 new_n38
+01 1
+.names new_n37 new_n38 new_n39
+00 1
+.names new_n34 new_n39 new_n40
+01 1
+.names new_n33 new_n40 new_n41
+00 1
+.names z0 z1 new_n42
+01 1
+.names z0 z1 new_n43
+10 1
+.names new_n42 new_n43 new_n44
+00 1
+.names x1 y1 new_n45
+11 1
+.names x1 y1 new_n46
+00 1
+.names new_n45 new_n46 new_n47
+00 1
+.names new_n30 new_n38 new_n48
+00 1
+.names new_n47 new_n48 new_n49
+00 1
+.names new_n44 new_n49 new_n50
+01 1
+.names x1 y1 new_n51
+01 1
+.names x1 y1 new_n52
+10 1
+.names new_n51 new_n52 new_n53
+00 1
+.names new_n48 new_n53 new_n54
+00 1
+.names new_n44 new_n54 new_n55
+11 1
+.names new_n50 new_n55 new_n56
+00 1
+.names new_n41 new_n56 new_n57
+11 1
+.names r1 new_n57 new_n58
+11 1
+.names r1 new_n57 new_n59
+00 1
+.names new_n58 new_n59 o1
+00 0
+.names r1 new_n57 new_n61
+10 1
+.names r1 new_n57 new_n62
+01 1
+.names new_n61 new_n62 new_n63
+00 1
+.names r0 new_n21 new_n64
+10 1
+.names new_n63 new_n64 new_n65
+11 1
+.names new_n63 new_n64 new_n66
+00 1
+.names new_n65 new_n66 p1
+00 1
+.names o0 p0
+1 1
+.end

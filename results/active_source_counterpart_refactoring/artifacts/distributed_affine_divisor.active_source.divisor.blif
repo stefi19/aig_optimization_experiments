@@ -1,0 +1,10 @@
+.model div_distributed_affine_divisor__divisor
+.inputs x0 x1
+.outputs m0 m1
+.names x0 x1 m0
+00 1
+01 1
+.names x0 x1 m1
+00 1
+11 1
+.end

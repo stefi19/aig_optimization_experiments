@@ -1,0 +1,3 @@
+split,attempted,proved_counterparts,decomposable,quotients_proved,active_rewrites,source_cec_passes,cross_cec_passes,usable_anchors,new_boundaries,failure_reasons,schema_version
+dev,45,16,0,0,0,0,0,0,0,"{""no_globally_anchored_cut"": 29, ""no_relevant_source_consumer_window_under_bounds"": 16}",active_source_counterpart_refactoring_v1
+heldout,11,4,0,0,0,0,0,0,0,"{""no_globally_anchored_cut"": 7, ""no_relevant_source_consumer_window_under_bounds"": 4}",active_source_counterpart_refactoring_v1

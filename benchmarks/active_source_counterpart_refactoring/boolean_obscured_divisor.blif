@@ -1,0 +1,14 @@
+.model boolean_obscured_divisor
+.inputs x0 x1 r0
+.outputs o0 o1
+.names x0 x1 r0 o0
+100 1
+010 1
+001 1
+111 1
+.names x0 x1 r0 o1
+110 1
+001 1
+101 1
+011 1
+.end

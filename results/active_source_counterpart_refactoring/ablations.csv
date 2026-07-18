@@ -1,0 +1,5 @@
+ablation,attempted,proved_counterparts,decomposable,quotients_proved,active_rewrites,global_cec_passes,usable_anchors,new_boundaries,failure_reason,schema_version
+old_target_selection,20,20,0,0,0,0,0,0,no_relevant_source_consumer_window_under_bounds,active_source_counterpart_refactoring_v1
+proof_easiness_ranking,20,20,0,0,0,0,0,0,repeats_additive_disconnected_result,active_source_counterpart_refactoring_v1
+boundary_utility_aware_ranking,69,10,12,12,10,10,10,10,,active_source_counterpart_refactoring_v1
+gf2_linear_special_case,13,11,0,0,0,0,0,0,linear_baseline_not_general_refactoring_algorithm,active_source_counterpart_refactoring_v1

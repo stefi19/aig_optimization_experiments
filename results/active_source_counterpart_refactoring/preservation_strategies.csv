@@ -1,0 +1,5 @@
+strategy,attempted,cec_equivalent,counterpart_present,graph_active,usable_boundary,mean_area_delta,mean_depth_delta,notes,schema_version
+unprotected_synthesis,10,10,0,0,0,22.300000,0.000000,"repair/pass-choice are bounded reconstruction strategies, not unprotected survival",active_source_counterpart_refactoring_v1
+repair_after_pass,10,10,10,10,10,0.000000,0.000000,"repair/pass-choice are bounded reconstruction strategies, not unprotected survival",active_source_counterpart_refactoring_v1
+bounded_pass_choice,10,10,10,10,10,0.000000,0.000000,"repair/pass-choice are bounded reconstruction strategies, not unprotected survival",active_source_counterpart_refactoring_v1
+keep_style_diagnostic,10,10,0,0,0,29.800000,0.000000,"repair/pass-choice are bounded reconstruction strategies, not unprotected survival",active_source_counterpart_refactoring_v1

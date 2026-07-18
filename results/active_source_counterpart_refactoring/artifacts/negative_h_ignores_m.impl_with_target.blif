@@ -1,0 +1,9 @@
+.model impl_negative_h_ignores_m__divisor
+.inputs x0 r0
+.outputs o0
+.names x0 r0 o0
+01 1
+11 1
+.names x0 m0
+1 1
+.end

@@ -1,0 +1,10 @@
+.model impl_target_reordered_multi_output_divisor__divisor
+.inputs x1 x0
+.outputs m0 m1
+.names x1 x0 m0
+10 1
+11 1
+.names x1 x0 m1
+01 1
+11 1
+.end

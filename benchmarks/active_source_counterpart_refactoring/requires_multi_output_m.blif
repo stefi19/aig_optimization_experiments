@@ -1,0 +1,14 @@
+.model requires_multi_output_m
+.inputs x0 x1 r0
+.outputs o0 o1
+.names x0 x1 r0 o0
+100 1
+110 1
+001 1
+011 1
+.names x0 x1 r0 o1
+010 1
+110 1
+001 1
+101 1
+.end

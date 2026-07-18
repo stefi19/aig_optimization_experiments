@@ -7,6 +7,7 @@ Z3_PYTHON = $(shell if [ -x .venv-z3/bin/python ]; then echo .venv-z3/bin/python
 .PHONY: joint-region-interface joint-region-interface-controlled joint-region-interface-real joint-region-interface-heldout joint-region-interface-ablations joint-region-interface-plots check-joint-region-interface-results joint-region-interface-all
 .PHONY: semantic-functional-refactoring-controlled semantic-functional-refactoring-development semantic-functional-refactoring-heldout semantic-functional-refactoring-ablations semantic-functional-refactoring-plots check-semantic-functional-refactoring-results semantic-functional-refactoring-all
 .PHONY: semantic-recoverability-benchmarks semantic-recoverability-trajectories semantic-recoverability-controlled semantic-recoverability-development semantic-recoverability-heldout semantic-recoverability-oracle semantic-recoverability-pass-ablations semantic-recoverability-durability semantic-recoverability-plots check-semantic-recoverability-results semantic-recoverability-all
+.PHONY: active-source-counterparts-controlled active-source-counterparts-development active-source-counterparts-heldout active-source-counterparts-durability active-source-counterparts-ablations active-source-counterparts-plots check-active-source-counterpart-results active-source-counterparts-all
 
 all: build-abc generate-variants analyze plot
 
@@ -360,6 +361,37 @@ check-semantic-recoverability-results:
 
 semantic-recoverability-all: semantic-recoverability-trajectories semantic-recoverability-plots check-semantic-recoverability-results
 	@echo "Semantic recoverability frontier pipeline complete."
+
+active-source-counterparts-controlled:
+	@echo "Running controlled active source-counterpart refactoring"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_active_source_counterpart_refactoring.py --mode controlled
+
+active-source-counterparts-development:
+	@echo "Revisiting development active source-counterpart targets"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_active_source_counterpart_refactoring.py --mode development
+
+active-source-counterparts-heldout:
+	@echo "Running held-out active source-counterpart accounting"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_active_source_counterpart_refactoring.py --mode heldout
+
+active-source-counterparts-durability:
+	@echo "Running active source-counterpart durability strategies"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_active_source_counterpart_refactoring.py --mode durability
+
+active-source-counterparts-ablations:
+	@echo "Running active source-counterpart baselines and ablations"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_active_source_counterpart_refactoring.py --mode all
+
+active-source-counterparts-plots: active-source-counterparts-ablations
+	@echo "Generating active source-counterpart plots"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/active_source_counterpart_plots.py
+
+check-active-source-counterpart-results:
+	@echo "Checking active source-counterpart results"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/check_active_source_counterpart_results.py
+
+active-source-counterparts-all: active-source-counterparts-ablations active-source-counterparts-plots check-active-source-counterpart-results
+	@echo "Active source-counterpart refactoring pipeline complete."
 
 semantic-graft-plots: semantic-graft-ablation
 	@echo "Generating blind CEGIS and semantic graft plots"
