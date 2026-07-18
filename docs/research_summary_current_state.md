@@ -75,6 +75,8 @@ blind bus/interface hypothesis
 -> synthesis-trajectory recoverability frontier
 -> active source-side counterpart construction
 -> source rewrite plus S/S' and S'/I global CEC
+-> formal locality-barrier certificates
+-> certificate-guided transplant accounting
 ```
 
 Ground-truth labels are joined only after prediction/proof files are written.
@@ -137,6 +139,25 @@ passes, 10 cross-design CEC passes, and 10 controlled boundaries/critical-path
 mappings. The real development/held-out result remains 0 active counterparts
 and 0 boundaries: old additive anchors lack bounded relevant source consumer
 windows, and fresh targets lack complete globally anchored cuts under bounds.
+
+The formal locality-barrier phase refines that null result instead of adding
+another arbitrary interface heuristic. It audits all 56 previous real failures
+with source-blind candidate-signal universes, two-copy sufficiency miters,
+replayable distinguishability counterexamples, and minimum hitting-set
+certificates. The current run resolves 20/20 old output-window rows to aligned
+source/optimized BLIF artifacts and proves compact exact input interfaces for
+their optimized targets. Output-window sufficiency remains the blocker: 3 have
+compact exact B/Z interfaces, while 17 require residual interfaces wider than
+the configured compact bound. Target-utility proofs show 0 functionally
+influential target interfaces: all 20 resolved output rows are sufficient only
+once residual source information is admitted, so none are counted as useful
+local transplants. The 36 fresh
+`no_globally_anchored_cut` rows are now classified more precisely as
+`insufficient_target_provenance`: the committed rows name `controlled_*__b0`
+targets without enough source/optimized target artifact information to build a
+valid cross-netlist certificate. Certificate existence is kept separate from
+transplantation: real graph-active transplants and real recovered boundaries
+remain 0.
 
 Each layer has a different role:
 

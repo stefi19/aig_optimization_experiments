@@ -759,6 +759,32 @@ svg .caption {
   padding: 10px;
 }
 
+.formula-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin: 18px 0;
+}
+
+.formula-grid > div {
+  min-height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  color: #e9f3ff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  text-align: center;
+  font-size: clamp(16px, 1.15vw, 21px);
+  line-height: 1.3;
+}
+
+.formula-grid code {
+  font-size: clamp(15px, 1.05vw, 18px);
+}
+
 .plot-caption {
   text-align: center;
   font-size: clamp(15px, 1.1vw, 19px);
@@ -1056,6 +1082,7 @@ button:focus-visible {
   .dual-flow,
   .branch-grid,
   .odc-mini,
+  .formula-grid,
   .plot-pair {
     grid-template-columns: 1fr;
   }

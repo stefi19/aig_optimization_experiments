@@ -1570,6 +1570,32 @@ ABC global CEC</pre>
     </section>
 
     <section class="slide">
+      <div class="slide-content">
+        <div><p class="eyebrow">Locality certificates</p><h2>Is the correspondence missing, or non-local?</h2><p class="subtitle">The next phase proves minimum source-side interfaces before adding more cut heuristics.</p></div>
+        <div class="formula-grid">
+          <div><code>C(Pa) = C(Pb)</code></div>
+          <div><code>T(Pa) != T(Pb)</code></div>
+          <div><code>D_U = {u | u(Pa) != u(Pb)}</code></div>
+          <div>minimum hitting set over replayed counterexamples</div>
+        </div>
+        <div class="meaning-box"><strong>Rule:</strong> exact minimum means UNSAT sufficiency plus a replayable lower bound excluding every smaller interface in the declared universe.</div>
+      </div>
+      <aside class="notes">Make the scientific scope precise: full PIs always determine deterministic targets, so the object is compact local sufficiency, not absolute information loss.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Certificate results</p><h2>Output rows reveal locality barriers; input rows need provenance repair</h2><div class="inline-stats"><span>56 audited</span><span>20 resolved artifacts</span><span>98 replayed cex</span><span>0 real transplants</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/formal_locality_classification.png" alt="Formal locality classification">
+          <img src="assets/plots/formal_locality_output_interface.png" alt="Formal locality output interfaces">
+        </div>
+        <div class="meaning-box"><strong>Refined result:</strong> 3 compact B/Z minima, 17 wide residual minima, 20 target-utility rejections, and 36 provenance failures. Certificate-guided rows are not counted as blind graph recovery.</div>
+      </div>
+      <aside class="notes">This slide updates the old 36/20 bounded labels. The 36 rows are not proved non-local yet because the recorded target provenance is insufficient.</aside>
+    </section>
+
+    <section class="slide">
       <div class="slide-content plot-slide">
         <div><p class="eyebrow">Preservation</p><h2>Transplanted boundaries still need protection or repair</h2><div class="inline-stats"><span>unprotected 0 / 12</span><span>repair 12 / 12</span><span>pass choice 12 / 12</span><span>retransplant 12 / 12</span></div></div>
         <div class="plot-pair">

@@ -179,6 +179,12 @@ boundaries. The 36 fresh targets remain blocked by input-interface sufficiency,
 and the 20 old additive anchors remain blocked by output-interface sufficiency
 under the bounded adapter search.
 
+The next locality-certificate phase in
+[`docs/formal_locality_barriers.md`](formal_locality_barriers.md) refines these
+bounded labels. It proves exact input minima where artifacts resolve, records
+output B/Z minima and target utility, and classifies the 36 fresh rows as
+`insufficient_target_provenance` rather than as a proved non-locality result.
+
 ## Related Work Positioning
 
 The method combines ideas from template-based circuit understanding,

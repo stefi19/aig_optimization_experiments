@@ -17,6 +17,8 @@ For the synthesis-trajectory recoverability frontier phase, see
 [`docs/semantic_recoverability_frontier.md`](docs/semantic_recoverability_frontier.md).
 For active source-side counterpart construction, see
 [`docs/proof_carrying_active_source_counterparts.md`](docs/proof_carrying_active_source_counterparts.md).
+For formal locality-barrier certificates, see
+[`docs/formal_locality_barriers.md`](docs/formal_locality_barriers.md).
 
 ## Web presentation
 
@@ -72,9 +74,10 @@ https://stefi19.github.io/aig_optimization_experiments/presentation/
 37. [Semantic Recoverability Frontier](#semantic-recoverability-frontier)
 38. [Proof-Carrying Active Source-Side Counterparts](#proof-carrying-active-source-side-counterparts)
 39. [Proof-Carrying Cross-Netlist Cut Transplantation](#proof-carrying-cross-netlist-cut-transplantation)
-40. [Dependencies](#20-dependencies)
-41. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
-42. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
+40. [Formal Locality-Barrier Certificates](#formal-locality-barrier-certificates)
+41. [Dependencies](#20-dependencies)
+42. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+43. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -890,6 +893,8 @@ make active-source-counterparts-all # run active source-side counterpart constru
 make check-active-source-counterpart-results # validate active counterpart proof stack
 make cross-netlist-transplant-all # run cross-netlist cut transplantation
 make check-cross-netlist-transplant-results # validate transplant proof stack
+make formal-locality-all # run formal locality-barrier certificates
+make check-formal-locality-results # validate locality certificates
 make test                # run the unit test suite
 ```
 
@@ -3275,3 +3280,44 @@ constant-multiply cases. The real result remains a bounded null result:
 failures localize to input-interface sufficiency for the 36 fresh targets and
 output-interface sufficiency for the 20 old additive anchors. Oracle-ladder
 diagnostics are written separately and are not merged into blind results.
+
+## Formal Locality-Barrier Certificates
+
+The locality-barrier phase answers whether the previous real transplant
+failures were merely search misses or whether the required interface is outside
+the declared compact/local universe. It proves source-side functional
+sufficiency with a two-copy miter:
+
+```text
+C(Pa) = C(Pb)  =>  T(Pa) = T(Pb)
+```
+
+SAT counterexamples generate hitting-set constraints over the candidate source
+universe. A result is called an exact minimum only when the candidate interface
+is formally sufficient and the replayable difference sets prove that no smaller
+interface can work under the declared universe and bounds.
+
+Run it with:
+
+```bash
+make formal-locality-all
+make check-formal-locality-results
+```
+
+Current committed results under `results/formal_locality_barriers/`:
+
+- all 56 previous real failures audited;
+- 36/36 `no_globally_anchored_cut` rows classified as
+  `insufficient_target_provenance`;
+- 20/20 `no_relevant_source_consumer_window_under_bounds` rows resolved to
+  aligned source/optimized BLIF artifacts;
+- 20/20 resolved output-window rows have compact exact input certificates for
+  the optimized target itself;
+- output-window analysis finds 3 compact exact B/Z interfaces and 17 residual
+  minima above the compact bound;
+- target-utility proofs find 0 influential interfaces and 20 interfaces where
+  the chosen target is not necessary once the residual interface is included;
+- certificate-guided real transplants remain 0, with 0 new real boundaries.
+
+These are bounded locality certificates, not absolute semantic impossibility
+claims. Whole-primary-input interfaces remain diagnostic-only.

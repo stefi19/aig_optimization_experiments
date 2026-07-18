@@ -201,6 +201,17 @@ not find a source-blind interface sufficient to connect the real targets.
 Oracle-ladder diagnostics are recorded separately in
 `oracle_diagnostics.csv` and are not merged into blind headline counts.
 
+The follow-up formal locality-barrier phase strengthens this interpretation in
+`results/formal_locality_barriers/`. It does not change the zero-transplant
+claim, but it replaces the vague bounded labels with certificate-scoped
+evidence: 20/20 old output-window rows resolve to aligned BLIF artifacts and
+have compact exact input certificates for the optimized targets; output-window
+sufficiency still blocks transplantation, with 3 compact B/Z interfaces and 17
+wide-residual minima under the declared B/Z universe. The 36 fresh
+`no_globally_anchored_cut` rows are now classified as
+`insufficient_target_provenance` until their source/optimized target artifacts
+are repaired.
+
 ## Durability
 
 Durability is measured only for accepted controlled transplants:

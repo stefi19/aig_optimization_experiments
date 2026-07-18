@@ -221,3 +221,9 @@ the bounded source-window and anchored-cut search. Durability remains fragile:
 unprotected suffix synthesis preserves primary-output equivalence but removes
 the graph-active counterpart; repair/pass-choice strategies are reported as
 separate bounded preservation experiments.
+
+The formal locality-barrier successor phase then asks whether those bounded
+failures are search misses, non-local interface requirements, or provenance
+gaps. Its results are documented in
+[`docs/formal_locality_barriers.md`](formal_locality_barriers.md) and kept
+separate from blind recovery or graph-active transplant counts.
