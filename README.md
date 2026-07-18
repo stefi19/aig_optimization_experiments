@@ -11,6 +11,8 @@ For the blind semantic CEGIS phase, see
 [`docs/blind_cegis_semantic_boundary_reconstruction.md`](docs/blind_cegis_semantic_boundary_reconstruction.md).
 For proof-carrying semantic region replacement, see
 [`docs/proof_carrying_semantic_region_replacement.md`](docs/proof_carrying_semantic_region_replacement.md).
+For proof-carrying semantic functional refactoring, see
+[`docs/proof_carrying_semantic_functional_refactoring.md`](docs/proof_carrying_semantic_functional_refactoring.md).
 
 ## Web presentation
 
@@ -62,9 +64,10 @@ https://stefi19.github.io/aig_optimization_experiments/presentation/
 33. [Blind CEGIS Semantic Boundary Reconstruction](#blind-cegis-semantic-boundary-reconstruction)
 34. [Proof-Carrying Semantic Region Replacement](#proof-carrying-semantic-region-replacement)
 35. [Joint Region/Interface Discovery](#joint-regioninterface-discovery)
-36. [Dependencies](#20-dependencies)
-37. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
-38. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
+36. [Proof-Carrying Semantic Functional Refactoring](#proof-carrying-semantic-functional-refactoring)
+37. [Dependencies](#20-dependencies)
+38. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+39. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -870,6 +873,8 @@ make real-benchmarks     # convert verilog_examples/ → BLIF via Yosys (prints 
 make generate-all-benchmarks  # synthetic + real benchmarks
 make semantic-benchmarks # generate semantic-recovery RTL/BLIF cases and ABC flow status rows
 make semantic-benchmarks-check # validate semantic-recovery manifests and generated files
+make semantic-functional-refactoring-all # run functional-decomposition refactoring and plots
+make check-semantic-functional-refactoring-results # validate functional-refactoring evidence
 make test                # run the unit test suite
 ```
 
@@ -902,7 +907,7 @@ python3 -m pytest tests/test_sat_refinement_abc.py tests/test_fingerprints.py -q
 
 Expected for that focused check: **72 tests passing**.
 
-Current full-suite result in this environment: **483 passed, 4 skipped**.
+Current Z3-enabled pre-phase baseline in this environment: **720 passed, 4 skipped**.
 
 ### Clean generated outputs (keeps benchmarks and scripts)
 
@@ -938,6 +943,9 @@ aig_optimization_experiments/
 │   │   │   └── mux_tree_8.v           8-to-1 balanced mux tree (3-level hierarchy)
 │   │   └── README.md              Benchmark descriptions + conversion instructions
 │   ├── generated/                 Synthetic BLIFs (make generate-benchmarks)
+│   ├── semantic_region_replacement/     Controlled semantic replacement cases
+│   ├── joint_region_interface/           Controlled joint region/interface cases
+│   ├── semantic_functional_refactoring/  Controlled decomposition/refactoring cases
 │   └── external/                  External suites — iteration 2 (place files here)
 │       ├── iscas85/                  ISCAS-85 .blif files (not redistributed)
 │       ├── epfl/                     EPFL .blif files (not redistributed)
@@ -975,6 +983,7 @@ aig_optimization_experiments/
 │   ├── contextual_error_metrics.md    Human-readable contextual metrics report
 │   ├── contextual_critical_path_mapping.csv  Versioned critical-path contextual mapping
 │   ├── register_insertion_suggestions.csv    Ranked register-suggestion prototype rows
+│   ├── semantic_functional_refactoring/       Functional decomposition/refactoring results
 │   ├── hybrid/                        ABC SAT sweep / hybrid validation outputs
 │   │   ├── hybrid_validated_candidates.csv   Candidates annotated with ABC verdicts
 │   │   ├── hybrid_validation_summary.md      Human-readable hybrid report
@@ -1003,7 +1012,10 @@ aig_optimization_experiments/
 │   ├── odc_aware_matching_plan.md      Plan for context-aware matching
 │   ├── register_insertion_suggestion_plan.md Register suggestion prototype plan
 │   ├── rtl_source_mapping_plan.md      RTL/source metadata mapping plan
-│   └── timing_aware_back_mapping_plan.md Timing-aware path plan
+│   ├── timing_aware_back_mapping_plan.md Timing-aware path plan
+│   ├── proof_carrying_semantic_region_replacement.md Region replacement phase
+│   ├── joint_region_interface_discovery.md Joint region/interface phase
+│   └── proof_carrying_semantic_functional_refactoring.md Functional refactoring phase
 │
 ├── tests/                         pytest unit tests
 │   ├── test_topk_recovery.py
@@ -1030,6 +1042,9 @@ aig_optimization_experiments/
 │   ├── probe_abc_timing_commands.py       ABC timing command capability probe
 │   ├── timing_aware_path_probe.py         Delay-weighted path comparison
 │   ├── contextual_correspondence_analysis.py Contextual error analysis
+│   ├── run_semantic_functional_refactoring.py Functional decomposition/refactoring experiment
+│   ├── check_semantic_functional_refactoring_results.py Functional-refactoring evidence checker
+│   ├── semantic_functional_refactoring_plots.py Functional-refactoring plots
 │   └── suggest_register_insertion_points.py Register suggestion prototype
 │
 ├── contextual_error_metrics.py     Reusable global/contextual error metric engine
@@ -3041,3 +3056,59 @@ replacement is graph-active and globally CEC-equivalent.  The real benchmark
 result remains null, but the failure is now localized to joint closed-region and
 interface discovery rather than to semantic proof or disconnected anchor
 materialization.
+
+## Proof-Carrying Semantic Functional Refactoring
+
+The newest phase changes the abstraction again.  Instead of searching only for
+an existing closed semantic region, it asks whether an optimized logic window
+`Y = F(X, Z)` can be refactored into a source-blind semantic divisor and an
+exact quotient:
+
+```text
+M = G(X)
+Y = H(M, Z)
+```
+
+For each proposed divisor/window/residual split, the implementation proves
+quotient existence with a two-copy Z3 miter:
+
+```text
+G(Xa) = G(Xb) and Za = Zb and F(Xa, Za) != F(Xb, Zb)
+```
+
+UNSAT proves that the chosen `G/Z/window` has a well-defined exact quotient.
+SAT is recorded as a decomposition counterexample and replayed through the
+concrete BLIF evaluator.  Accepted refactorings then synthesize an exact
+truth-table quotient, independently prove `F(X, Z) = H(G(X), Z)`, reject
+identity and `H`-ignores-`M` decompositions, rewrite the BLIF so `M` is on a
+real fanout path, and require ABC global CEC.
+
+Run it with:
+
+```bash
+make semantic-functional-refactoring-all
+make check-semantic-functional-refactoring-results
+```
+
+Current committed results under
+`results/semantic_functional_refactoring/`:
+
+- 13 controlled experiments;
+- 12 controlled decomposable candidates;
+- 1 decomposition counterexample, concretely reproduced;
+- 12 exact quotients synthesized and independently Z3-proved;
+- 11 non-vacuous decompositions;
+- 10 controlled graph-active ABC-equivalent refactorings;
+- 10 controlled semantic boundaries restored;
+- 49 development real attempts, 0 restorations;
+- 9 held-out real attempts, 0 restorations;
+- 0 real benchmark boundaries restored.
+
+This is a controlled positive for proof-carrying semantic functional
+decomposition and graph-active refactoring, not a positive real-benchmark
+hierarchy-restoration claim.  The real null result is preserved with a bounded
+failure taxonomy in
+`results/semantic_functional_refactoring/failure_taxonomy.csv`; most real
+attempts fail because no source-blind semantic divisor/window/interface is found
+under the evaluated bounds, or because consumers are distributed beyond the
+bounded quotient window.

@@ -197,3 +197,19 @@ Current joint-discovery results:
 This preserves the fixed-region phase as a proof-stack validation result while
 making the next bottleneck explicit: source-blind real-region/interface
 formation, not isolated anchor placement.
+
+## Successor Phase: Functional Refactoring
+
+The joint phase improves controlled region/interface discovery but still
+searches for an existing closed semantic region. The functional-refactoring
+successor in
+[`docs/proof_carrying_semantic_functional_refactoring.md`](proof_carrying_semantic_functional_refactoring.md)
+changes the obligation to exact decomposition: find a semantic divisor
+`M = G(X)` and quotient `Y = H(M, Z)` for an optimized window. This can create a
+graph-active semantic boundary even when no original closed subregion remains.
+
+The committed functional-refactoring run restores 10 controlled boundaries with
+ABC global CEC and restores 0 real development/held-out boundaries. That result
+keeps the real null finding intact while shifting the diagnosis from closed
+region formation to source-blind divisor/window/interface discovery under
+bounded search.

@@ -1351,6 +1351,76 @@ ABC global CEC</pre>
     </section>
 
     <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Functional refactoring</p>
+          <h2>When no closed region exists, factor the function</h2>
+          <div class="formula-list">
+            <code>Y = F(X, Z)</code>
+            <code>M = G(X)</code>
+            <code>Y = H(M, Z)</code>
+          </div>
+          <p>The semantic boundary is no longer required to already exist as a closed optimized subgraph. It is introduced by a proven divisor and quotient.</p>
+        </div>
+        <div class="callout"><h3>Non-vacuity</h3><p><code>M</code> cannot be identity, <code>H</code> must depend on <code>M</code>, and the rewritten graph must route <code>M</code> to real consumers before any boundary is counted.</p></div>
+      </div>
+      <aside class="notes">This is the abstraction shift after joint discovery. The goal is not another placement heuristic; it is exact functional decomposition followed by graph-active refactoring.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Decomposition proof</p>
+          <h2>A two-copy miter proves quotient existence</h2>
+          <div class="formula-list">
+            <code>G(Xa) = G(Xb)</code>
+            <code>Za = Zb</code>
+            <code>ask SAT: F(Xa, Za) != F(Xb, Zb)</code>
+          </div>
+          <ul class="large-list"><li>UNSAT means an exact quotient exists for the selected divisor and residual interface.</li><li>SAT is a decomposition counterexample and is replayed through concrete BLIF evaluation.</li></ul>
+        </div>
+        <div class="callout"><h3>Proof stack</h3><p>After decomposition, the exact quotient is synthesized, independently proved, emitted as BLIF, spliced into the graph, and checked by ABC global CEC.</p></div>
+      </div>
+      <aside class="notes">Emphasize that this is a stronger condition than sampled factoring. The SAT model is not ignored; it is concrete evidence that the selected G/Z/window split is insufficient.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Functional-refactoring funnel</p><h2>10 controlled graph-active boundaries restored</h2><div class="inline-stats"><span>13 controlled</span><span>12 decomposable</span><span>12 quotients proved</span><span>10 ABC CEC</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/semantic_functional_refactoring_funnel.png" alt="Semantic functional refactoring proof funnel">
+          <img src="assets/plots/semantic_functional_refactoring_baseline_comparison.png" alt="Functional refactoring baseline comparison">
+        </div>
+        <div class="meaning-box"><strong>Accepted row:</strong> decomposition UNSAT, quotient proof UNSAT, non-vacuous divisor, graph-active rewrite, ABC global CEC, and boundary-survival evidence.</div>
+      </div>
+      <aside class="notes">This is a controlled positive result. It improves the controlled mechanism count relative to isolated anchors, fixed region replacement, and joint discovery.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Real benchmark result</p><h2>Functional refactoring still restores 0 real boundaries</h2><div class="inline-stats"><span>49 development attempts</span><span>9 held-out attempts</span><span>0 real CEC passes</span><span>bounded failure taxonomy</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/semantic_functional_refactoring_controlled_vs_real.png" alt="Controlled versus real functional refactoring">
+          <img src="assets/plots/semantic_functional_refactoring_failure_taxonomy.png" alt="Functional refactoring failure taxonomy">
+        </div>
+        <div class="meaning-box"><strong>Interpretation:</strong> the real blocker is source-blind discovery of useful divisors, residual variables, and bounded consumer windows, not the controlled quotient proof or graph rewrite stack.</div>
+      </div>
+      <aside class="notes">Do not soften the null result. The controlled phase establishes mechanism validity, while the real split establishes the next research bottleneck.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Search behavior</p><h2>Counterexamples and bounds shape the decomposition search</h2><div class="inline-stats"><span>1 controlled decomposition counterexample</span><span>reproduced 1/1</span><span>11 non-vacuous</span><span>zero real restorations</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/semantic_functional_refactoring_counterexample_repairs.png" alt="Functional refactoring counterexample repairs">
+          <img src="assets/plots/semantic_functional_refactoring_budget.png" alt="Functional refactoring budget outcomes">
+        </div>
+        <div class="meaning-box"><strong>Supported claim:</strong> source-blind, proof-carrying semantic functional decomposition can create graph-active boundaries on controlled distributed logic; real cases require stronger divisor/window discovery.</div>
+      </div>
+      <aside class="notes">End the new phase with the defensible contribution. Do not claim CEGIS, SMT, or decomposition itself as novel.</aside>
+    </section>
+
+    <section class="slide">
       <div class="slide-content">
         <p class="eyebrow">Glossary</p>
         <h2>Key terms in one place</h2>
@@ -1376,17 +1446,17 @@ ABC global CEC</pre>
 
     <section class="slide title-slide">
       <div class="slide-content title-grid">
-        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, adds ODC-aware anchors, formally verifies bounded direct semantic templates, adds Z3-backed blind CEGIS, validates proof-carrying semantic region replacement, and now performs counterexample-guided joint region/interface discovery on controlled replacements.</p></div>
-        <div class="takeaway-chain"><div>Optimized critical path</div><div>Closed implementation region</div><div>Verified semantic module</div><div>Graph-active boundary restoration</div></div>
+        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, adds ODC-aware anchors, formally verifies bounded direct semantic templates, adds Z3-backed blind CEGIS, validates graph-active semantic replacement, and now tests proof-carrying semantic functional refactoring.</p></div>
+        <div class="takeaway-chain"><div>Optimized logic window</div><div>Semantic divisor</div><div>Exact quotient</div><div>Graph-active refactoring</div></div>
       </div>
-      <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, cofactor and sensitivity features now have an ablation harness, boundary recovery and ODC anchors build region evidence, semantic layers recover bounded direct expressions, and materialization proves redundant wires but needs better boundary utility.</aside>
+      <aside class="notes">Close with the updated story: the controlled proof stack can introduce semantic graph structure with formal evidence, while the real benchmark split remains a zero-restoration result that now points to source-blind divisor and window discovery as the next bottleneck.</aside>
     </section>
   </main>
 
   <footer class="controls">
     <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
     <button id="prev" type="button" aria-label="Previous slide">Prev</button>
-    <span id="slide-number">1 / 94</span>
+    <span id="slide-number">1 / 103</span>
     <button id="next" type="button" aria-label="Next slide">Next</button>
     <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
   </footer>

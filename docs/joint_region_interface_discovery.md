@@ -149,3 +149,26 @@ SAT sweeping, and logic grafting/ECO flows.  The contribution is the
 source-blind, proof-carrying combination for hierarchy restoration after
 aggressive synthesis removes original internal cut-points, not CEGIS, SMT, or
 grafting in isolation.
+
+## Successor Phase: Functional Refactoring
+
+The joint phase still asks the search to find an existing closed semantic
+region.  The follow-up phase in
+[`docs/proof_carrying_semantic_functional_refactoring.md`](proof_carrying_semantic_functional_refactoring.md)
+tests a different hypothesis: an optimized window may not contain a closed
+semantic subgraph, but it may be exactly decomposable as `Y = H(G(X), Z)`.
+
+Current functional-refactoring results:
+
+- 13 controlled decomposition/refactoring cases;
+- 12 controlled decomposable candidates;
+- 12 exact quotients synthesized and independently Z3-proved;
+- 10 controlled graph-active ABC-equivalent refactorings;
+- 10 controlled restored semantic boundaries;
+- 49 development real attempts and 9 held-out real attempts;
+- 0 real benchmark restorations under the bounded source-blind search.
+
+This preserves the joint-discovery result as a controlled proof-stack success
+while making the next real blocker explicit: source-blind discovery of useful
+semantic divisors, quotient windows, and residual interfaces in optimized real
+circuits.

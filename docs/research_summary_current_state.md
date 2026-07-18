@@ -16,11 +16,14 @@ after rewriting, refactoring, resubstitution, and deeper resynthesis, many
 internal points no longer match exactly.
 
 The latest phases extend the work from node correspondence to source-blind
-semantic reconstruction and proof-carrying region replacement. The Z3-backed
+semantic reconstruction and proof-carrying graph transformation. The Z3-backed
 CEGIS phase asks whether compact word-level expressions can be inferred and
-proved from optimized regions. The newer region-replacement phase replaces the
-failed isolated-anchor abstraction with a closed implementation region and a
-multi-output semantic module that physically drives the original fanouts.
+proved from optimized regions. Region replacement and joint region/interface
+discovery replace the failed isolated-anchor abstraction with graph-active
+semantic modules that physically drive original fanouts. The newest functional
+refactoring phase tests a different hypothesis: when no existing semantic
+region can be closed, factor an optimized window into a semantic divisor
+`M = G(X)` and exact quotient `Y = H(M, Z)`.
 
 ## 2. Research Problem
 
@@ -62,6 +65,8 @@ blind bus/interface hypothesis
 -> semantic module emission
 -> graph-active region replacement
 -> ABC global CEC for accepted replacements
+-> functional decomposition when no closed semantic region exists
+-> semantic divisor plus exact quotient refactoring
 ```
 
 Ground-truth labels are joined only after prediction/proof files are written.
@@ -87,6 +92,22 @@ affine, add-add, bilinear, and MAC recovery are each 1/1. The real benchmark
 revisit remains a null result: 46 old isolated-anchor failures still yield 0
 real restored boundaries because no bounded closed implementation region can be
 formed from those candidates.
+
+The joint region/interface phase then allows counterexamples to repair region
+and cut choices. It accepts 8 controlled graph-active replacements with ABC
+global CEC and restores 8 controlled boundaries, but still restores 0 real
+boundaries across 46 previous isolated-anchor failures plus 12 fresh structural
+seeds.
+
+The newest semantic functional-refactoring phase no longer tries to find an
+existing closed semantic subgraph. It proves quotient existence with a two-copy
+Z3 miter, synthesizes an exact quotient, verifies `F(X, Z) = H(G(X), Z)`,
+rejects identity or `H`-ignores-`M` decompositions, and rewrites the graph so
+the semantic divisor is on a real fanout path. The controlled run has 13 cases,
+12 decomposable candidates, 12 independently proved quotients, 11 non-vacuous
+decompositions, 10 graph-active ABC-equivalent refactorings, and 10 restored
+controlled boundaries. The real development/held-out split remains 0/58
+restored.
 
 Each layer has a different role:
 
@@ -751,6 +772,12 @@ proof generation.
     ABC global CEC, restores 8 controlled boundaries, and still restores 0 real
     benchmark boundaries from 46 old isolated-anchor seeds plus 12 fresh
     structural seeds.
+18. Functional semantic refactoring replaces closed-region search with exact
+    decomposition `Y = H(G(X), Z)`. It proves 12/13 controlled decomposability
+    candidates, validates 12 exact quotients, rejects 3 controlled negative or
+    vacuous cases at the correct stages, restores 10 controlled graph-active
+    boundaries with ABC CEC, and still restores 0 real boundaries across 49
+    development plus 9 held-out attempts.
 
 ## 10. Limitations
 
@@ -791,6 +818,11 @@ proof generation.
   not yet solve the real hierarchy-restoration problem.  The real blocker is
   now localized to source-blind closed-region/interface formation under bounded
   search, not to Z3 semantic proof or ABC CEC.
+- Functional decomposition/refactoring is a controlled positive and a real
+  bounded null result. It proves that semantic divisors and exact quotients can
+  create graph-active boundaries in distributed controlled logic, but the real
+  attempts do not yet find source-blind divisor/window/residual interfaces under
+  the evaluated bounds.
 - The method is not exhaustive; it analyzes selected ranked candidates and
   selected case-study circuits.
 
@@ -809,16 +841,17 @@ The most important next steps are:
    prototype using the mapped path.
 6. Add EPFL benchmarks after the current ISCAS-based flow is fully documented
    and stable.
-7. Broaden closed-region discovery beyond old isolated-anchor candidates while
-   retaining whole-design, bypass, and cycle guards.
-8. Improve specification-side interface alignment so semantic replacement can
-   be attempted on real arithmetic COIs rather than only controlled cases.
-9. Extend compositional CEGIS on the real suite for add-add, bilinear, MAC,
-   mixed-width arithmetic, and control-heavy regions without using source
-   labels in blind mode.
-10. Replace the current real-seed strategy with broader joint structural region
-    enumeration and specification-side cut alignment, then rerun the same
-    proof-carrying replacement stack.
+7. Broaden source-blind semantic divisor discovery beyond the current ranked
+   real seeds while retaining whole-design, bypass, non-vacuity, and cycle
+   guards.
+8. Add scalable quotient representations beyond bounded exact truth tables,
+   such as BDD/AIG quotient synthesis with independent proof.
+9. Improve specification-side interface alignment so semantic replacement and
+   refactoring can be attempted on real arithmetic COIs rather than only
+   controlled cases.
+10. Extend compositional CEGIS on the real suite for add-add, bilinear, MAC,
+    mixed-width arithmetic, and control-heavy regions without using source
+    labels in blind mode.
 
 ## Short Supervisor Summary
 
@@ -841,11 +874,12 @@ blind CEGIS run agrees with exhaustive proof on 192/192 small checks, reproduces
 10/16 unique blind cases including all attempted 12/16-bit wide cases. The
 oracle-bus ablation recovers the same 10/16 unique cases in the committed run.
 
-The newest joint region/interface prototype validates the next abstraction
-step on controlled cases. It jointly repairs region and cut choices, proves
-multi-output semantic modules, emits replacement BLIF, rewrites the graph, and
-requires ABC global CEC. Eight controlled replacements are accepted and restore
-valid extended boundaries; two negative guards are rejected. The real benchmark
-result remains 0 restored boundaries from 46 previous isolated-anchor seeds and
-12 fresh structural seeds, now with an explicit joint closed-region/interface
-failure taxonomy.
+The newest functional-refactoring prototype validates the next abstraction step
+on controlled cases. Instead of requiring an existing semantic subgraph, it
+formally decomposes an optimized window into a semantic divisor and exact
+quotient, proves the quotient independently, rewrites the graph so the divisor
+is active, and requires ABC global CEC. Ten controlled refactorings restore
+valid semantic boundaries. The real benchmark result remains 0 restored
+boundaries across 49 development and 9 held-out attempts, now with a taxonomy
+that separates missing divisor/window/interface discovery from distributed
+consumer windows and exact non-vacuous decomposition failures.
