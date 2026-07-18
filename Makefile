@@ -10,7 +10,7 @@ all: build-abc generate-variants analyze plot
 install-z3:
 	@echo "Installing Z3 solver dependency"
 	@if [ ! -x ".venv-z3/bin/python" ]; then python3.11 -m venv .venv-z3; fi
-	@.venv-z3/bin/python -m pip install --disable-pip-version-check --no-cache-dir --only-binary=:all: "z3-solver>=4.12,<5" pytest
+	@.venv-z3/bin/python -c "import z3, pytest" >/dev/null 2>&1 || .venv-z3/bin/python -m pip install --disable-pip-version-check --no-cache-dir --only-binary=:all: "z3-solver>=4.12,<5" pytest
 
 check-z3: install-z3
 	@echo "Checking Z3 bit-vector solver"
