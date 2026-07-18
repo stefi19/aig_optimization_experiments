@@ -9,6 +9,8 @@ For browser slides, open
 [`docs/presentation/index.html`](docs/presentation/index.html).
 For the blind semantic CEGIS phase, see
 [`docs/blind_cegis_semantic_boundary_reconstruction.md`](docs/blind_cegis_semantic_boundary_reconstruction.md).
+For proof-carrying semantic region replacement, see
+[`docs/proof_carrying_semantic_region_replacement.md`](docs/proof_carrying_semantic_region_replacement.md).
 
 ## Web presentation
 
@@ -58,9 +60,10 @@ https://stefi19.github.io/aig_optimization_experiments/presentation/
 31. [Correspondence by Construction Through Anchored-Cut Wire Materialization](#correspondence-by-construction-through-anchored-cut-wire-materialization)
 32. [Formal Error Metrics and Context-Aware Correspondence](#formal-error-metrics-and-context-aware-correspondence)
 33. [Blind CEGIS Semantic Boundary Reconstruction](#blind-cegis-semantic-boundary-reconstruction)
-34. [Dependencies](#20-dependencies)
-35. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
-36. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
+34. [Proof-Carrying Semantic Region Replacement](#proof-carrying-semantic-region-replacement)
+35. [Dependencies](#20-dependencies)
+36. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+37. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -1879,8 +1882,8 @@ are estimates, and the contextual substitution engine is still experimental.
 pip install -r requirements.txt
 ```
 
-`requirements.txt` contains: `pandas`, `matplotlib`, `pytest`, and `tabulate` (used by
-Markdown summary tables).
+`requirements.txt` contains: `pandas`, `matplotlib`, `pytest`, `tabulate`, and
+`z3-solver` (used by the scalable semantic proof and CEGIS pipelines).
 
 ### Berkeley ABC
 
@@ -2963,3 +2966,39 @@ Current committed metrics:
 The negative graft result is intentional evidence: a proven reconstructed
 expression is not counted as a usable boundary anchor unless it reaches a valid
 frontier and passes the required graft checks.
+
+## Proof-Carrying Semantic Region Replacement
+
+The next phase replaces the isolated-anchor abstraction with closed
+implementation regions and multi-output semantic modules. A candidate region is
+defined by implementation nodes `RI`, input cut `CI`, output cut `CO`, and the
+external fanout edges previously driven by `CO`. A semantic module is accepted
+as graph-active only when it replaces `RI`, reconnects the original fanouts,
+passes local Z3 proof, passes emitted-module checks, validates the rewritten
+graph, and passes ABC global CEC.
+
+Run it with:
+
+```bash
+make semantic-region-replacement-all
+make check-semantic-replacement-results
+```
+
+Current committed results under `results/semantic_region_replacement/`:
+
+- 7 controlled replacement attempts;
+- 6 free-cut SMT-verified semantic modules;
+- 5 accepted graph-active controlled replacements;
+- 5 ABC-equivalent implementation CEC passes;
+- 5 controlled boundaries restored as valid extended boundaries;
+- controlled affine/add-add/bilinear/MAC recovery: 1/1 each;
+- 2 negative guard replacements rejected for the expected graph error;
+- 46 real isolated-anchor failures revisited;
+- 0 real benchmark boundaries restored by region replacement in this bounded
+  run, because the old anchor candidates still do not yield closed
+  implementation regions.
+
+This is a stronger positive result than isolated materialisation on controlled
+benchmarks, but it is not yet a positive real-benchmark hierarchy-restoration
+result. The real-case null result is preserved with a failure taxonomy in
+`results/semantic_region_replacement/failure_taxonomy.csv`.

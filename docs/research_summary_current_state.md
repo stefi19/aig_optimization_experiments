@@ -15,10 +15,12 @@ circuit. Exact SAT sweeping is a strong starting point, but it is incomplete:
 after rewriting, refactoring, resubstitution, and deeper resynthesis, many
 internal points no longer match exactly.
 
-The latest phase extends the work from node correspondence to source-blind
-semantic reconstruction. It asks whether a compact word-level expression can be
-inferred from the optimized region itself, formally proved, and then used as a
-graph-active boundary anchor.
+The latest phases extend the work from node correspondence to source-blind
+semantic reconstruction and proof-carrying region replacement. The Z3-backed
+CEGIS phase asks whether compact word-level expressions can be inferred and
+proved from optimized regions. The newer region-replacement phase replaces the
+failed isolated-anchor abstraction with a closed implementation region and a
+multi-output semantic module that physically drives the original fanouts.
 
 ## 2. Research Problem
 
@@ -56,8 +58,10 @@ blind bus/interface hypothesis
 -> parametric expression candidate
 -> CEGIS counterexample refinement
 -> formal region proof
--> graph-active graft validation
--> global CEC for accepted grafts
+-> closed replacement-region discovery
+-> semantic module emission
+-> graph-active region replacement
+-> ABC global CEC for accepted replacements
 ```
 
 Ground-truth labels are joined only after prediction/proof files are written.
@@ -74,6 +78,15 @@ The graph-active graft result remains negative but better explained: 46 proven
 expressions generated 276 bounded placement attempts across six safe strategies,
 and all were rejected before acceptance because no real frontier placement
 satisfied the graph-active and proof requirements.
+
+The proof-carrying region-replacement follow-up validates the replacement stack
+on controlled cases: 7 controlled attempts produce 6 free-cut SMT-verified
+semantic modules, 5 accepted graph-active replacements, 5 ABC-equivalent global
+CEC passes, and 5 valid extended controlled boundary restorations. Controlled
+affine, add-add, bilinear, and MAC recovery are each 1/1. The real benchmark
+revisit remains a null result: 46 old isolated-anchor failures still yield 0
+real restored boundaries because no bounded closed implementation region can be
+formed from those candidates.
 
 Each layer has a different role:
 
@@ -714,8 +727,8 @@ proof generation.
 10. Boundary-recovery diagnosis showed the identity baseline was not clean; the
     repaired semantics milestone now makes identity exact on 14 / 14 canonical
     eligible COIs.
-11. The semantic-recovery benchmark suite now provides source-level ground truth
-    for later RTL-expression inference, but no recovered RTL is claimed yet.
+11. The semantic-recovery benchmark suite provides source-level ground truth for
+    later evaluation; by itself it is only infrastructure, not a recovery claim.
 12. The canonical semantic-region milestone validates 686 eligible region rows
     and extracts 581 exact scalar-interface matches, establishing the substrate
     for later bus inference and expression recovery without claiming expression
@@ -723,6 +736,15 @@ proof generation.
 13. Anchored-cut materialization can construct formally proven redundant wires,
     but the first additive-only run produced 0 new boundary recoveries because
     the materialized wires are not on usable boundary frontiers.
+14. Z3-backed blind semantic CEGIS recovers 10/16 unique cases in blind mode,
+    matches oracle-bus recovery on the same 10/16 cases, proves 46 expressions,
+    and recovers all attempted 12/16-bit wide cases in the committed run.
+15. Isolated semantic grafting is a negative result: 276 bounded attempts over
+    46 proven expressions produce 0 graph-active anchors.
+16. Closed semantic region replacement works end to end on controlled positive
+    cases, restoring 5 graph-active controlled boundaries with ABC global CEC,
+    but the real benchmark revisit still restores 0 boundaries because the old
+    isolated anchors do not define closed implementation regions.
 
 ## 10. Limitations
 
@@ -746,12 +768,19 @@ proof generation.
   for every internal node.
 - The semantic region/interface layer extracts canonical scalar interfaces; it
   does not infer high-level expressions or buses for unknown recovered regions.
-- The semantic-recovery suite supplies ground truth and bounded variants; it
-  does not yet infer expressions from gates or prove recovered RTL templates.
+- The semantic-recovery suite supplies ground truth and bounded variants; the
+  later direct, Z3 CEGIS, and region-replacement phases are the layers that make
+  expression-proof claims.
 - Materialized-wire anchors are newly constructed redundant signals; they are
   not pre-existing original RTL/netlist nodes. The current additive
   materialization does not reconnect graph fanout, so it may prove anchors that
   are not useful to boundary recovery.
+- A proven semantic expression is not enough for hierarchy restoration. The
+  replacement phase only counts graph-active inserted modules that drive the
+  original fanouts and pass global CEC.
+- The current real semantic-region replacement result is still null. The
+  controlled micro-benchmarks validate the mechanism, while the real candidates
+  are blocked at closed-region discovery and interface alignment.
 - The method is not exhaustive; it analyzes selected ranked candidates and
   selected case-study circuits.
 
@@ -770,13 +799,13 @@ The most important next steps are:
    prototype using the mapped path.
 6. Add EPFL benchmarks after the current ISCAS-based flow is fully documented
    and stable.
-7. Implement validated logic grafting only after boundary recovery is robust
-   enough to avoid whole-design expansion and cycle risks.
-8. Use the semantic-recovery benchmark suite to add typed expression grammars,
-   arithmetic parameter inference, and CEGIS-based RTL candidate validation.
-9. For correspondence by construction, add boundary-utility-aware target
-   selection or a formally checked way to expose materialized wires on relevant
-   cut frontiers.
+7. Broaden closed-region discovery beyond old isolated-anchor candidates while
+   retaining whole-design, bypass, and cycle guards.
+8. Improve specification-side interface alignment so semantic replacement can
+   be attempted on real arithmetic COIs rather than only controlled cases.
+9. Extend compositional CEGIS on the real suite for add-add, bilinear, MAC,
+   mixed-width arithmetic, and control-heavy regions without using source
+   labels in blind mode.
 
 ## Short Supervisor Summary
 
@@ -793,18 +822,16 @@ proxy and maps optimized path nodes back to original nodes using exact,
 complemented, SAT/CEC-proven, and approximate layers. On `c432`, `c2670`, and
 `c6288`, it maps 76.5% of 1,686 structural critical-path nodes.
 
-The latest benchmark milestone prepares the source-semantics layer: 258
-generated RTL cases with known expressions and bounded BLIF/ABC variants are now
-available under `benchmarks/semantic_recovery/` and
-`results/semantic_recovery/`.  This is infrastructure for future semantic
-template recovery, not a claim that high-level RTL has already been inferred.
+The semantic layer is now formal rather than only preparatory. The Z3-backed
+blind CEGIS run agrees with exhaustive proof on 192/192 small checks, reproduces
+186/186 Z3 counterexamples concretely, proves 46 expressions, and recovers
+10/16 unique blind cases including all attempted 12/16-bit wide cases. The
+oracle-bus ablation recovers the same 10/16 unique cases in the committed run.
 
-The newest contextual error-metric prototype builds experimental substituted
-circuits and compares global internal-node distance with output-observable
-error. The committed lightweight run analyzes 40 selected ISCAS candidates with
-sampled contextual patterns: 35 fall below the default contextual error
-threshold and 5 are unsafe. No ODC-valid CEC-equivalent correspondence was found
-in this lightweight run, and no critical-path nodes were newly recovered. The
-result is still valuable because it formalizes the next question: which
-globally rejected internal correspondences are harmless or low-error in their
-circuit context?
+The newest region-replacement prototype validates the missing graph step on
+controlled cases. It replaces closed implementation regions with emitted
+semantic modules and requires graph validation plus ABC global CEC. Five
+controlled replacements are accepted and restore valid extended boundaries; two
+negative guards are rejected. The real benchmark result remains 0 restored
+boundaries, now with an explicit closed-region failure taxonomy rather than a
+generic graft-placement failure.

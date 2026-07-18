@@ -964,7 +964,7 @@ by the spec_node cone</pre>
 -> CEGIS / CEC validation
 -> lowest-cost verified RTL</pre>
         </div>
-        <div class="callout"><h3>Scope of this phase</h3><p>The project now has ground-truth semantic benchmark cases. It does not yet infer RTL from arbitrary recovered regions.</p></div>
+        <div class="callout"><h3>Scope of this phase</h3><p>The benchmark-manifest phase creates ground truth and variants. Later semantic phases make the expression-recovery and proof claims.</p></div>
       </div>
       <aside class="notes">Connect this to the ICCAD-style semantic recovery direction. The important distinction is that the new milestone creates the testbed and known answers, not the full solver.</aside>
     </section>
@@ -1238,7 +1238,7 @@ BO = inside R, PO or fanout outside R</pre>
         <div><p class="eyebrow">Blind CEGIS</p><h2>Recover semantics without source labels</h2><ul class="large-list"><li>Audit blocks manifest family, operator, expression, bus, signedness, constants, and evaluation accuracy fields from inference.</li><li>Blind bus hypotheses are written before evaluation labels are joined.</li><li>Parametric templates are refined with counterexamples from exact region checks.</li><li>Timeouts and unsupported proofs remain unresolved.</li></ul></div>
         <div class="metric-stack"><div><strong>192/192</strong><span>Z3 agreement</span></div><div><strong>379</strong><span>Z3 CEGIS iterations</span></div><div><strong>46</strong><span>formal SMT proofs</span></div><div><strong>4/4</strong><span>wide cases recovered</span></div></div>
       </div>
-      <aside class="notes">This updates the older limitation: CEGIS is now implemented as a lightweight bounded phase. The main caveat is scalability: the committed run uses exhaustive exact proof because the SMT dependency was unavailable.</aside>
+      <aside class="notes">This updates the older limitation: CEGIS is now Z3-backed. The proof backend was cross-checked against exhaustive verification before being used for wider 12/16-bit cases.</aside>
     </section>
 
     <section class="slide">
@@ -1247,6 +1247,59 @@ BO = inside R, PO or fanout outside R</pre>
         <div class="callout"><h3>Current result</h3><p>46 proven expressions generated 276 bounded placement attempts across six strategies.</p><p><strong>0</strong> became accepted graph-active semantic graft anchors.</p><p class="warning">The negative result is preserved with a failure taxonomy.</p></div>
       </div>
       <aside class="notes">This explains why additive materialization produced proven wires but zero usable anchors: formal expression proof does not imply graph utility.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Region replacement</p>
+          <h2>Replace the optimized subgraph, not one anchor</h2>
+          <pre class="code-block">closed region RI
+input cut CI
+output cut CO
+semantic module M: CO = M(CI)
+rewrite I -> I'
+ABC global CEC</pre>
+        </div>
+        <div class="callout"><h3>Rule</h3><p>The replacement is counted only if its outputs drive the original fanouts. A disconnected semantic wire is still unusable.</p></div>
+      </div>
+      <aside class="notes">This is the key abstraction shift. The replacement module is graph-active by construction because it takes over the output-cut fanouts of the removed optimized region.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Proof stack</p><h2>5 controlled graph-active boundaries restored</h2><div class="inline-stats"><span>7 attempts</span><span>6 SMT-proven modules</span><span>5 accepted replacements</span><span>5 ABC CEC passes</span><span>5 boundaries</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/semantic_region_replacement_funnel.png" alt="Semantic region replacement funnel">
+          <img src="assets/plots/semantic_region_replacement_cec.png" alt="Semantic region replacement CEC outcomes">
+        </div>
+        <div class="meaning-box"><strong>Accepted replacement:</strong> closed region, free-cut Z3 proof, valid graph rewrite, ABC global CEC, and boundary validation.</div>
+      </div>
+      <aside class="notes">These are controlled micro-benchmarks, not the real benchmark headline. They prove the mechanism and the negative guards exercise the real rewrite validators.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Compositional semantics</p><h2>Controlled affine, add-add, bilinear, and MAC recover 1/1</h2><div class="inline-stats"><span>affine 1/1</span><span>add-add 1/1</span><span>bilinear 1/1</span><span>MAC 1/1</span><span>negative guards 0/1</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/semantic_region_replacement_operator_recovery.png" alt="Semantic region replacement by operator">
+          <img src="assets/plots/isolated_anchor_vs_region_replacement.png" alt="Isolated anchor versus region replacement">
+        </div>
+        <div class="meaning-box"><strong>Interpretation:</strong> arithmetic recovery improves on controlled cases, but the real-benchmark boundary result remains separate and still zero.</div>
+      </div>
+      <aside class="notes">Be explicit about denominators. This is not a claim that the old real add-add or bilinear denominators are solved; it shows the extended grammar and replacement stack on controlled cases.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Real-case revisit</p><h2>The current blocker is closed-region discovery</h2><div class="inline-stats"><span>46 real failures revisited</span><span>0 real restored boundaries</span><span>fails before CEC</span><span>closed-region taxonomy</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/semantic_region_replacement_failure_taxonomy.png" alt="Semantic region replacement failure taxonomy">
+          <img src="assets/plots/semantic_region_replacement_operator_recovery.png" alt="Controlled operator recovery">
+        </div>
+        <div class="meaning-box"><strong>Next question:</strong> what additional cut alignment or specification-region mapping is needed to form closed real implementation regions?</div>
+      </div>
+      <aside class="notes">This preserves the null result. The method is now positive on controlled closed regions but still cannot turn the old isolated anchors into real benchmark hierarchy restoration.</aside>
     </section>
 
     <section class="slide">
@@ -1267,16 +1320,16 @@ BO = inside R, PO or fanout outside R</pre>
 
     <section class="slide">
       <div class="slide-content two-column">
-        <div><p class="eyebrow">References and inspiration</p><h2>Research context</h2><ul class="large-list"><li>Giovanni De Micheli, <em>Synthesis and Optimization of Digital Circuits</em>, especially Chapter 7.</li><li>Zdenek Vasicek, <em>Formal Methods for Exact Analysis of Approximate Circuits</em>.</li><li>ABC logic synthesis and verification tool.</li><li>ISCAS-85 combinational benchmark circuits.</li></ul></div>
-        <div class="callout"><h3>Positioning</h3><p>This project combines ideas from logic synthesis, equivalence checking, approximate computing, and debugging-oriented back-mapping.</p></div>
+        <div><p class="eyebrow">References and inspiration</p><h2>Research context</h2><ul class="large-list"><li>Template-based circuit understanding and PICEC-style recovery.</li><li>Structural and functional netlist reverse engineering.</li><li>Structural arithmetic-circuit recovery and SyGuS bit-vector synthesis.</li><li>SAT-sweeping boundary recovery, logic grafting, and ECO flows.</li><li>ABC logic synthesis and verification; ISCAS-85 benchmarks.</li></ul></div>
+        <div class="callout"><h3>Positioning</h3><p>The contribution is source-blind semantic reconstruction plus proof-carrying graph-level replacement for hierarchy restoration, not CEGIS, SMT, or grafting alone.</p></div>
       </div>
       <aside class="notes">Use this to show academic grounding without overloading the audience with citations.</aside>
     </section>
 
     <section class="slide title-slide">
       <div class="slide-content title-grid">
-        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, adds ODC-aware anchors, formally verifies bounded direct semantic templates, and now adds source-blind CEGIS semantic reconstruction with proof-carrying graft checks.</p></div>
-        <div class="takeaway-chain"><div>Optimized critical path</div><div>Recovered gate region</div><div>Verified RTL-like expression</div><div>Register or rewrite suggestion</div></div>
+        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, adds ODC-aware anchors, formally verifies bounded direct semantic templates, adds Z3-backed blind CEGIS, and validates proof-carrying semantic region replacement on controlled cases.</p></div>
+        <div class="takeaway-chain"><div>Optimized critical path</div><div>Closed implementation region</div><div>Verified semantic module</div><div>Graph-active boundary restoration</div></div>
       </div>
       <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, cofactor and sensitivity features now have an ablation harness, boundary recovery and ODC anchors build region evidence, semantic layers recover bounded direct expressions, and materialization proves redundant wires but needs better boundary utility.</aside>
     </section>
@@ -1285,7 +1338,7 @@ BO = inside R, PO or fanout outside R</pre>
   <footer class="controls">
     <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
     <button id="prev" type="button" aria-label="Previous slide">Prev</button>
-    <span id="slide-number">1 / 88</span>
+    <span id="slide-number">1 / 94</span>
     <button id="next" type="button" aria-label="Next slide">Next</button>
     <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
   </footer>

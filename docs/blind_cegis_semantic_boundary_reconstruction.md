@@ -59,6 +59,25 @@ bypasses, preserve primary I/O, and pass global CEC. The current committed run
 finds proven expressions but no accepted graph-active grafts; this negative
 result is preserved in `results/semantic_grafting/semantic_graft_funnel.csv`.
 
+## Region-Replacement Follow-Up
+
+The graft result motivated a change in abstraction. The next phase reconstructs
+a closed implementation region instead of a single isolated anchor. A recovered
+multi-output semantic module replaces the selected optimized subgraph, reuses
+the original output-cut fanouts, validates the rewritten graph, and requires ABC
+global CEC before any boundary is counted as restored.
+
+Committed controlled results under `results/semantic_region_replacement/`
+validate this proof stack: 7 replacement attempts, 6 free-cut SMT-verified
+modules, 5 graph-active accepted replacements, 5 ABC-equivalent global CEC
+passes, and 5 valid extended controlled boundary restorations. Controlled
+affine, add-add, bilinear, and MAC examples are each recovered 1/1.
+
+The real benchmark result remains negative. The 46 previous isolated-anchor
+failures were revisited and still restore 0 real boundaries because the old
+anchor candidates do not form closed implementation regions under the current
+bounds. See `docs/proof_carrying_semantic_region_replacement.md`.
+
 ## Evidence Taxonomy
 
 - `sampled_estimate`: simulation-only evidence.
