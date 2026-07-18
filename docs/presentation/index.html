@@ -1531,6 +1531,57 @@ ABC global CEC</pre>
     </section>
 
     <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Cross-netlist transplant</p><h2>Move from source counterpart to cut transplantation</h2><p class="subtitle">The new abstraction clones an optimized region into a source copy and surrounds it with exact adapters. It no longer requires leaf-wise source anchors or an existing source consumer window.</p></div>
+        <div class="pipeline vertical">
+          <div>Source cut <code>AS,Zin</code></div>
+          <div>Input adapter <code>Ein</code></div>
+          <div>Cloned optimized region <code>XRI</code></div>
+          <div>Output adapter <code>Eout</code></div>
+          <div>Source boundary <code>BS</code></div>
+          <div>ABC CEC for both global scopes</div>
+        </div>
+      </div>
+      <aside class="notes">This is the successor to active source-side counterparts. It tests whether relational adapters can overcome the 20/36 real blockers without weakening proof gates.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Proof funnel</p><h2>12 controlled cross-netlist transplants pass</h2><div class="inline-stats"><span>17 controlled cases</span><span>12 / 12 positives accepted</span><span>5 / 5 negatives rejected</span><span>12 restored controlled boundaries</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/cross_netlist_transplant_funnel.png" alt="Cross-netlist transplant funnel">
+          <img src="assets/plots/cross_netlist_transplant_controlled_by_family.png" alt="Controlled transplants by family">
+        </div>
+        <div class="meaning-box"><strong>Acceptance requires:</strong> exact Ein/Eout, graph-active cloned region, local proof, target proof, and both <code>S=S'</code> and <code>S'=I</code> ABC CEC checks.</div>
+      </div>
+      <aside class="notes">The controlled positives include affine, add-add, bilinear, MAC, mux, multi-output, XOR-basis, nonlinear Boolean, and residual-output cases.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Real revisit</p><h2>All 56 real failures were re-evaluated; real recovery remains zero</h2><div class="inline-stats"><span>36 input-interface blockers</span><span>20 output-interface blockers</span><span>0 real transplants</span><span>0 real boundaries</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/cross_netlist_transplant_real_blockers.png" alt="Real blockers for cross-netlist transplants">
+          <img src="assets/plots/cross_netlist_transplant_oracle_ladder.png" alt="Oracle ladder blockers for cross-netlist transplants">
+        </div>
+        <div class="meaning-box"><strong>Interpretation:</strong> the null result is bounded and localized. Oracle diagnostics are separate rows and are not counted as blind recovery.</div>
+      </div>
+      <aside class="notes">Do not present this as impossibility. The result says the evaluated adapter/interface search did not find sufficient real cut relations.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Preservation</p><h2>Transplanted boundaries still need protection or repair</h2><div class="inline-stats"><span>unprotected 0 / 12</span><span>repair 12 / 12</span><span>pass choice 12 / 12</span><span>retransplant 12 / 12</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/cross_netlist_transplant_durability.png" alt="Cross-netlist transplant durability">
+          <img src="assets/plots/cross_netlist_transplant_failure_taxonomy.png" alt="Cross-netlist failure taxonomy">
+        </div>
+        <div class="meaning-box"><strong>Next question:</strong> learn richer source-blind residual interfaces and region-pair proposals for real COIs, then protect or regenerate accepted boundaries through later synthesis.</div>
+      </div>
+      <aside class="notes">Durability rows are separate strategies, not unprotected survival. Keep this distinction explicit.</aside>
+    </section>
+
+    <section class="slide">
       <div class="slide-content">
         <p class="eyebrow">Glossary</p>
         <h2>Key terms in one place</h2>
@@ -1566,7 +1617,7 @@ ABC global CEC</pre>
   <footer class="controls">
     <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
     <button id="prev" type="button" aria-label="Previous slide">Prev</button>
-    <span id="slide-number">1 / 112</span>
+    <span id="slide-number">1 / 116</span>
     <button id="next" type="button" aria-label="Next slide">Next</button>
     <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
   </footer>

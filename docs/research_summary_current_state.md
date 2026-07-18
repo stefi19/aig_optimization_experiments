@@ -865,6 +865,12 @@ proof generation.
   controlled nonlinear/arithmetic cases, but it does not create a real held-out
   active counterpart. Additive, controlled-active, real-active, and durable
   counts are intentionally reported separately.
+- The cross-netlist cut-transplant run proves that strict leaf-wise anchors and
+  pre-existing source consumer windows can be replaced by exact input/output
+  adapters around a cloned optimized region on controlled cases. It still
+  restores 0 real boundaries under the bounded search, with failures localized
+  to input-interface sufficiency for 36 fresh targets and output-interface
+  sufficiency for 20 old additive anchors.
 - The method is not exhaustive; it analyzes selected ranked candidates and
   selected case-study circuits.
 
@@ -898,6 +904,9 @@ The most important next steps are:
     labels in blind mode.
 12. Improve source-side consumer-window discovery for optimized targets whose
     additive counterparts are already proved but graph-inactive.
+13. Extend cross-netlist relational interface synthesis beyond exact bounded
+    truth-table adapters, especially multi-output residual discovery and
+    source/optimized region-pair proposal on real COIs.
 
 ## Short Supervisor Summary
 
@@ -937,3 +946,13 @@ source and cross-design CEC and restore 10 controlled boundaries. No on the
 current real bounded run: all 20 prior materialized anchors and 36 fresh targets
 fail before legal source-side integration, producing 0 real active counterparts
 and 0 real boundaries.
+
+The newest cross-netlist cut-transplant phase changes the abstraction again:
+instead of requiring leaf-wise source anchors or existing source consumers, it
+clones an optimized region into the source graph and synthesizes exact adapters
+`Ein(AS,Zin)=AI` and `Eout(BI,Zout)=BS`. On controlled benchmarks, 12/12
+positive transplants are graph-active, pass local equivalence, pass `S` versus
+`S'` and `S'` versus `I` ABC CEC, and restore 12 controlled boundaries; 5/5
+negative controls are rejected. On real revisits, the result remains 0/56:
+36 rows block at input-interface sufficiency and 20 at output-interface
+sufficiency. This is a bounded null result, not an impossibility claim.

@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "results" / "cross_netlist_cut_transplantation"
 PLOTS = ROOT / "results" / "plots"
-PRESENTATION = ROOT / "docs" / "presentation" / "assets"
+PRESENTATION = ROOT / "docs" / "presentation" / "assets" / "plots"
 
 
 def main() -> int:
@@ -56,12 +56,6 @@ def main() -> int:
     oracle_modes = Counter(r["localized_blocker"] for r in oracle)
     _bar("cross_netlist_transplant_oracle_ladder.png", [k[:22].replace("_", "\n") for k in oracle_modes], list(oracle_modes.values()), "Oracle Ladder Localized Blockers", "Diagnostic rows")
 
-    _copy_for_presentation(
-        "cross_netlist_transplant_funnel.png",
-        "cross_netlist_transplant_real_blockers.png",
-        "cross_netlist_transplant_durability.png",
-        "cross_netlist_transplant_failure_taxonomy.png",
-    )
     print(f"Wrote cross-netlist transplant plots to {PLOTS}")
     return 0
 
@@ -88,14 +82,6 @@ def _bar(filename: str, labels: list[str], values: list[int], title: str, ylabel
     for directory in (PLOTS, PRESENTATION):
         fig.savefig(directory / filename, dpi=180)
     plt.close(fig)
-
-
-def _copy_for_presentation(*names: str) -> None:
-    for name in names:
-        src = PLOTS / name
-        dst = PRESENTATION / name
-        if src.exists() and not dst.exists():
-            dst.write_bytes(src.read_bytes())
 
 
 if __name__ == "__main__":

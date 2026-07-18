@@ -156,6 +156,25 @@ On the current real target set, bounded search fails before legal source-side
 integration: old materialized anchors lack a relevant source consumer window,
 and fresh targets lack complete globally anchored cuts.
 
+## Successor Phase: Cross-Netlist Cut Transplantation
+
+The follow-up phase in
+[`docs/proof_carrying_cross_netlist_cut_transplantation.md`](proof_carrying_cross_netlist_cut_transplantation.md)
+removes two assumptions that blocked this phase: strict leaf-wise cut anchors
+and pre-existing source consumer windows. It clones an optimized region into a
+source copy and synthesizes exact adapters:
+
+```text
+AS,Zin -> Ein -> AI -> cloned RI -> BI,Zout -> Eout -> BS
+```
+
+The committed run accepts 12/12 positive controlled transplants with graph
+activity, local proof, target proof, and both ABC CEC scopes. The same run
+revisits all 56 real active-source failures and still restores 0 real
+boundaries. The 36 fresh targets remain blocked by input-interface sufficiency,
+and the 20 old additive anchors remain blocked by output-interface sufficiency
+under the bounded adapter search.
+
 ## Related Work Positioning
 
 The method combines ideas from template-based circuit understanding,

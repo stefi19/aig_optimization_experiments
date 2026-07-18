@@ -71,9 +71,10 @@ https://stefi19.github.io/aig_optimization_experiments/presentation/
 36. [Proof-Carrying Semantic Functional Refactoring](#proof-carrying-semantic-functional-refactoring)
 37. [Semantic Recoverability Frontier](#semantic-recoverability-frontier)
 38. [Proof-Carrying Active Source-Side Counterparts](#proof-carrying-active-source-side-counterparts)
-39. [Dependencies](#20-dependencies)
-40. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
-41. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
+39. [Proof-Carrying Cross-Netlist Cut Transplantation](#proof-carrying-cross-netlist-cut-transplantation)
+40. [Dependencies](#20-dependencies)
+41. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+42. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -885,6 +886,8 @@ make semantic-recoverability-all # run trajectory/frontier diagnostics and plots
 make check-semantic-recoverability-results # validate recoverability frontier evidence
 make active-source-counterparts-all # run active source-side counterpart construction
 make check-active-source-counterpart-results # validate active counterpart proof stack
+make cross-netlist-transplant-all # run cross-netlist cut transplantation
+make check-cross-netlist-transplant-results # validate transplant proof stack
 make test                # run the unit test suite
 ```
 
@@ -3214,3 +3217,48 @@ On the current real target set, bounded search fails before source-side
 integration: old additive anchors lack a relevant source consumer window, while
 fresh utility targets lack complete globally anchored cuts. These are bounded
 failures, not impossibility claims.
+
+## Proof-Carrying Cross-Netlist Cut Transplantation
+
+The cross-netlist transplantation phase removes the strict leaf-wise anchor and
+pre-existing source-consumer assumptions. It constructs exact bounded adapters
+around a cloned optimized region:
+
+```text
+AS,Zin -> Ein -> AI -> cloned optimized RI -> BI,Zout -> Eout -> BS
+```
+
+Accepted rows must be graph-active by construction: the cloned optimized region
+drives the source boundary outputs through `Eout`, no disconnected wire is
+counted, and both ABC CEC scopes must pass.
+
+Run it with:
+
+```bash
+make cross-netlist-transplant-all
+make check-cross-netlist-transplant-results
+```
+
+Current committed results under
+`results/cross_netlist_cut_transplantation/`:
+
+- total targets recorded: 73;
+- controlled cases: 17;
+- positive controlled transplants: 12/12 accepted;
+- negative controls rejected: 5/5;
+- controlled local equivalence proofs: 12;
+- `S` versus `S'` ABC CEC passes on accepted controls: 12;
+- `S'` versus `I` ABC CEC passes on accepted controls: 12;
+- controlled graph-active boundaries restored: 12;
+- previous real failures revisited: 56;
+- real `no_globally_anchored_cut` revisits: 36;
+- real `no_relevant_source_consumer_window_under_bounds` revisits: 20;
+- real graph-active transplants and recovered boundaries: 0;
+- durability: unprotected 0/12, repair/pass-choice/retransplant 12/12 each.
+
+The controlled positives include affine, add-add, bilinear, MAC, mux,
+multi-output, residual-output, XOR-basis, nonlinear Boolean, and masked
+constant-multiply cases. The real result remains a bounded null result:
+failures localize to input-interface sufficiency for the 36 fresh targets and
+output-interface sufficiency for the 20 old additive anchors. Oracle-ladder
+diagnostics are written separately and are not merged into blind results.
