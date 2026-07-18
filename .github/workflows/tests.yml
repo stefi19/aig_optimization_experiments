@@ -29,3 +29,9 @@ jobs:
         # ABC-dependent tests are guarded by @pytest.mark.skipif and will
         # skip automatically when the ABC binary is not present.
         run: python -m pytest tests/ -v
+
+      - name: Run lightweight joint region/interface discovery
+        run: python scripts/run_joint_region_interface_discovery.py --mode controlled --max-real-seeds 0
+
+      - name: Check joint region/interface result schemas
+        run: python scripts/check_joint_region_interface_results.py --allow-no-abc

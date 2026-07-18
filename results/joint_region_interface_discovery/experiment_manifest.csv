@@ -1,0 +1,2 @@
+run_id,git_head,deterministic_seed,mode,source_blind,started_at_utc,schema_version
+joint_region_interface__84d1d788bf,84d1d788bf7413756b65cac90fe382ad6d068d23,0,all,true,deterministic_not_wall_clocked,joint_region_interface_discovery_v1

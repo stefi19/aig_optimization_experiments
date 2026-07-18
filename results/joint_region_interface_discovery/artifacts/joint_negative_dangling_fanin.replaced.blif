@@ -1,0 +1,16 @@
+.model replaced
+.inputs a b cin
+.outputs sum cout
+.names a b ab
+11 1
+.names a cin ac
+11 1
+.names b cin bc
+11 1
+.names ab ac bc cout
+1-- 1
+-1- 1
+--1 1
+.names missing sum
+1 1
+.end

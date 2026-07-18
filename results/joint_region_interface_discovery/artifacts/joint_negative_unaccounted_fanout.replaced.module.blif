@@ -1,0 +1,14 @@
+.model joint_bad_unaccounted_fanout
+.inputs a b cin
+.outputs sum cout
+.names a b cin sum
+100 1
+010 1
+001 1
+111 1
+.names a b cin cout
+110 1
+101 1
+011 1
+111 1
+.end

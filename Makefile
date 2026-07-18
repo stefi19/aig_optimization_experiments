@@ -4,6 +4,7 @@ PYTHON = $(shell if [ -x .venv-z3/bin/python ]; then echo .venv-z3/bin/python; e
 Z3_PYTHON = $(shell if [ -x .venv-z3/bin/python ]; then echo .venv-z3/bin/python; else echo $(PYTHON); fi)
 
 .PHONY: all install-z3 check-z3 build-abc generate-benchmarks real-benchmarks generate-all-benchmarks generate-variants semantic-benchmarks semantic-benchmarks-check semantic-regions semantic-interfaces semantic-region-comparison semantic-region-plots check-semantic-regions semantic-regions-all semantic-bus-inference semantic-dependency semantic-family-ranking semantic-bus-ablation semantic-dependency-plots check-semantic-bus-dependency semantic-bus-dependency-all semantic-direct-candidates semantic-direct-simulation semantic-direct-verification semantic-direct-selection semantic-direct-ablation semantic-direct-plots check-semantic-direct-results semantic-direct-recovery-all semantic-z3-crosscheck semantic-wide-benchmarks semantic-z3-cegis semantic-blind-oracle-ablation semantic-scalability-analysis semantic-graft-diagnosis semantic-graft-normalization semantic-graft-edge-substitution semantic-graft-coi-splice semantic-graft-extended-region semantic-graft-odc semantic-graft-strategy-ablation semantic-graft-all check-semantic-z3-results blind-semantic-cegis-scalable-all blind-semantic-audit blind-semantic-buses semantic-parametric-candidates semantic-cegis semantic-smt-proofs semantic-cegis-evaluation semantic-graft-targets semantic-graft-build semantic-graft-proofs semantic-graft-boundary-recovery semantic-graft-ablation semantic-graft-plots check-blind-semantic-results check-semantic-graft-results blind-semantic-cegis-all semantic-grafting-all analyze check-results plot test sat-refine sat-summary sat-pipeline sat-validation-layers sat-complement topk-eval ablation region cegar-refine hybrid-validate abc-sweep-probe abc-sweep-baseline abc-sweep-compare abc-provenance abc-timing-probe yosys-source-probe source-map-prototype register-suggestions contextual-error-analysis contextual-critical-path-map contextual-research-plots research-plots cofactor-sensitivity-analysis functional-ranking-ablation functional-ranking-plots enhanced-critical-path-map check-functional-ranking-results boundary-recovery-benchmarks boundary-recovery-analysis boundary-recovery-critical-path boundary-recovery-plots check-boundary-recovery-results boundary-recovery boundary-recovery-identity boundary-recovery-diagnosis boundary-recovery-critical-path-cois boundary-recovery-diagnosis-plots check-boundary-recovery-diagnosis boundary-recovery-diagnosis-all boundary-recovery-micro-benchmarks boundary-recovery-repair-cois boundary-recovery-check-circuits boundary-recovery-identity-fixed boundary-recovery-corrected-analysis boundary-recovery-critical-path-fixed boundary-recovery-semantics-plots check-boundary-recovery-semantics boundary-recovery-semantics-all extended-boundary-validation extended-boundary-search extended-boundary-comparison extended-boundary-plots check-extended-boundary-results extended-boundary-all odc-anchor-candidates odc-anchor-proofs odc-boundary-recovery odc-anchor-comparison odc-anchor-plots check-odc-anchor-results odc-anchor-all materialization-targets anchored-cuts anchored-cut-functions materialized-wires materialized-anchor-proofs materialized-boundary-recovery materialized-ablation materialized-plots check-materialized-results materialized-correspondence-all iscas-analysis approx-distance approx-sampling-calibration odc-probe critical-path-map timing-path-probe full-research-pipeline benchmark-manifest list-external import-external start clean clean-results
+.PHONY: joint-region-interface joint-region-interface-controlled joint-region-interface-real joint-region-interface-heldout joint-region-interface-ablations joint-region-interface-plots check-joint-region-interface-results joint-region-interface-all
 
 all: build-abc generate-variants analyze plot
 
@@ -257,6 +258,36 @@ check-semantic-replacement-results:
 
 semantic-region-replacement-all: semantic-region-candidates semantic-region-closure semantic-compositional-cegis semantic-module-proofs semantic-module-synthesis semantic-region-replace semantic-replacement-cec semantic-boundary-restore semantic-replacement-ablation semantic-replacement-plots check-semantic-replacement-results
 	@echo "Semantic region replacement pipeline complete."
+
+joint-region-interface:
+	@echo "Running joint region/interface discovery"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_joint_region_interface_discovery.py --mode all
+
+joint-region-interface-controlled:
+	@echo "Running controlled joint region/interface discovery"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_joint_region_interface_discovery.py --mode controlled --max-real-seeds 0
+
+joint-region-interface-real:
+	@echo "Revisiting real isolated-anchor failures with bounded joint search"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_joint_region_interface_discovery.py --mode real --max-real-seeds 46
+
+joint-region-interface-heldout:
+	@echo "Writing deterministic dev/heldout joint-discovery split"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_joint_region_interface_discovery.py --mode heldout --max-real-seeds 46
+
+joint-region-interface-ablations: joint-region-interface
+	@echo "Joint region/interface ablations are in results/joint_region_interface_discovery/ablations.csv"
+
+joint-region-interface-plots: joint-region-interface
+	@echo "Generating joint region/interface plots"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/joint_region_interface_plots.py
+
+check-joint-region-interface-results:
+	@echo "Checking joint region/interface discovery results"
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/check_joint_region_interface_results.py
+
+joint-region-interface-all: joint-region-interface joint-region-interface-ablations joint-region-interface-plots check-joint-region-interface-results
+	@echo "Joint region/interface discovery pipeline complete."
 
 semantic-graft-plots: semantic-graft-ablation
 	@echo "Generating blind CEGIS and semantic graft plots"

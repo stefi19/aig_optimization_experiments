@@ -1,0 +1,4 @@
+baseline,benchmark_group,attempted,verified_modules,graph_active_replacements,restored_boundaries,notes,schema_version
+previous_isolated_semantic_anchor,real,276,46,0,0,previous committed zero-graft result,joint_baseline_comparison_v1
+joint_region_interface_discovery,controlled,10,9,8,8,closed-region semantic replacement with global ABC CEC,joint_baseline_comparison_v1
+joint_region_interface_discovery,real_revisit,58,0,0,0,bounded search found no accepted replacement for 46 prior isolated-anchor seeds plus fresh structural seeds,joint_baseline_comparison_v1

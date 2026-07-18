@@ -1,0 +1,4 @@
+ablation,attempted,verified_modules,graph_active_replacements,restored_boundaries,failure_reason,schema_version
+fixed_region_then_synthesis,10,9,0,0,no_interface_repair_from_counterexamples,joint_ablation_v1
+joint_search_no_counterexamples,10,6,5,5,missing_input_or_output_not_repaired,joint_ablation_v1
+joint_search_complete,10,9,8,8,,joint_ablation_v1
