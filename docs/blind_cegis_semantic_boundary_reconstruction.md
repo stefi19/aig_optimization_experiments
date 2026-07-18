@@ -103,6 +103,21 @@ graph-active semantic grafts.
 The boundary result is negative: proven expressions did not become usable
 hierarchical boundary anchors in this lightweight run.
 
+## Follow-Up: Region Replacement
+
+The negative grafting result motivated two follow-up phases.  First,
+proof-carrying semantic region replacement showed that a closed implementation
+region can be replaced by an emitted semantic module on controlled cases.
+Second, joint region/interface discovery added proof-guided repairs to the
+region and cut interface.  The latest joint run restores 8 controlled
+graph-active boundaries with ABC global CEC, while the 46 previous real
+isolated-anchor seeds plus 12 fresh structural seeds still restore 0 real
+benchmark boundaries.
+
+This preserves the original interpretation: blind CEGIS can recover proven
+semantic expressions, but hierarchy restoration requires a graph-active closed
+region, not an isolated expression anchor.
+
 ## Validity Threats and Related Work
 
 The blind bus inference is still conservative and may under-group interfaces

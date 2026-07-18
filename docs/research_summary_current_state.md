@@ -745,6 +745,12 @@ proof generation.
     cases, restoring 5 graph-active controlled boundaries with ABC global CEC,
     but the real benchmark revisit still restores 0 boundaries because the old
     isolated anchors do not define closed implementation regions.
+17. Joint region/interface discovery removes the fixed-region assumption.  It
+    produces 37 candidate states and 14 proof-guided transitions on the
+    committed run, accepts 8 controlled graph-active semantic replacements with
+    ABC global CEC, restores 8 controlled boundaries, and still restores 0 real
+    benchmark boundaries from 46 old isolated-anchor seeds plus 12 fresh
+    structural seeds.
 
 ## 10. Limitations
 
@@ -781,6 +787,10 @@ proof generation.
 - The current real semantic-region replacement result is still null. The
   controlled micro-benchmarks validate the mechanism, while the real candidates
   are blocked at closed-region discovery and interface alignment.
+- The joint region/interface phase improves the controlled abstraction but does
+  not yet solve the real hierarchy-restoration problem.  The real blocker is
+  now localized to source-blind closed-region/interface formation under bounded
+  search, not to Z3 semantic proof or ABC CEC.
 - The method is not exhaustive; it analyzes selected ranked candidates and
   selected case-study circuits.
 
@@ -806,6 +816,9 @@ The most important next steps are:
 9. Extend compositional CEGIS on the real suite for add-add, bilinear, MAC,
    mixed-width arithmetic, and control-heavy regions without using source
    labels in blind mode.
+10. Replace the current real-seed strategy with broader joint structural region
+    enumeration and specification-side cut alignment, then rerun the same
+    proof-carrying replacement stack.
 
 ## Short Supervisor Summary
 
@@ -828,10 +841,11 @@ blind CEGIS run agrees with exhaustive proof on 192/192 small checks, reproduces
 10/16 unique blind cases including all attempted 12/16-bit wide cases. The
 oracle-bus ablation recovers the same 10/16 unique cases in the committed run.
 
-The newest region-replacement prototype validates the missing graph step on
-controlled cases. It replaces closed implementation regions with emitted
-semantic modules and requires graph validation plus ABC global CEC. Five
-controlled replacements are accepted and restore valid extended boundaries; two
-negative guards are rejected. The real benchmark result remains 0 restored
-boundaries, now with an explicit closed-region failure taxonomy rather than a
-generic graft-placement failure.
+The newest joint region/interface prototype validates the next abstraction
+step on controlled cases. It jointly repairs region and cut choices, proves
+multi-output semantic modules, emits replacement BLIF, rewrites the graph, and
+requires ABC global CEC. Eight controlled replacements are accepted and restore
+valid extended boundaries; two negative guards are rejected. The real benchmark
+result remains 0 restored boundaries from 46 previous isolated-anchor seeds and
+12 fresh structural seeds, now with an explicit joint closed-region/interface
+failure taxonomy.

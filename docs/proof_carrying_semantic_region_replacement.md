@@ -174,3 +174,26 @@ recovery, SyGuS-style bit-vector synthesis, SAT-sweeping-based hierarchical
 boundary recovery, and logic grafting/ECO flows. The project combines these
 ideas for a specific recovery goal: source-blind, formally checked semantic
 replacement of optimized graph regions to recover usable hierarchy.
+
+## Successor Phase: Joint Region/Interface Discovery
+
+The fixed-region replacement phase proved the graph rewrite and proof stack, but
+it still assumed that a closed region and cut interface had already been chosen.
+The follow-up phase in
+[`docs/joint_region_interface_discovery.md`](joint_region_interface_discovery.md)
+adds a first-class joint candidate state and records counterexample-guided
+repairs to the region and interface.
+
+Current joint-discovery results:
+
+- 37 candidate states;
+- 14 deterministic search transitions;
+- 8 controlled graph-active replacements accepted with ABC global CEC;
+- 8 controlled boundaries restored;
+- 46 previous real isolated-anchor failures revisited;
+- 12 fresh source-blind structural real seeds evaluated;
+- 0 real benchmark boundaries restored.
+
+This preserves the fixed-region phase as a proof-stack validation result while
+making the next bottleneck explicit: source-blind real-region/interface
+formation, not isolated anchor placement.

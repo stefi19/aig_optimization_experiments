@@ -61,9 +61,10 @@ https://stefi19.github.io/aig_optimization_experiments/presentation/
 32. [Formal Error Metrics and Context-Aware Correspondence](#formal-error-metrics-and-context-aware-correspondence)
 33. [Blind CEGIS Semantic Boundary Reconstruction](#blind-cegis-semantic-boundary-reconstruction)
 34. [Proof-Carrying Semantic Region Replacement](#proof-carrying-semantic-region-replacement)
-35. [Dependencies](#20-dependencies)
-36. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
-37. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
+35. [Joint Region/Interface Discovery](#joint-regioninterface-discovery)
+36. [Dependencies](#20-dependencies)
+37. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+38. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -3002,3 +3003,41 @@ This is a stronger positive result than isolated materialisation on controlled
 benchmarks, but it is not yet a positive real-benchmark hierarchy-restoration
 result. The real-case null result is preserved with a failure taxonomy in
 `results/semantic_region_replacement/failure_taxonomy.csv`.
+
+## Joint Region/Interface Discovery
+
+The latest phase removes the fixed-region assumption from semantic replacement.
+It introduces `JointRegionInterfaceCandidate`, a source-blind state containing
+the implementation region, input cut, output cut, external fanouts, semantic
+hypothesis, proof status, counterexample, and repair history.  Counterexamples
+can now drive concrete interface repairs such as adding a missing cut input,
+promoting a missing output, reordering output bits, and contracting irrelevant
+logic before the graph rewrite is attempted.
+
+Run it with:
+
+```bash
+make joint-region-interface-all
+make check-joint-region-interface-results
+```
+
+Current committed results under
+`results/joint_region_interface_discovery/`:
+
+- 10 controlled joint-discovery cases attempted;
+- 37 candidate states and 14 deterministic search transitions;
+- 8 controlled graph-active semantic replacements accepted;
+- 8 controlled boundaries restored with ABC global CEC;
+- controlled affine/add-add/bilinear/MAC/mux recovery: 1/1 each;
+- 2 negative controls rejected;
+- 46 prior real isolated-anchor attempts revisited;
+- 12 fresh source-blind structural real seeds evaluated;
+- development real split: 49 attempts, 0 restorations;
+- held-out real split: 9 attempts, 0 restorations;
+- 0 real benchmark boundaries restored.
+
+The new positive result is controlled and proof-carrying: each accepted
+replacement is graph-active and globally CEC-equivalent.  The real benchmark
+result remains null, but the failure is now localized to joint closed-region and
+interface discovery rather than to semantic proof or disconnected anchor
+materialization.

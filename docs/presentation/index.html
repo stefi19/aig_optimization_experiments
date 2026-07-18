@@ -1303,6 +1303,54 @@ ABC global CEC</pre>
     </section>
 
     <section class="slide">
+      <div class="slide-content two-column">
+        <div>
+          <p class="eyebrow">Joint discovery</p>
+          <h2>Search over the region and interface together</h2>
+          <ul class="large-list"><li>A candidate state contains RI, CI, CO, fanout edges, buses, semantic hypothesis, proof scope, and repair history.</li><li>Seeds come from structure and previous failed frontiers, not source labels.</li><li>Counterexamples drive repairs: add cut input, promote output, reorder bits, contract logic, or update parameters.</li></ul>
+        </div>
+        <div class="callout"><h3>Invariant</h3><p>A restored boundary still requires graph-active replacement plus ABC global CEC. The search trace alone is not evidence.</p></div>
+      </div>
+      <aside class="notes">This is the abstraction shift after fixed-region replacement. The method does not add more isolated-anchor heuristics.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Search trace</p><h2>Counterexamples repair the cut</h2><div class="inline-stats"><span>37 candidate states</span><span>14 transitions</span><span>diagnosed repairs</span><span>source-blind states</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/joint_region_interface_budget.png" alt="Joint region interface search budget">
+          <img src="assets/plots/joint_region_interface_counterexamples.png" alt="Counterexample-guided joint repairs">
+        </div>
+        <div class="meaning-box"><strong>Examples:</strong> missing `cin` is added to the cut, missing `cout` is promoted to the output cut, and swapped mux output bits are reordered before proof.</div>
+      </div>
+      <aside class="notes">These are controlled cases, but the implementation records actual state changes and proof-guided diagnostics.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Proof-carrying replacement</p><h2>8 controlled boundaries restored</h2><div class="inline-stats"><span>10 attempts</span><span>8 accepted</span><span>8 ABC CEC</span><span>2 negative guards rejected</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/joint_region_interface_funnel.png" alt="Joint region interface proof funnel">
+          <img src="assets/plots/joint_region_interface_restored_boundaries.png" alt="Joint restored boundaries">
+        </div>
+        <div class="meaning-box"><strong>Accepted row:</strong> closed region, multi-output Z3 proof, emitted BLIF validation, valid graph rewrite, graph-active outputs, and equivalent global CEC.</div>
+      </div>
+      <aside class="notes">Do not present this as a real-benchmark positive. It validates the joint replacement mechanism and negative guards.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Real benchmark outcome</p><h2>Joint search localizes the remaining blocker</h2><div class="inline-stats"><span>46 old real seeds</span><span>12 fresh seeds</span><span>0 real restorations</span><span>bounded taxonomy</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/joint_region_interface_failure_taxonomy.png" alt="Joint region interface failure taxonomy">
+          <img src="assets/plots/joint_region_interface_controlled_vs_real.png" alt="Controlled versus real joint result">
+        </div>
+        <div class="meaning-box"><strong>Interpretation:</strong> the real blocker is source-blind closed-region/interface formation from the old isolated-anchor seeds, not semantic SMT proof or ABC CEC.</div>
+      </div>
+      <aside class="notes">The next research question is broader structural region enumeration and specification-side cut alignment.</aside>
+    </section>
+
+    <section class="slide">
       <div class="slide-content">
         <p class="eyebrow">Glossary</p>
         <h2>Key terms in one place</h2>
@@ -1328,7 +1376,7 @@ ABC global CEC</pre>
 
     <section class="slide title-slide">
       <div class="slide-content title-grid">
-        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, adds ODC-aware anchors, formally verifies bounded direct semantic templates, adds Z3-backed blind CEGIS, and validates proof-carrying semantic region replacement on controlled cases.</p></div>
+        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, adds ODC-aware anchors, formally verifies bounded direct semantic templates, adds Z3-backed blind CEGIS, validates proof-carrying semantic region replacement, and now performs counterexample-guided joint region/interface discovery on controlled replacements.</p></div>
         <div class="takeaway-chain"><div>Optimized critical path</div><div>Closed implementation region</div><div>Verified semantic module</div><div>Graph-active boundary restoration</div></div>
       </div>
       <aside class="notes">Close with the updated story: custom mapping remains the main contribution, ABC-native sweeping is a standard-flow baseline, sampled approximate distance has calibration, cofactor and sensitivity features now have an ablation harness, boundary recovery and ODC anchors build region evidence, semantic layers recover bounded direct expressions, and materialization proves redundant wires but needs better boundary utility.</aside>
