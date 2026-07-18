@@ -179,3 +179,15 @@ The committed frontier run has 4 designs, 5 boundaries, 15 trajectories, and
 survival rows and 81/180 oracle decomposition rows. This is not a new
 graph-active real restoration claim; it localizes the question to compact,
 local, source-blind recoverability along optimisation trajectories.
+
+## Successor Phase: Active Source-Side Counterparts
+
+The active source-side counterpart phase in
+[`docs/proof_carrying_active_source_counterparts.md`](proof_carrying_active_source_counterparts.md)
+uses the same exact quotient idea in the opposite direction. Rather than
+rewriting the optimized implementation to expose a source-like semantic
+divisor, it adapts the source circuit to expose a counterpart of an optimized
+internal target. The controlled result is 10 graph-active source-side rewrites
+with both `S = S'` and `S' = I` ABC CEC. The real result remains null under the
+bounded target/window search and is reported separately from controlled
+successes.

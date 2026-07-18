@@ -1469,6 +1469,68 @@ ABC global CEC</pre>
     </section>
 
     <section class="slide">
+      <div class="slide-content two-column">
+        <div><p class="eyebrow">Active source counterpart</p><h2>Move from additive wire to source refactoring</h2><p class="subtitle">The source-side construction exposes an optimized internal target by rewriting source consumers as <code>Y = H(w, Z)</code>. A disconnected wire is still rejected.</p></div>
+        <div class="pipeline vertical">
+          <div>Optimized target <code>t</code></div>
+          <div>Formal mapped cut leaves</div>
+          <div>Constructed source counterpart <code>w</code></div>
+          <div>Source quotient <code>H(w,Z)</code></div>
+          <div>Graph-active source rewrite</div>
+          <div>ABC CEC for <code>S=S'</code> and <code>S'=I</code></div>
+        </div>
+      </div>
+      <aside class="notes">Emphasize terminology: this is a constructed source-side counterpart, not a recovered original RTL wire.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Proof funnel</p><h2>10 controlled active rewrites pass the full stack</h2><div class="inline-stats"><span>69 targets</span><span>20 old anchors revisited</span><span>12 quotients proved</span><span>10 active rewrites</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/active_source_counterpart_funnel.png" alt="Active source-counterpart funnel">
+          <img src="assets/plots/active_source_adaptation_cost.png" alt="Active source adaptation proof stack">
+        </div>
+        <div class="meaning-box"><strong>Acceptance requires:</strong> counterpart proof, decomposition proof, quotient proof, graph activity, non-vacuity, and both global CEC scopes.</div>
+      </div>
+      <aside class="notes">This slide separates target accounting from accepted graph-active source rewrites.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Controlled versus real</p><h2>Controlled nonlinear cases succeed; real bounded search remains zero</h2><div class="inline-stats"><span>controlled 10 / 13</span><span>real active 0</span><span>real boundaries 0</span><span>held-out real 0</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/active_source_controlled_development_heldout.png" alt="Controlled versus development and heldout active source results">
+          <img src="assets/plots/active_source_failure_taxonomy.png" alt="Active source-counterpart failure taxonomy">
+        </div>
+        <div class="meaning-box"><strong>Real blocker:</strong> old anchors lack a bounded relevant source consumer window; fresh targets lack a complete globally anchored cut.</div>
+      </div>
+      <aside class="notes">Do not blend controlled and real numbers. This is a controlled positive and a real bounded null result.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">GF(2) baseline</p><h2>Gaussian elimination is only a linear special case</h2><p class="subtitle">The checker requires a formal affine test before the GF(2) baseline can report a solution. Nonlinear bilinear and MAC-style rows are handled by the general decomposition method.</p></div>
+        <div class="plot-pair">
+          <img src="assets/plots/active_source_gf2_vs_general.png" alt="GF2 baseline versus general decomposition">
+          <img src="assets/plots/active_source_counterpart_backend.png" alt="Active source counterpart backend comparison">
+        </div>
+      </div>
+      <aside class="notes">This prevents overclaiming Gaussian elimination as the general algorithm.</aside>
+    </section>
+
+    <section class="slide">
+      <div class="slide-content plot-slide">
+        <div><p class="eyebrow">Durability</p><h2>Unprotected synthesis still removes the constructed boundary</h2><div class="inline-stats"><span>unprotected 0</span><span>repair 10</span><span>pass choice 10</span><span>keep-only 0</span></div></div>
+        <div class="plot-pair">
+          <img src="assets/plots/active_source_durability_survival.png" alt="Active source durability survival by strategy">
+          <img src="assets/plots/active_source_area_depth_durability.png" alt="Area and durability tradeoff">
+        </div>
+        <div class="meaning-box"><strong>Interpretation:</strong> repair and pass-choice are separate bounded preservation strategies, not unprotected survival.</div>
+      </div>
+      <aside class="notes">The durability result matches the recoverability frontier: unprotected optimization preserves primary outputs but removes the graph-active counterpart.</aside>
+    </section>
+
+    <section class="slide">
       <div class="slide-content">
         <p class="eyebrow">Glossary</p>
         <h2>Key terms in one place</h2>
@@ -1494,17 +1556,17 @@ ABC global CEC</pre>
 
     <section class="slide title-slide">
       <div class="slide-content title-grid">
-        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, adds cofactor/sensitivity ranking ablations, repairs and diagnoses equivalence-anchored regions, adds ODC-aware anchors, formally verifies semantic templates, validates graph-active semantic replacement, tests functional refactoring, and now characterizes semantic recoverability across synthesis trajectories.</p></div>
-        <div class="takeaway-chain"><div>Source boundary</div><div>ABC checkpoints</div><div>Blind recovery</div><div>Oracle frontier</div></div>
+        <div><p class="eyebrow">Final takeaway</p><h2>This project builds a layered correspondence-recovery flow</h2><p class="subtitle">It maps optimized circuit nodes back to the original circuit, compares against ABC-native FRAIG reductions, calibrates sampled approximate distance, repairs and diagnoses anchored regions, formally verifies semantic templates, validates graph-active replacement and refactoring, characterizes recoverability trajectories, and constructs active source-side counterparts on controlled cases.</p></div>
+        <div class="takeaway-chain"><div>Optimized target</div><div>Source counterpart</div><div>Active quotient</div><div>Durability question</div></div>
       </div>
-      <aside class="notes">Close with the updated story: controlled graph restoration works, real graph restoration remains zero, and the newest trajectory experiment separates blind-search failure from oracle compact factorisation along synthesis passes.</aside>
+      <aside class="notes">Close with the updated story: controlled active source adaptation works, real graph restoration remains zero, and durability requires repair or preservation rather than unprotected synthesis.</aside>
     </section>
   </main>
 
   <footer class="controls">
     <div class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
     <button id="prev" type="button" aria-label="Previous slide">Prev</button>
-    <span id="slide-number">1 / 107</span>
+    <span id="slide-number">1 / 112</span>
     <button id="next" type="button" aria-label="Next slide">Next</button>
     <button id="notes-toggle" type="button" aria-label="Toggle speaker notes">Notes</button>
   </footer>

@@ -25,7 +25,10 @@ refactoring phase tests a different hypothesis: when no existing semantic
 region can be closed, factor an optimized window into a semantic divisor
 `M = G(X)` and exact quotient `Y = H(M, Z)`. The recoverability-frontier phase
 then studies where these properties appear or disappear across ABC synthesis
-checkpoints, with blind and oracle diagnostic rows kept separate.
+checkpoints, with blind and oracle diagnostic rows kept separate. The newest
+active source-counterpart phase applies the quotient idea on the source side:
+construct a counterpart of an optimized internal target and rewrite source
+consumers so the counterpart is graph-active.
 
 ## 2. Research Problem
 
@@ -70,6 +73,8 @@ blind bus/interface hypothesis
 -> functional decomposition when no closed semantic region exists
 -> semantic divisor plus exact quotient refactoring
 -> synthesis-trajectory recoverability frontier
+-> active source-side counterpart construction
+-> source rewrite plus S/S' and S'/I global CEC
 ```
 
 Ground-truth labels are joined only after prediction/proof files are written.
@@ -121,6 +126,17 @@ rows, while oracle divisor/support/window diagnostics recover 81/180 rows.
 Held-out blind recovery is 16 structural/functional-survival rows; held-out
 oracle compact decomposition is 12 rows. No graph-active real restoration is
 claimed by this phase.
+
+The active source-counterpart phase revisits the 20 proven materialized anchors
+and evaluates 36 fresh utility-aware targets. It constructs controlled
+optimized targets, builds source-side counterparts, proves counterpart
+equivalence, proves exact source-window decompositions, synthesizes quotients,
+rewrites the source graph, and requires both `S = S'` and `S' = I` ABC CEC. The
+controlled result has 13 cases, 10 graph-active counterparts, 10 source CEC
+passes, 10 cross-design CEC passes, and 10 controlled boundaries/critical-path
+mappings. The real development/held-out result remains 0 active counterparts
+and 0 boundaries: old additive anchors lack bounded relevant source consumer
+windows, and fresh targets lack complete globally anchored cuts under bounds.
 
 Each layer has a different role:
 
@@ -845,6 +861,10 @@ proof generation.
   use repository hand-written BLIF and its pass-level results are associations,
   not broad causal claims. The measured quantity is compact local
   recoverability, not absolute preservation of semantic information.
+- The active source-counterpart run proves that source-side adaptation works on
+  controlled nonlinear/arithmetic cases, but it does not create a real held-out
+  active counterpart. Additive, controlled-active, real-active, and durable
+  counts are intentionally reported separately.
 - The method is not exhaustive; it analyzes selected ranked candidates and
   selected case-study circuits.
 
@@ -876,6 +896,8 @@ The most important next steps are:
 11. Extend compositional CEGIS on the real suite for add-add, bilinear, MAC,
     mixed-width arithmetic, and control-heavy regions without using source
     labels in blind mode.
+12. Improve source-side consumer-window discovery for optimized targets whose
+    additive counterparts are already proved but graph-inactive.
 
 ## Short Supervisor Summary
 
@@ -899,7 +921,7 @@ blind CEGIS run agrees with exhaustive proof on 192/192 small checks, reproduces
 oracle-bus ablation recovers the same 10/16 unique cases in the committed run.
 
 The newest recoverability-frontier prototype studies trajectories rather than a
-single optimized endpoint. It records five source semantic boundaries, runs 12
+single optimized endpoint. It records five source semantic boundaries, runs 15
 ABC trajectories, proves 60/60 checkpoints equivalent, and compares blind
 recoverability with oracle divisor/support/window diagnostics. The result is
 not a new graph-active real restoration claim: blind held-out rows are
@@ -907,3 +929,11 @@ structural/functional survival, while oracle held-out rows diagnose that compact
 factorisation can still exist when the true divisor is supplied. This sharpens
 the next question from "does semantic information disappear?" to "when does
 synthesis remove compact, local, source-blind recoverability?"
+
+The active source-side counterpart phase answers the next controlled question:
+can a constructed optimized-target counterpart be made a real source graph
+dependency? Yes on controlled cases: 10 graph-active source rewrites pass both
+source and cross-design CEC and restore 10 controlled boundaries. No on the
+current real bounded run: all 20 prior materialized anchors and 36 fresh targets
+fail before legal source-side integration, producing 0 real active counterparts
+and 0 real boundaries.

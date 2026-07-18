@@ -15,6 +15,8 @@ For proof-carrying semantic functional refactoring, see
 [`docs/proof_carrying_semantic_functional_refactoring.md`](docs/proof_carrying_semantic_functional_refactoring.md).
 For the synthesis-trajectory recoverability frontier phase, see
 [`docs/semantic_recoverability_frontier.md`](docs/semantic_recoverability_frontier.md).
+For active source-side counterpart construction, see
+[`docs/proof_carrying_active_source_counterparts.md`](docs/proof_carrying_active_source_counterparts.md).
 
 ## Web presentation
 
@@ -68,9 +70,10 @@ https://stefi19.github.io/aig_optimization_experiments/presentation/
 35. [Joint Region/Interface Discovery](#joint-regioninterface-discovery)
 36. [Proof-Carrying Semantic Functional Refactoring](#proof-carrying-semantic-functional-refactoring)
 37. [Semantic Recoverability Frontier](#semantic-recoverability-frontier)
-38. [Dependencies](#20-dependencies)
-39. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
-40. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
+38. [Proof-Carrying Active Source-Side Counterparts](#proof-carrying-active-source-side-counterparts)
+39. [Dependencies](#20-dependencies)
+40. [Research Iteration 2: External Benchmarks](#21-research-iteration-2-external-benchmarks)
+41. [ISCAS-85 Recovery Analysis](#iscas-85-recovery-analysis)
 
 ---
 
@@ -880,6 +883,8 @@ make semantic-functional-refactoring-all # run functional-decomposition refactor
 make check-semantic-functional-refactoring-results # validate functional-refactoring evidence
 make semantic-recoverability-all # run trajectory/frontier diagnostics and plots
 make check-semantic-recoverability-results # validate recoverability frontier evidence
+make active-source-counterparts-all # run active source-side counterpart construction
+make check-active-source-counterpart-results # validate active counterpart proof stack
 make test                # run the unit test suite
 ```
 
@@ -952,6 +957,7 @@ aig_optimization_experiments/
 │   ├── joint_region_interface/           Controlled joint region/interface cases
 │   ├── semantic_functional_refactoring/  Controlled decomposition/refactoring cases
 │   ├── semantic_recoverability_frontier/ Controlled trajectory-frontier cases
+│   ├── active_source_counterpart_refactoring/ Active source-side counterpart cases
 │   └── external/                  External suites — iteration 2 (place files here)
 │       ├── iscas85/                  ISCAS-85 .blif files (not redistributed)
 │       ├── epfl/                     EPFL .blif files (not redistributed)
@@ -991,6 +997,7 @@ aig_optimization_experiments/
 │   ├── register_insertion_suggestions.csv    Ranked register-suggestion prototype rows
 │   ├── semantic_functional_refactoring/       Functional decomposition/refactoring results
 │   ├── semantic_recoverability_frontier/      Synthesis trajectory recoverability results
+│   ├── active_source_counterpart_refactoring/ Active source-counterpart results
 │   ├── hybrid/                        ABC SAT sweep / hybrid validation outputs
 │   │   ├── hybrid_validated_candidates.csv   Candidates annotated with ABC verdicts
 │   │   ├── hybrid_validation_summary.md      Human-readable hybrid report
@@ -1023,7 +1030,8 @@ aig_optimization_experiments/
 │   ├── proof_carrying_semantic_region_replacement.md Region replacement phase
 │   ├── joint_region_interface_discovery.md Joint region/interface phase
 │   ├── proof_carrying_semantic_functional_refactoring.md Functional refactoring phase
-│   └── semantic_recoverability_frontier.md Recoverability frontier phase
+│   ├── semantic_recoverability_frontier.md Recoverability frontier phase
+│   └── proof_carrying_active_source_counterparts.md Active source counterpart phase
 │
 ├── tests/                         pytest unit tests
 │   ├── test_topk_recovery.py
@@ -1056,6 +1064,9 @@ aig_optimization_experiments/
 │   ├── run_semantic_recoverability_frontier.py Synthesis trajectory/frontier experiment
 │   ├── check_semantic_recoverability_results.py Recoverability frontier checker
 │   ├── semantic_recoverability_plots.py Recoverability frontier plots
+│   ├── run_active_source_counterpart_refactoring.py Active source counterpart experiment
+│   ├── check_active_source_counterpart_results.py Active counterpart checker
+│   ├── active_source_counterpart_plots.py Active counterpart plots
 │   └── suggest_register_insertion_points.py Register suggestion prototype
 │
 ├── contextual_error_metrics.py     Reusable global/contextual error metric engine
@@ -3158,3 +3169,48 @@ absolute sense. It measures loss of compact, local, exploitable recoverability.
 Oracle rows diagnose the blind-oracle gap and are not merged into blind
 headline results. Whole-design factorisation rows are labelled diagnostic-only,
 not local semantic recovery.
+
+## Proof-Carrying Active Source-Side Counterparts
+
+The active source-counterpart phase is the source-side dual of semantic
+functional refactoring. It starts from an optimized internal target `t`,
+constructs a source-side counterpart `w`, and then rewrites a source consumer
+window so preserved source outputs are computed as `H(w, Z)`. This differs from
+the earlier additive materialization phase: a wire with no fanout is still
+formally useful evidence, but it is not graph-active and is not counted as a
+usable boundary anchor.
+
+Run it with:
+
+```bash
+make active-source-counterparts-all
+make check-active-source-counterpart-results
+```
+
+Current committed results under
+`results/active_source_counterpart_refactoring/`:
+
+- targets considered: 69;
+- previous materialized anchors revisited: 20;
+- fresh utility-aware targets evaluated: 36;
+- controlled cases: 13;
+- controlled graph-active accepted counterparts: 10;
+- counterpart equivalence proofs: 10;
+- exact source-window decompositions: 12/13;
+- exact quotients synthesized/proved: 12/12;
+- `S` versus `S'` ABC CEC passes: 10;
+- `S'` versus `I` ABC CEC passes: 10;
+- controlled usable anchors and new boundaries: 10;
+- real development/held-out active counterparts: 0;
+- real new boundaries: 0;
+- unprotected durability survival: 0;
+- bounded repair/pass-choice controlled durable boundaries: 10 unique cases;
+- GF(2)-linear baseline: 11 affine rows accepted, 2 nonlinear rows rejected.
+
+The supported claim is controlled, not real-held-out: proof-carrying active
+source-side counterpart construction can make constructed counterparts
+graph-active and globally equivalent on controlled nonlinear/arithmetic cases.
+On the current real target set, bounded search fails before source-side
+integration: old additive anchors lack a relevant source consumer window, while
+fresh utility targets lack complete globally anchored cuts. These are bounded
+failures, not impossibility claims.

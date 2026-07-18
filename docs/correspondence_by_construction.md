@@ -109,3 +109,15 @@ not automatically improve boundary recovery. A future phase needs either:
 
 Do not interpret a materialized anchor as evidence that the wire existed in the
 original design.
+
+## Successor: Active Source-Side Counterparts
+
+The active source-side counterpart phase in
+[`docs/proof_carrying_active_source_counterparts.md`](proof_carrying_active_source_counterparts.md)
+keeps this negative result intact and changes the construction. Instead of only
+adding `w = G(L_source)`, it rewrites a source consumer window as
+`Y = H(w, Z)` and requires graph activity plus ABC CEC. The committed active
+run revisits all 20 proven materialized anchors; the real result remains 0
+active boundaries because no bounded relevant source consumer window was found.
+Controlled nonlinear/arithmetic cases do succeed, with 10 graph-active
+source-side rewrites and 10 controlled boundaries.

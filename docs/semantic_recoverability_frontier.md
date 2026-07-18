@@ -204,3 +204,17 @@ decomposition, SyGuS-style bit-vector synthesis, SAT sweeping, and ECO-style
 logic rewriting. The contribution is the measurement framework for
 source-blind versus oracle semantic recoverability across synthesis
 trajectories, not ABC, CEGIS, SMT, or functional decomposition in isolation.
+
+## Successor Phase: Active Source-Side Counterparts
+
+The next phase, documented in
+[`docs/proof_carrying_active_source_counterparts.md`](proof_carrying_active_source_counterparts.md),
+uses the trajectory-frontier result as motivation: if unprotected synthesis
+removes compact local boundaries, can the source circuit be actively adapted to
+expose a counterpart of an optimized internal signal? The committed answer is
+split. Controlled source-side refactorings succeed on 10 nonlinear/arithmetic
+cases, but real development and held-out active counterparts remain at 0 under
+the bounded source-window and anchored-cut search. Durability remains fragile:
+unprotected suffix synthesis preserves primary-output equivalence but removes
+the graph-active counterpart; repair/pass-choice strategies are reported as
+separate bounded preservation experiments.

@@ -336,3 +336,10 @@ materialized wires are appended and not reconnected into the original boundary
 graph. As a result, `formal_plus_materialized` selected 0 materialized anchors
 in boundary recovery and recovered 0 new boundaries. This points to boundary
 utility and graph integration as the next bottleneck, not proof generation.
+
+The active source-counterpart phase follows up by replacing a source consumer
+window so the constructed counterpart has real fanout. Its controlled cases
+restore 10 active boundaries with global CEC, but the real materialized-anchor
+revisit remains at 0 because no bounded relevant source consumer window was
+found. Those rows are intentionally not merged with the additive materialized
+anchor category.
