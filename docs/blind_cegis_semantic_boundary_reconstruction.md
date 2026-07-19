@@ -73,10 +73,13 @@ modules, 5 graph-active accepted replacements, 5 ABC-equivalent global CEC
 passes, and 5 valid extended controlled boundary restorations. Controlled
 affine, add-add, bilinear, and MAC examples are each recovered 1/1.
 
-The real benchmark result remains negative. The 46 previous isolated-anchor
-failures were revisited and still restore 0 real boundaries because the old
-anchor candidates do not form closed implementation regions under the current
-bounds. See `docs/proof_carrying_semantic_region_replacement.md`.
+The historical benchmark result remains negative. The 46 previous
+isolated-anchor diagnostic rows were revisited and still restore 0
+provenance-complete real boundaries because the old anchor candidates do not
+form closed implementation regions under the current bounds. Later
+provenance-first audit keeps those rows as diagnostics rather than eligible
+real graph-rewrite attempts. See
+`docs/proof_carrying_semantic_region_replacement.md`.
 
 ## Evidence Taxonomy
 
@@ -110,9 +113,9 @@ proof-carrying semantic region replacement showed that a closed implementation
 region can be replaced by an emitted semantic module on controlled cases.
 Second, joint region/interface discovery added proof-guided repairs to the
 region and cut interface.  The latest joint run restores 8 controlled
-graph-active boundaries with ABC global CEC, while the 46 previous real
-isolated-anchor seeds plus 12 fresh structural seeds still restore 0 real
-benchmark boundaries.
+graph-active boundaries with ABC global CEC, while the 46 previous historical
+isolated-anchor diagnostic seeds plus 12 fresh structural diagnostic seeds
+still restore 0 provenance-complete real benchmark boundaries.
 
 This preserves the original interpretation: blind CEGIS can recover proven
 semantic expressions, but hierarchy restoration requires a graph-active closed

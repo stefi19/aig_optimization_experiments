@@ -186,7 +186,7 @@ failures:
 
 - 36 rows from `no_globally_anchored_cut`;
 - 20 rows from `no_relevant_source_consumer_window_under_bounds`;
-- 56 real failures revisited total;
+- 56 historical diagnostic rows revisited total;
 - 0 real graph-active transplants;
 - 0 real newly recovered boundaries;
 - 0 real critical-path targets resolved.
@@ -211,6 +211,11 @@ wide-residual minima under the declared B/Z universe. The 36 fresh
 `no_globally_anchored_cut` rows are now classified as
 `insufficient_target_provenance` until their source/optimized target artifacts
 are repaired.
+
+The later provenance-complete necessity-first phase corrects the denominator:
+the 56 rows are historical diagnostics, not 56 eligible graph-rewrite attempts.
+Only provenance-complete, nonconstant, formally observable, reachable-necessary
+targets may enter the eligible transplantation denominator.
 
 ## Durability
 

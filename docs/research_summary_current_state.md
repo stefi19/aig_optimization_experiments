@@ -98,16 +98,16 @@ The proof-carrying region-replacement follow-up validates the replacement stack
 on controlled cases: 7 controlled attempts produce 6 free-cut SMT-verified
 semantic modules, 5 accepted graph-active replacements, 5 ABC-equivalent global
 CEC passes, and 5 valid extended controlled boundary restorations. Controlled
-affine, add-add, bilinear, and MAC recovery are each 1/1. The real benchmark
-revisit remains a null result: 46 old isolated-anchor failures still yield 0
-real restored boundaries because no bounded closed implementation region can be
-formed from those candidates.
+affine, add-add, bilinear, and MAC recovery are each 1/1. The historical
+benchmark revisit remains a null result: 46 old isolated-anchor diagnostic rows
+still yield 0 provenance-complete real restored boundaries because no bounded
+closed implementation region can be formed from those candidates.
 
 The joint region/interface phase then allows counterexamples to repair region
 and cut choices. It accepts 8 controlled graph-active replacements with ABC
-global CEC and restores 8 controlled boundaries, but still restores 0 real
-boundaries across 46 previous isolated-anchor failures plus 12 fresh structural
-seeds.
+global CEC and restores 8 controlled boundaries, but still restores 0
+provenance-complete real boundaries across 46 previous historical
+isolated-anchor diagnostic rows plus 12 fresh structural diagnostic seeds.
 
 The newest semantic functional-refactoring phase no longer tries to find an
 existing closed semantic subgraph. It proves quotient existence with a two-copy
@@ -116,8 +116,9 @@ rejects identity or `H`-ignores-`M` decompositions, and rewrites the graph so
 the semantic divisor is on a real fanout path. The controlled run has 13 cases,
 12 decomposable candidates, 12 independently proved quotients, 11 non-vacuous
 quotient-depends-on-`M` decompositions, 10 non-identity graph-active
-ABC-equivalent refactorings, and 10 restored controlled boundaries. The real
-development/held-out split remains 0/58 restored.
+ABC-equivalent refactorings, and 10 restored controlled boundaries. The
+58 historical development/held-out diagnostic rows remain unrestored and are
+not a corrected provenance-complete real graph-rewrite denominator.
 
 The recoverability-frontier phase records semantic boundaries before synthesis,
 saves checkpoints after individual ABC passes, proves checkpoint equivalence,
@@ -136,12 +137,13 @@ equivalence, proves exact source-window decompositions, synthesizes quotients,
 rewrites the source graph, and requires both `S = S'` and `S' = I` ABC CEC. The
 controlled result has 13 cases, 10 graph-active counterparts, 10 source CEC
 passes, 10 cross-design CEC passes, and 10 controlled boundaries/critical-path
-mappings. The real development/held-out result remains 0 active counterparts
-and 0 boundaries: old additive anchors lack bounded relevant source consumer
-windows, and fresh targets lack complete globally anchored cuts under bounds.
+mappings. The historical development/held-out diagnostic result remains 0
+active counterparts and 0 boundaries: old additive anchors lack bounded
+relevant source consumer windows, and fresh rows lack complete globally
+anchored cuts under bounds.
 
 The formal locality-barrier phase refines that null result instead of adding
-another arbitrary interface heuristic. It audits all 56 previous real failures
+another arbitrary interface heuristic. It audits all 56 historical diagnostic rows
 with source-blind candidate-signal universes, two-copy sufficiency miters,
 replayable distinguishability counterexamples, and minimum hitting-set
 certificates. The current run resolves 20/20 old output-window rows to aligned
@@ -156,8 +158,9 @@ local transplants. The 36 fresh
 `insufficient_target_provenance`: the committed rows name `controlled_*__b0`
 targets without enough source/optimized target artifact information to build a
 valid cross-netlist certificate. Certificate existence is kept separate from
-transplantation: real graph-active transplants and real recovered boundaries
-remain 0.
+transplantation. The follow-up provenance audit corrects the eligible
+historical graph-rewrite denominator to 0 because 36 rows are
+provenance-incomplete and 20 rows are target-irrelevant.
 
 Each layer has a different role:
 
@@ -814,20 +817,22 @@ proof generation.
     46 proven expressions produce 0 graph-active anchors.
 16. Closed semantic region replacement works end to end on controlled positive
     cases, restoring 5 graph-active controlled boundaries with ABC global CEC,
-    but the real benchmark revisit still restores 0 boundaries because the old
-    isolated anchors do not define closed implementation regions.
+    but the historical benchmark revisit still restores 0 provenance-complete
+    real boundaries because the old isolated anchors do not define closed
+    implementation regions.
 17. Joint region/interface discovery removes the fixed-region assumption.  It
     produces 37 candidate states and 14 proof-guided transitions on the
     committed run, accepts 8 controlled graph-active semantic replacements with
-    ABC global CEC, restores 8 controlled boundaries, and still restores 0 real
-    benchmark boundaries from 46 old isolated-anchor seeds plus 12 fresh
-    structural seeds.
+    ABC global CEC, restores 8 controlled boundaries, and still restores 0
+    provenance-complete real benchmark boundaries from 46 old historical
+    isolated-anchor diagnostic seeds plus 12 fresh structural diagnostic seeds.
 18. Functional semantic refactoring replaces closed-region search with exact
     decomposition `Y = H(G(X), Z)`. It proves 12/13 controlled decomposability
     candidates, validates 12 exact quotients, rejects controlled negative and
     vacuous cases at the correct stages, restores 10 controlled graph-active
-    non-identity boundaries with ABC CEC, and still restores 0 real boundaries
-    across 49 development plus 9 held-out attempts.
+    non-identity boundaries with ABC CEC, and still restores 0
+    provenance-complete real boundaries across the historical 49 development
+    plus 9 held-out diagnostic rows.
 19. The semantic recoverability-frontier phase evaluates 60 CEC-equivalent
     checkpoints across 15 ABC trajectories. It separates blind
     structural/functional survival from oracle compact-decomposition
@@ -968,15 +973,29 @@ current real bounded run: all 20 prior materialized anchors and 36 fresh targets
 fail before legal source-side integration, producing 0 real active counterparts
 and 0 real boundaries.
 
-The newest cross-netlist cut-transplant phase changes the abstraction again:
+The cross-netlist cut-transplant phase changes the abstraction again:
 instead of requiring leaf-wise source anchors or existing source consumers, it
 clones an optimized region into the source graph and synthesizes exact adapters
 `Ein(AS,Zin)=AI` and `Eout(BI,Zout)=BS`. On controlled benchmarks, 12/12
 positive transplants are graph-active, pass local equivalence, pass `S` versus
 `S'` and `S'` versus `I` ABC CEC, and restore 12 controlled boundaries; 5/5
-negative controls are rejected. On real revisits, the result remains 0/56:
-36 rows block at input-interface sufficiency and 20 at output-interface
-sufficiency. This is a bounded null result, not an impossibility claim.
+negative controls are rejected. The historical 56-row revisit is now treated as
+diagnostic rather than as 56 eligible graph-rewrite attempts: a later
+provenance audit shows 36 rows are provenance-incomplete and the 20
+artifact-resolved rows are target-irrelevant for their selected interfaces.
+This is a denominator correction, not an erasure of the old evidence.
+
+The newest provenance-complete necessity-first phase audits 330 historical rows
+across the 46/56/58 denominator lineages, records row-level source/optimized
+artifact availability, target-node availability, PI alignment, CEC status, and
+corrected eligibility, and then runs a source-blind target selector over a
+provenance-complete generated BLIF corpus. It emits 48 fresh optimized internal
+targets; all 48 are nonconstant, forced-observable, and reachable-necessary,
+31 have compact exact input interfaces, and 0 graph rewrites are emitted. The
+valid historical eligible transplantation denominator is therefore 0, while the
+new generated-research target-discovery denominator is 48. No external RTL
+denominator is reported because the repository has no pinned redistributable
+external RTL corpus or pinned Yosys lowering flow.
 
 The CI/formal-evidence stabilization after these research phases pins ABC to
 revision `bcfdf592289a408cd67ec19260f8a60a37b085b6`, removes hardcoded

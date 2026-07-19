@@ -117,23 +117,25 @@ Current committed results:
 - controlled bilinear recovery: 1/1;
 - controlled MAC recovery: 1/1;
 - negative guard replacements rejected: 2/2;
-- real isolated-anchor failures revisited: 46;
-- real benchmark region-replacement restorations: 0.
+- historical isolated-anchor diagnostic rows revisited: 46;
+- provenance-complete real region-replacement restorations: 0.
 
 The controlled positives prove the replacement abstraction works end to end:
 region discovery, multi-output semantic proof, module emission, graph rewrite,
 global CEC, and boundary-restoration accounting all pass on cases with known
 legal replacements.
 
-The real benchmark result remains negative. The old isolated-anchor candidates
-do not define closed implementation regions under the deterministic bounds, so
-they fail before module emission or global CEC. This is different from the
-previous zero-graft result: the failure stage is now classified as closed-region
-discovery rather than isolated fanout placement.
+The historical benchmark result remains negative. The old isolated-anchor
+candidates do not define closed implementation regions under the deterministic
+bounds, so they fail before module emission or global CEC. This is different
+from the previous zero-graft result: the failure stage is now classified as
+closed-region discovery rather than isolated fanout placement. Later
+provenance-first audit keeps these rows as diagnostics, not as a corrected
+eligible real-replacement denominator.
 
 ## Failure Taxonomy
 
-The real-case revisit records these closed-region blockers:
+The historical diagnostic revisit records these closed-region blockers:
 
 - `extension_would_require_unbounded_region_or_whole_design`: 8;
 - `no_candidate_removes_bypasses_under_bounds`: 7;
@@ -161,8 +163,8 @@ Controlled negative guards add one `invalid_dangling_fanin` and one
 
 The controlled positives are small deterministic BLIF cases. They validate the
 proof stack and graph rewrite engine, but they do not establish a positive
-real-benchmark hierarchy restoration. The current real-case search starts from
-the previous isolated-anchor failures and remains bounded; broader region
+real-benchmark hierarchy restoration. The current historical diagnostic search
+starts from the previous isolated-anchor failures and remains bounded; broader region
 enumeration, richer cut alignment, and specification-side closed-region mapping
 are the next needed assumptions for a real positive restoration.
 
@@ -190,9 +192,9 @@ Current joint-discovery results:
 - 14 deterministic search transitions;
 - 8 controlled graph-active replacements accepted with ABC global CEC;
 - 8 controlled boundaries restored;
-- 46 previous real isolated-anchor failures revisited;
-- 12 fresh source-blind structural real seeds evaluated;
-- 0 real benchmark boundaries restored.
+- 46 previous historical isolated-anchor diagnostic rows revisited;
+- 12 fresh source-blind structural diagnostic seeds evaluated;
+- 0 provenance-complete real benchmark boundaries restored.
 
 This preserves the fixed-region phase as a proof-stack validation result while
 making the next bottleneck explicit: source-blind real-region/interface
@@ -209,7 +211,7 @@ changes the obligation to exact decomposition: find a semantic divisor
 graph-active semantic boundary even when no original closed subregion remains.
 
 The committed functional-refactoring run restores 10 controlled boundaries with
-ABC global CEC and restores 0 real development/held-out boundaries. That result
-keeps the real null finding intact while shifting the diagnosis from closed
-region formation to source-blind divisor/window/interface discovery under
-bounded search.
+ABC global CEC and restores 0 historical development/held-out diagnostic
+boundaries. That result keeps the null finding intact while shifting the
+diagnosis from closed region formation to source-blind divisor/window/interface
+discovery under bounded search.

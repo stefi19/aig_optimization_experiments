@@ -174,16 +174,21 @@ AS,Zin -> Ein -> AI -> cloned RI -> BI,Zout -> Eout -> BS
 
 The committed run accepts 12/12 positive controlled transplants with graph
 activity, local proof, target proof, and both ABC CEC scopes. The same run
-revisits all 56 real active-source failures and still restores 0 real
-boundaries. The 36 fresh targets remain blocked by input-interface sufficiency,
-and the 20 old additive anchors remain blocked by output-interface sufficiency
-under the bounded adapter search.
+revisits 56 historical active-source diagnostic rows and still restores 0
+eligible real boundaries. Later provenance-first audit corrects the denominator:
+36 rows lack sufficient optimized-artifact provenance, and the 20 resolved rows
+are target-irrelevant for their selected interfaces. These rows are not 56
+provenance-complete eligible transplant attempts.
 
 The next locality-certificate phase in
 [`docs/formal_locality_barriers.md`](formal_locality_barriers.md) refines these
 bounded labels. It proves exact input minima where artifacts resolve, records
 output B/Z minima and target utility, and classifies the 36 fresh rows as
 `insufficient_target_provenance` rather than as a proved non-locality result.
+The successor necessity-first phase in
+[`docs/provenance_complete_necessity_first_targets.md`](provenance_complete_necessity_first_targets.md)
+then requires nonconstancy, formal forced observability, and reachable
+necessity before a target can enter any graph-rewrite denominator.
 
 ## Related Work Positioning
 

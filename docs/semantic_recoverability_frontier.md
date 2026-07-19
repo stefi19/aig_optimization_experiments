@@ -6,7 +6,8 @@ The previous phases showed that the full proof-carrying mechanism works when a
 useful semantic divisor, quotient window, and interface are available. They also
 preserved a real null result: isolated grafting, closed region replacement,
 joint region/interface discovery, and functional refactoring do not yet restore
-real benchmark boundaries under the bounded source-blind searches.
+provenance-complete real benchmark boundaries under the bounded source-blind
+searches.
 
 This phase asks a different question: when along a synthesis trajectory does a
 known semantic boundary stop being compactly and locally recoverable, and does

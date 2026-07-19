@@ -3,7 +3,8 @@
 ## Motivation
 
 The cross-netlist transplantation phase proved that the controlled construction
-works, but the 56 real revisits still produced zero graph-active transplants.
+works, but the 56 historical diagnostic revisits still produced zero
+graph-active transplants.
 Those failures were previously labelled as bounded input-interface or
 output-window failures. This phase asks a sharper question before adding more
 heuristics:
@@ -79,7 +80,7 @@ Controlled exact-minimum cases:
   nonlinear Boolean, and affine-style Boolean arithmetic.
 - All recorded SAT counterexamples replay through concrete evaluators.
 
-Existing 56 real failures:
+Existing 56 historical diagnostic rows:
 
 - 56/56 rows audited.
 - 20/20 old output-window rows resolve to source/optimized BLIF artifacts with
@@ -98,6 +99,11 @@ Existing 56 real failures:
 - Certificate-guided transplantation remains 0 real graph-active transplants
   and 0 real boundaries because certificate existence is not counted as graph
   rewrite success.
+
+The successor provenance-complete necessity-first phase corrects the
+denominator: these 56 rows are not 56 eligible real transplantation attempts.
+They consist of 36 provenance-incomplete rows and 20 target-irrelevant
+diagnostic rows, so the historical eligible graph-rewrite denominator is 0.
 
 These numbers preserve the previous null transplant result. The stronger claim
 is that the old labels have been refined into formal provenance, input-minimum,

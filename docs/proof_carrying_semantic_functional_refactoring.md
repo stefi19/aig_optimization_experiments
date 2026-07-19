@@ -1,10 +1,10 @@
 # Proof-Carrying Semantic Functional Refactoring
 
 This phase tests a different hypothesis from isolated grafting, closed-region
-replacement, and joint region/interface discovery.  The previous real benchmark
-results suggest that an explicit semantic subgraph often no longer exists after
-aggressive synthesis.  Semantic functionality may be distributed through
-reconvergent consumers, bypasses, and shared output cones.
+replacement, and joint region/interface discovery.  The previous historical
+diagnostic results suggest that an explicit semantic subgraph often no longer
+exists after aggressive synthesis.  Semantic functionality may be distributed
+through reconvergent consumers, bypasses, and shared output cones.
 
 The new question is whether a graph-active semantic boundary can be created by
 formally decomposing an optimized logic window:
@@ -103,14 +103,16 @@ Current committed results under `results/semantic_functional_refactoring/`:
 - non-identity accepted decompositions: 10;
 - controlled graph-active ABC-equivalent refactorings: 10;
 - controlled restored boundaries: 10;
-- real attempts: 58;
-- development real attempts: 49, restored 0;
-- held-out real attempts: 9, restored 0;
-- real source-blind held-out semantic boundaries created: 0.
+- historical diagnostic rows: 58;
+- development diagnostic rows: 49, restored 0;
+- held-out diagnostic rows: 9, restored 0;
+- provenance-complete real source-blind held-out semantic boundaries created:
+  0.
 
 Baseline comparison:
 
-- isolated semantic grafting: 276 real attempts, 0 restorations;
+- isolated semantic grafting: 276 bounded diagnostic placements, 0
+  restorations;
 - fixed semantic region replacement: 5 controlled restorations;
 - joint region/interface discovery: 8 controlled restorations;
 - semantic functional refactoring: 10 controlled restorations, 0 real
@@ -124,7 +126,7 @@ Controlled failures:
 - quotient ignores `M`: 1;
 - identity/vacuous decomposition: 1.
 
-Real failures:
+Historical diagnostic failures:
 
 - no semantic divisor/window/interface under bounds: 23;
 - no relevant consumer window or verified divisor under bounds: 12;
@@ -132,7 +134,9 @@ Real failures:
 - window exceeds bounds or whole-design risk: 8;
 - no exact non-vacuous decomposition found under bounds: 7.
 
-These are bounded-search outcomes, not mathematical impossibility claims.
+These are bounded-search outcomes, not mathematical impossibility claims. They
+also predate the later provenance-first eligibility audit, so they are not a
+corrected denominator of provenance-complete real graph-rewrite attempts.
 
 ## Reproducibility
 

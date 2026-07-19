@@ -3052,9 +3052,9 @@ Current committed results under `results/semantic_region_replacement/`:
 - 5 controlled boundaries restored as valid extended boundaries;
 - controlled affine/add-add/bilinear/MAC recovery: 1/1 each;
 - 2 negative guard replacements rejected for the expected graph error;
-- 46 real isolated-anchor failures revisited;
-- 0 real benchmark boundaries restored by region replacement in this bounded
-  run, because the old anchor candidates still do not yield closed
+- 46 historical isolated-anchor diagnostic rows revisited;
+- 0 provenance-complete real graph rewrites emitted by region replacement in
+  this bounded run, because the old anchor candidates still do not yield closed
   implementation regions.
 
 This is a stronger positive result than isolated materialisation on controlled
@@ -3088,17 +3088,18 @@ Current committed results under
 - 8 controlled boundaries restored with ABC global CEC;
 - controlled affine/add-add/bilinear/MAC/mux recovery: 1/1 each;
 - 2 negative controls rejected;
-- 46 prior real isolated-anchor attempts revisited;
-- 12 fresh source-blind structural real seeds evaluated;
-- development real split: 49 attempts, 0 restorations;
-- held-out real split: 9 attempts, 0 restorations;
-- 0 real benchmark boundaries restored.
+- 46 prior historical isolated-anchor diagnostic rows revisited;
+- 12 fresh source-blind structural diagnostic seeds evaluated;
+- development diagnostic split: 49 rows, 0 restorations;
+- held-out diagnostic split: 9 rows, 0 restorations;
+- 0 provenance-complete real benchmark boundaries restored.
 
 The new positive result is controlled and proof-carrying: each accepted
 replacement is graph-active and globally CEC-equivalent.  The real benchmark
 result remains null, but the failure is now localized to joint closed-region and
 interface discovery rather than to semantic proof or disconnected anchor
-materialization.
+materialization. These rows are historical diagnostics, not a corrected
+eligible real graph-rewrite denominator.
 
 ## Proof-Carrying Semantic Functional Refactoring
 
@@ -3144,9 +3145,9 @@ Current committed results under
 - 10 non-identity accepted decompositions;
 - 10 controlled graph-active ABC-equivalent refactorings;
 - 10 controlled semantic boundaries restored;
-- 49 development real attempts, 0 restorations;
-- 9 held-out real attempts, 0 restorations;
-- 0 real benchmark boundaries restored.
+- 49 development diagnostic rows, 0 restorations;
+- 9 held-out diagnostic rows, 0 restorations;
+- 0 provenance-complete real benchmark boundaries restored.
 
 This is a controlled positive for proof-carrying semantic functional
 decomposition and graph-active refactoring, not a positive real-benchmark
@@ -3268,24 +3269,26 @@ Current committed results under
 - `S` versus `S'` ABC CEC passes on accepted controls: 12;
 - `S'` versus `I` ABC CEC passes on accepted controls: 12;
 - controlled graph-active boundaries restored: 12;
-- previous real failures revisited: 56;
-- real `no_globally_anchored_cut` revisits: 36;
-- real `no_relevant_source_consumer_window_under_bounds` revisits: 20;
+- previous historical diagnostic rows revisited: 56;
+- `no_globally_anchored_cut` historical rows: 36;
+- `no_relevant_source_consumer_window_under_bounds` historical rows: 20;
+- eligible real graph rewrites emitted: 0;
 - real graph-active transplants and recovered boundaries: 0;
 - durability: unprotected 0/12, repair/pass-choice/retransplant 12/12 each.
 
 The controlled positives include affine, add-add, bilinear, MAC, mux,
 multi-output, residual-output, XOR-basis, nonlinear Boolean, and masked
-constant-multiply cases. The real result remains a bounded null result:
-failures localize to input-interface sufficiency for the 36 fresh targets and
-output-interface sufficiency for the 20 old additive anchors. Oracle-ladder
-diagnostics are written separately and are not merged into blind results.
+constant-multiply cases. The historical diagnostic result is a bounded null
+result, not 56 eligible graph-rewrite attempts: later provenance and locality
+audits show 36 rows are provenance-incomplete and 20 are target-irrelevant
+for the selected interfaces. Oracle-ladder diagnostics are written separately
+and are not merged into blind results.
 
 ## Formal Locality-Barrier Certificates
 
-The locality-barrier phase answers whether the previous real transplant
-failures were merely search misses or whether the required interface is outside
-the declared compact/local universe. It proves source-side functional
+The locality-barrier phase answers whether the previous historical transplant
+diagnostic rows were merely search misses or whether the required interface is
+outside the declared compact/local universe. It proves source-side functional
 sufficiency with a two-copy miter:
 
 ```text
@@ -3306,7 +3309,7 @@ make check-formal-locality-results
 
 Current committed results under `results/formal_locality_barriers/`:
 
-- all 56 previous real failures audited;
+- all 56 previous historical diagnostic rows audited;
 - 36/36 `no_globally_anchored_cut` rows classified as
   `insufficient_target_provenance`;
 - 20/20 `no_relevant_source_consumer_window_under_bounds` rows resolved to
@@ -3321,3 +3324,40 @@ Current committed results under `results/formal_locality_barriers/`:
 
 These are bounded locality certificates, not absolute semantic impossibility
 claims. Whole-primary-input interfaces remain diagnostic-only.
+
+## Provenance-Complete Necessity-First Target Discovery
+
+The newest phase corrects the historical real-target denominator before adding
+more target heuristics. It creates a canonical row-level provenance audit and a
+source-blind target selector that requires nonconstancy, forced-value
+observability, and reachable target necessity before locality or transplantation
+eligibility.
+
+Run it with:
+
+```bash
+make necessity-targets-all
+make check-provenance-eligibility-results
+make check-necessity-target-results
+```
+
+Current committed results:
+
+- 330 historical rows audited across the 46/56/58 denominator lineages;
+- 36 historical input-side rows remain provenance-incomplete and are excluded
+  from eligible denominators;
+- 20 historical output-side rows are provenance-complete diagnostics but are
+  target-irrelevant for their selected interfaces;
+- corrected historical eligible transplantation denominator: 0;
+- 48 fresh provenance-complete generated-research targets selected
+  source-blind;
+- 48/48 are nonconstant, forced-observable, and reachable-necessary;
+- 31/48 have compact exact input interfaces under the declared source-PI
+  universe;
+- 0 graph rewrites emitted, therefore 0 global CEC claims and 0 recovered
+  boundaries.
+
+The fresh corpus is provenance-complete and non-controlled, but it is generated
+BLIF, not external RTL. The repository still does not contain a pinned
+redistributable external RTL corpus or pinned Yosys lowering flow, so external
+RTL denominators remain zero rather than fabricated.

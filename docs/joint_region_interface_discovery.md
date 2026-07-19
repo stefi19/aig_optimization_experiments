@@ -99,21 +99,24 @@ Current committed results under `results/joint_region_interface_discovery/`:
 - controlled MAC recovery: 1/1;
 - controlled mux recovery: 1/1;
 - negative controls rejected: 2/2;
-- prior real isolated-anchor attempts revisited: 46;
-- fresh source-blind structural real seeds evaluated: 12;
-- development real split: 49 attempts, 0 restorations;
-- held-out real split: 9 attempts, 0 restorations;
-- real benchmark graph-active restorations: 0.
+- prior historical isolated-anchor diagnostic rows revisited: 46;
+- fresh source-blind structural diagnostic seeds evaluated: 12;
+- development diagnostic split: 49 rows, 0 restorations;
+- held-out diagnostic split: 9 rows, 0 restorations;
+- provenance-complete real graph-active restorations: 0.
 
 The controlled cases show that the joint abstraction can repair missing
 interfaces and then pass the complete proof-carrying replacement stack.  The
-real-case null result remains: starting from the earlier isolated-anchor seeds,
-bounded source-blind joint search still does not form legal closed replacement
-regions.
+historical null result remains: starting from the earlier isolated-anchor
+diagnostic seeds, bounded source-blind joint search still does not form legal
+closed replacement regions. These rows predate the provenance-first eligibility
+audit, so they are diagnostics rather than a corrected denominator of eligible
+real graph-rewrite attempts.
 
 ## Failure Analysis
 
-The real revisit classifies the old failures into structural/interface blockers:
+The historical diagnostic revisit classifies the old failures into
+structural/interface blockers:
 
 - no source-blind closed input cut;
 - semantic target outside the closed frontier;
@@ -167,8 +170,9 @@ Current functional-refactoring results:
 - 12 exact quotients synthesized and independently Z3-proved;
 - 10 controlled graph-active ABC-equivalent refactorings;
 - 10 controlled restored semantic boundaries;
-- 49 development real attempts and 9 held-out real attempts;
-- 0 real benchmark restorations under the bounded source-blind search.
+- 49 development diagnostic rows and 9 held-out diagnostic rows;
+- 0 provenance-complete real graph-active restorations under the bounded
+  source-blind search.
 
 This preserves the joint-discovery result as a controlled proof-stack success
 while making the next real blocker explicit: source-blind discovery of useful
