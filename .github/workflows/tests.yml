@@ -111,6 +111,20 @@ jobs:
             --output-dir "$RUNNER_TEMP/locality_results" \
             --allow-no-abc
 
+      - name: Run lightweight necessity-first targets without ABC
+        env:
+          AIG_ABC: ${{ runner.temp }}/missing-abc
+        run: |
+          python scripts/run_necessity_first_targets.py \
+            --mode all \
+            --audit-dir "$RUNNER_TEMP/provenance_audit" \
+            --output-dir "$RUNNER_TEMP/necessity_results"
+          python scripts/check_provenance_eligibility_results.py \
+            --output-dir "$RUNNER_TEMP/provenance_audit"
+          python scripts/check_necessity_first_target_results.py \
+            --output-dir "$RUNNER_TEMP/necessity_results" \
+            --allow-no-abc
+
       - name: Verify worktree stayed clean
         run: test -z "$(git status --short)"
 
@@ -203,6 +217,17 @@ jobs:
             --output-dir "$RUNNER_TEMP/locality_results"
           python scripts/check_formal_locality_barrier_results.py \
             --output-dir "$RUNNER_TEMP/locality_results"
+
+      - name: Run lightweight necessity-first targets with ABC
+        run: |
+          python scripts/run_necessity_first_targets.py \
+            --mode all \
+            --audit-dir "$RUNNER_TEMP/provenance_audit" \
+            --output-dir "$RUNNER_TEMP/necessity_results"
+          python scripts/check_provenance_eligibility_results.py \
+            --output-dir "$RUNNER_TEMP/provenance_audit"
+          python scripts/check_necessity_first_target_results.py \
+            --output-dir "$RUNNER_TEMP/necessity_results"
 
       - name: Verify worktree stayed clean
         run: test -z "$(git status --short)"

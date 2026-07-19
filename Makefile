@@ -11,6 +11,7 @@ Z3_PYTHON = $(shell if [ -x .venv-z3/bin/python ]; then echo .venv-z3/bin/python
 .PHONY: active-source-counterparts-controlled active-source-counterparts-development active-source-counterparts-heldout active-source-counterparts-durability active-source-counterparts-ablations active-source-counterparts-plots check-active-source-counterpart-results active-source-counterparts-all
 .PHONY: cross-netlist-transplant-controlled cross-netlist-transplant-development cross-netlist-transplant-heldout cross-netlist-transplant-oracle cross-netlist-transplant-durability cross-netlist-transplant-ablations cross-netlist-transplant-plots check-cross-netlist-transplant-results cross-netlist-transplant-all
 .PHONY: formal-locality-controlled formal-locality-development formal-locality-heldout formal-locality-input formal-locality-output formal-locality-whole-design-diagnostic formal-locality-transplant formal-locality-ablations formal-locality-plots check-formal-locality-results formal-locality-all
+.PHONY: provenance-eligibility-audit necessity-targets-controlled necessity-targets-historical necessity-targets-development necessity-targets-heldout necessity-targets-locality necessity-targets-transplant necessity-targets-ablations necessity-targets-plots check-provenance-eligibility-results check-necessity-target-results necessity-targets-all
 
 all: build-abc generate-variants analyze plot
 
@@ -479,6 +480,53 @@ check-formal-locality-results:
 
 formal-locality-all: formal-locality-ablations formal-locality-plots check-formal-locality-results
 	@echo "Formal locality-barrier pipeline complete."
+
+provenance-eligibility-audit:
+	@echo "Auditing historical provenance and denominator eligibility"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_necessity_first_targets.py --mode audit
+
+necessity-targets-controlled:
+	@echo "Running controlled necessity-first target checks"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_necessity_first_targets.py --mode controlled
+
+necessity-targets-historical:
+	@echo "Reconstructing historical target provenance"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_necessity_first_targets.py --mode historical
+
+necessity-targets-development:
+	@echo "Running necessity-first development target discovery"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_necessity_first_targets.py --mode development
+
+necessity-targets-heldout:
+	@echo "Running necessity-first held-out target discovery"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_necessity_first_targets.py --mode heldout
+
+necessity-targets-locality:
+	@echo "Running locality analysis for necessity-first eligible targets"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_necessity_first_targets.py --mode locality
+
+necessity-targets-transplant:
+	@echo "Running eligible-target transplant accounting"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_necessity_first_targets.py --mode transplant
+
+necessity-targets-ablations:
+	@echo "Running necessity-first target ablations"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_necessity_first_targets.py --mode ablations
+
+necessity-targets-plots: necessity-targets-ablations
+	@echo "Generating necessity-first target plots"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/necessity_first_target_plots.py
+
+check-provenance-eligibility-results:
+	@echo "Checking provenance eligibility audit artifacts"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_provenance_eligibility_results.py
+
+check-necessity-target-results:
+	@echo "Checking necessity-first target artifacts"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_necessity_first_target_results.py
+
+necessity-targets-all: necessity-targets-ablations necessity-targets-plots check-provenance-eligibility-results check-necessity-target-results
+	@echo "Necessity-first target discovery pipeline complete."
 
 semantic-graft-plots: semantic-graft-ablation
 	@echo "Generating blind CEGIS and semantic graft plots"
