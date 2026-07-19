@@ -1,0 +1,49 @@
+stable_target_id,rewrite_emitted,graph_active,rewrite_artifact,status,reason,schema_version
+f0b703ccb6f1d95d,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+d049016af490d397,false,false,,not_attempted,input_lower_bound_above_previous_bound,necessity_first_targets_v1
+ba728e449636e70a,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+9595683b7ec9ce2c,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+59c67c797ca6b886,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+c4430c12331356b6,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+f3ddd1b38dc650de,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+e5abd6629f420240,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+373a3d96f64cae37,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+a51006c0de3b87e1,false,false,,not_attempted,input_lower_bound_above_previous_bound,necessity_first_targets_v1
+6257dd9a982e4598,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+1255dd6ffc4d8f20,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+dfdb5218b3fce6d7,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+bcb02d2e7c2609d7,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+36d89ab6b178da54,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+8ff86a5a4c26ac90,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+e97620e6c2babf13,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+3b2fc8360b7e79ac,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+5d9170f310054caa,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+b9432edb6c824047,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+40a47f1e357957aa,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+8260b9f1b6160cfc,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+e542ef81b25bbdce,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+9d0cf8cf978db7ad,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+bbcae55a2b79726f,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+1a4ee0508c00ee05,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+6eb93e4570dc5846,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+c2cb051c4a341743,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+d799cb02c31d9356,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+804d74cc95b24886,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+3678a9633b5b9e60,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+dc9a0374e99bffb0,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+44ce54e10e10f232,false,false,,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+202040fdc0c4f44d,false,false,,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+eeb098e77b210ec9,false,false,,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+e7130cbc12573d52,false,false,,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+cb6fbab9c5809dc1,false,false,,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+48c5e5788e430a6d,false,false,,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+6b8716255ebdb208,false,false,,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+868c3cfdf581d7c0,false,false,,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+bb8c4b2107d20992,false,false,,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+f114ebc2ccc5f399,false,false,,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+d0acdf86fe225ffe,false,false,,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+cde9e114d4be7283,false,false,,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+f88000aa6cd5b126,false,false,,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+8035e9f4b2922f75,false,false,,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+aeb284d48148cacc,false,false,,not_attempted,compact interface found but no validated graph rewrite artifact emitted,necessity_first_targets_v1
+2f3ded849a259150,false,false,,not_attempted,search_budget_exhaustion,necessity_first_targets_v1

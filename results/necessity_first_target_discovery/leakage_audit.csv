@@ -1,0 +1,12 @@
+field,blind_selection_access,status,notes,schema_version
+operator_type,false,blocked,evaluation-only or forbidden ground truth,necessity_first_targets_v1
+source_hierarchy,false,blocked,evaluation-only or forbidden ground truth,necessity_first_targets_v1
+source_boundary_id,false,blocked,evaluation-only or forbidden ground truth,necessity_first_targets_v1
+ground_truth_bus_grouping,false,blocked,evaluation-only or forbidden ground truth,necessity_first_targets_v1
+expected_optimized_correspondence,false,blocked,evaluation-only or forbidden ground truth,necessity_first_targets_v1
+known_successful_target,false,blocked,evaluation-only or forbidden ground truth,necessity_first_targets_v1
+optimized_graph_structure,true,allowed,source-blind optimized/design evidence,necessity_first_targets_v1
+target_functional_fingerprint,true,allowed,source-blind optimized/design evidence,necessity_first_targets_v1
+fanout,true,allowed,source-blind optimized/design evidence,necessity_first_targets_v1
+forced_observability,true,allowed,source-blind optimized/design evidence,necessity_first_targets_v1
+reachable_necessity,true,allowed,source-blind optimized/design evidence,necessity_first_targets_v1

@@ -1,0 +1,7 @@
+category,count,schema_version
+actual_graph_rewrites,0,necessity_first_targets_v1
+compact_interfaces,31,necessity_first_targets_v1
+historical_provenance_incomplete,36,necessity_first_targets_v1
+historical_target_irrelevant,20,necessity_first_targets_v1
+raw_optimized_targets,48,necessity_first_targets_v1
+target_necessary_eligible,48,necessity_first_targets_v1

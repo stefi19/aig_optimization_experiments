@@ -1,0 +1,2 @@
+split,designs,eligible_targets,status,reason,schema_version
+heldout,0,0,not_available,No pinned redistributable external RTL corpus and no pinned Yosys toolchain are committed; generated BLIF corpus remains separate.,necessity_first_targets_v1

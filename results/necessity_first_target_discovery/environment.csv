@@ -1,0 +1,5 @@
+tool,version,path,status,schema_version
+python,3.11.15,/Users/stefi/Desktop/research/eth/aig_optimization_experiments/.venv-z3/bin/python,available,necessity_first_targets_v1
+z3,4.16.0,python:z3,available,necessity_first_targets_v1
+abc,bcfdf592289a408cd67ec19260f8a60a37b085b6,/Users/stefi/Desktop/research/eth/aig_optimization_experiments/.abc_build/abc_repo/abc,available,necessity_first_targets_v1
+yosys,not_pinned,,not_used,necessity_first_targets_v1

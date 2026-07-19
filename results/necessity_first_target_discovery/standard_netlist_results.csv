@@ -1,0 +1,2 @@
+benchmark_id,targets,eligible_targets,note,schema_version
+generated_research_benchmark_corpus,48,48,Generated BLIF research benchmarks are provenance-complete but not external RTL.,necessity_first_targets_v1

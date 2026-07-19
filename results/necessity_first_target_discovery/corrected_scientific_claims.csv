@@ -1,0 +1,4 @@
+claim,supported,evidence_file,notes,schema_version
+historical_56_are_not_eligible_attempts,true,../provenance_eligibility_audit/historical_denominator_audit.csv,36 provenance-incomplete and 20 target-irrelevant historical rows,necessity_first_targets_v1
+eligible_targets_require_necessity,true,eligible_target_manifest.csv,"Filter requires provenance, nonconstancy, forced observability, and reachable necessity",necessity_first_targets_v1
+no_graph_rewrite_counted_without_artifact,true,graph_rewrites.csv,All non-emitted rewrites remain not_attempted,necessity_first_targets_v1

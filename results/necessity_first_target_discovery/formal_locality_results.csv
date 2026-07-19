@@ -1,0 +1,49 @@
+stable_target_id,universe_id,solver_status,exact_minimum_status,tested_interface,proved_lower_bound,best_upper_bound,classification,compact_interface,schema_version
+f0b703ccb6f1d95d,f0b703ccb6f1d95d::source_pi,unsat,exact_minimum,"[""a0"", ""b0"", ""cin""]",3,3,compact_exact_input_interface_found,true,necessity_first_targets_v1
+d049016af490d397,d049016af490d397::source_pi,sat,proved_lower_bound_no_upper_bound,[],7,,input_lower_bound_above_previous_bound,false,necessity_first_targets_v1
+ba728e449636e70a,ba728e449636e70a::source_pi,unsat,exact_minimum,"[""a3"", ""b3""]",2,2,compact_exact_input_interface_found,true,necessity_first_targets_v1
+9595683b7ec9ce2c,9595683b7ec9ce2c::source_pi,unsat,exact_minimum,"[""a1"", ""b1""]",2,2,compact_exact_input_interface_found,true,necessity_first_targets_v1
+59c67c797ca6b886,59c67c797ca6b886::source_pi,unsat,exact_minimum,"[""a0"", ""a1"", ""b0"", ""b1"", ""cin""]",5,5,compact_exact_input_interface_found,true,necessity_first_targets_v1
+c4430c12331356b6,c4430c12331356b6::source_pi,unsat,exact_minimum,"[""a0"", ""b0"", ""cin""]",3,3,compact_exact_input_interface_found,true,necessity_first_targets_v1
+f3ddd1b38dc650de,f3ddd1b38dc650de::source_pi,unsat,exact_minimum,"[""a3"", ""b3""]",2,2,compact_exact_input_interface_found,true,necessity_first_targets_v1
+e5abd6629f420240,e5abd6629f420240::source_pi,unsat,exact_minimum,"[""a0"", ""a1"", ""b0"", ""b1"", ""cin""]",5,5,compact_exact_input_interface_found,true,necessity_first_targets_v1
+373a3d96f64cae37,373a3d96f64cae37::source_pi,unsat,exact_minimum,"[""a0"", ""b0"", ""cin""]",3,3,compact_exact_input_interface_found,true,necessity_first_targets_v1
+a51006c0de3b87e1,a51006c0de3b87e1::source_pi,sat,proved_lower_bound_no_upper_bound,[],7,,input_lower_bound_above_previous_bound,false,necessity_first_targets_v1
+6257dd9a982e4598,6257dd9a982e4598::source_pi,unsat,exact_minimum,"[""a3"", ""b3""]",2,2,compact_exact_input_interface_found,true,necessity_first_targets_v1
+1255dd6ffc4d8f20,1255dd6ffc4d8f20::source_pi,unsat,exact_minimum,"[""a1"", ""b1""]",2,2,compact_exact_input_interface_found,true,necessity_first_targets_v1
+dfdb5218b3fce6d7,dfdb5218b3fce6d7::source_pi,unsat,exact_minimum,"[""a0"", ""a1"", ""b0"", ""b1"", ""cin""]",5,5,compact_exact_input_interface_found,true,necessity_first_targets_v1
+bcb02d2e7c2609d7,bcb02d2e7c2609d7::source_pi,unsat,exact_minimum,"[""a0"", ""b0"", ""cin""]",3,3,compact_exact_input_interface_found,true,necessity_first_targets_v1
+36d89ab6b178da54,36d89ab6b178da54::source_pi,unsat,exact_minimum,"[""a3"", ""b3""]",2,2,compact_exact_input_interface_found,true,necessity_first_targets_v1
+8ff86a5a4c26ac90,8ff86a5a4c26ac90::source_pi,unsat,exact_minimum,"[""a0"", ""a1"", ""b0"", ""b1"", ""cin""]",5,5,compact_exact_input_interface_found,true,necessity_first_targets_v1
+e97620e6c2babf13,e97620e6c2babf13::source_pi,unsat,exact_minimum,"[""d0"", ""s1""]",2,2,compact_exact_input_interface_found,true,necessity_first_targets_v1
+3b2fc8360b7e79ac,3b2fc8360b7e79ac::source_pi,unsat,exact_minimum,"[""d0"", ""d1"", ""s1""]",3,3,compact_exact_input_interface_found,true,necessity_first_targets_v1
+5d9170f310054caa,5d9170f310054caa::source_pi,unsat,exact_minimum,"[""d0"", ""d1"", ""s0"", ""s1""]",4,4,compact_exact_input_interface_found,true,necessity_first_targets_v1
+b9432edb6c824047,b9432edb6c824047::source_pi,unsat,exact_minimum,"[""d2"", ""s0"", ""s1""]",3,3,compact_exact_input_interface_found,true,necessity_first_targets_v1
+40a47f1e357957aa,40a47f1e357957aa::source_pi,unsat,exact_minimum,"[""d3"", ""s1""]",2,2,compact_exact_input_interface_found,true,necessity_first_targets_v1
+8260b9f1b6160cfc,8260b9f1b6160cfc::source_pi,unsat,exact_minimum,"[""d1"", ""s1""]",2,2,compact_exact_input_interface_found,true,necessity_first_targets_v1
+e542ef81b25bbdce,e542ef81b25bbdce::source_pi,unsat,exact_minimum,"[""d2"", ""d3"", ""s0"", ""s1""]",4,4,compact_exact_input_interface_found,true,necessity_first_targets_v1
+9d0cf8cf978db7ad,9d0cf8cf978db7ad::source_pi,unsat,exact_minimum,"[""d2"", ""s1""]",2,2,compact_exact_input_interface_found,true,necessity_first_targets_v1
+bbcae55a2b79726f,bbcae55a2b79726f::source_pi,unsat,exact_minimum,"[""d3"", ""s1""]",2,2,compact_exact_input_interface_found,true,necessity_first_targets_v1
+1a4ee0508c00ee05,1a4ee0508c00ee05::source_pi,unsat,exact_minimum,"[""d1"", ""s1""]",2,2,compact_exact_input_interface_found,true,necessity_first_targets_v1
+6eb93e4570dc5846,6eb93e4570dc5846::source_pi,unsat,exact_minimum,"[""d0"", ""d1"", ""s0"", ""s1""]",4,4,compact_exact_input_interface_found,true,necessity_first_targets_v1
+c2cb051c4a341743,c2cb051c4a341743::source_pi,unsat,exact_minimum,"[""d2"", ""d3"", ""s1""]",3,3,compact_exact_input_interface_found,true,necessity_first_targets_v1
+d799cb02c31d9356,d799cb02c31d9356::source_pi,unsat,exact_minimum,"[""d0"", ""s1""]",2,2,compact_exact_input_interface_found,true,necessity_first_targets_v1
+804d74cc95b24886,804d74cc95b24886::source_pi,unsat,exact_minimum,"[""d2"", ""d3"", ""s0"", ""s1""]",4,4,compact_exact_input_interface_found,true,necessity_first_targets_v1
+3678a9633b5b9e60,3678a9633b5b9e60::source_pi,unsat,exact_minimum,"[""d0"", ""d1"", ""s1""]",3,3,compact_exact_input_interface_found,true,necessity_first_targets_v1
+dc9a0374e99bffb0,dc9a0374e99bffb0::source_pi,unsat,exact_minimum,"[""d2"", ""s1""]",2,2,compact_exact_input_interface_found,true,necessity_first_targets_v1
+44ce54e10e10f232,44ce54e10e10f232::source_pi,sat,proved_lower_bound_no_upper_bound,"[""d2"", ""d4"", ""d5""]",3,,search_budget_exhaustion,false,necessity_first_targets_v1
+202040fdc0c4f44d,202040fdc0c4f44d::source_pi,sat,proved_lower_bound_no_upper_bound,"[""d2"", ""d4"", ""d5""]",3,,search_budget_exhaustion,false,necessity_first_targets_v1
+eeb098e77b210ec9,eeb098e77b210ec9::source_pi,sat,proved_lower_bound_no_upper_bound,"[""d0"", ""d4"", ""s0""]",3,,search_budget_exhaustion,false,necessity_first_targets_v1
+e7130cbc12573d52,e7130cbc12573d52::source_pi,sat,proved_lower_bound_no_upper_bound,"[""d3"", ""d4""]",2,,search_budget_exhaustion,false,necessity_first_targets_v1
+cb6fbab9c5809dc1,cb6fbab9c5809dc1::source_pi,sat,proved_lower_bound_no_upper_bound,"[""d3"", ""d4""]",2,,search_budget_exhaustion,false,necessity_first_targets_v1
+48c5e5788e430a6d,48c5e5788e430a6d::source_pi,sat,proved_lower_bound_no_upper_bound,"[""d2"", ""d6""]",2,,search_budget_exhaustion,false,necessity_first_targets_v1
+6b8716255ebdb208,6b8716255ebdb208::source_pi,sat,proved_lower_bound_no_upper_bound,"[""d2"", ""d3""]",2,,search_budget_exhaustion,false,necessity_first_targets_v1
+868c3cfdf581d7c0,868c3cfdf581d7c0::source_pi,sat,proved_lower_bound_no_upper_bound,"[""d0"", ""d4"", ""s0""]",3,,search_budget_exhaustion,false,necessity_first_targets_v1
+bb8c4b2107d20992,bb8c4b2107d20992::source_pi,sat,proved_lower_bound_no_upper_bound,"[""d3"", ""d4""]",2,,search_budget_exhaustion,false,necessity_first_targets_v1
+f114ebc2ccc5f399,f114ebc2ccc5f399::source_pi,sat,proved_lower_bound_no_upper_bound,"[""d0"", ""d4"", ""s1""]",3,,search_budget_exhaustion,false,necessity_first_targets_v1
+d0acdf86fe225ffe,d0acdf86fe225ffe::source_pi,sat,proved_lower_bound_no_upper_bound,"[""d2"", ""d6""]",2,,search_budget_exhaustion,false,necessity_first_targets_v1
+cde9e114d4be7283,cde9e114d4be7283::source_pi,sat,proved_lower_bound_no_upper_bound,"[""d0"", ""d3"", ""s1""]",3,,search_budget_exhaustion,false,necessity_first_targets_v1
+f88000aa6cd5b126,f88000aa6cd5b126::source_pi,sat,proved_lower_bound_no_upper_bound,"[""d0"", ""d1"", ""d2"", ""s0""]",4,,search_budget_exhaustion,false,necessity_first_targets_v1
+8035e9f4b2922f75,8035e9f4b2922f75::source_pi,sat,proved_lower_bound_no_upper_bound,"[""d0"", ""d4"", ""s0""]",3,,search_budget_exhaustion,false,necessity_first_targets_v1
+aeb284d48148cacc,aeb284d48148cacc::source_pi,unsat,exact_minimum,"[""d0"", ""s2""]",2,2,compact_exact_input_interface_found,true,necessity_first_targets_v1
+2f3ded849a259150,2f3ded849a259150::source_pi,sat,proved_lower_bound_no_upper_bound,"[""d2"", ""d6""]",2,,search_budget_exhaustion,false,necessity_first_targets_v1

@@ -1,0 +1,7 @@
+denominator,historical_rows,corrected_category,eligible_rows,notes,schema_version
+active_source_counterpart,56,historical_diagnostic_rows,0,"Rows are not graph-rewrite attempts unless provenance, necessity, rewrite emission, and CEC stages are reached.",necessity_first_targets_v1
+cross_netlist_transplant,56,historical_diagnostic_rows,0,"Rows are not graph-rewrite attempts unless provenance, necessity, rewrite emission, and CEC stages are reached.",necessity_first_targets_v1
+formal_locality_barrier,56,historical_diagnostic_rows,0,"Rows are not graph-rewrite attempts unless provenance, necessity, rewrite emission, and CEC stages are reached.",necessity_first_targets_v1
+joint_region_interface_discovery,58,historical_diagnostic_rows,0,"Rows are not graph-rewrite attempts unless provenance, necessity, rewrite emission, and CEC stages are reached.",necessity_first_targets_v1
+semantic_functional_refactoring,58,historical_diagnostic_rows,0,"Rows are not graph-rewrite attempts unless provenance, necessity, rewrite emission, and CEC stages are reached.",necessity_first_targets_v1
+semantic_grafting_isolated_anchor,46,historical_diagnostic_rows,0,"Rows are not graph-rewrite attempts unless provenance, necessity, rewrite emission, and CEC stages are reached.",necessity_first_targets_v1

@@ -1,0 +1,2 @@
+stage,queries,timeouts,total_runtime_s,max_runtime_s,schema_version
+necessity_first_target_discovery,144,0,26.534781,0.000000,necessity_first_targets_v1

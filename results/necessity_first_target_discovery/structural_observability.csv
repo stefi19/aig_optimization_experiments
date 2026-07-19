@@ -1,0 +1,49 @@
+stable_target_id,has_structural_output_path,fanout_count,fanout_outputs_reachable,evidence_level,schema_version
+f0b703ccb6f1d95d,true,2,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",structural_only,necessity_first_targets_v1
+d049016af490d397,true,2,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",structural_only,necessity_first_targets_v1
+ba728e449636e70a,true,2,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",structural_only,necessity_first_targets_v1
+9595683b7ec9ce2c,true,2,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",structural_only,necessity_first_targets_v1
+59c67c797ca6b886,true,2,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",structural_only,necessity_first_targets_v1
+c4430c12331356b6,true,2,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",structural_only,necessity_first_targets_v1
+f3ddd1b38dc650de,true,2,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",structural_only,necessity_first_targets_v1
+e5abd6629f420240,true,2,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",structural_only,necessity_first_targets_v1
+373a3d96f64cae37,true,2,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",structural_only,necessity_first_targets_v1
+a51006c0de3b87e1,true,2,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",structural_only,necessity_first_targets_v1
+6257dd9a982e4598,true,2,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",structural_only,necessity_first_targets_v1
+1255dd6ffc4d8f20,true,2,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",structural_only,necessity_first_targets_v1
+dfdb5218b3fce6d7,true,2,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",structural_only,necessity_first_targets_v1
+bcb02d2e7c2609d7,true,2,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",structural_only,necessity_first_targets_v1
+36d89ab6b178da54,true,2,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",structural_only,necessity_first_targets_v1
+8ff86a5a4c26ac90,true,2,"[""sum0"", ""sum1"", ""sum2"", ""sum3"", ""cout""]",structural_only,necessity_first_targets_v1
+e97620e6c2babf13,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+3b2fc8360b7e79ac,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+5d9170f310054caa,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+b9432edb6c824047,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+40a47f1e357957aa,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+8260b9f1b6160cfc,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+e542ef81b25bbdce,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+9d0cf8cf978db7ad,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+bbcae55a2b79726f,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+1a4ee0508c00ee05,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+6eb93e4570dc5846,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+c2cb051c4a341743,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+d799cb02c31d9356,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+804d74cc95b24886,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+3678a9633b5b9e60,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+dc9a0374e99bffb0,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+44ce54e10e10f232,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+202040fdc0c4f44d,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+eeb098e77b210ec9,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+e7130cbc12573d52,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+cb6fbab9c5809dc1,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+48c5e5788e430a6d,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+6b8716255ebdb208,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+868c3cfdf581d7c0,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+bb8c4b2107d20992,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+f114ebc2ccc5f399,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+d0acdf86fe225ffe,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+cde9e114d4be7283,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+f88000aa6cd5b126,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+8035e9f4b2922f75,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+aeb284d48148cacc,true,1,"[""out""]",structural_only,necessity_first_targets_v1
+2f3ded849a259150,true,1,"[""out""]",structural_only,necessity_first_targets_v1

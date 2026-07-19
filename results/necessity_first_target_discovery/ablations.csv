@@ -1,0 +1,4 @@
+ablation,raw_candidates,eligible_after_filter,rejected_targets,proof_calls,notes,schema_version
+no_provenance_filter,56,20,36,144,deterministic source-blind filter,necessity_first_targets_v1
+no_nonconstant_filter,48,48,0,144,deterministic source-blind filter,necessity_first_targets_v1
+full_necessity_first,48,48,0,144,deterministic source-blind filter,necessity_first_targets_v1

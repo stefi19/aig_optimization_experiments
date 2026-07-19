@@ -1,0 +1,3 @@
+selector,rows,provenance_complete,nonconstant,forced_observable,reachable_necessary,eligible,runtime_saved_by_filter,schema_version
+historical_output_side_selector,20,20,not_reanalysed_here,not_reanalysed_here,0,0,excludes_20_target_irrelevant_rows,necessity_first_targets_v1
+historical_input_side_selector,36,0,0,0,0,0,excludes_36_provenance_incomplete_rows,necessity_first_targets_v1
