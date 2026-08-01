@@ -19,6 +19,8 @@ For active source-side counterpart construction, see
 [`docs/proof_carrying_active_source_counterparts.md`](docs/proof_carrying_active_source_counterparts.md).
 For formal locality-barrier certificates, see
 [`docs/formal_locality_barriers.md`](docs/formal_locality_barriers.md).
+For evidence-advancement next steps, see
+[`docs/evidence_advancement_next_steps.md`](docs/evidence_advancement_next_steps.md).
 For artifact-evaluation instructions, see [`ARTIFACTS.md`](ARTIFACTS.md).
 For a claim-to-evidence ledger, see [`CLAIMS.md`](CLAIMS.md).
 
@@ -34,6 +36,8 @@ Stable validation tiers:
 - `make smoke`
 - `make portable-no-abc`
 - `make artifact-check`
+- `make evidence-advancement`
+- `make check-evidence-advancement`
 - `make formal-abc`
 - `make reproduce-paper-tables`
 - `make demo-wow`
@@ -44,6 +48,10 @@ Controlled accepted graph-active counterparts: 10; Controlled accepted
 transplants: 12; 48 fresh provenance-complete generated-research targets;
 31/48 have compact exact input interfaces; corrected historical eligible
 transplantation denominator: 0.
+
+Evidence-advancement promoted rows: source-blind graph-active 0/56; compact
+interface rewrites 0/48; bounded grammar completeness 4/12; pinned RTL corpus
+3/3; ODC graph-active placement 0/10; locality proof objects 57/57.
 
 For the paper-facing synthesis layer, run `make research-wow`. It derives a
 recoverability frontier, canonical failure taxonomy, ablation/baseline summary,

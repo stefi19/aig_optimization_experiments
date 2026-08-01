@@ -27,6 +27,7 @@ RESULT_FAMILIES = [
     ("formal_locality_barriers", "results/formal_locality_barriers/formal_locality_barrier_summary.md", "make formal-locality-all"),
     ("necessity_first_targets", "results/necessity_first_target_discovery/corrected_scientific_claims.csv", "make necessity-targets-all"),
     ("research_wow", "results/research_wow/recoverability_frontier.csv", "make research-wow"),
+    ("evidence_advancement", "results/evidence_advancement/evidence_advancement_summary.csv", "make evidence-advancement"),
 ]
 
 FIELDS = [
@@ -102,6 +103,17 @@ def _dataset_classes() -> dict[str, list[str]]:
         with summary.open(newline="", encoding="utf-8") as fh:
             for row in csv.DictReader(fh):
                 classes.setdefault("core_correspondence", set()).add(row.get("source_family", ""))
+    advancement = ROOT / "results" / "evidence_advancement" / "evidence_advancement_summary.csv"
+    if advancement.exists():
+        classes.setdefault("evidence_advancement", set()).update(
+            {
+                "blind_generated_blif",
+                "controlled_generated_blif",
+                "generated_research_benchmark",
+                "historical_diagnostic",
+                "rtl_corpus",
+            }
+        )
     return {key: sorted(value - {""}) for key, value in classes.items()}
 
 

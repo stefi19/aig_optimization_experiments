@@ -13,7 +13,7 @@ Z3_PYTHON = $(shell $(PYTHON) -c "import z3" >/dev/null 2>&1 && echo $(PYTHON) |
 .PHONY: cross-netlist-transplant-controlled cross-netlist-transplant-development cross-netlist-transplant-heldout cross-netlist-transplant-oracle cross-netlist-transplant-durability cross-netlist-transplant-ablations cross-netlist-transplant-plots check-cross-netlist-transplant-results cross-netlist-transplant-all
 .PHONY: formal-locality-controlled formal-locality-development formal-locality-heldout formal-locality-input formal-locality-output formal-locality-whole-design-diagnostic formal-locality-transplant formal-locality-ablations formal-locality-plots check-formal-locality-results formal-locality-all
 .PHONY: provenance-eligibility-audit necessity-targets-controlled necessity-targets-historical necessity-targets-development necessity-targets-heldout necessity-targets-locality necessity-targets-transplant necessity-targets-ablations necessity-targets-plots check-provenance-eligibility-results check-necessity-target-results necessity-targets-all
-.PHONY: smoke portable-no-abc formal-abc research-wow check-research-wow demo-wow paper-pdf build-artifact-manifest artifact-check reproduce-paper-tables
+.PHONY: smoke portable-no-abc formal-abc research-wow check-research-wow demo-wow evidence-advancement check-evidence-advancement paper-pdf build-artifact-manifest artifact-check reproduce-paper-tables
 
 all: build-abc generate-variants analyze plot
 
@@ -600,7 +600,8 @@ smoke:
 		tests/test_z3_backend.py \
 		tests/test_blind_semantic_cegis.py \
 		tests/test_semantic_recoverability_frontier.py \
-		tests/test_necessity_first_targets.py
+		tests/test_necessity_first_targets.py \
+		tests/test_evidence_advancement.py
 
 portable-no-abc:
 	@echo "Running portable no-ABC artifact checks"
@@ -630,15 +631,23 @@ demo-wow: research-wow
 	@echo "Printing reviewer-safe demo report"
 	@cat results/research_wow/demo_report.md
 
-paper-pdf: research-wow
+evidence-advancement:
+	@echo "Building evidence-advancement artifacts"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/build_evidence_advancement.py
+
+check-evidence-advancement: evidence-advancement
+	@echo "Checking evidence-advancement artifacts"
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_evidence_advancement.py
+
+paper-pdf: research-wow check-evidence-advancement
 	@echo "Compiling paper PDF"
 	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/build_paper_pdf.py
 
-build-artifact-manifest:
+build-artifact-manifest: evidence-advancement
 	@echo "Building canonical artifact manifest"
 	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/build_artifact_manifest.py
 
-artifact-check: research-wow build-artifact-manifest
+artifact-check: research-wow check-evidence-advancement build-artifact-manifest
 	@echo "Running reviewer-safe artifact checks"
 	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_results_freshness.py
 	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_blind_semantic_results.py
@@ -648,12 +657,14 @@ artifact-check: research-wow build-artifact-manifest
 	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_provenance_eligibility_results.py
 	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_necessity_first_target_results.py
 	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_research_wow.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_evidence_advancement.py
 	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_artifact_claims.py
 
-reproduce-paper-tables: research-wow build-artifact-manifest
+reproduce-paper-tables: research-wow check-evidence-advancement build-artifact-manifest
 	@echo "Validating committed paper tables and claims"
 	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_results_freshness.py
 	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_research_wow.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_evidence_advancement.py
 	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_artifact_claims.py
 
 sat-refine: build-abc

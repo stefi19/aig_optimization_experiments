@@ -1,0 +1,20 @@
+{
+  "best_upper_bound": 5,
+  "exact_minimum_status": "exact_minimum",
+  "predicate": "no_smaller_interface_suffices_and_listed_interface_suffices",
+  "proof_id": "7b31dca5aa5d6d77",
+  "proved_lower_bound": 5,
+  "schema_version": "evidence_advancement_v1",
+  "solver_status": "unsat",
+  "source_family": "necessity_first_targets",
+  "source_row_hash": "63efd515834ad896c3ab70017932a08366823a4d996b1b2b3423ba53c1cdf931",
+  "source_table": "results/necessity_first_target_discovery/formal_locality_results.csv",
+  "target_id": "8ff86a5a4c26ac90",
+  "tested_interface": [
+    "a0",
+    "a1",
+    "b0",
+    "b1",
+    "cin"
+  ]
+}

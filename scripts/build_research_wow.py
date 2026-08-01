@@ -554,6 +554,7 @@ def claims_to_tables() -> str:
 | Blind CEGIS has both verified regions and replayable counterexample-refinement failures. | `results/blind_semantic_cegis/blind_semantic_recovery_summary.csv`; `results/research_wow/demo_trace.csv` | blind generated BLIF | `python scripts/check_blind_semantic_results.py` |
 | Necessity-first generated targets separate exact interface existence from graph rewrite recovery. | `results/necessity_first_target_discovery/formal_locality_results.csv`; `results/necessity_first_target_discovery/graph_rewrites.csv` | generated research benchmark | `python scripts/check_necessity_first_target_results.py` |
 | Historical null results are explained by provenance and target-necessity audits, not by a 56-row eligible graph-rewrite denominator. | `results/provenance_eligibility_audit/provenance_reconstruction.csv`; `results/research_wow/failure_taxonomy.csv` | historical diagnostic | `python scripts/check_provenance_eligibility_results.py` |
+| Evidence advancement moves rows only when extra obligations are present: source-blind graph-active 0/56, compact-interface rewrites 0/48, bounded grammar completeness 4/12, pinned RTL corpus 3/3, ODC graph-active placement 0/10, locality proof objects 57/57. | `results/evidence_advancement/evidence_advancement_summary.csv`; `results/evidence_advancement/locality_proof_objects.csv` | evidence-level advancement accounting | `python scripts/check_evidence_advancement.py` |
 | The artifact's headline figure is generated from committed evidence and does not merge blind, oracle, controlled, generated, and historical denominators. | `paper/figures/recoverability_frontier.png`; `results/research_wow/recoverability_frontier.csv` | artifact-derived summary | `python scripts/check_research_wow.py` |
 """
 
@@ -592,7 +593,7 @@ Recovering internal correspondences after logic synthesis is useful for debuggin
 
 ## Threat Model
 
-All headline recovery claims must distinguish controlled generated BLIF, blind generated BLIF, standard netlist diagnostics, oracle diagnostics, historical ineligible rows, and future external RTL work.
+All headline recovery claims must distinguish controlled generated BLIF, blind generated BLIF, standard netlist diagnostics, oracle diagnostics, historical ineligible rows, pinned RTL-source metadata, and future lowered RTL correspondence work.
 
 ## Method
 
@@ -607,6 +608,8 @@ Use `results/research_wow/recoverability_frontier.csv` as the main table and `re
 
 Use `paper/figures/interface_ablation.png` as the targeted cross-netlist ablation figure.
 
+Use `results/evidence_advancement/evidence_advancement_summary.csv` to describe next-step promotions without changing headline recovery counts.
+
 ## Failure Taxonomy
 
 Use `results/research_wow/failure_taxonomy.csv` to explain why null results are meaningful: missing provenance, target irrelevance, non-compact interfaces, absent rewrite artifacts, bounded blind CEGIS exhaustion, and formal locality barriers.
@@ -617,7 +620,7 @@ Use `results/research_wow/ablation_summary.csv` and `results/research_wow/baseli
 
 ## Limitations
 
-External RTL claims remain out of scope until a redistributable corpus and pinned Yosys lowering flow are part of the artifact. Oracle rows are diagnostic and must not be merged with blind recoveries.
+RTL recovery claims remain out of scope. The artifact now commits a tiny CC0 RTL seed corpus with source-location metadata, but successful Yosys lowering is tool-dependent and is recorded as `tool_missing` on machines without Yosys. Oracle rows are diagnostic and must not be merged with blind recoveries.
 
 ## Related Work Positioning
 

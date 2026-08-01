@@ -94,6 +94,7 @@ def _check_manifest(errors: list[str]) -> None:
         "formal_locality_barriers",
         "necessity_first_targets",
         "research_wow",
+        "evidence_advancement",
     }
     missing = required - families
     if missing:
@@ -115,6 +116,7 @@ def _check_docs_freshness(errors: list[str]) -> None:
         "48 fresh provenance-complete",
         "31/48 have compact exact input interfaces",
         "corrected historical eligible transplantation denominator: 0",
+        "Evidence-advancement promoted rows",
     ]
     for phrase in required_phrases:
         if phrase not in text:

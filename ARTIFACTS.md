@@ -25,6 +25,10 @@ rerunning every expensive experiment.
 - `make artifact-check`: validates committed result freshness, blind CEGIS,
   active-source, cross-netlist, locality, provenance, necessity-first, and the
   research-facing derived artifacts and claims ledger.
+- `make evidence-advancement`: builds the checked next-step evidence layer
+  without promoting rows past their proof, graph, tool, or CEC obligations.
+- `make check-evidence-advancement`: validates those next-step tables and
+  proof objects.
 - `make formal-abc`: builds/checks pinned ABC and runs the full unit suite plus
   artifact claims.
 - `make reproduce-paper-tables`: rebuilds the canonical artifact manifest and
@@ -40,9 +44,9 @@ rerunning every expensive experiment.
   Python 3.13 after installing `requirements.txt`.
 - `z3-solver` is required for formal semantic proofs and some tests.
 - ABC is pinned to revision `bcfdf592289a408cd67ec19260f8a60a37b085b6`.
-- Yosys is optional for the committed BLIF-only artifact. External RTL claims
-  remain out of scope until a pinned redistributable RTL corpus and lowering
-  flow are committed.
+- Yosys is optional for the committed BLIF-only artifact. The repository now
+  includes a tiny pinned CC0 RTL corpus with source-location metadata, but local
+  validation records Yosys lowering as `tool_missing` unless Yosys is installed.
 
 ## Committed Evidence Policy
 
@@ -57,6 +61,9 @@ Current committed headline counts:
 - 48 fresh provenance-complete generated-research targets.
 - 31/48 have compact exact input interfaces.
 - corrected historical eligible transplantation denominator: 0.
+- Evidence-advancement promoted rows: source-blind graph-active 0/56; compact
+  interface rewrites 0/48; bounded grammar completeness 4/12; pinned RTL corpus
+  3/3; ODC graph-active placement 0/10; locality proof objects 57/57.
 
 ## Expected Runtime
 
@@ -103,3 +110,25 @@ This derives the paper-facing layer from committed evidence:
 - `paper/claims_to_tables.md`
 - `paper/tables/research_wow_tables.md`
 - `paper/case_studies/counterpart_and_blind_cegis.md`
+
+## Evidence-Advancement Layer
+
+Run:
+
+```bash
+make evidence-advancement
+make check-evidence-advancement
+```
+
+This writes:
+
+- `results/evidence_advancement/source_blind_counterpart_inference.csv`
+- `results/evidence_advancement/compact_interface_rewrite_attempts.csv`
+- `results/evidence_advancement/grammar_completeness_certificates.csv`
+- `results/evidence_advancement/rtl_corpus_manifest.csv`
+- `results/evidence_advancement/odc_placement_accounting.csv`
+- `results/evidence_advancement/locality_proof_objects.csv`
+- `results/evidence_advancement/proof_objects/locality/*.json`
+
+The dedicated guide is
+[`docs/evidence_advancement_next_steps.md`](docs/evidence_advancement_next_steps.md).

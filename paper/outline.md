@@ -31,7 +31,7 @@ Recovering internal correspondences after logic synthesis is useful for debuggin
 
 ## Threat Model
 
-All headline recovery claims must distinguish controlled generated BLIF, blind generated BLIF, standard netlist diagnostics, oracle diagnostics, historical ineligible rows, and future external RTL work.
+All headline recovery claims must distinguish controlled generated BLIF, blind generated BLIF, standard netlist diagnostics, oracle diagnostics, historical ineligible rows, pinned RTL-source metadata, and future lowered RTL correspondence work.
 
 ## Method
 
@@ -46,6 +46,8 @@ Use `results/research_wow/recoverability_frontier.csv` as the main table and `re
 
 Use `paper/figures/interface_ablation.png` as the targeted cross-netlist ablation figure.
 
+Use `results/evidence_advancement/evidence_advancement_summary.csv` to describe next-step promotions without changing headline recovery counts.
+
 ## Failure Taxonomy
 
 Use `results/research_wow/failure_taxonomy.csv` to explain why null results are meaningful: missing provenance, target irrelevance, non-compact interfaces, absent rewrite artifacts, bounded blind CEGIS exhaustion, and formal locality barriers.
@@ -56,7 +58,7 @@ Use `results/research_wow/ablation_summary.csv` and `results/research_wow/baseli
 
 ## Limitations
 
-External RTL claims remain out of scope until a redistributable corpus and pinned Yosys lowering flow are part of the artifact. Oracle rows are diagnostic and must not be merged with blind recoveries.
+RTL recovery claims remain out of scope. The artifact now commits a tiny CC0 RTL seed corpus with source-location metadata, but successful Yosys lowering is tool-dependent and is recorded as `tool_missing` on machines without Yosys. Oracle rows are diagnostic and must not be merged with blind recoveries.
 
 ## Related Work Positioning
 
