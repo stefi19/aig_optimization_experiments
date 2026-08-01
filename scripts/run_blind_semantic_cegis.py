@@ -31,6 +31,27 @@ from semantic_region_pipeline import RESULT_DIR  # noqa: E402
 OUT = ROOT / "results" / "blind_semantic_cegis"
 
 
+def eligible_regions(*, require_impl_path: bool = False) -> list[dict[str, str]]:
+    path = RESULT_DIR / "semantic_regions.csv"
+    regions = [r for r in read_csv_rows(path) if r.get("eligible") == "true"]
+    if require_impl_path:
+        regions = [r for r in regions if r.get("impl_circuit_path")]
+    return regions
+
+
+def require_prerequisite_regions(args: argparse.Namespace, *, require_impl_path: bool = False) -> list[dict[str, str]]:
+    regions = eligible_regions(require_impl_path=require_impl_path)
+    if regions or getattr(args, "allow_empty_prerequisites", False):
+        return regions
+    detail = " with implementation paths" if require_impl_path else ""
+    raise SystemExit(
+        "No eligible semantic regions"
+        f"{detail} found in {RESULT_DIR / 'semantic_regions.csv'}. "
+        "Run the semantic-region pipeline first, or pass --allow-empty-prerequisites "
+        "when intentionally producing empty diagnostic tables."
+    )
+
+
 def scalar_nodes() -> dict[tuple[str, str], tuple[str, ...]]:
     grouped: dict[tuple[str, str], list[tuple[int, str]]] = {}
     for row in read_csv_rows(RESULT_DIR / "semantic_scalar_interfaces.csv"):
@@ -62,7 +83,7 @@ def cmd_audit(_: argparse.Namespace) -> int:
 
 def cmd_buses(args: argparse.Namespace) -> int:
     OUT.mkdir(parents=True, exist_ok=True)
-    regions = [r for r in read_csv_rows(RESULT_DIR / "semantic_regions.csv") if r["eligible"] == "true"]
+    regions = require_prerequisite_regions(args)
     scalars = scalar_nodes()
     rows: list[dict[str, str]] = []
     for region in regions[: args.max_regions]:
@@ -83,7 +104,7 @@ def cmd_cegis(args: argparse.Namespace) -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     if not (OUT / "blind_bus_hypotheses.csv").exists():
         cmd_buses(argparse.Namespace(max_regions=args.max_regions))
-    regions = [r for r in read_csv_rows(RESULT_DIR / "semantic_regions.csv") if r["eligible"] == "true" and r["impl_circuit_path"]]
+    regions = require_prerequisite_regions(args, require_impl_path=True)
     blind_rows = read_csv_rows(OUT / "blind_bus_hypotheses.csv")
     buses = buses_from_blind_rows(blind_rows)
     all_candidates: list[dict[str, str]] = []
@@ -175,6 +196,7 @@ def main() -> int:
         p.add_argument("--max-candidates", type=int, default=96)
         p.add_argument("--max-iterations", type=int, default=8)
         p.add_argument("--max-scalar-bits", type=int, default=12)
+        p.add_argument("--allow-empty-prerequisites", action="store_true")
     args = parser.parse_args()
     return args.fn(args)
 

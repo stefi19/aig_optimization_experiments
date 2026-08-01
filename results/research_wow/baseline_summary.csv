@@ -1,0 +1,14 @@
+experiment_family,baseline,denominator,success_count,success_metric,success_rate,notes,schema_version
+active_source_counterpart,no_materialization,20,0,new boundaries,0.000000,no constructed source-side signal,research_wow_v1
+active_source_counterpart,old_additive_materialization,20,0,new boundaries,0.000000,formally equivalent but disconnected,research_wow_v1
+active_source_counterpart,optimized_side_functional_refactoring,13,10,new boundaries,0.769231,previous phase source-blind controlled result,research_wow_v1
+active_source_counterpart,active_source_counterpart_refactoring,13,10,new boundaries,0.769231,"active graph rewrites only, controlled and real separated",research_wow_v1
+active_source_counterpart,active_source_counterpart_refactoring,56,0,new boundaries,0.000000,bounded real source-window search remains negative,research_wow_v1
+cross_netlist_transplant,no_construction,56,0,new boundaries,0.000000,baseline no transplant,research_wow_v1
+cross_netlist_transplant,additive_materialization,20,0,new boundaries,0.000000,proved but disconnected,research_wow_v1
+cross_netlist_transplant,active_source_quotient,13,10,new boundaries,0.769231,previous controlled source-side result,research_wow_v1
+cross_netlist_transplant,cross_netlist_transplant,17,12,new boundaries,0.705882,controlled transplant result,research_wow_v1
+cross_netlist_transplant,cross_netlist_transplant,56,0,new boundaries,0.000000,bounded real transplant remains negative,research_wow_v1
+formal_locality_barrier,previous_cross_netlist_fixed_width_search,56,0,successes,0.000000,Input/output blocker labels preserved from prior pipeline.,research_wow_v1
+formal_locality_barrier,formal_locality_hitting_set_certificates,56,20,successes,0.357143,Certificate success is not counted as graph-active recovery.,research_wow_v1
+formal_locality_barrier,certificate_guided_transplant_accounting,56,0,successes,0.000000,No real graph-active transplant accepted.,research_wow_v1

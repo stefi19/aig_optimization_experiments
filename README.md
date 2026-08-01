@@ -19,6 +19,39 @@ For active source-side counterpart construction, see
 [`docs/proof_carrying_active_source_counterparts.md`](docs/proof_carrying_active_source_counterparts.md).
 For formal locality-barrier certificates, see
 [`docs/formal_locality_barriers.md`](docs/formal_locality_barriers.md).
+For artifact-evaluation instructions, see [`ARTIFACTS.md`](ARTIFACTS.md).
+For a claim-to-evidence ledger, see [`CLAIMS.md`](CLAIMS.md).
+
+## Artifact Quickstart
+
+```bash
+python -m pip install -r requirements.txt
+make artifact-check
+```
+
+Stable validation tiers:
+
+- `make smoke`
+- `make portable-no-abc`
+- `make artifact-check`
+- `make formal-abc`
+- `make reproduce-paper-tables`
+- `make demo-wow`
+- `make paper-pdf`
+
+Current committed headline counts are checked by `scripts/check_artifact_claims.py`:
+Controlled accepted graph-active counterparts: 10; Controlled accepted
+transplants: 12; 48 fresh provenance-complete generated-research targets;
+31/48 have compact exact input interfaces; corrected historical eligible
+transplantation denominator: 0.
+
+For the paper-facing synthesis layer, run `make research-wow`. It derives a
+recoverability frontier, canonical failure taxonomy, ablation/baseline summary,
+reviewer-safe demo report, case study, and paper outline from committed
+evidence tables without rerunning expensive experiments.
+
+To compile the paper, run `make paper-pdf`. The output is
+`output/pdf/aig_internal_correspondence_artifact.pdf`.
 
 ## Web presentation
 

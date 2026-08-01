@@ -74,9 +74,10 @@ def main() -> int:
             continue
         with path.open(newline="", encoding="utf-8") as fh:
             reader = csv.DictReader(fh)
+            fieldnames = reader.fieldnames or []
             rows = list(reader)
         tables[name] = rows
-        missing = required - set(reader.fieldnames or [])
+        missing = required - set(fieldnames)
         if missing:
             errors.append(f"{name} missing columns: {sorted(missing)}")
     if errors:

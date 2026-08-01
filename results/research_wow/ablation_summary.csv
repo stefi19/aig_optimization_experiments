@@ -1,0 +1,18 @@
+experiment_family,ablation,denominator,success_count,success_metric,success_rate,notes,schema_version
+active_source_counterpart,old_target_selection,20,0,new boundaries,0.000000,no_relevant_source_consumer_window_under_bounds,research_wow_v1
+active_source_counterpart,proof_easiness_ranking,20,0,new boundaries,0.000000,repeats_additive_disconnected_result,research_wow_v1
+active_source_counterpart,boundary_utility_aware_ranking,69,10,new boundaries,0.144928,,research_wow_v1
+active_source_counterpart,gf2_linear_special_case,13,0,new boundaries,0.000000,linear_baseline_not_general_refactoring_algorithm,research_wow_v1
+cross_netlist_transplant,old_target_ranking,20,0,new boundaries,0.000000,no_relevant_source_consumer_window_under_bounds,research_wow_v1
+cross_netlist_transplant,direct_adapter_only,17,9,new boundaries,0.529412,,research_wow_v1
+cross_netlist_transplant,relational_interface_enabled,17,12,new boundaries,0.705882,,research_wow_v1
+cross_netlist_transplant,gf2_linear_relational_baseline,34,0,new boundaries,0.000000,special_case_only,research_wow_v1
+formal_locality_barrier,anchored_only_U0,20,20,exact minima,1.000000,Direct source-blind name intersection universe.,research_wow_v1
+formal_locality_barrier,all_primary_inputs_U6_diagnostic,0,0,exact minima,0.000000,"Whole-PI rows are diagnostics, never compact local successes.",research_wow_v1
+formal_locality_barrier,output_BZ_declared_universe,20,3,exact minima,0.150000,Exact minima are scoped to candidate optimized target and residual PI universe.,research_wow_v1
+ranking_baseline,baseline,220,0.000000,mean rank-1 precision,0.000000,Derived from results/ablation_summary.csv.,research_wow_v1
+ranking_baseline,depth_only,220,0.000000,mean rank-1 precision,0.000000,Derived from results/ablation_summary.csv.,research_wow_v1
+ranking_baseline,sim_dep,220,0.000000,mean rank-1 precision,0.000000,Derived from results/ablation_summary.csv.,research_wow_v1
+ranking_baseline,sim_only,220,0.000000,mean rank-1 precision,0.000000,Derived from results/ablation_summary.csv.,research_wow_v1
+ranking_baseline,sim_sup,220,0.000000,mean rank-1 precision,0.000000,Derived from results/ablation_summary.csv.,research_wow_v1
+ranking_baseline,support_only,220,0.000000,mean rank-1 precision,0.000000,Derived from results/ablation_summary.csv.,research_wow_v1
