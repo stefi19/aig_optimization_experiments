@@ -168,6 +168,11 @@ def check_paper_files(errors: list[str]) -> None:
         "paper/tables/research_wow_tables.md",
         "paper/case_studies/counterpart_and_blind_cegis.md",
         "paper/figures/recoverability_frontier.png",
+        "paper/figures/motivating_problem.png",
+        "paper/figures/recoverability_hierarchy.png",
+        "paper/figures/methodology_pipeline.png",
+        "paper/figures/failure_taxonomy.png",
+        "paper/figures/case_study_trace.png",
     ]
     for rel in required:
         path = ROOT / rel

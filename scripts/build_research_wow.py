@@ -37,6 +37,7 @@ def main() -> int:
     write_csv(OUT / "baseline_summary.csv", baselines)
     write_csv(OUT / "demo_trace.csv", demo)
     write_recoverability_figure(frontier)
+    write_paper_figures(frontier, taxonomy, demo)
     write_markdown_outputs(frontier, taxonomy, ablations, baselines, demo)
     print(f"Wrote research-wow artifacts to {OUT.relative_to(ROOT)} and {PAPER.relative_to(ROOT)}")
     return 0
@@ -294,6 +295,142 @@ def write_recoverability_figure(frontier: list[dict[str, str]]) -> None:
     plt.close(fig)
 
 
+def write_paper_figures(
+    frontier: list[dict[str, str]],
+    taxonomy: list[dict[str, str]],
+    demo: list[dict[str, str]],
+) -> None:
+    write_hierarchy_figure()
+    write_pipeline_figure()
+    write_failure_taxonomy_figure(taxonomy)
+    write_case_study_trace_figure(demo)
+    write_problem_figure()
+
+
+def save_figure(fig: plt.Figure, name: str) -> None:
+    for path in [OUT / name, PAPER / "figures" / name]:
+        fig.savefig(path, dpi=180, bbox_inches="tight")
+    plt.close(fig)
+
+
+def write_problem_figure() -> None:
+    fig, ax = plt.subplots(figsize=(9.5, 3.4))
+    ax.axis("off")
+    boxes = [
+        (0.05, 0.55, "Source AIG\nnamed internal nodes", "#dbeafe"),
+        (0.39, 0.55, "ABC optimization\nrewrite / refactor / resyn", "#fef3c7"),
+        (0.73, 0.55, "Optimized AIG\nnew local structure", "#dcfce7"),
+        (0.05, 0.12, "Whole-design CEC\npasses", "#e0e7ff"),
+        (0.39, 0.12, "Internal mapping\nis underdetermined", "#fee2e2"),
+        (0.73, 0.12, "Recovery claim needs\nlocal proof + graph artifact", "#f3e8ff"),
+    ]
+    for x, y, text, color in boxes:
+        ax.add_patch(plt.Rectangle((x, y), 0.22, 0.24, facecolor=color, edgecolor="#334155", linewidth=1.0))
+        ax.text(x + 0.11, y + 0.12, text, ha="center", va="center", fontsize=10)
+    for y in [0.67, 0.24]:
+        ax.annotate("", xy=(0.37, y), xytext=(0.28, y), arrowprops=dict(arrowstyle="->", lw=1.2, color="#334155"))
+        ax.annotate("", xy=(0.71, y), xytext=(0.62, y), arrowprops=dict(arrowstyle="->", lw=1.2, color="#334155"))
+    ax.text(0.5, 0.93, "Motivating problem: equivalence does not imply internal recoverability", ha="center", fontsize=12, weight="bold")
+    save_figure(fig, "motivating_problem.png")
+
+
+def write_hierarchy_figure() -> None:
+    stages = [
+        ("Structural survivor", "same or complemented node"),
+        ("Semantic region", "local function recovered"),
+        ("Exact interface", "minimal local support certified"),
+        ("Graph-active rewrite", "netlist changed at target"),
+        ("Global CEC", "whole design preserved"),
+    ]
+    fig, ax = plt.subplots(figsize=(9.5, 3.2))
+    ax.axis("off")
+    xs = [0.07, 0.255, 0.44, 0.625, 0.81]
+    colors = ["#dbeafe", "#e0f2fe", "#dcfce7", "#fef3c7", "#ede9fe"]
+    for idx, ((title, subtitle), x) in enumerate(zip(stages, xs)):
+        ax.add_patch(plt.Rectangle((x, 0.35), 0.15, 0.28, facecolor=colors[idx], edgecolor="#334155", linewidth=1.0))
+        ax.text(x + 0.075, 0.53, title, ha="center", va="center", fontsize=9.5, weight="bold")
+        ax.text(x + 0.075, 0.42, subtitle, ha="center", va="center", fontsize=8.5)
+        if idx:
+            ax.annotate("", xy=(x - 0.015, 0.49), xytext=(xs[idx - 1] + 0.165, 0.49), arrowprops=dict(arrowstyle="->", lw=1.0, color="#334155"))
+    ax.text(0.5, 0.82, "Evidence hierarchy for internal correspondence recovery", ha="center", fontsize=12, weight="bold")
+    ax.text(0.5, 0.18, "Rows are promoted only by additional evidence; diagnostic and oracle rows are not merged with blind graph-active recovery.", ha="center", fontsize=9)
+    save_figure(fig, "recoverability_hierarchy.png")
+
+
+def write_pipeline_figure() -> None:
+    fig, ax = plt.subplots(figsize=(9.5, 4.0))
+    ax.axis("off")
+    rows_y = [0.72, 0.43, 0.14]
+    labels = [
+        ("Blind path", ["templates", "CEGIS", "formal proof"]),
+        ("Controlled path", ["counterpart", "quotient", "ABC CEC"]),
+        ("Audit path", ["provenance", "necessity", "locality"]),
+    ]
+    for y, (lane, steps) in zip(rows_y, labels):
+        ax.text(0.05, y + 0.055, lane, ha="left", va="center", fontsize=10.5, weight="bold")
+        for i, step in enumerate(steps):
+            x = 0.27 + i * 0.22
+            ax.add_patch(plt.Rectangle((x, y), 0.15, 0.12, facecolor="#f8fafc", edgecolor="#334155", linewidth=1.0))
+            ax.text(x + 0.075, y + 0.06, step, ha="center", va="center", fontsize=9.5)
+            if i:
+                ax.annotate("", xy=(x - 0.015, y + 0.06), xytext=(x - 0.07, y + 0.06), arrowprops=dict(arrowstyle="->", lw=1.0, color="#334155"))
+    ax.text(0.5, 0.93, "Methodology lanes and acceptance gates", ha="center", fontsize=12, weight="bold")
+    ax.text(0.5, 0.03, "Only the controlled path reaches graph-active recovery in the current committed evidence; blind and audit paths bound what remains recoverable.", ha="center", fontsize=9)
+    save_figure(fig, "methodology_pipeline.png")
+
+
+def write_failure_taxonomy_figure(taxonomy: list[dict[str, str]]) -> None:
+    top = sorted(taxonomy, key=lambda r: int(float(r["count"])), reverse=True)[:8]
+    labels = [short_failure_label(r["failure_class"]) for r in top]
+    counts = [int(float(r["count"])) for r in top]
+    fig, ax = plt.subplots(figsize=(9.5, 4.0))
+    y = list(range(len(top)))
+    ax.barh(y, counts, color="#64748b")
+    ax.set_yticks(y, labels=labels)
+    ax.invert_yaxis()
+    ax.set_xlabel("rows")
+    ax.set_title("Dominant blocker classes in committed evidence")
+    ax.grid(axis="x", linewidth=0.4, alpha=0.35)
+    for yi, count_value in zip(y, counts):
+        ax.text(count_value + 0.6, yi, str(count_value), va="center", fontsize=8.5)
+    save_figure(fig, "failure_taxonomy.png")
+
+
+def write_case_study_trace_figure(demo: list[dict[str, str]]) -> None:
+    fig, ax = plt.subplots(figsize=(9.5, 3.6))
+    ax.axis("off")
+    controlled = [r for r in demo if r["mode"] == "controlled"]
+    blind = [r for r in demo if r["mode"] == "blind"][:4]
+    for y, title, rows_, color in [(0.62, "controlled positive", controlled, "#dcfce7"), (0.25, "blind bounded trace", blind, "#fee2e2")]:
+        ax.text(0.04, y + 0.055, title, ha="left", va="center", fontsize=10, weight="bold")
+        for idx, row in enumerate(rows_):
+            x = 0.24 + idx * 0.17
+            status = row["status"].replace("_", " ")
+            label = row["stage"].replace("prove global source and cross equivalence", "global CEC")
+            ax.add_patch(plt.Rectangle((x, y), 0.13, 0.13, facecolor=color, edgecolor="#334155", linewidth=1.0))
+            ax.text(x + 0.065, y + 0.088, label, ha="center", va="center", fontsize=7.2)
+            ax.text(x + 0.065, y + 0.035, status[:22], ha="center", va="center", fontsize=6.8)
+            if idx:
+                ax.annotate("", xy=(x - 0.012, y + 0.065), xytext=(x - 0.04, y + 0.065), arrowprops=dict(arrowstyle="->", lw=0.9, color="#334155"))
+    ax.text(0.5, 0.91, "Representative trace: acceptance versus counterexample refinement", ha="center", fontsize=12, weight="bold")
+    save_figure(fig, "case_study_trace.png")
+
+
+def short_failure_label(label: str) -> str:
+    pieces = label.split("::")
+    tail = pieces[-1] if pieces else label
+    replacements = {
+        "no_validated_graph_rewrite_artifact": "no rewrite artifact",
+        "missing_optimized_artifact": "missing optimized artifact",
+        "no_globally_anchored_cut": "no anchored cut",
+        "no_relevant_source_consumer_window_under_bounds": "no source window",
+        "no_candidate_satisfies_examples": "blind CEGIS exhausted",
+        "historical_target_irrelevant_after_reconstruction": "target irrelevant",
+        "non_compact_exact_input_interface": "non-compact interface",
+    }
+    return replacements.get(tail, tail.replace("_", " ")[:34])
+
+
 def write_markdown_outputs(
     frontier: list[dict[str, str]],
     taxonomy: list[dict[str, str]],
@@ -367,18 +504,43 @@ def paper_tables(frontier: list[dict[str, str]], taxonomy: list[dict[str, str]],
 def claims_to_tables() -> str:
     return """# Claims to Tables
 
-| Paper claim | Primary table | Checker |
-|---|---|---|
-| Controlled source-side counterparts can be graph-active and CEC-backed. | `results/research_wow/recoverability_frontier.csv` | `python scripts/check_research_wow.py` |
-| Cross-netlist transplantation succeeds on controlled positives but not historical diagnostic rows. | `results/research_wow/recoverability_frontier.csv` | `python scripts/check_cross_netlist_transplant_results.py` |
-| Necessity-first generated targets separate exact interface existence from graph rewrite recovery. | `results/research_wow/failure_taxonomy.csv` | `python scripts/check_necessity_first_target_results.py` |
-| Blind CEGIS has both verified regions and replayable counterexample-refinement failures. | `results/research_wow/demo_trace.csv` | `python scripts/check_blind_semantic_results.py` |
-| Historical null results are explained by provenance and target-necessity audits. | `results/research_wow/failure_taxonomy.csv` | `python scripts/check_provenance_eligibility_results.py` |
+| Paper claim | Primary table or figure | Evidence class | Checker |
+|---|---|---|---|
+| Aggressive logic synthesis preserves whole-design equivalence while eroding direct internal correspondences. | `results/sat_validation_layers_summary.csv`; `results/summary_metrics.csv` | structural and ABC CEC diagnostic | `python scripts/check_results_freshness.py` |
+| Controlled source-side counterparts can be graph-active and CEC-backed. | `results/research_wow/recoverability_frontier.csv` | controlled generated BLIF | `python scripts/check_active_source_counterpart_results.py` |
+| Cross-netlist transplantation succeeds on controlled positives but not historical diagnostic rows. | `results/research_wow/recoverability_frontier.csv` | controlled generated BLIF; historical diagnostic | `python scripts/check_cross_netlist_transplant_results.py` |
+| Blind CEGIS has both verified regions and replayable counterexample-refinement failures. | `results/blind_semantic_cegis/blind_semantic_recovery_summary.csv`; `results/research_wow/demo_trace.csv` | blind generated BLIF | `python scripts/check_blind_semantic_results.py` |
+| Necessity-first generated targets separate exact interface existence from graph rewrite recovery. | `results/necessity_first_target_discovery/formal_locality_results.csv`; `results/necessity_first_target_discovery/graph_rewrites.csv` | generated research benchmark | `python scripts/check_necessity_first_target_results.py` |
+| Historical null results are explained by provenance and target-necessity audits, not by a 56-row eligible graph-rewrite denominator. | `results/provenance_eligibility_audit/provenance_reconstruction.csv`; `results/research_wow/failure_taxonomy.csv` | historical diagnostic | `python scripts/check_provenance_eligibility_results.py` |
+| The artifact's headline figure is generated from committed evidence and does not merge blind, oracle, controlled, generated, and historical denominators. | `paper/figures/recoverability_frontier.png`; `results/research_wow/recoverability_frontier.csv` | artifact-derived summary | `python scripts/check_research_wow.py` |
 """
 
 
 def paper_outline() -> str:
     return """# Paper Outline
+
+## Working Title
+
+Recoverability Frontiers for Internal Correspondence After Logic Synthesis.
+
+## Thesis
+
+Internal correspondence after AIG optimization is not a single recovery problem. It is a hierarchy of evidence. Structural similarity, semantic region recognition, exact locality certificates, graph-active rewrites, and global CEC-backed transformations form distinct levels, and the current artifact shows where each level succeeds or fails under controlled, blind, generated, and historical diagnostic denominators.
+
+## Paper Structure
+
+1. Abstract.
+2. Introduction and contributions.
+3. Background and related work.
+4. Problem formulation and evidence model.
+5. Framework and algorithms.
+6. Experimental methodology.
+7. Results by research question.
+8. Case studies.
+9. Discussion.
+10. Threats to validity.
+11. Future work.
+12. Conclusion.
 
 ## Problem
 
@@ -397,7 +559,7 @@ All headline recovery claims must distinguish controlled generated BLIF, blind g
 
 ## Evaluation
 
-Use `results/research_wow/recoverability_frontier.csv` as the main table and `results/research_wow/recoverability_frontier.png` as the main figure.
+Use `results/research_wow/recoverability_frontier.csv` as the main table and `results/research_wow/recoverability_frontier.png` as the main figure. Use the supporting figures in `paper/figures/` to show the problem setup, evidence hierarchy, methodology pipeline, failure taxonomy, and case-study trace.
 
 ## Failure Taxonomy
 
@@ -525,7 +687,7 @@ def write_csv(path: Path, data: list[dict[str, str]]) -> None:
     if not data:
         raise SystemExit(f"No rows to write for {path}")
     with path.open("w", newline="", encoding="utf-8") as fh:
-        writer = csv.DictWriter(fh, fieldnames=list(data[0]))
+        writer = csv.DictWriter(fh, fieldnames=list(data[0]), lineterminator="\n")
         writer.writeheader()
         writer.writerows(data)
 

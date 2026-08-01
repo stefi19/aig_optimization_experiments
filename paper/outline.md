@@ -1,5 +1,28 @@
 # Paper Outline
 
+## Working Title
+
+Recoverability Frontiers for Internal Correspondence After Logic Synthesis.
+
+## Thesis
+
+Internal correspondence after AIG optimization is not a single recovery problem. It is a hierarchy of evidence. Structural similarity, semantic region recognition, exact locality certificates, graph-active rewrites, and global CEC-backed transformations form distinct levels, and the current artifact shows where each level succeeds or fails under controlled, blind, generated, and historical diagnostic denominators.
+
+## Paper Structure
+
+1. Abstract.
+2. Introduction and contributions.
+3. Background and related work.
+4. Problem formulation and evidence model.
+5. Framework and algorithms.
+6. Experimental methodology.
+7. Results by research question.
+8. Case studies.
+9. Discussion.
+10. Threats to validity.
+11. Future work.
+12. Conclusion.
+
 ## Problem
 
 Recovering internal correspondences after logic synthesis is useful for debugging, source mapping, and proof-carrying transformations, but aggressive optimization destroys simple name and structural evidence.
@@ -17,7 +40,7 @@ All headline recovery claims must distinguish controlled generated BLIF, blind g
 
 ## Evaluation
 
-Use `results/research_wow/recoverability_frontier.csv` as the main table and `results/research_wow/recoverability_frontier.png` as the main figure.
+Use `results/research_wow/recoverability_frontier.csv` as the main table and `results/research_wow/recoverability_frontier.png` as the main figure. Use the supporting figures in `paper/figures/` to show the problem setup, evidence hierarchy, methodology pipeline, failure taxonomy, and case-study trace.
 
 ## Failure Taxonomy
 

@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PAPER = ROOT / "paper" / "paper.md"
+BIB = ROOT / "paper" / "references.bib"
 OUT = ROOT / "output" / "pdf" / "aig_internal_correspondence_artifact.pdf"
 
 
@@ -34,6 +35,9 @@ def main() -> int:
         "pdflatex",
         "--resource-path",
         str(ROOT / "paper"),
+        "--citeproc",
+        "--bibliography",
+        str(BIB),
         "-o",
         str(OUT),
     ]
