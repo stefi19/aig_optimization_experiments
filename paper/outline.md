@@ -8,6 +8,8 @@ Recoverability Frontiers for Internal Correspondence After Logic Synthesis.
 
 Internal correspondence after AIG optimization is not a single recovery problem. It is a hierarchy of evidence. Structural similarity, semantic region recognition, exact locality certificates, graph-active rewrites, and global CEC-backed transformations form distinct levels, and the current artifact shows where each level succeeds or fails under controlled, blind, generated, and historical diagnostic denominators.
 
+The cross-netlist ablation refines the thesis: the frontier is parameterized by the admissible interface language. In the controlled experiment, direct adapters recover 9/17 new boundaries, while relational-interface-enabled transplantation recovers 12/17, showing that representation of the boundary can change constructive recoverability.
+
 ## Paper Structure
 
 1. Abstract.
@@ -41,6 +43,8 @@ All headline recovery claims must distinguish controlled generated BLIF, blind g
 ## Evaluation
 
 Use `results/research_wow/recoverability_frontier.csv` as the main table and `results/research_wow/recoverability_frontier.png` as the main figure. Use the supporting figures in `paper/figures/` to show the problem setup, evidence hierarchy, methodology pipeline, failure taxonomy, and case-study trace.
+
+Use `paper/figures/interface_ablation.png` as the targeted cross-netlist ablation figure.
 
 ## Failure Taxonomy
 

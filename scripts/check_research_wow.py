@@ -173,6 +173,7 @@ def check_paper_files(errors: list[str]) -> None:
         "paper/figures/methodology_pipeline.png",
         "paper/figures/failure_taxonomy.png",
         "paper/figures/case_study_trace.png",
+        "paper/figures/interface_ablation.png",
     ]
     for rel in required:
         path = ROOT / rel

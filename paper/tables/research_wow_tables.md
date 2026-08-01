@@ -12,6 +12,13 @@
 | formal_locality_previous_failures     | historical_diagnostic            | 26            | 56          | 0.464286     | exact_minimum_certificate_diagnostic |
 | historical_cross_netlist_recovery     | historical_ineligible_diagnostic | 0             | 56          | 0.000000     | corrected_denominator_audit          |
 
+## Cross-Netlist Interface Ablation
+
+| ablation                     | new_boundaries | attempted | relational_interfaces | graph_valid_transplants | global_cec_passes |
+| ---------------------------- | -------------- | --------- | --------------------- | ----------------------- | ----------------- |
+| direct_adapter_only          | 9              | 17        | 0                     | 12                      | 10                |
+| relational_interface_enabled | 12             | 17        | 3                     | 15                      | 13                |
+
 ## Top Failure Classes
 
 | failure_class                                                                                                                                                        | denominator_class                               | count | evidence_file                                                        | implication                                                                          |

@@ -305,6 +305,7 @@ def write_paper_figures(
     write_failure_taxonomy_figure(taxonomy)
     write_case_study_trace_figure(demo)
     write_problem_figure()
+    write_interface_ablation_figure()
 
 
 def save_figure(fig: plt.Figure, name: str) -> None:
@@ -337,23 +338,24 @@ def write_problem_figure() -> None:
 def write_hierarchy_figure() -> None:
     stages = [
         ("Structural survivor", "same or complemented node"),
-        ("Semantic region", "local function recovered"),
+        ("Semantic recovery", "local function recovered"),
+        ("Interface recovery", "adapters / relation proven"),
         ("Exact interface", "minimal local support certified"),
         ("Graph-active rewrite", "netlist changed at target"),
         ("Global CEC", "whole design preserved"),
     ]
-    fig, ax = plt.subplots(figsize=(9.5, 3.2))
+    fig, ax = plt.subplots(figsize=(10.5, 3.2))
     ax.axis("off")
-    xs = [0.07, 0.255, 0.44, 0.625, 0.81]
-    colors = ["#dbeafe", "#e0f2fe", "#dcfce7", "#fef3c7", "#ede9fe"]
+    xs = [0.035, 0.195, 0.355, 0.515, 0.675, 0.835]
+    colors = ["#dbeafe", "#e0f2fe", "#ccfbf1", "#dcfce7", "#fef3c7", "#ede9fe"]
     for idx, ((title, subtitle), x) in enumerate(zip(stages, xs)):
-        ax.add_patch(plt.Rectangle((x, 0.35), 0.15, 0.28, facecolor=colors[idx], edgecolor="#334155", linewidth=1.0))
-        ax.text(x + 0.075, 0.53, title, ha="center", va="center", fontsize=9.5, weight="bold")
-        ax.text(x + 0.075, 0.42, subtitle, ha="center", va="center", fontsize=8.5)
+        ax.add_patch(plt.Rectangle((x, 0.35), 0.125, 0.28, facecolor=colors[idx], edgecolor="#334155", linewidth=1.0))
+        ax.text(x + 0.0625, 0.53, title, ha="center", va="center", fontsize=8.8, weight="bold")
+        ax.text(x + 0.0625, 0.42, subtitle, ha="center", va="center", fontsize=7.7)
         if idx:
-            ax.annotate("", xy=(x - 0.015, 0.49), xytext=(xs[idx - 1] + 0.165, 0.49), arrowprops=dict(arrowstyle="->", lw=1.0, color="#334155"))
+            ax.annotate("", xy=(x - 0.012, 0.49), xytext=(xs[idx - 1] + 0.137, 0.49), arrowprops=dict(arrowstyle="->", lw=1.0, color="#334155"))
     ax.text(0.5, 0.82, "Evidence hierarchy for internal correspondence recovery", ha="center", fontsize=12, weight="bold")
-    ax.text(0.5, 0.18, "Rows are promoted only by additional evidence; diagnostic and oracle rows are not merged with blind graph-active recovery.", ha="center", fontsize=9)
+    ax.text(0.5, 0.18, "Rows are promoted only by additional evidence; interface language is a parameter of recoverability.", ha="center", fontsize=9)
     save_figure(fig, "recoverability_hierarchy.png")
 
 
@@ -414,6 +416,33 @@ def write_case_study_trace_figure(demo: list[dict[str, str]]) -> None:
                 ax.annotate("", xy=(x - 0.012, y + 0.065), xytext=(x - 0.04, y + 0.065), arrowprops=dict(arrowstyle="->", lw=0.9, color="#334155"))
     ax.text(0.5, 0.91, "Representative trace: acceptance versus counterexample refinement", ha="center", fontsize=12, weight="bold")
     save_figure(fig, "case_study_trace.png")
+
+
+def write_interface_ablation_figure() -> None:
+    ablations = rows("results/cross_netlist_cut_transplantation/ablations.csv")
+    wanted = ["direct_adapter_only", "relational_interface_enabled"]
+    selected = [next(row for row in ablations if row["ablation"] == name) for name in wanted]
+    labels = ["direct\nadapters", "relational\ninterfaces"]
+    successes = [int(row["new_boundaries"]) for row in selected]
+    graph_valid = [int(row["graph_valid_transplants"]) for row in selected]
+    cec = [int(row["global_cec_passes"]) for row in selected]
+    denom = int(selected[0]["attempted"])
+
+    x = range(len(labels))
+    fig, ax = plt.subplots(figsize=(6.8, 3.4))
+    width = 0.24
+    ax.bar([i - width for i in x], graph_valid, width=width, label="graph-valid", color="#93c5fd")
+    ax.bar(list(x), cec, width=width, label="global CEC", color="#60a5fa")
+    ax.bar([i + width for i in x], successes, width=width, label="new boundaries", color="#1d4ed8")
+    ax.set_xticks(list(x), labels=labels)
+    ax.set_ylim(0, denom + 1)
+    ax.set_ylabel(f"successful rows out of {denom}")
+    ax.set_title("Cross-netlist ablation: interface language changes recovery")
+    ax.grid(axis="y", linewidth=0.4, alpha=0.35)
+    for i, success in enumerate(successes):
+        ax.text(i + width, success + 0.25, f"{success}/{denom}", ha="center", va="bottom", fontsize=9, weight="bold")
+    ax.legend(loc="upper left", frameon=False, ncols=3)
+    save_figure(fig, "interface_ablation.png")
 
 
 def short_failure_label(label: str) -> str:
@@ -477,6 +506,11 @@ def case_study(demo: list[dict[str, str]]) -> str:
 
 def paper_tables(frontier: list[dict[str, str]], taxonomy: list[dict[str, str]], ablations: list[dict[str, str]], baselines: list[dict[str, str]]) -> str:
     top_taxonomy = sorted(taxonomy, key=lambda r: int(float(r["count"])), reverse=True)[:12]
+    interface_ablation = [
+        row
+        for row in rows("results/cross_netlist_cut_transplantation/ablations.csv")
+        if row["ablation"] in {"direct_adapter_only", "relational_interface_enabled"}
+    ]
     return "\n".join(
         [
             "# Paper Tables",
@@ -484,6 +518,13 @@ def paper_tables(frontier: list[dict[str, str]], taxonomy: list[dict[str, str]],
             "## Recoverability Frontier",
             "",
             table(["result_family", "denominator_class", "success_count", "denominator", "success_rate", "evidence_level"], frontier),
+            "",
+            "## Cross-Netlist Interface Ablation",
+            "",
+            table(
+                ["ablation", "new_boundaries", "attempted", "relational_interfaces", "graph_valid_transplants", "global_cec_passes"],
+                interface_ablation,
+            ),
             "",
             "## Top Failure Classes",
             "",
@@ -509,6 +550,7 @@ def claims_to_tables() -> str:
 | Aggressive logic synthesis preserves whole-design equivalence while eroding direct internal correspondences. | `results/sat_validation_layers_summary.csv`; `results/summary_metrics.csv` | structural and ABC CEC diagnostic | `python scripts/check_results_freshness.py` |
 | Controlled source-side counterparts can be graph-active and CEC-backed. | `results/research_wow/recoverability_frontier.csv` | controlled generated BLIF | `python scripts/check_active_source_counterpart_results.py` |
 | Cross-netlist transplantation succeeds on controlled positives but not historical diagnostic rows. | `results/research_wow/recoverability_frontier.csv` | controlled generated BLIF; historical diagnostic | `python scripts/check_cross_netlist_transplant_results.py` |
+| In the controlled cross-netlist ablation, the admissible interface language changes the graph-active recovery set: direct adapters recover 9/17 new boundaries, while relational interfaces recover 12/17. | `results/cross_netlist_cut_transplantation/ablations.csv`; `paper/figures/interface_ablation.png` | controlled generated BLIF ablation | `python scripts/check_cross_netlist_transplant_results.py` |
 | Blind CEGIS has both verified regions and replayable counterexample-refinement failures. | `results/blind_semantic_cegis/blind_semantic_recovery_summary.csv`; `results/research_wow/demo_trace.csv` | blind generated BLIF | `python scripts/check_blind_semantic_results.py` |
 | Necessity-first generated targets separate exact interface existence from graph rewrite recovery. | `results/necessity_first_target_discovery/formal_locality_results.csv`; `results/necessity_first_target_discovery/graph_rewrites.csv` | generated research benchmark | `python scripts/check_necessity_first_target_results.py` |
 | Historical null results are explained by provenance and target-necessity audits, not by a 56-row eligible graph-rewrite denominator. | `results/provenance_eligibility_audit/provenance_reconstruction.csv`; `results/research_wow/failure_taxonomy.csv` | historical diagnostic | `python scripts/check_provenance_eligibility_results.py` |
@@ -526,6 +568,8 @@ Recoverability Frontiers for Internal Correspondence After Logic Synthesis.
 ## Thesis
 
 Internal correspondence after AIG optimization is not a single recovery problem. It is a hierarchy of evidence. Structural similarity, semantic region recognition, exact locality certificates, graph-active rewrites, and global CEC-backed transformations form distinct levels, and the current artifact shows where each level succeeds or fails under controlled, blind, generated, and historical diagnostic denominators.
+
+The cross-netlist ablation refines the thesis: the frontier is parameterized by the admissible interface language. In the controlled experiment, direct adapters recover 9/17 new boundaries, while relational-interface-enabled transplantation recovers 12/17, showing that representation of the boundary can change constructive recoverability.
 
 ## Paper Structure
 
@@ -560,6 +604,8 @@ All headline recovery claims must distinguish controlled generated BLIF, blind g
 ## Evaluation
 
 Use `results/research_wow/recoverability_frontier.csv` as the main table and `results/research_wow/recoverability_frontier.png` as the main figure. Use the supporting figures in `paper/figures/` to show the problem setup, evidence hierarchy, methodology pipeline, failure taxonomy, and case-study trace.
+
+Use `paper/figures/interface_ablation.png` as the targeted cross-netlist ablation figure.
 
 ## Failure Taxonomy
 

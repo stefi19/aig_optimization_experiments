@@ -25,7 +25,11 @@ global-CEC-backed graph-active recovery on their positive generated cases
 (10/10 and 12/12), while blind bounded semantic CEGIS recovers 3/24 regions,
 necessity-first generated targets expose 31/48 compact exact input interfaces
 but 0/48 validated graph rewrites, and corrected historical diagnostic rows
-support 0/56 graph-active recoveries. The negative results are not incidental:
+support 0/56 graph-active recoveries. Within the controlled cross-netlist
+experiment, relational interfaces also expand accepted graph-active recovery
+from 9/17 direct-adapter rows to 12/17 relational-interface-enabled rows,
+showing that the boundary language itself can change recoverability. The
+negative results are not incidental:
 they are replayable blocker certificates for missing provenance, target
 irrelevance, non-compact locality, and absent rewrite artifacts. The repository
 therefore contributes an auditable framework for making internal-correspondence
@@ -84,17 +88,22 @@ validation:
    adapter construction, graph activity, and whole-design CEC. The committed
    controlled positives reach 10/10 and 12/12 accepted recoveries,
    respectively.
-3. **Blind and oracle separation.** Blind bounded CEGIS, Z3-backed diagnostic
+3. **Interface abstraction as a recovery parameter.** Cross-netlist
+   transplantation shows that recoverability depends on the allowed boundary
+   language, not only on node semantics: direct adapters recover 9/17 controlled
+   new boundaries, while relational-interface-enabled transplantation recovers
+   12/17 under the same controlled denominator.
+4. **Blind and oracle separation.** Blind bounded CEGIS, Z3-backed diagnostic
    CEGIS, oracle-bus rows, and oracle-window decomposition rows are reported as
    different evidence classes. Blind recovery is 3/24 in the primary
    parametric-CEGIS table, while the larger Z3 experiment is reported as a
    separate solver-scalability diagnostic.
-4. **Negative results as certificates.** Historical and generated failures are
+5. **Negative results as certificates.** Historical and generated failures are
    not treated as uninformative misses. They are classified by replayable
    blockers: missing optimized artifacts, target irrelevance after
    reconstruction, non-compact exact interfaces, no globally anchored cut, and
    no validated graph rewrite artifact.
-5. **A reviewer-oriented artifact contract.** Stable Make targets build paper
+6. **A reviewer-oriented artifact contract.** Stable Make targets build paper
    tables and figures from committed CSVs, validate row-count freshness, run
    portable no-ABC checks, run ABC-backed checks when available, and compile
    this paper into a PDF.
@@ -185,7 +194,9 @@ level. Candidates may be source-blind, oracle-assisted, or controlled:
   audited after the fact; they are not automatically eligible recovery
   attempts.
 
-The artifact defines five evidence levels, shown in Figure 2.
+The artifact defines six evidence levels, shown in Figure 2. The cross-netlist
+ablation motivates the extra interface level: a recovered semantic function is
+not necessarily recoverable through a particular boundary language.
 
 ![Evidence hierarchy for internal correspondence recovery](figures/recoverability_hierarchy.png)
 
@@ -197,6 +208,11 @@ boundary can be rewritten.
 **Semantic region recovery.** A region is semantically recovered when a
 candidate expression is formally equivalent to the region function under the
 declared interface. This level supports recognition claims.
+
+**Interface recoverability.** A candidate is interface-recoverable when the
+semantic region can be connected to the surrounding source and optimized
+context using an admissible adapter language. This level is stricter than
+semantic recognition and weaker than graph-active rewriting.
 
 **Exact locality.** A candidate has an exact local interface when the artifact
 proves a lower bound and matching upper bound for the required boundary within
@@ -212,6 +228,15 @@ graph-active recoveries unless a concrete rewrite artifact is emitted.
 ABC proves the full source/optimized or cross-netlist design equivalent after
 the edit.
 
+For clarity, the paper uses $R_L(t)$ for the recoverability of target $t$ under
+an admissible interface language $L$. Here $L_{direct}$ permits direct exact
+adapters over the declared boundary variables, while $L_{rel}$ additionally
+permits the controlled relational-interface path recorded by the latent
+interface tables. In the 17-case controlled cross-netlist ablation,
+$R_{L_{direct}}$ accepts 9 targets and $R_{L_{rel}}$ accepts 12. This is a
+language-parameterized frontier, not a universal claim about all possible
+interface formalisms.
+
 The research questions follow from the hierarchy:
 
 **RQ1.** How quickly do structural internal correspondences erode under common
@@ -224,7 +249,8 @@ semantics without oracle access?
 the artifact turn it into graph-active CEC-backed recovery?
 
 **RQ4.** Can cross-netlist adapters move controlled correspondences between
-optimized designs, and which ablations matter?
+optimized designs, and does the allowed interface language change the
+recoverable set?
 
 **RQ5.** What do the null results say about locality, provenance, and target
 necessity in generated and historical rows?
@@ -296,6 +322,23 @@ move a cut across related optimized netlists. It constructs input adapters,
 optional relational interfaces, output adapters, and then performs graph-active
 replacement under global CEC. The controlled experiment includes negative
 controls, so acceptance is not just the result of overly permissive checking.
+
+The direct adapter language treats the connection as a deterministic exact
+truth-table map from the declared source-side boundary variables and residuals
+to the optimized cut inputs, and from the optimized cut outputs plus residuals
+back to the source outputs. Formally, the implementation accepts an adapter
+when all assignments that agree on the adapter interface agree on the adapter
+output; otherwise it records a two-copy counterexample. This is a functional
+adapter model over a fixed boundary.
+
+The relational-interface path allows the transplantation procedure to introduce
+and prove a small latent relation over the boundary before graph replacement.
+In the committed controlled experiment this is represented by a one-bit latent
+interface `k0` with `proof_status=proved` and `formal_status=equivalent` in the
+relational-interface tables. The extra expressive power is not a different CEC
+standard: accepted relational rows still require exact input/output adapters,
+local equivalence, graph activity, and both ABC CEC scopes. It changes the
+boundary language available before those obligations are checked.
 
 The ablation structure matters: direct adapters produce fewer accepted
 boundaries than relational-interface-enabled transplantation, while GF(2)
@@ -438,10 +481,45 @@ new recovered boundaries.
 
 The ablation table is more informative than the headline alone. Direct adapters
 produce 9/17 new boundaries, while relational-interface-enabled transplantation
-produces 12/17. The relational row also increases graph-valid replacements and
-global CEC passes. The GF(2) linear relational baseline attempts 34 rows and
-recovers 0 new boundaries, again showing that a narrow algebraic special case
-does not substitute for the full proof-carrying construction.
+produces 12/17. The relational row also increases graph-valid replacements from
+12/17 to 15/17 and global CEC passes from 10/17 to 13/17. The GF(2) linear
+relational baseline attempts 34 rows and recovers 0 new boundaries, showing
+that the effect is not captured by a narrow affine special case.
+
+| Cross-netlist interface model | Relational rows proved | Graph-valid | Global CEC | New boundaries |
+|---|---:|---:|---:|---:|
+| Direct adapters only | 0 | 12 / 17 | 10 / 17 | 9 / 17 |
+| Relational-interface enabled | 3 | 15 / 17 | 13 / 17 | 12 / 17 |
+
+![Cross-netlist ablation: interface language changes recovery](figures/interface_ablation.png)
+
+The three additional accepted rows are not anonymous increments. They are the
+controlled `xor_basis_adapter`, `nonlinear_boolean_adapter`, and
+`bilinear_transplant` cases. The committed relational-interface tables record
+all three with `latent_width=1`, `latent_interface=["k0"]`,
+`proof_status=proved`, and a matching latent-interface proof with
+`formal_status=equivalent`. The controlled result rows then show exact input
+and output adapters, graph-active cloned regions, local exhaustive equivalence,
+source CEC equivalence, cross CEC equivalence, and `new_recovered_boundary=true`.
+
+The implementation clarifies what these rows mean. The `xor_basis_adapter`
+source cut computes the optimized basis as `(a xor b, b)` rather than a plain
+wire-aligned cut. The `nonlinear_boolean_adapter` compresses four source
+boundary bits into two optimized cut inputs `(a and b, c or d)`. The
+`bilinear_transplant` row uses the relational path for a bilinear target
+interface. In all three cases the accepted evidence is carried by the
+relational-interface path and then discharged by the same local-proof and CEC
+obligations as the direct rows.
+
+This supports a stronger interpretation than "three more cases succeeded." In
+this controlled 17-case experiment, the admissible interface language changes
+the recoverability frontier. Some correspondences are blocked under a restricted
+boundary representation even though an exact cross-netlist relationship is
+available in the richer relational representation used by the artifact. The
+current tables do not prove that every conceivable direct encoding of these
+three rows is impossible; they do prove that the implemented direct-only
+frontier is strictly smaller than the implemented relational frontier under the
+same denominator.
 
 ## 6.6 Necessity-First Auditing Finds Locality Without Rewrites
 
@@ -497,7 +575,12 @@ CSV inputs and checked by `make check-research-wow`.
 
 The table is deliberately heterogeneous because the artifact's main claim is
 about heterogeneity. The figure does not invite aggregation; it displays which
-kind of evidence each count belongs to.
+kind of evidence each count belongs to. The cross-netlist ablation adds a second
+dimension: even within one controlled denominator, the frontier is
+parameterized by the admissible interface language $L$. The result
+$|R_{L_{direct}}|=9$ and $|R_{L_{rel}}|=12$ for the 17 controlled rows means
+recoverability is partly a property of the chosen boundary abstraction, not
+only of the underlying Boolean function.
 
 ## 6.9 Failure Taxonomy
 
@@ -556,6 +639,18 @@ Third, **oracle diagnostics are valuable only when labeled**. Oracle divisor,
 oracle support, and oracle window rows can identify whether the remaining
 blocker is decomposition, locality, or graph placement. They become misleading
 only when merged with blind recovery rates. The artifact keeps them separate.
+
+Fourth, **some barriers are abstraction-induced**. A failed attempt under a
+restricted interface model should not automatically be read as evidence that no
+compact or useful correspondence exists. In the controlled cross-netlist
+ablation, enabling the relational-interface language expands graph-active
+recovery from 9/17 to 12/17. Those three rows indicate that a boundary can be
+too restrictive even when the internal function is recoverable and a richer
+cross-netlist relation can be proven. This is different from the formal
+locality-barrier rows where exact minimum-interface certificates establish that
+no compact interface exists under the configured universe and bound. The first
+case asks for a richer language; the second asks for a larger or different
+locality universe.
 
 The current controlled positives are also not the endpoint. They show that the
 acceptance machinery can recognize valid graph-active transformations. The
@@ -642,7 +737,11 @@ target-necessity diagnostics instead of being misused as recovery denominators.
 
 The result is a recoverability frontier: a map of what survived, what can be
 recognized, what can be localized, what can be rewritten, and what remains
-blocked. That frontier is the paper's scientific object and the repository's
-artifact contract.
+blocked. The cross-netlist ablation sharpens that map: richer relational
+interfaces expand the constructively recoverable set in the controlled
+experiment, while formal locality certificates remain necessary to distinguish
+representational limitations from genuine locality barriers. That
+language-parameterized frontier is the paper's scientific object and the
+repository's artifact contract.
 
 # References
