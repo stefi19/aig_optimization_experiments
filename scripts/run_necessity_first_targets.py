@@ -18,7 +18,7 @@ sys.path.insert(0, str(ROOT))
 
 from analyze_blif_matches import parse_blif  # noqa: E402
 from formal_locality_barriers import CandidateSignalUniverse, solve_minimum_interface, stable_hash  # noqa: E402
-from necessity_first_rewrites import RewriteSynthesisResult, synthesize_compact_interface_rewrite  # noqa: E402
+from necessity_first_rewrites import FrontierExpansionResult, RewriteSynthesisResult, synthesize_compact_interface_rewrite, synthesize_fanout_frontier_rewrite  # noqa: E402
 from necessity_first_targets import (  # noqa: E402
     SCHEMA_VERSION,
     TargetProvenanceRecord,
@@ -58,6 +58,9 @@ CONFIG = {
     "max_targets_per_design": 8,
     "max_exact_inputs": 12,
     "compact_interface_width": 6,
+    "frontier_expansion_radius": 1,
+    "frontier_expansion_max_outputs": 2,
+    "frontier_expansion_max_truth_table_inputs": 6,
 }
 
 
@@ -106,6 +109,7 @@ RESULT_FIELDS = {
     "formal_locality_results.csv": ["stable_target_id", "universe_id", "solver_status", "exact_minimum_status", "tested_interface", "proved_lower_bound", "best_upper_bound", "classification", "compact_interface", "schema_version"],
     "adapter_proofs.csv": ["stable_target_id", "adapter_kind", "proof_status", "backend", "reason", "schema_version"],
     "rewrite_function_synthesis.csv": ["stable_target_id", "optimized_target_node", "tested_interface", "truth_table_hash", "onset_size", "total_rows", "rewrite_artifact", "synthesis_status", "graph_validation_status", "blocker", "runtime_seconds", "schema_version"],
+    "rewrite_frontier_expansion.csv": ["stable_target_id", "base_target_node", "expansion_radius", "replaced_nodes", "frontier_outputs", "interface_inputs", "residual_inputs", "truth_table_hashes", "rewrite_artifact", "rewrite_emitted", "graph_active", "global_cec_status", "promotion", "blocker", "schema_version"],
     "graph_rewrites.csv": ["stable_target_id", "rewrite_emitted", "graph_active", "rewrite_artifact", "status", "reason", "schema_version"],
     "global_cec.csv": ["stable_target_id", "scope", "status", "abc_available", "claimed_global", "reason", "schema_version"],
     "boundary_recovery.csv": ["stable_target_id", "status", "new_boundary", "reason", "schema_version"],
@@ -449,14 +453,31 @@ def _run_locality(rows: dict[str, list[dict[str, str]]], out: Path, stable_id: s
             root=ROOT,
             abc_path=abc_binary(),
         )
-        _append_rewrite_rows(rows, rewrite, cert.solver_backend)
+        expansion = synthesize_fanout_frontier_rewrite(
+            stable_target_id=stable_id,
+            source_path=source,
+            optimized_path=optimized,
+            optimized_target_node=target,
+            tested_interface=cert.tested_interface,
+            output_path=out / "artifacts" / "necessity_rewrites" / f"{stable_id}.frontier_rewrite.blif",
+            root=ROOT,
+            abc_path=abc_binary(),
+            base_rewrite=rewrite,
+            expansion_radius=int(CONFIG["frontier_expansion_radius"]),
+            max_replacement_outputs=int(CONFIG["frontier_expansion_max_outputs"]),
+            max_truth_table_inputs=int(CONFIG["frontier_expansion_max_truth_table_inputs"]),
+        )
+        _append_rewrite_rows(rows, rewrite, expansion, cert.solver_backend)
     else:
         _append_no_rewrite_synthesis(rows, stable_id, target, cert.tested_interface, cert.classification)
+        _append_no_frontier_expansion(rows, stable_id, target, cert.tested_interface, cert.classification)
         _no_downstream(rows, stable_id, cert.classification)
 
 
 def _no_downstream(rows: dict[str, list[dict[str, str]]], stable_id: str, reason: str) -> None:
     rows["adapter_proofs.csv"].append({"stable_target_id": stable_id, "adapter_kind": "not_run", "proof_status": "not_run", "backend": "not_run", "reason": reason, "schema_version": SCHEMA})
+    if not any(row["stable_target_id"] == stable_id for row in rows["rewrite_frontier_expansion.csv"]):
+        _append_no_frontier_expansion(rows, stable_id, "", tuple(), reason)
     rows["graph_rewrites.csv"].append({"stable_target_id": stable_id, "rewrite_emitted": "false", "graph_active": "false", "rewrite_artifact": "", "status": "not_attempted", "reason": reason, "schema_version": SCHEMA})
     _cec_boundary_rows(rows, stable_id, reason)
 
@@ -469,14 +490,15 @@ def _cec_boundary_rows(rows: dict[str, list[dict[str, str]]], stable_id: str, re
     rows["durability.csv"].append({"stable_target_id": stable_id, "status": "not_run", "strategy": "not_applicable", "survived": "false", "reason": reason, "schema_version": SCHEMA})
 
 
-def _append_rewrite_rows(rows: dict[str, list[dict[str, str]]], rewrite: RewriteSynthesisResult, backend: str) -> None:
+def _append_rewrite_rows(rows: dict[str, list[dict[str, str]]], rewrite: RewriteSynthesisResult, expansion: FrontierExpansionResult, backend: str) -> None:
+    promoted = expansion.new_boundary
     rows["adapter_proofs.csv"].append(
         {
             "stable_target_id": rewrite.stable_target_id,
-            "adapter_kind": "input_interface_truth_table_rewrite",
-            "proof_status": "interface_exact_minimum_and_truth_table_synthesized" if rewrite.rewrite_emitted else "rewrite_not_emitted",
+            "adapter_kind": "fanout_frontier_truth_table_rewrite" if promoted else "input_interface_truth_table_rewrite",
+            "proof_status": "interface_exact_minimum_and_frontier_rewrite_synthesized" if promoted else ("interface_exact_minimum_and_truth_table_synthesized" if rewrite.rewrite_emitted else "rewrite_not_emitted"),
             "backend": backend,
-            "reason": rewrite.blocker,
+            "reason": "" if promoted else rewrite.blocker,
             "schema_version": SCHEMA,
         }
     )
@@ -496,14 +518,40 @@ def _append_rewrite_rows(rows: dict[str, list[dict[str, str]]], rewrite: Rewrite
             "schema_version": SCHEMA,
         }
     )
+    rows["rewrite_frontier_expansion.csv"].append(
+        {
+            "stable_target_id": expansion.stable_target_id,
+            "base_target_node": expansion.base_target_node,
+            "expansion_radius": str(expansion.expansion_radius),
+            "replaced_nodes": json.dumps(expansion.replaced_nodes),
+            "frontier_outputs": json.dumps(expansion.frontier_outputs),
+            "interface_inputs": json.dumps(expansion.interface_inputs),
+            "residual_inputs": json.dumps(expansion.residual_inputs),
+            "truth_table_hashes": json.dumps(expansion.truth_table_hashes, sort_keys=True),
+            "rewrite_artifact": expansion.rewrite_artifact,
+            "rewrite_emitted": str(expansion.rewrite_emitted).lower(),
+            "graph_active": str(expansion.graph_active).lower(),
+            "global_cec_status": expansion.global_cec_status,
+            "promotion": expansion.promotion,
+            "blocker": expansion.blocker,
+            "schema_version": SCHEMA,
+        }
+    )
+    public_artifact = expansion.rewrite_artifact if promoted else rewrite.rewrite_artifact
+    public_active = expansion.graph_active if promoted else rewrite.graph_active
+    public_status = expansion.graph_validation_status if promoted else rewrite.graph_validation_status
+    public_reason = "" if promoted else rewrite.blocker
+    public_source_cec = expansion.cec_source_status if promoted else rewrite.cec_source_status
+    public_rewrite_cec = expansion.cec_rewrite_vs_optimized_status if promoted else rewrite.cec_rewrite_vs_optimized_status
+    public_boundary = promoted or rewrite.new_boundary
     rows["graph_rewrites.csv"].append(
         {
             "stable_target_id": rewrite.stable_target_id,
             "rewrite_emitted": str(rewrite.rewrite_emitted).lower(),
-            "graph_active": str(rewrite.graph_active).lower(),
-            "rewrite_artifact": rewrite.rewrite_artifact,
-            "status": rewrite.graph_validation_status,
-            "reason": rewrite.blocker,
+            "graph_active": str(public_active).lower(),
+            "rewrite_artifact": public_artifact,
+            "status": public_status,
+            "reason": public_reason,
             "schema_version": SCHEMA,
         }
     )
@@ -511,10 +559,10 @@ def _append_rewrite_rows(rows: dict[str, list[dict[str, str]]], rewrite: Rewrite
         {
             "stable_target_id": rewrite.stable_target_id,
             "scope": "S_vs_Sprime",
-            "status": rewrite.cec_source_status,
+            "status": public_source_cec,
             "abc_available": str(rewrite.abc_available).lower(),
-            "claimed_global": str(rewrite.new_boundary).lower(),
-            "reason": rewrite.blocker,
+            "claimed_global": str(public_boundary).lower(),
+            "reason": public_reason,
             "schema_version": SCHEMA,
         }
     )
@@ -522,15 +570,15 @@ def _append_rewrite_rows(rows: dict[str, list[dict[str, str]]], rewrite: Rewrite
         {
             "stable_target_id": rewrite.stable_target_id,
             "scope": "Sprime_vs_I",
-            "status": rewrite.cec_rewrite_vs_optimized_status,
+            "status": public_rewrite_cec,
             "abc_available": str(rewrite.abc_available).lower(),
-            "claimed_global": str(rewrite.new_boundary).lower(),
-            "reason": rewrite.blocker,
+            "claimed_global": str(public_boundary).lower(),
+            "reason": public_reason,
             "schema_version": SCHEMA,
         }
     )
-    rows["boundary_recovery.csv"].append({"stable_target_id": rewrite.stable_target_id, "status": "accepted" if rewrite.new_boundary else "rejected", "new_boundary": str(rewrite.new_boundary).lower(), "reason": rewrite.blocker, "schema_version": SCHEMA})
-    rows["critical_path_utility.csv"].append({"stable_target_id": rewrite.stable_target_id, "status": "mapped" if rewrite.new_boundary else "not_mapped", "mapped_targets": "1" if rewrite.new_boundary else "0", "reason": rewrite.blocker, "schema_version": SCHEMA})
+    rows["boundary_recovery.csv"].append({"stable_target_id": rewrite.stable_target_id, "status": "accepted" if public_boundary else "rejected", "new_boundary": str(public_boundary).lower(), "reason": public_reason, "schema_version": SCHEMA})
+    rows["critical_path_utility.csv"].append({"stable_target_id": rewrite.stable_target_id, "status": "mapped" if public_boundary else "not_mapped", "mapped_targets": "1" if public_boundary else "0", "reason": public_reason, "schema_version": SCHEMA})
     rows["durability.csv"].append({"stable_target_id": rewrite.stable_target_id, "status": "not_run", "strategy": "not_applicable", "survived": "false", "reason": "durability_not_evaluated_for_necessity_rewrite", "schema_version": SCHEMA})
 
 
@@ -548,6 +596,28 @@ def _append_no_rewrite_synthesis(rows: dict[str, list[dict[str, str]]], stable_i
             "graph_validation_status": "not_run",
             "blocker": reason,
             "runtime_seconds": "0.000000",
+            "schema_version": SCHEMA,
+        }
+    )
+
+
+def _append_no_frontier_expansion(rows: dict[str, list[dict[str, str]]], stable_id: str, target: str, interface: tuple[str, ...], reason: str) -> None:
+    rows["rewrite_frontier_expansion.csv"].append(
+        {
+            "stable_target_id": stable_id,
+            "base_target_node": target,
+            "expansion_radius": str(CONFIG["frontier_expansion_radius"]),
+            "replaced_nodes": "[]",
+            "frontier_outputs": "[]",
+            "interface_inputs": json.dumps(interface),
+            "residual_inputs": "[]",
+            "truth_table_hashes": "{}",
+            "rewrite_artifact": "",
+            "rewrite_emitted": "false",
+            "graph_active": "false",
+            "global_cec_status": "not_claimed",
+            "promotion": "not_attempted",
+            "blocker": reason,
             "schema_version": SCHEMA,
         }
     )
@@ -611,6 +681,8 @@ def _summarise_results(rows: dict[str, list[dict[str, str]]], runtime: float) ->
     counts["actual_graph_rewrites"] = sum(r["rewrite_emitted"] == "true" for r in rewrites)
     counts["graph_active_rewrites"] = sum(r["graph_active"] == "true" for r in rewrites)
     counts["cec_backed_new_boundaries"] = sum(r["new_boundary"] == "true" for r in rows["boundary_recovery.csv"])
+    counts["fanout_frontier_rewrites"] = sum(r["rewrite_emitted"] == "true" for r in rows["rewrite_frontier_expansion.csv"])
+    counts["fanout_frontier_new_boundaries"] = sum(r["promotion"] == "graph_active_cec_recovery" for r in rows["rewrite_frontier_expansion.csv"])
     counts["historical_provenance_incomplete"] = 36
     counts["historical_target_irrelevant"] = 20
     for category, count in sorted(counts.items()):

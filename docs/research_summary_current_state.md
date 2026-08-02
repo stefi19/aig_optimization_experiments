@@ -992,8 +992,9 @@ corrected eligibility, and then runs a source-blind target selector over a
 provenance-complete generated BLIF corpus. It emits 48 fresh optimized internal
 targets; all 48 are nonconstant, forced-observable, and reachable-necessary,
 31 have compact exact input interfaces, 31 emit valid rewrite artifacts, and
-18 are graph-active CEC-backed new boundaries. The 13 remaining emitted
-artifacts are CEC-equivalent but classified as direct bypasses rather than
+22 are graph-active CEC-backed new boundaries after fanout-frontier expansion
+promotes 4 additional compact rows. The 9 remaining emitted artifacts are
+CEC-equivalent but classified as identical-driver rewrites rather than
 graph-active boundary recovery. The valid historical eligible transplantation
 denominator is therefore 0, while the new generated-research target-discovery
 denominator is 48. No external RTL

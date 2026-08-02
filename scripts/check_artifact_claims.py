@@ -58,6 +58,7 @@ def _check_necessity(errors: list[str]) -> None:
     eligible = _rows("results/necessity_first_target_discovery/eligible_target_manifest.csv", errors)
     locality = _rows("results/necessity_first_target_discovery/formal_locality_results.csv", errors)
     rewrites = _rows("results/necessity_first_target_discovery/graph_rewrites.csv", errors)
+    frontier = _rows("results/necessity_first_target_discovery/rewrite_frontier_expansion.csv", errors)
     boundary = _rows("results/necessity_first_target_discovery/boundary_recovery.csv", errors)
     global_cec = _rows("results/necessity_first_target_discovery/global_cec.csv", errors)
     recon = _rows("results/provenance_eligibility_audit/provenance_reconstruction.csv", errors)
@@ -67,10 +68,15 @@ def _check_necessity(errors: list[str]) -> None:
         errors.append("necessity-first compact-interface count drifted from 31")
     if sum(r.get("rewrite_emitted") == "true" for r in rewrites) != 31:
         errors.append("necessity-first rewrite artifact count drifted from 31")
-    if sum(r.get("graph_active") == "true" for r in rewrites) != 18:
-        errors.append("necessity-first graph-active rewrite count drifted from 18")
-    if sum(r.get("new_boundary") == "true" for r in boundary) != 18:
-        errors.append("necessity-first CEC-backed boundary count drifted from 18")
+    if sum(r.get("graph_active") == "true" for r in rewrites) != 22:
+        errors.append("necessity-first graph-active rewrite count drifted from 22")
+    if sum(r.get("new_boundary") == "true" for r in boundary) != 22:
+        errors.append("necessity-first CEC-backed boundary count drifted from 22")
+    promoted_frontier = [r for r in frontier if r.get("promotion") == "graph_active_cec_recovery"]
+    if len(promoted_frontier) != 4:
+        errors.append(f"fanout-frontier promotion count drifted: {len(promoted_frontier)} != 4")
+    if any(r.get("rewrite_emitted") != "true" or r.get("graph_active") != "true" or r.get("global_cec_status") != "equivalent" for r in promoted_frontier):
+        errors.append("fanout-frontier promotions lack artifact, graph activity, or CEC")
     cec_by_target: dict[str, dict[str, str]] = {}
     for row in global_cec:
         cec_by_target.setdefault(row.get("stable_target_id", ""), {})[row.get("scope", "")] = row.get("status", "")
@@ -130,9 +136,9 @@ def _check_docs_freshness(errors: list[str]) -> None:
         "Controlled accepted transplants: 12",
         "48 fresh provenance-complete",
         "31/48 have compact exact input interfaces",
-        "Necessity-first graph-active CEC-backed new boundaries: 18/48",
+        "Necessity-first graph-active CEC-backed new boundaries: 22/48",
         "corrected historical eligible transplantation denominator: 0",
-        "Evidence-advancement promoted rows: source-blind graph-active 0/56; compact interface new boundaries 18/48",
+        "Evidence-advancement promoted rows: source-blind graph-active 0/56; compact interface new boundaries 22/48",
     ]
     for phrase in required_phrases:
         if phrase not in text:

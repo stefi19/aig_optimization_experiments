@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 from analyze_blif_matches import parse_blif
-from necessity_first_rewrites import synthesize_compact_interface_rewrite
+from necessity_first_rewrites import RewriteSynthesisResult, synthesize_compact_interface_rewrite, synthesize_fanout_frontier_rewrite
 from necessity_first_targets import (
     forced_observability_witness,
     functional_fingerprint,
@@ -28,6 +28,26 @@ def _write_blif(path: Path, body: str) -> None:
 
 def _missing_abc(tmp_path: Path) -> Path:
     return tmp_path / "missing_abc"
+
+
+def _cec_passed_base_rewrite(target: str) -> RewriteSynthesisResult:
+    return RewriteSynthesisResult(
+        stable_target_id="base",
+        optimized_target_node=target,
+        tested_interface=tuple(),
+        truth_table_hash="",
+        onset_size=0,
+        total_rows=0,
+        rewrite_artifact="",
+        rewrite_emitted=True,
+        graph_active=False,
+        graph_validation_status="valid",
+        blocker="identical_driver",
+        cec_source_status="equivalent",
+        cec_rewrite_vs_optimized_status="equivalent",
+        abc_available=True,
+        runtime_seconds=0.0,
+    )
 
 
 def test_target_observability_and_necessity(tmp_path: Path) -> None:
@@ -271,6 +291,121 @@ def test_compact_rewrite_handles_empty_constant_interface(tmp_path: Path) -> Non
     assert ".names t\n1" in text
 
 
+def test_identical_single_output_target_can_promote_with_fanout_expansion(tmp_path: Path) -> None:
+    source = tmp_path / "source.blif"
+    optimized = tmp_path / "optimized.blif"
+    body = """
+        .model fanout
+        .inputs a b c
+        .outputs y z
+        .names a b t
+        11 1
+        .names t c x
+        10 1
+        .names x y
+        1 1
+        .names t z
+        1 1
+        .end
+        """
+    _write_blif(source, body)
+    _write_blif(optimized, body)
+    single = synthesize_compact_interface_rewrite(
+        stable_target_id="single",
+        source_path=source,
+        optimized_path=optimized,
+        optimized_target_node="t",
+        tested_interface=("a", "b"),
+        output_path=tmp_path / "single.blif",
+        root=tmp_path,
+        abc_path=_missing_abc(tmp_path),
+    )
+    assert single.rewrite_emitted
+    assert not single.graph_active
+    assert single.blocker == "identical_driver"
+
+    expanded = synthesize_fanout_frontier_rewrite(
+        stable_target_id="expanded",
+        source_path=source,
+        optimized_path=optimized,
+        optimized_target_node="t",
+        tested_interface=("a", "b"),
+        output_path=tmp_path / "expanded.blif",
+        root=tmp_path,
+        abc_path=_missing_abc(tmp_path),
+        base_rewrite=_cec_passed_base_rewrite("t"),
+        max_replacement_outputs=1,
+    )
+    assert expanded.rewrite_emitted
+    assert expanded.graph_active
+    assert expanded.frontier_outputs == ("x",)
+    assert expanded.residual_inputs == ("c",)
+    assert expanded.global_cec_status == "not_claimed"
+    assert expanded.blocker == "source_vs_rewrite_cec_abc_unavailable"
+
+
+def test_direct_bypass_rewrite_is_classified_separately(tmp_path: Path) -> None:
+    source = tmp_path / "source.blif"
+    optimized = tmp_path / "optimized.blif"
+    body = """
+        .model bypass
+        .inputs a
+        .outputs y
+        .names a na
+        0 1
+        .names na t
+        0 1
+        .names t y
+        1 1
+        .end
+        """
+    _write_blif(source, body)
+    _write_blif(optimized, body)
+    result = synthesize_compact_interface_rewrite(
+        stable_target_id="bypass",
+        source_path=source,
+        optimized_path=optimized,
+        optimized_target_node="t",
+        tested_interface=("a",),
+        output_path=tmp_path / "bypass.blif",
+        root=tmp_path,
+        abc_path=_missing_abc(tmp_path),
+    )
+    assert result.rewrite_emitted
+    assert not result.graph_active
+    assert result.blocker == "direct_bypass"
+
+
+def test_fanout_expansion_rejects_whole_design_frontier(tmp_path: Path) -> None:
+    source = tmp_path / "source.blif"
+    optimized = tmp_path / "optimized.blif"
+    body = """
+        .model whole
+        .inputs a b
+        .outputs y
+        .names a b t
+        11 1
+        .names t y
+        1 1
+        .end
+        """
+    _write_blif(source, body)
+    _write_blif(optimized, body)
+    result = synthesize_fanout_frontier_rewrite(
+        stable_target_id="whole",
+        source_path=source,
+        optimized_path=optimized,
+        optimized_target_node="t",
+        tested_interface=("a", "b"),
+        output_path=tmp_path / "whole.blif",
+        root=tmp_path,
+        abc_path=_missing_abc(tmp_path),
+        base_rewrite=_cec_passed_base_rewrite("t"),
+    )
+    assert not result.rewrite_emitted
+    assert result.blocker == "whole_design_frontier_rejected"
+
+
 def test_checker_rejects_missing_rewrite_artifact(tmp_path: Path) -> None:
     audit = tmp_path / "audit"
     out = tmp_path / "out"
@@ -329,11 +464,28 @@ def test_checker_rejects_graph_active_boundary_without_cec(tmp_path: Path) -> No
     assert result.returncode != 0
 
 
-def test_identity_bypass_rewrite_is_not_graph_active(tmp_path: Path) -> None:
+def test_checker_rejects_frontier_graph_active_without_cec(tmp_path: Path) -> None:
+    audit = tmp_path / "audit"
+    out = tmp_path / "out"
+    subprocess.run([sys.executable, str(ROOT / "scripts" / "run_necessity_first_targets.py"), "--mode", "all", "--audit-dir", str(audit), "--output-dir", str(out)], cwd=ROOT, check=True)
+    path = out / "rewrite_frontier_expansion.csv"
+    rows = list(csv.DictReader(path.open()))
+    fields = list(rows[0].keys())
+    rows[0]["graph_active"] = "true"
+    rows[0]["global_cec_status"] = "not_claimed"
+    with path.open("w", newline="", encoding="utf-8") as fh:
+        writer = csv.DictWriter(fh, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(rows)
+    result = subprocess.run([sys.executable, str(ROOT / "scripts" / "check_necessity_first_target_results.py"), "--output-dir", str(out)], cwd=ROOT)
+    assert result.returncode != 0
+
+
+def test_identity_rewrite_taxonomy_is_not_graph_active(tmp_path: Path) -> None:
     audit = tmp_path / "audit"
     out = tmp_path / "out"
     subprocess.run([sys.executable, str(ROOT / "scripts" / "run_necessity_first_targets.py"), "--mode", "all", "--audit-dir", str(audit), "--output-dir", str(out)], cwd=ROOT, check=True)
     rows = list(csv.DictReader((out / "graph_rewrites.csv").open()))
-    bypass = [row for row in rows if row["reason"] == "rewrite_not_graph_active"]
-    assert bypass
-    assert all(row["rewrite_emitted"] == "true" and row["graph_active"] == "false" for row in bypass)
+    identical = [row for row in rows if row["reason"] == "identical_driver"]
+    assert identical
+    assert all(row["rewrite_emitted"] == "true" and row["graph_active"] == "false" for row in identical)

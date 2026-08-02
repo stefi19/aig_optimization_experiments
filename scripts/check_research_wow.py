@@ -87,7 +87,7 @@ def check_frontier(rows: list[dict[str, str]], errors: list[str]) -> None:
         "controlled_cross_netlist_transplants": ("12", "12"),
         "blind_parametric_cegis": ("3", "24"),
         "necessity_first_compact_interfaces": ("31", "48"),
-        "necessity_first_graph_rewrites": ("18", "48"),
+        "necessity_first_graph_rewrites": ("22", "48"),
         "formal_locality_previous_failures": ("26", "56"),
         "historical_cross_netlist_recovery": ("0", "56"),
     }
@@ -117,7 +117,7 @@ def check_taxonomy(rows: list[dict[str, str]], errors: list[str]) -> None:
         "historical_target_irrelevant_after_reconstruction": "20",
         "non_compact_exact_input_interface": "17",
         "no_validated_graph_rewrite_artifact": "17",
-        "rewrite_artifact_not_graph_active": "13",
+        "rewrite_artifact_not_graph_active": "9",
     }
     by_class = {r["failure_class"]: r for r in rows}
     for klass, count in expected_counts.items():

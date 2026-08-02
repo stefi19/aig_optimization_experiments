@@ -1,2 +1,2 @@
 file,line,matched_claim,corrected_status,replacement_guidance,schema_version
-README.md,52,0/56,requires_eligibility_qualification,"Use historical diagnostic rows, provenance-complete targets, target-necessary candidates, or actual graph rewrites as the denominator.",necessity_first_targets_v1
+README.md,53,0/56,requires_eligibility_qualification,"Use historical diagnostic rows, provenance-complete targets, target-necessary candidates, or actual graph rewrites as the denominator.",necessity_first_targets_v1

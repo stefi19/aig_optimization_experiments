@@ -75,9 +75,10 @@ The necessity-first discovery run emits:
 - 31 compact exact input interfaces;
 - 17 non-compact or unsupported compact-interface cases;
 - 31 valid rewrite artifacts emitted;
-- 18 graph-active CEC-backed new boundaries;
-- 13 emitted artifacts are CEC-equivalent but classified as direct bypasses,
-  not graph-active boundary recovery.
+- 22 graph-active CEC-backed new boundaries after bounded fanout-frontier
+  expansion promotes 4 additional compact rows;
+- 9 emitted artifacts are CEC-equivalent but classified as identical-driver
+  rewrites, not graph-active boundary recovery.
 
 The rewrite result is counted in tiers. Artifact emission is not enough for
 boundary recovery; a row reaches the strongest tier only when graph activity and

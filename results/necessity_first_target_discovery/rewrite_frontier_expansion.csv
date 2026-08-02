@@ -1,0 +1,49 @@
+stable_target_id,base_target_node,expansion_radius,replaced_nodes,frontier_outputs,interface_inputs,residual_inputs,truth_table_hashes,rewrite_artifact,rewrite_emitted,graph_active,global_cec_status,promotion,blocker,schema_version
+f0b703ccb6f1d95d,new_n21,1,[],[],"[""a0"", ""b0"", ""cin""]",[],{},,false,false,not_claimed,not_attempted,precondition_single_rewrite_already_graph_active_or_not_emitted,necessity_first_targets_v1
+d049016af490d397,new_n32,1,[],[],[],[],{},,false,false,not_claimed,not_attempted,input_lower_bound_above_previous_bound,necessity_first_targets_v1
+ba728e449636e70a,new_n36,1,"[""new_n36"", ""cout""]","[""cout""]","[""a3"", ""b3""]","[""new_n39""]","{""cout"": ""79963beb6da37d4b"", ""new_n36"": ""1f8ac1d43016dc5e""}",results/necessity_first_target_discovery/artifacts/necessity_rewrites/ba728e449636e70a.frontier_rewrite.blif,true,true,equivalent,graph_active_cec_recovery,,necessity_first_targets_v1
+9595683b7ec9ce2c,new_n22,1,"[""new_n22"", ""new_n24""]","[""new_n24""]","[""a1"", ""b1""]","[""new_n23""]","{""new_n22"": ""1f8ac1d43016dc5e"", ""new_n24"": ""1fd3255d6c080946""}",results/necessity_first_target_discovery/artifacts/necessity_rewrites/9595683b7ec9ce2c.frontier_rewrite.blif,true,true,equivalent,graph_active_cec_recovery,,necessity_first_targets_v1
+59c67c797ca6b886,new_n28,1,[],[],"[""a0"", ""a1"", ""b0"", ""b1"", ""cin""]",[],{},,false,false,not_claimed,not_attempted,precondition_single_rewrite_already_graph_active_or_not_emitted,necessity_first_targets_v1
+c4430c12331356b6,new_n18,1,[],[],"[""a0"", ""b0"", ""cin""]",[],{},,false,false,not_claimed,not_attempted,precondition_single_rewrite_already_graph_active_or_not_emitted,necessity_first_targets_v1
+f3ddd1b38dc650de,new_n38,1,[],[],"[""a3"", ""b3""]",[],{},,false,false,not_claimed,not_attempted,precondition_single_rewrite_already_graph_active_or_not_emitted,necessity_first_targets_v1
+e5abd6629f420240,new_n25,1,[],[],"[""a0"", ""a1"", ""b0"", ""b1"", ""cin""]",[],{},,false,false,not_claimed,not_attempted,precondition_single_rewrite_already_graph_active_or_not_emitted,necessity_first_targets_v1
+373a3d96f64cae37,new_n21,1,[],[],"[""a0"", ""b0"", ""cin""]",[],{},,false,false,not_claimed,not_attempted,precondition_single_rewrite_already_graph_active_or_not_emitted,necessity_first_targets_v1
+a51006c0de3b87e1,new_n32,1,[],[],[],[],{},,false,false,not_claimed,not_attempted,input_lower_bound_above_previous_bound,necessity_first_targets_v1
+6257dd9a982e4598,new_n36,1,"[""new_n36"", ""cout""]","[""cout""]","[""a3"", ""b3""]","[""new_n39""]","{""cout"": ""79963beb6da37d4b"", ""new_n36"": ""1f8ac1d43016dc5e""}",results/necessity_first_target_discovery/artifacts/necessity_rewrites/6257dd9a982e4598.frontier_rewrite.blif,true,true,equivalent,graph_active_cec_recovery,,necessity_first_targets_v1
+1255dd6ffc4d8f20,new_n22,1,"[""new_n22"", ""new_n24""]","[""new_n24""]","[""a1"", ""b1""]","[""new_n23""]","{""new_n22"": ""1f8ac1d43016dc5e"", ""new_n24"": ""1fd3255d6c080946""}",results/necessity_first_target_discovery/artifacts/necessity_rewrites/1255dd6ffc4d8f20.frontier_rewrite.blif,true,true,equivalent,graph_active_cec_recovery,,necessity_first_targets_v1
+dfdb5218b3fce6d7,new_n28,1,[],[],"[""a0"", ""a1"", ""b0"", ""b1"", ""cin""]",[],{},,false,false,not_claimed,not_attempted,precondition_single_rewrite_already_graph_active_or_not_emitted,necessity_first_targets_v1
+bcb02d2e7c2609d7,new_n18,1,[],[],"[""a0"", ""b0"", ""cin""]",[],{},,false,false,not_claimed,not_attempted,precondition_single_rewrite_already_graph_active_or_not_emitted,necessity_first_targets_v1
+36d89ab6b178da54,new_n38,1,[],[],"[""a3"", ""b3""]",[],{},,false,false,not_claimed,not_attempted,precondition_single_rewrite_already_graph_active_or_not_emitted,necessity_first_targets_v1
+8ff86a5a4c26ac90,new_n25,1,[],[],"[""a0"", ""a1"", ""b0"", ""b1"", ""cin""]",[],{},,false,false,not_claimed,not_attempted,precondition_single_rewrite_already_graph_active_or_not_emitted,necessity_first_targets_v1
+e97620e6c2babf13,new_n13,1,[],[],"[""d0"", ""s1""]",[],{},,false,false,not_claimed,not_attempted,target_not_output_reachable,necessity_first_targets_v1
+3b2fc8360b7e79ac,new_n14,1,[],[],"[""d0"", ""d1"", ""s1""]",[],{},,false,false,not_claimed,not_attempted,precondition_single_rewrite_already_graph_active_or_not_emitted,necessity_first_targets_v1
+5d9170f310054caa,new_n15,1,[],[],"[""d0"", ""d1"", ""s0"", ""s1""]",[],{},,false,false,not_claimed,not_attempted,precondition_single_rewrite_already_graph_active_or_not_emitted,necessity_first_targets_v1
+b9432edb6c824047,new_n10,1,[],[],"[""d2"", ""s0"", ""s1""]",[],{},,false,false,not_claimed,not_attempted,precondition_single_rewrite_already_graph_active_or_not_emitted,necessity_first_targets_v1
+40a47f1e357957aa,new_n8,1,[],[],"[""d3"", ""s1""]",[],{},,false,false,not_claimed,not_attempted,target_not_output_reachable,necessity_first_targets_v1
+8260b9f1b6160cfc,new_n12,1,[],[],"[""d1"", ""s1""]",[],{},,false,false,not_claimed,not_attempted,target_not_output_reachable,necessity_first_targets_v1
+e542ef81b25bbdce,new_n11,1,[],[],"[""d2"", ""d3"", ""s0"", ""s1""]",[],{},,false,false,not_claimed,not_attempted,precondition_single_rewrite_already_graph_active_or_not_emitted,necessity_first_targets_v1
+9d0cf8cf978db7ad,new_n9,1,[],[],"[""d2"", ""s1""]",[],{},,false,false,not_claimed,not_attempted,target_not_output_reachable,necessity_first_targets_v1
+bbcae55a2b79726f,new_n8,1,[],[],"[""d3"", ""s1""]",[],{},,false,false,not_claimed,not_attempted,target_not_output_reachable,necessity_first_targets_v1
+1a4ee0508c00ee05,new_n12,1,[],[],"[""d1"", ""s1""]",[],{},,false,false,not_claimed,not_attempted,target_not_output_reachable,necessity_first_targets_v1
+6eb93e4570dc5846,new_n15,1,[],[],"[""d0"", ""d1"", ""s0"", ""s1""]",[],{},,false,false,not_claimed,not_attempted,precondition_single_rewrite_already_graph_active_or_not_emitted,necessity_first_targets_v1
+c2cb051c4a341743,new_n10,1,[],[],"[""d2"", ""d3"", ""s1""]",[],{},,false,false,not_claimed,not_attempted,precondition_single_rewrite_already_graph_active_or_not_emitted,necessity_first_targets_v1
+d799cb02c31d9356,new_n13,1,[],[],"[""d0"", ""s1""]",[],{},,false,false,not_claimed,not_attempted,target_not_output_reachable,necessity_first_targets_v1
+804d74cc95b24886,new_n11,1,[],[],"[""d2"", ""d3"", ""s0"", ""s1""]",[],{},,false,false,not_claimed,not_attempted,precondition_single_rewrite_already_graph_active_or_not_emitted,necessity_first_targets_v1
+3678a9633b5b9e60,new_n14,1,[],[],"[""d0"", ""d1"", ""s1""]",[],{},,false,false,not_claimed,not_attempted,precondition_single_rewrite_already_graph_active_or_not_emitted,necessity_first_targets_v1
+dc9a0374e99bffb0,new_n9,1,[],[],"[""d2"", ""s1""]",[],{},,false,false,not_claimed,not_attempted,target_not_output_reachable,necessity_first_targets_v1
+44ce54e10e10f232,new_n19,1,[],[],"[""d2"", ""d4"", ""d5""]",[],{},,false,false,not_claimed,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+202040fdc0c4f44d,new_n20,1,[],[],"[""d2"", ""d4"", ""d5""]",[],{},,false,false,not_claimed,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+eeb098e77b210ec9,new_n30,1,[],[],"[""d0"", ""d4"", ""s0""]",[],{},,false,false,not_claimed,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+e7130cbc12573d52,new_n28,1,[],[],"[""d3"", ""d4""]",[],{},,false,false,not_claimed,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+cb6fbab9c5809dc1,new_n18,1,[],[],"[""d3"", ""d4""]",[],{},,false,false,not_claimed,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+48c5e5788e430a6d,new_n22,1,[],[],"[""d2"", ""d6""]",[],{},,false,false,not_claimed,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+6b8716255ebdb208,new_n15,1,[],[],"[""d2"", ""d3""]",[],{},,false,false,not_claimed,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+868c3cfdf581d7c0,new_n32,1,[],[],"[""d0"", ""d4"", ""s0""]",[],{},,false,false,not_claimed,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+bb8c4b2107d20992,new_n22,1,[],[],"[""d3"", ""d4""]",[],{},,false,false,not_claimed,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+f114ebc2ccc5f399,new_n15,1,[],[],"[""d0"", ""d4"", ""s1""]",[],{},,false,false,not_claimed,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+d0acdf86fe225ffe,new_n29,1,[],[],"[""d2"", ""d6""]",[],{},,false,false,not_claimed,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+cde9e114d4be7283,new_n26,1,[],[],"[""d0"", ""d3"", ""s1""]",[],{},,false,false,not_claimed,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+f88000aa6cd5b126,new_n31,1,[],[],"[""d0"", ""d1"", ""d2"", ""s0""]",[],{},,false,false,not_claimed,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+8035e9f4b2922f75,new_n32,1,[],[],"[""d0"", ""d4"", ""s0""]",[],{},,false,false,not_claimed,not_attempted,search_budget_exhaustion,necessity_first_targets_v1
+aeb284d48148cacc,new_n23,1,[],[],"[""d0"", ""s2""]",[],{},,false,false,not_claimed,not_attempted,target_not_output_reachable,necessity_first_targets_v1
+2f3ded849a259150,new_n30,1,[],[],"[""d2"", ""d6""]",[],{},,false,false,not_claimed,not_attempted,search_budget_exhaustion,necessity_first_targets_v1

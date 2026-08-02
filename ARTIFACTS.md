@@ -60,10 +60,10 @@ Current committed headline counts:
 - Controlled accepted transplants: 12.
 - 48 fresh provenance-complete generated-research targets.
 - 31/48 have compact exact input interfaces.
-- Necessity-first graph-active CEC-backed new boundaries: 18/48.
+- Necessity-first graph-active CEC-backed new boundaries: 22/48.
 - corrected historical eligible transplantation denominator: 0.
 - Evidence-advancement promoted rows: source-blind graph-active 0/56; compact
-  interface new boundaries 18/48; bounded grammar completeness 4/12; pinned
+  interface new boundaries 22/48; bounded grammar completeness 4/12; pinned
   RTL corpus 3/3; ODC graph-active placement 0/10; locality proof objects
   57/57.
 

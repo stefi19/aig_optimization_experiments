@@ -74,10 +74,10 @@ def _check_rewrites(rows: list[dict[str, str]], errors: list[str]) -> None:
         errors.append(f"compact exact-interface count drifted: {len(compact)} != 31")
     if len(emitted) != 31:
         errors.append(f"rewrite artifact emission count drifted: {len(emitted)} != 31")
-    if len(graph_active) != 18:
-        errors.append(f"graph-active rewrite count drifted: {len(graph_active)} != 18")
-    if len(new_boundary) != 18:
-        errors.append(f"CEC-backed new-boundary count drifted: {len(new_boundary)} != 18")
+    if len(graph_active) != 22:
+        errors.append(f"graph-active rewrite count drifted: {len(graph_active)} != 22")
+    if len(new_boundary) != 22:
+        errors.append(f"CEC-backed new-boundary count drifted: {len(new_boundary)} != 22")
     for row in rows:
         if row.get("compact_interface") == "true" and row.get("rewrite_emitted") != "true":
             errors.append(f"compact row did not emit a rewrite artifact: {row.get('stable_target_id')}")

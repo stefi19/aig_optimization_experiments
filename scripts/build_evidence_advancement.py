@@ -297,7 +297,7 @@ def build_summary(counterpart, rewrites, grammar, rtl, odc, locality) -> list[di
     complete_ops = [r for r in grammar if r["bounded_grammar_complete_for_attempted_rows"] == "true"]
     return [
         summary_row("source_blind_counterpart_inference", len(counterpart), count(counterpart, "graph_active_recovery", "true"), "semantic counterpart rows remain separate from graph-active recovery"),
-        summary_row("compact_interface_graph_rewrites", len(rewrites), count(rewrites, "new_boundary", "true"), "31 compact exact interfaces emit 31 rewrite artifacts; 18 are graph-active and CEC-backed new boundaries"),
+        summary_row("compact_interface_graph_rewrites", len(rewrites), count(rewrites, "new_boundary", "true"), "31 compact exact interfaces emit 31 rewrite artifacts; single-output plus fanout-aware rewrite languages promote 22 graph-active CEC-backed new boundaries"),
         summary_row("bounded_grammar_completeness", len(grammar), len(complete_ops), "complete means all attempted rows recovered for that operator/mode only"),
         summary_row("pinned_rtl_corpus", len(rtl), count(rtl, "redistributable", "true"), "Yosys lowering is recorded as tool-dependent evidence"),
         summary_row("odc_aware_placement", len(odc), count(odc, "graph_active", "true"), "formal contextual ODC anchors are not counted as graph-active placements"),

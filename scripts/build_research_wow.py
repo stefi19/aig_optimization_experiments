@@ -99,7 +99,7 @@ def build_recoverability_frontier() -> list[dict[str, str]]:
             len(necessity),
             count(necessity_boundary, "new_boundary", equals="true"),
             "graph-active CEC-backed interface rewrites",
-            "truth_table_rewrite_plus_abc_cec",
+            "truth_table_plus_fanout_frontier_rewrite_plus_abc_cec",
             "results/necessity_first_target_discovery/boundary_recovery.csv",
         ),
         frontier_row(
@@ -174,7 +174,7 @@ def build_failure_taxonomy() -> list[dict[str, str]]:
     add_failure(
         out,
         "rewrite_artifact_not_graph_active",
-        "A rewrite artifact is emitted and CEC-equivalent but is classified as a direct bypass rather than a graph-active boundary.",
+        "A compact-interface rewrite artifact is emitted and CEC-equivalent but remains identical or otherwise non-active under the bounded rewrite language.",
         sum(r.get("rewrite_emitted") == "true" and r.get("graph_active") != "true" for r in necessity_rewrites),
         "generated_research_benchmark",
         "results/necessity_first_target_discovery/graph_rewrites.csv",
@@ -467,7 +467,7 @@ def short_failure_label(label: str) -> str:
         "no_candidate_satisfies_examples": "blind CEGIS exhausted",
         "historical_target_irrelevant_after_reconstruction": "target irrelevant",
         "non_compact_exact_input_interface": "non-compact interface",
-        "rewrite_artifact_not_graph_active": "rewrite bypass",
+        "rewrite_artifact_not_graph_active": "non-active rewrite",
     }
     return replacements.get(tail, tail.replace("_", " ")[:34])
 
@@ -566,7 +566,7 @@ def claims_to_tables() -> str:
 | Blind CEGIS has both verified regions and replayable counterexample-refinement failures. | `results/blind_semantic_cegis/blind_semantic_recovery_summary.csv`; `results/research_wow/demo_trace.csv` | blind generated BLIF | `python scripts/check_blind_semantic_results.py` |
 | Necessity-first generated targets separate exact interface existence, emitted rewrite artifacts, and graph-active CEC-backed boundary recovery. | `results/necessity_first_target_discovery/formal_locality_results.csv`; `results/necessity_first_target_discovery/graph_rewrites.csv`; `results/necessity_first_target_discovery/boundary_recovery.csv` | generated research benchmark | `python scripts/check_necessity_first_target_results.py` |
 | Historical null results are explained by provenance and target-necessity audits, not by a 56-row eligible graph-rewrite denominator. | `results/provenance_eligibility_audit/provenance_reconstruction.csv`; `results/research_wow/failure_taxonomy.csv` | historical diagnostic | `python scripts/check_provenance_eligibility_results.py` |
-| Evidence advancement moves rows only when extra obligations are present: source-blind graph-active 0/56, compact interface new boundaries 18/48, bounded grammar completeness 4/12, pinned RTL corpus 3/3, ODC graph-active placement 0/10, locality proof objects 57/57. | `results/evidence_advancement/evidence_advancement_summary.csv`; `results/evidence_advancement/locality_proof_objects.csv` | evidence-level advancement accounting | `python scripts/check_evidence_advancement.py` |
+| Evidence advancement moves rows only when extra obligations are present: source-blind graph-active 0/56, compact interface new boundaries 22/48, bounded grammar completeness 4/12, pinned RTL corpus 3/3, ODC graph-active placement 0/10, locality proof objects 57/57. | `results/evidence_advancement/evidence_advancement_summary.csv`; `results/evidence_advancement/locality_proof_objects.csv` | evidence-level advancement accounting | `python scripts/check_evidence_advancement.py` |
 | The artifact's headline figure is generated from committed evidence and does not merge blind, oracle, controlled, generated, and historical denominators. | `paper/figures/recoverability_frontier.png`; `results/research_wow/recoverability_frontier.csv` | artifact-derived summary | `python scripts/check_research_wow.py` |
 """
 

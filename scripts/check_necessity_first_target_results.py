@@ -37,6 +37,7 @@ REQUIRED = {
     "formal_locality_results.csv": {"stable_target_id", "solver_status", "exact_minimum_status", "compact_interface"},
     "adapter_proofs.csv": {"stable_target_id", "proof_status", "reason"},
     "rewrite_function_synthesis.csv": {"stable_target_id", "optimized_target_node", "tested_interface", "truth_table_hash", "rewrite_artifact", "synthesis_status", "graph_validation_status", "blocker"},
+    "rewrite_frontier_expansion.csv": {"stable_target_id", "base_target_node", "expansion_radius", "replaced_nodes", "frontier_outputs", "interface_inputs", "residual_inputs", "truth_table_hashes", "rewrite_artifact", "rewrite_emitted", "graph_active", "global_cec_status", "promotion", "blocker"},
     "graph_rewrites.csv": {"stable_target_id", "rewrite_emitted", "graph_active", "status"},
     "global_cec.csv": {"stable_target_id", "scope", "status", "claimed_global"},
     "boundary_recovery.csv": {"stable_target_id", "status", "new_boundary"},
@@ -142,6 +143,7 @@ def main() -> int:
 
     locality_ids = {row["stable_target_id"] for row in tables["formal_locality_results.csv"]}
     synthesis = {row["stable_target_id"]: row for row in tables["rewrite_function_synthesis.csv"]}
+    frontier = {row["stable_target_id"]: row for row in tables["rewrite_frontier_expansion.csv"]}
     for row in eligible:
         if row["stable_target_id"] not in locality_ids:
             errors.append(f"eligible target skipped locality analysis: {row['stable_target_id']}")
@@ -152,6 +154,8 @@ def main() -> int:
             errors.append(f"locality target lacks rewrite synthesis accounting: {sid}")
         elif row["compact_interface"] == "true" and synthesis[sid]["synthesis_status"] == "not_attempted":
             errors.append(f"compact interface was not sent to rewrite synthesis: {sid}")
+        if sid not in frontier:
+            errors.append(f"locality target lacks frontier expansion accounting: {sid}")
 
     cec_by_target: dict[str, dict[str, str]] = {}
     for row in tables["global_cec.csv"]:
@@ -173,6 +177,28 @@ def main() -> int:
             errors.append(f"graph-active rewrite was not emitted: {sid}")
         if row["status"] != "not_attempted" and row["rewrite_emitted"] != "true":
             errors.append(f"graph rewrite counted without emitted artifact: {sid}")
+
+    for row in tables["rewrite_frontier_expansion.csv"]:
+        sid = row["stable_target_id"]
+        if row["rewrite_emitted"] == "true" and not row["rewrite_artifact"]:
+            errors.append(f"frontier rewrite emitted without artifact: {sid}")
+        if row["rewrite_artifact"] and not (ROOT / row["rewrite_artifact"]).exists():
+            errors.append(f"frontier rewrite artifact missing: {sid} {row['rewrite_artifact']}")
+        if row["rewrite_artifact"]:
+            actual_status = validate_rewritten_graph(ROOT / row["rewrite_artifact"], row["base_target_node"])
+            if actual_status != "valid":
+                errors.append(f"frontier rewrite artifact graph validation failed: {sid} {actual_status}")
+        if row["promotion"] == "graph_active_cec_recovery":
+            if row["rewrite_emitted"] != "true" or row["graph_active"] != "true":
+                errors.append(f"frontier promotion lacks emitted graph-active artifact: {sid}")
+            if row["global_cec_status"] != "equivalent":
+                errors.append(f"frontier promotion lacks global CEC: {sid}")
+            replaced = json.loads(row["replaced_nodes"] or "[]")
+            frontier_outputs = json.loads(row["frontier_outputs"] or "[]")
+            if row["base_target_node"] not in replaced or not frontier_outputs:
+                errors.append(f"frontier promotion lacks expanded replacement shape: {sid}")
+        if row["graph_active"] == "true" and row["global_cec_status"] != "equivalent":
+            errors.append(f"frontier graph-active claim lacks global CEC: {sid}")
 
     abc_available = any(row["tool"] == "abc" and row["status"] == "available" for row in tables["environment.csv"])
     for row in tables["global_cec.csv"]:

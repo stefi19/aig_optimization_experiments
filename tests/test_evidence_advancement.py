@@ -24,14 +24,16 @@ def test_evidence_advancement_keeps_evidence_levels_separate() -> None:
     subprocess.run([sys.executable, str(ROOT / "scripts" / "build_evidence_advancement.py")], cwd=ROOT, check=True)
     source_blind = _rows("results/evidence_advancement/source_blind_counterpart_inference.csv")
     rewrite_attempts = _rows("results/evidence_advancement/compact_interface_rewrite_attempts.csv")
+    frontier = _rows("results/necessity_first_target_discovery/rewrite_frontier_expansion.csv")
     odc = _rows("results/evidence_advancement/odc_placement_accounting.csv")
 
     assert sum(r["promoted_evidence_level"] == "semantic_counterpart_only" for r in source_blind) == 20
     assert sum(r["graph_active_recovery"] == "true" for r in source_blind) == 0
     assert sum(r["compact_interface"] == "true" for r in rewrite_attempts) == 31
     assert sum(r["rewrite_emitted"] == "true" for r in rewrite_attempts) == 31
-    assert sum(r["graph_active"] == "true" for r in rewrite_attempts) == 18
-    assert sum(r["new_boundary"] == "true" for r in rewrite_attempts) == 18
+    assert sum(r["graph_active"] == "true" for r in rewrite_attempts) == 22
+    assert sum(r["new_boundary"] == "true" for r in rewrite_attempts) == 22
+    assert sum(r["promotion"] == "graph_active_cec_recovery" for r in frontier) == 4
     assert sum(r["proof_status"] == "proven_odc_valid" for r in odc) == 10
     assert sum(r["graph_active"] == "true" for r in odc) == 0
 

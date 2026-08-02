@@ -2,15 +2,15 @@
 
 ## Recoverability Frontier
 
-| result_family                         | denominator_class                | success_count | denominator | success_rate | evidence_level                       |
-| ------------------------------------- | -------------------------------- | ------------- | ----------- | ------------ | ------------------------------------ |
-| controlled_active_source_counterparts | controlled_generated_blif        | 10            | 10          | 1.000000     | formal_exhaustive_plus_abc_cec       |
-| controlled_cross_netlist_transplants  | controlled_generated_blif        | 12            | 12          | 1.000000     | formal_exhaustive_plus_abc_cec       |
-| blind_parametric_cegis                | blind_generated_blif             | 3             | 24          | 0.125000     | formal_exhaustive                    |
-| necessity_first_compact_interfaces    | generated_research_benchmark     | 31            | 48          | 0.645833     | exact_minimum_certificate            |
-| necessity_first_graph_rewrites        | generated_research_benchmark     | 18            | 48          | 0.375000     | truth_table_rewrite_plus_abc_cec     |
-| formal_locality_previous_failures     | historical_diagnostic            | 26            | 56          | 0.464286     | exact_minimum_certificate_diagnostic |
-| historical_cross_netlist_recovery     | historical_ineligible_diagnostic | 0             | 56          | 0.000000     | corrected_denominator_audit          |
+| result_family                         | denominator_class                | success_count | denominator | success_rate | evidence_level                                        |
+| ------------------------------------- | -------------------------------- | ------------- | ----------- | ------------ | ----------------------------------------------------- |
+| controlled_active_source_counterparts | controlled_generated_blif        | 10            | 10          | 1.000000     | formal_exhaustive_plus_abc_cec                        |
+| controlled_cross_netlist_transplants  | controlled_generated_blif        | 12            | 12          | 1.000000     | formal_exhaustive_plus_abc_cec                        |
+| blind_parametric_cegis                | blind_generated_blif             | 3             | 24          | 0.125000     | formal_exhaustive                                     |
+| necessity_first_compact_interfaces    | generated_research_benchmark     | 31            | 48          | 0.645833     | exact_minimum_certificate                             |
+| necessity_first_graph_rewrites        | generated_research_benchmark     | 22            | 48          | 0.458333     | truth_table_plus_fanout_frontier_rewrite_plus_abc_cec |
+| formal_locality_previous_failures     | historical_diagnostic            | 26            | 56          | 0.464286     | exact_minimum_certificate_diagnostic                  |
+| historical_cross_netlist_recovery     | historical_ineligible_diagnostic | 0             | 56          | 0.000000     | corrected_denominator_audit                           |
 
 ## Cross-Netlist Interface Ablation
 
@@ -34,7 +34,7 @@
 | non_compact_exact_input_interface                                                                                                                                    | generated_research_benchmark                    | 17    | results/necessity_first_target_discovery/formal_locality_results.csv | Locality, not solver soundness, blocks many generated targets.                       |
 | no_validated_graph_rewrite_artifact                                                                                                                                  | generated_research_benchmark                    | 17    | results/necessity_first_target_discovery/graph_rewrites.csv          | Non-compact interfaces still block the bounded rewrite language.                     |
 | formal_locality_barrier::no_relevant_source_consumer_window_under_bounds::output_residual_minimum_above_previous_bound::output_residual_minimum_above_previous_bound | no_relevant_source_consumer_window_under_bounds | 17    | results/formal_locality_barriers/failure_taxonomy.csv                | Keep this blocker separate from accepted controlled proof claims.                    |
-| rewrite_artifact_not_graph_active                                                                                                                                    | generated_research_benchmark                    | 13    | results/necessity_first_target_discovery/graph_rewrites.csv          | Artifact emission is kept separate from constructive boundary recovery.              |
+| rewrite_artifact_not_graph_active                                                                                                                                    | generated_research_benchmark                    | 9     | results/necessity_first_target_discovery/graph_rewrites.csv          | Artifact emission is kept separate from constructive boundary recovery.              |
 
 ## Ablations
 
