@@ -18,6 +18,7 @@ SCHEMA = "evidence_advancement_v1"
 def main() -> int:
     errors: list[str] = []
     placement = _rows("source_blind_counterpart_placement.csv", errors)
+    window_expression = _rows("source_blind_window_expression_placement.csv", errors)
     counterpart = _rows("source_blind_counterpart_inference.csv", errors)
     rewrites = _rows("compact_interface_rewrite_attempts.csv", errors)
     grammar = _rows("grammar_completeness_certificates.csv", errors)
@@ -26,9 +27,10 @@ def main() -> int:
     locality = _rows("locality_proof_objects.csv", errors)
     summary = _rows("evidence_advancement_summary.csv", errors)
 
-    _check_schema(placement + counterpart + rewrites + grammar + rtl + odc + locality + summary, errors)
-    _check_source_blind_placement(placement, errors)
-    _check_counterpart(counterpart, placement, errors)
+    _check_schema(placement + window_expression + counterpart + rewrites + grammar + rtl + odc + locality + summary, errors)
+    _check_source_blind_placement(placement, errors, "source-blind exact-node placement")
+    _check_source_blind_window_expression(window_expression, errors)
+    _check_counterpart(counterpart, window_expression, errors)
     _check_rewrites(rewrites, errors)
     _check_grammar(grammar, errors)
     _check_rtl(rtl, errors)
@@ -50,45 +52,59 @@ def _check_schema(rows: list[dict[str, str]], errors: list[str]) -> None:
             errors.append(f"schema drift in row: {row}")
 
 
-def _check_source_blind_placement(rows: list[dict[str, str]], errors: list[str]) -> None:
+def _check_source_blind_placement(rows: list[dict[str, str]], errors: list[str], label: str) -> None:
     if len(rows) != 56:
-        errors.append(f"source-blind placement denominator drifted: {len(rows)} != 56")
+        errors.append(f"{label} denominator drifted: {len(rows)} != 56")
     attempted = [r for r in rows if r.get("semantic_counterpart_status", "").startswith("proved_")]
     if len(attempted) != 20:
-        errors.append(f"source-blind placement attempted semantic rows drifted: {len(attempted)} != 20")
+        errors.append(f"{label} attempted semantic rows drifted: {len(attempted)} != 20")
     for row in rows:
         target = row.get("target_id")
         if row.get("source_blind") != "true":
-            errors.append(f"source-blind placement row is not source-blind: {target}")
+            errors.append(f"{label} row is not source-blind: {target}")
         if row.get("promotion") == "graph_active_recovery":
             if row.get("rewrite_emitted") != "true" or row.get("graph_active") != "true":
-                errors.append(f"source-blind promotion lacks emitted graph-active rewrite: {target}")
+                errors.append(f"{label} promotion lacks emitted graph-active rewrite: {target}")
             if row.get("global_cec_status") != "equivalent":
-                errors.append(f"source-blind promotion lacks global CEC: {target}")
+                errors.append(f"{label} promotion lacks global CEC: {target}")
             if row.get("source_vs_rewrite_cec") != "equivalent" or row.get("rewrite_vs_optimized_cec") != "equivalent":
-                errors.append(f"source-blind promotion lacks both CEC scopes: {target}")
+                errors.append(f"{label} promotion lacks both CEC scopes: {target}")
             artifact = ROOT / row.get("rewrite_artifact", "")
             if not row.get("rewrite_artifact") or not artifact.exists():
-                errors.append(f"source-blind promotion artifact missing: {target}")
+                errors.append(f"{label} promotion artifact missing: {target}")
         if row.get("graph_active") == "true" and row.get("global_cec_status") != "equivalent":
-            errors.append(f"source-blind graph-active row lacks global CEC: {target}")
+            errors.append(f"{label} graph-active row lacks global CEC: {target}")
         if row.get("rewrite_emitted") == "true" and not row.get("rewrite_artifact"):
-            errors.append(f"source-blind rewrite emitted without artifact: {target}")
+            errors.append(f"{label} rewrite emitted without artifact: {target}")
+
+
+def _check_source_blind_window_expression(rows: list[dict[str, str]], errors: list[str]) -> None:
+    _check_source_blind_placement(rows, errors, "source-blind window-expression placement")
+    for row in rows:
+        target = row.get("target_id")
+        if row.get("leakage_audit") != "pass:aligned_pi_po_source_graph_signals_only":
+            errors.append(f"source-blind window-expression leakage audit failed: {target}")
+        if row.get("promotion") == "graph_active_recovery":
+            if not row.get("expression_language") or not row.get("expression"):
+                errors.append(f"source-blind window-expression promotion lacks expression: {target}")
+            if row.get("blocker"):
+                errors.append(f"source-blind window-expression promoted row still has blocker: {target}")
 
 
 def _check_counterpart(rows: list[dict[str, str]], placement: list[dict[str, str]], errors: list[str]) -> None:
     if len(rows) != 56:
         errors.append(f"source-blind counterpart denominator drifted: {len(rows)} != 56")
+    semantic = [r for r in rows if r.get("semantic_counterpart_inferred") == "true"]
     semantic_only = [r for r in rows if r.get("promoted_evidence_level") == "semantic_counterpart_only"]
     graph_active = [r for r in rows if r.get("graph_active_recovery") == "true"]
-    if len(semantic_only) != 20:
-        errors.append(f"source-blind semantic-only count drifted: {len(semantic_only)} != 20")
+    if len(semantic) != 20:
+        errors.append(f"source-blind semantic count drifted: {len(semantic)} != 20")
+    if len(semantic_only) + len(graph_active) != 20:
+        errors.append(f"source-blind semantic rows are not partitioned into semantic-only and graph-active: {len(semantic_only)} + {len(graph_active)} != 20")
     if graph_active:
         bad = [r for r in graph_active if r.get("promoted_evidence_level") != "graph_active_recovery"]
         if bad:
             errors.append("graph-active counterpart rows are not labeled graph_active_recovery")
-    if len(graph_active) != 0:
-        errors.append(f"source-blind graph-active count drifted from the honest current value: {len(graph_active)} != 0")
     if len(rows) == len(placement):
         for row, placed in zip(rows, placement, strict=True):
             if row.get("target_id") != placed.get("target_id"):

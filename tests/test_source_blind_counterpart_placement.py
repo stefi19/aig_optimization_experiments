@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from source_blind_counterpart_placement import attempt_source_blind_counterpart_placement
+from source_blind_counterpart_placement import attempt_source_blind_counterpart_placement, attempt_source_blind_window_expression_placement
 
 
 def _write_blif(path: Path, body: str) -> None:
@@ -166,3 +166,115 @@ def test_source_blind_whole_design_replacement_rejected(tmp_path: Path) -> None:
     )
     assert not result.rewrite_emitted
     assert result.blocker == "whole_design_replacement_rejected"
+
+
+def test_source_blind_window_expression_emits_diagnostic_rewrite(tmp_path: Path) -> None:
+    source = tmp_path / "source.blif"
+    optimized = tmp_path / "optimized.blif"
+    _write_blif(
+        source,
+        """
+        .model source
+        .inputs a b c d
+        .outputs y
+        .names a b p
+        11 1
+        .names a c q
+        11 1
+        .names p q d y
+        1-- 1
+        -1- 1
+        --1 1
+        .end
+        """,
+    )
+    _write_blif(
+        optimized,
+        """
+        .model optimized
+        .inputs a b c d
+        .outputs y
+        .names b c nor_bc
+        00 1
+        .names a nor_bc t
+        10 1
+        .names t d y
+        1- 1
+        -1 1
+        .end
+        """,
+    )
+    exact = attempt_source_blind_counterpart_placement(
+        target_id="controlled|region|flow|t",
+        semantic_counterpart_status="proved_additive_counterpart",
+        source_path=source,
+        optimized_path=optimized,
+        optimized_target_node="t",
+        output_path=tmp_path / "exact.blif",
+        root=tmp_path,
+        abc_path=_missing_abc(tmp_path),
+    )
+    assert not exact.rewrite_emitted
+    assert exact.blocker == "no_exact_source_counterpart_node_under_bound"
+
+    result = attempt_source_blind_window_expression_placement(
+        target_id="controlled|region|flow|t",
+        semantic_counterpart_status="proved_additive_counterpart",
+        source_path=source,
+        optimized_path=optimized,
+        optimized_target_node="t",
+        output_path=tmp_path / "rewrite.blif",
+        root=tmp_path,
+        abc_path=_missing_abc(tmp_path),
+    )
+    assert result.rewrite_emitted
+    assert result.expression_language == "or"
+    assert result.candidate_source_window == ("p", "q")
+    assert result.rewrite_artifact == "rewrite.blif"
+    assert result.global_cec_status == "not_claimed"
+    assert result.blocker == "source_vs_rewrite_cec_abc_unavailable"
+
+
+def test_source_blind_window_expression_rejects_bypass(tmp_path: Path) -> None:
+    source = tmp_path / "source.blif"
+    optimized = tmp_path / "optimized.blif"
+    _write_blif(
+        source,
+        """
+        .model source
+        .inputs a
+        .outputs y
+        .names a p
+        1 1
+        .names p y
+        1 1
+        .end
+        """,
+    )
+    _write_blif(
+        optimized,
+        """
+        .model optimized
+        .inputs a
+        .outputs y
+        .names a na
+        0 1
+        .names na t
+        0 1
+        .names t y
+        1 1
+        .end
+        """,
+    )
+    result = attempt_source_blind_window_expression_placement(
+        target_id="controlled|region|flow|t",
+        semantic_counterpart_status="proved_additive_counterpart",
+        source_path=source,
+        optimized_path=optimized,
+        optimized_target_node="t",
+        output_path=tmp_path / "rewrite.blif",
+        root=tmp_path,
+        abc_path=_missing_abc(tmp_path),
+    )
+    assert not result.rewrite_emitted
+    assert result.blocker == "direct_bypass"

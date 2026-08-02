@@ -1,5 +1,5 @@
 direction,input_rows,promoted_rows,promotion_rate,notes,schema_version
-source_blind_counterpart_inference,56,0,0.000000,20 semantic-only rows are attempted by bounded source-blind exact-node placement; 0 emit graph-active CEC-backed rewrites,evidence_advancement_v1
+source_blind_counterpart_inference,56,14,0.250000,20 rows with prior semantic counterpart evidence are attempted by bounded source-blind window/expression placement; 14 emit graph-active CEC-backed rewrites,evidence_advancement_v1
 compact_interface_graph_rewrites,48,22,0.458333,31 compact exact interfaces emit 31 rewrite artifacts; single-output plus fanout-aware rewrite languages promote 22 graph-active CEC-backed new boundaries,evidence_advancement_v1
 bounded_grammar_completeness,12,4,0.333333,complete means all attempted rows recovered for that operator/mode only,evidence_advancement_v1
 pinned_rtl_corpus,3,3,1.000000,Yosys lowering is recorded as tool-dependent evidence,evidence_advancement_v1

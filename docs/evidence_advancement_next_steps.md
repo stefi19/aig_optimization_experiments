@@ -16,7 +16,7 @@ graph artifact, tool metadata, or CEC obligation is present.
 
 | Direction | Promoted rows | Interpretation |
 |---|---:|---|
-| Source-blind source-side counterpart inference | 0 / 56 | Bounded exact-node placement now attempts all 20 semantic-only rows; no row has an exact source counterpart node under the support bound, so no graph-active CEC-backed recovery is promoted. |
+| Source-blind source-side counterpart inference | 14 / 56 | Exact-node source-blind placement remains 0/56, but bounded window/expression placement promotes 14/56 with emitted graph-active rewrites and both CEC scopes. The remaining prior semantic rows are 3 identical-driver no-ops and 3 no-expression-under-bound failures. |
 | Graph-active rewrites from compact exact generated interfaces | 22 / 48 | 31 compact exact interfaces emit valid rewrite artifacts; bounded fanout-frontier expansion promotes 4 additional rows, while 9 emitted artifacts remain identical-driver non-active rewrites. |
 | Bounded CEGIS grammar completeness | 4 / 12 | Only `sign_extend` and `zero_extend` are complete for attempted blind and oracle-bus rows. |
 | Pinned redistributable RTL corpus | 3 / 3 | Three CC0 Verilog modules are committed with source-location metadata; local Yosys lowering is recorded as `tool_missing`. |
@@ -41,9 +41,9 @@ graph artifact, tool metadata, or CEC obligation is present.
 
 The next publishable improvements are to move rows across these exact gates:
 
-- extend source-blind placement beyond exact source-node matching to bounded
-  source windows or synthesized source-side expressions, then emit
-  graph-active CEC-backed rewrites only when the same gates pass;
+- extend source-blind placement beyond the current unary/binary/mux expression
+  language to larger source windows, while preserving emitted-artifact,
+  graph-activity, CEC, and leakage-audit gates;
 - extend the rewrite language beyond radius-1 fanout-frontier replacement so
   remaining identical-driver artifacts can become constructive graph-active
   boundaries when supported;

@@ -50,12 +50,13 @@ transplants: 12; 48 fresh provenance-complete generated-research targets;
 CEC-backed new boundaries: 22/48; corrected historical eligible transplantation
 denominator: 0.
 
-Evidence-advancement promoted rows: source-blind graph-active 0/56; compact
+Evidence-advancement promoted rows: source-blind graph-active 14/56; compact
 interface new boundaries 22/48; bounded grammar completeness 4/12; pinned RTL
 corpus 3/3; ODC graph-active placement 0/10; locality proof objects 57/57.
-The source-blind placement audit attempts all 20 semantic-only counterpart rows
-with an exact-node source-window search and promotes 0/56 because no exact
-source counterpart node is found under the configured support bound.
+The exact-node source-blind audit still promotes 0/56, but bounded
+window/expression placement promotes 14/56 by synthesizing graph-active
+CEC-backed rewrites from source graph expressions over the same 20 prior
+semantic-counterpart rows.
 
 For the paper-facing synthesis layer, run `make research-wow`. It derives a
 recoverability frontier, canonical failure taxonomy, ablation/baseline summary,

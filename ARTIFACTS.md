@@ -62,7 +62,7 @@ Current committed headline counts:
 - 31/48 have compact exact input interfaces.
 - Necessity-first graph-active CEC-backed new boundaries: 22/48.
 - corrected historical eligible transplantation denominator: 0.
-- Evidence-advancement promoted rows: source-blind graph-active 0/56; compact
+- Evidence-advancement promoted rows: source-blind graph-active 14/56; compact
   interface new boundaries 22/48; bounded grammar completeness 4/12; pinned
   RTL corpus 3/3; ODC graph-active placement 0/10; locality proof objects
   57/57.
@@ -126,6 +126,7 @@ make check-evidence-advancement
 This writes:
 
 - `results/evidence_advancement/source_blind_counterpart_placement.csv`
+- `results/evidence_advancement/source_blind_window_expression_placement.csv`
 - `results/evidence_advancement/source_blind_counterpart_inference.csv`
 - `results/evidence_advancement/compact_interface_rewrite_attempts.csv`
 - `results/evidence_advancement/grammar_completeness_certificates.csv`

@@ -131,6 +131,9 @@ def _check_docs_freshness(errors: list[str]) -> None:
         for path in [ROOT / "README.md", ROOT / "docs" / "research_summary_current_state.md", ROOT / "ARTIFACTS.md", ROOT / "CLAIMS.md"]
         if path.exists()
     )
+    summary = {row.get("direction"): row for row in _rows("results/evidence_advancement/evidence_advancement_summary.csv", errors)}
+    source_blind = summary.get("source_blind_counterpart_inference", {})
+    source_blind_phrase = f"Evidence-advancement promoted rows: source-blind graph-active {source_blind.get('promoted_rows', '?')}/{source_blind.get('input_rows', '?')}; compact interface new boundaries 22/48"
     required_phrases = [
         "Controlled accepted graph-active counterparts: 10",
         "Controlled accepted transplants: 12",
@@ -138,7 +141,7 @@ def _check_docs_freshness(errors: list[str]) -> None:
         "31/48 have compact exact input interfaces",
         "Necessity-first graph-active CEC-backed new boundaries: 22/48",
         "corrected historical eligible transplantation denominator: 0",
-        "Evidence-advancement promoted rows: source-blind graph-active 0/56; compact interface new boundaries 22/48",
+        source_blind_phrase,
     ]
     for phrase in required_phrases:
         if phrase not in text:
