@@ -17,6 +17,7 @@ SCHEMA = "evidence_advancement_v1"
 
 def main() -> int:
     errors: list[str] = []
+    placement = _rows("source_blind_counterpart_placement.csv", errors)
     counterpart = _rows("source_blind_counterpart_inference.csv", errors)
     rewrites = _rows("compact_interface_rewrite_attempts.csv", errors)
     grammar = _rows("grammar_completeness_certificates.csv", errors)
@@ -25,8 +26,9 @@ def main() -> int:
     locality = _rows("locality_proof_objects.csv", errors)
     summary = _rows("evidence_advancement_summary.csv", errors)
 
-    _check_schema(counterpart + rewrites + grammar + rtl + odc + locality + summary, errors)
-    _check_counterpart(counterpart, errors)
+    _check_schema(placement + counterpart + rewrites + grammar + rtl + odc + locality + summary, errors)
+    _check_source_blind_placement(placement, errors)
+    _check_counterpart(counterpart, placement, errors)
     _check_rewrites(rewrites, errors)
     _check_grammar(grammar, errors)
     _check_rtl(rtl, errors)
@@ -48,7 +50,33 @@ def _check_schema(rows: list[dict[str, str]], errors: list[str]) -> None:
             errors.append(f"schema drift in row: {row}")
 
 
-def _check_counterpart(rows: list[dict[str, str]], errors: list[str]) -> None:
+def _check_source_blind_placement(rows: list[dict[str, str]], errors: list[str]) -> None:
+    if len(rows) != 56:
+        errors.append(f"source-blind placement denominator drifted: {len(rows)} != 56")
+    attempted = [r for r in rows if r.get("semantic_counterpart_status", "").startswith("proved_")]
+    if len(attempted) != 20:
+        errors.append(f"source-blind placement attempted semantic rows drifted: {len(attempted)} != 20")
+    for row in rows:
+        target = row.get("target_id")
+        if row.get("source_blind") != "true":
+            errors.append(f"source-blind placement row is not source-blind: {target}")
+        if row.get("promotion") == "graph_active_recovery":
+            if row.get("rewrite_emitted") != "true" or row.get("graph_active") != "true":
+                errors.append(f"source-blind promotion lacks emitted graph-active rewrite: {target}")
+            if row.get("global_cec_status") != "equivalent":
+                errors.append(f"source-blind promotion lacks global CEC: {target}")
+            if row.get("source_vs_rewrite_cec") != "equivalent" or row.get("rewrite_vs_optimized_cec") != "equivalent":
+                errors.append(f"source-blind promotion lacks both CEC scopes: {target}")
+            artifact = ROOT / row.get("rewrite_artifact", "")
+            if not row.get("rewrite_artifact") or not artifact.exists():
+                errors.append(f"source-blind promotion artifact missing: {target}")
+        if row.get("graph_active") == "true" and row.get("global_cec_status") != "equivalent":
+            errors.append(f"source-blind graph-active row lacks global CEC: {target}")
+        if row.get("rewrite_emitted") == "true" and not row.get("rewrite_artifact"):
+            errors.append(f"source-blind rewrite emitted without artifact: {target}")
+
+
+def _check_counterpart(rows: list[dict[str, str]], placement: list[dict[str, str]], errors: list[str]) -> None:
     if len(rows) != 56:
         errors.append(f"source-blind counterpart denominator drifted: {len(rows)} != 56")
     semantic_only = [r for r in rows if r.get("promoted_evidence_level") == "semantic_counterpart_only"]
@@ -61,6 +89,12 @@ def _check_counterpart(rows: list[dict[str, str]], errors: list[str]) -> None:
             errors.append("graph-active counterpart rows are not labeled graph_active_recovery")
     if len(graph_active) != 0:
         errors.append(f"source-blind graph-active count drifted from the honest current value: {len(graph_active)} != 0")
+    if len(rows) == len(placement):
+        for row, placed in zip(rows, placement, strict=True):
+            if row.get("target_id") != placed.get("target_id"):
+                errors.append(f"source-blind inference/placement target order mismatch: {row.get('target_id')} != {placed.get('target_id')}")
+            if (row.get("graph_active_recovery") == "true") != (placed.get("promotion") == "graph_active_recovery"):
+                errors.append(f"source-blind inference does not derive graph-active status from placement: {row.get('target_id')}")
 
 
 def _check_rewrites(rows: list[dict[str, str]], errors: list[str]) -> None:

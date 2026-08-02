@@ -23,7 +23,7 @@ so.
 | The main paper figure keeps controlled, blind, generated, formal-diagnostic, and historical denominators separate. | `results/research_wow/recoverability_frontier.csv`, `results/research_wow/recoverability_frontier.png` | `python scripts/check_research_wow.py` |
 | The failure taxonomy explains null results with auditable blocker classes rather than counting them as failed recoveries. | `results/research_wow/failure_taxonomy.csv` | `python scripts/check_research_wow.py` |
 | The demo report contains both a successful graph-active proof path and a blind CEGIS counterexample-refinement trace. | `results/research_wow/demo_trace.csv`, `results/research_wow/demo_report.md` | `python scripts/check_research_wow.py` |
-| Evidence-advancement promoted rows: source-blind graph-active 0/56; compact interface new boundaries 22/48; bounded grammar completeness 4/12; pinned RTL corpus 3/3; ODC graph-active placement 0/10; locality proof objects 57/57. | `results/evidence_advancement/evidence_advancement_summary.csv`, `results/evidence_advancement/locality_proof_objects.csv` | `python scripts/check_evidence_advancement.py` |
+| Evidence-advancement promoted rows: source-blind graph-active 0/56; compact interface new boundaries 22/48; bounded grammar completeness 4/12; pinned RTL corpus 3/3; ODC graph-active placement 0/10; locality proof objects 57/57. | `results/evidence_advancement/evidence_advancement_summary.csv`, `results/evidence_advancement/source_blind_counterpart_placement.csv`, `results/evidence_advancement/locality_proof_objects.csv` | `python scripts/check_evidence_advancement.py` |
 
 ## Evidence Rules
 

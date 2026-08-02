@@ -125,6 +125,7 @@ make check-evidence-advancement
 
 This writes:
 
+- `results/evidence_advancement/source_blind_counterpart_placement.csv`
 - `results/evidence_advancement/source_blind_counterpart_inference.csv`
 - `results/evidence_advancement/compact_interface_rewrite_attempts.csv`
 - `results/evidence_advancement/grammar_completeness_certificates.csv`

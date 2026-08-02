@@ -12,6 +12,11 @@ import sys
 from collections import Counter
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from scripts.run_semantic_region_replacement import abc_binary  # noqa: E402
+from source_blind_counterpart_placement import attempt_source_blind_counterpart_placement  # noqa: E402
+
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "results" / "evidence_advancement"
@@ -48,7 +53,9 @@ def main() -> int:
     for name, text in RTL_CORPUS.items():
         (RTL_DIR / f"{name}.v").write_text(text, encoding="utf-8")
 
-    counterpart = build_source_blind_counterpart_inference()
+    active_development = read_csv("results/active_source_counterpart_refactoring/development_results.csv")
+    placement = build_source_blind_counterpart_placement(active_development)
+    counterpart = build_source_blind_counterpart_inference(active_development, placement)
     rewrites = build_compact_interface_rewrite_attempts()
     grammar = build_grammar_completeness_certificates()
     rtl = build_rtl_corpus_manifest()
@@ -56,6 +63,7 @@ def main() -> int:
     locality = build_locality_proof_objects()
     summary = build_summary(counterpart, rewrites, grammar, rtl, odc, locality)
 
+    write_csv(OUT / "source_blind_counterpart_placement.csv", placement)
     write_csv(OUT / "source_blind_counterpart_inference.csv", counterpart)
     write_csv(OUT / "compact_interface_rewrite_attempts.csv", rewrites)
     write_csv(OUT / "grammar_completeness_certificates.csv", grammar)
@@ -68,12 +76,60 @@ def main() -> int:
     return 0
 
 
-def build_source_blind_counterpart_inference() -> list[dict[str, str]]:
+def build_source_blind_counterpart_placement(development_rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    out = []
+    for row in development_rows:
+        semantic = row["counterpart_status"].startswith("proved_")
+        if not semantic:
+            out.append(
+                {
+                    "target_id": row["target_id"],
+                    "candidate_source_window": "[]",
+                    "selection_features": "{}",
+                    "semantic_counterpart_status": row["counterpart_status"],
+                    "rewrite_artifact": "",
+                    "rewrite_emitted": "false",
+                    "graph_active": "false",
+                    "global_cec_status": "not_claimed",
+                    "promotion": "not_attempted",
+                    "blocker": row["failure_reason"],
+                    "source_blind": "true",
+                    "source_vs_rewrite_cec": "not_run",
+                    "rewrite_vs_optimized_cec": "not_run",
+                    "schema_version": SCHEMA,
+                }
+            )
+            continue
+        parsed = parse_target_id(row["target_id"])
+        if parsed is None:
+            out.append(_placement_not_promoted(row, "unparseable_target_id"))
+            continue
+        benchmark, _region, flow, target_node = parsed
+        source_path = ROOT / "variants" / f"{benchmark}_original.blif"
+        optimized_path = ROOT / "variants" / f"{benchmark}_{flow}.blif"
+        if not source_path.exists() or not optimized_path.exists():
+            out.append(_placement_not_promoted(row, "source_or_optimized_artifact_missing"))
+            continue
+        result = attempt_source_blind_counterpart_placement(
+            target_id=row["target_id"],
+            semantic_counterpart_status=row["counterpart_status"],
+            source_path=source_path,
+            optimized_path=optimized_path,
+            optimized_target_node=target_node,
+            output_path=OUT / "artifacts" / "source_blind_counterpart_placement" / f"{stable_id(row['target_id'])}.blif",
+            root=ROOT,
+            abc_path=abc_binary(),
+        )
+        out.append(result.row())
+    return out
+
+
+def build_source_blind_counterpart_inference(development_rows: list[dict[str, str]], placements: list[dict[str, str]]) -> list[dict[str, str]]:
     rows = []
-    for row in read_csv("results/active_source_counterpart_refactoring/development_results.csv"):
+    for row, placement in zip(development_rows, placements, strict=True):
         counterpart = row["counterpart_status"]
         semantic = counterpart.startswith("proved_")
-        graph = row["new_recovered_boundary"] == "true"
+        graph = placement["promotion"] == "graph_active_recovery"
         if graph:
             promoted, blocker = "graph_active_recovery", ""
         elif semantic:
@@ -150,6 +206,32 @@ def build_compact_interface_rewrite_attempts() -> list[dict[str, str]]:
             }
         )
     return out
+
+
+def parse_target_id(target_id: str) -> tuple[str, str, str, str] | None:
+    parts = target_id.split("|")
+    if len(parts) != 4:
+        return None
+    return parts[0], parts[1], parts[2], parts[3]
+
+
+def _placement_not_promoted(row: dict[str, str], blocker: str) -> dict[str, str]:
+    return {
+        "target_id": row["target_id"],
+        "candidate_source_window": "[]",
+        "selection_features": "{}",
+        "semantic_counterpart_status": row["counterpart_status"],
+        "rewrite_artifact": "",
+        "rewrite_emitted": "false",
+        "graph_active": "false",
+        "global_cec_status": "not_claimed",
+        "promotion": "not_promoted",
+        "blocker": blocker,
+        "source_blind": "true",
+        "source_vs_rewrite_cec": "not_run",
+        "rewrite_vs_optimized_cec": "not_run",
+        "schema_version": SCHEMA,
+    }
 
 
 def build_grammar_completeness_certificates() -> list[dict[str, str]]:
@@ -296,7 +378,7 @@ def build_locality_proof_objects() -> list[dict[str, str]]:
 def build_summary(counterpart, rewrites, grammar, rtl, odc, locality) -> list[dict[str, str]]:
     complete_ops = [r for r in grammar if r["bounded_grammar_complete_for_attempted_rows"] == "true"]
     return [
-        summary_row("source_blind_counterpart_inference", len(counterpart), count(counterpart, "graph_active_recovery", "true"), "semantic counterpart rows remain separate from graph-active recovery"),
+        summary_row("source_blind_counterpart_inference", len(counterpart), count(counterpart, "graph_active_recovery", "true"), "20 semantic-only rows are attempted by bounded source-blind exact-node placement; 0 emit graph-active CEC-backed rewrites"),
         summary_row("compact_interface_graph_rewrites", len(rewrites), count(rewrites, "new_boundary", "true"), "31 compact exact interfaces emit 31 rewrite artifacts; single-output plus fanout-aware rewrite languages promote 22 graph-active CEC-backed new boundaries"),
         summary_row("bounded_grammar_completeness", len(grammar), len(complete_ops), "complete means all attempted rows recovered for that operator/mode only"),
         summary_row("pinned_rtl_corpus", len(rtl), count(rtl, "redistributable", "true"), "Yosys lowering is recorded as tool-dependent evidence"),

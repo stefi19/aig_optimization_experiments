@@ -16,7 +16,7 @@ graph artifact, tool metadata, or CEC obligation is present.
 
 | Direction | Promoted rows | Interpretation |
 |---|---:|---|
-| Source-blind source-side counterpart inference | 0 / 56 | 20 rows have semantic-only counterpart evidence, but no row has a new graph-active recovery. |
+| Source-blind source-side counterpart inference | 0 / 56 | Bounded exact-node placement now attempts all 20 semantic-only rows; no row has an exact source counterpart node under the support bound, so no graph-active CEC-backed recovery is promoted. |
 | Graph-active rewrites from compact exact generated interfaces | 22 / 48 | 31 compact exact interfaces emit valid rewrite artifacts; bounded fanout-frontier expansion promotes 4 additional rows, while 9 emitted artifacts remain identical-driver non-active rewrites. |
 | Bounded CEGIS grammar completeness | 4 / 12 | Only `sign_extend` and `zero_extend` are complete for attempted blind and oracle-bus rows. |
 | Pinned redistributable RTL corpus | 3 / 3 | Three CC0 Verilog modules are committed with source-location metadata; local Yosys lowering is recorded as `tool_missing`. |
@@ -41,8 +41,9 @@ graph artifact, tool metadata, or CEC obligation is present.
 
 The next publishable improvements are to move rows across these exact gates:
 
-- infer new source-side counterparts without controlled source access and emit
-  graph-active CEC-backed rewrites;
+- extend source-blind placement beyond exact source-node matching to bounded
+  source windows or synthesized source-side expressions, then emit
+  graph-active CEC-backed rewrites only when the same gates pass;
 - extend the rewrite language beyond radius-1 fanout-frontier replacement so
   remaining identical-driver artifacts can become constructive graph-active
   boundaries when supported;

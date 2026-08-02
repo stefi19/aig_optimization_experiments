@@ -22,6 +22,7 @@ def test_evidence_advancement_builds_and_checks() -> None:
 
 def test_evidence_advancement_keeps_evidence_levels_separate() -> None:
     subprocess.run([sys.executable, str(ROOT / "scripts" / "build_evidence_advancement.py")], cwd=ROOT, check=True)
+    placement = _rows("results/evidence_advancement/source_blind_counterpart_placement.csv")
     source_blind = _rows("results/evidence_advancement/source_blind_counterpart_inference.csv")
     rewrite_attempts = _rows("results/evidence_advancement/compact_interface_rewrite_attempts.csv")
     frontier = _rows("results/necessity_first_target_discovery/rewrite_frontier_expansion.csv")
@@ -29,6 +30,8 @@ def test_evidence_advancement_keeps_evidence_levels_separate() -> None:
 
     assert sum(r["promoted_evidence_level"] == "semantic_counterpart_only" for r in source_blind) == 20
     assert sum(r["graph_active_recovery"] == "true" for r in source_blind) == 0
+    assert sum(r["semantic_counterpart_status"].startswith("proved_") for r in placement) == 20
+    assert sum(r["promotion"] == "graph_active_recovery" for r in placement) == 0
     assert sum(r["compact_interface"] == "true" for r in rewrite_attempts) == 31
     assert sum(r["rewrite_emitted"] == "true" for r in rewrite_attempts) == 31
     assert sum(r["graph_active"] == "true" for r in rewrite_attempts) == 22
@@ -48,3 +51,90 @@ def test_locality_proof_objects_mirror_exact_certificates() -> None:
         assert proof["exact_minimum_status"] == "exact_minimum"
         assert len(proof["tested_interface"]) == int(row["tested_interface_width"])
         assert int(row["proved_lower_bound"]) == int(row["best_upper_bound"])
+
+
+def test_checker_rejects_source_blind_placement_leakage(tmp_path: Path) -> None:
+    subprocess.run([sys.executable, str(ROOT / "scripts" / "build_evidence_advancement.py")], cwd=ROOT, check=True)
+    path = ROOT / "results/evidence_advancement/source_blind_counterpart_placement.csv"
+    rows = list(csv.DictReader(path.open()))
+    fields = list(rows[0])
+    rows[0]["source_blind"] = "false"
+    try:
+        with path.open("w", newline="", encoding="utf-8") as fh:
+            writer = csv.DictWriter(fh, fieldnames=fields)
+            writer.writeheader()
+            writer.writerows(rows)
+        result = subprocess.run([sys.executable, str(ROOT / "scripts" / "check_evidence_advancement.py")], cwd=ROOT)
+        assert result.returncode != 0
+    finally:
+        subprocess.run([sys.executable, str(ROOT / "scripts" / "build_evidence_advancement.py")], cwd=ROOT, check=True)
+
+
+def test_checker_rejects_source_blind_promotion_without_artifact() -> None:
+    subprocess.run([sys.executable, str(ROOT / "scripts" / "build_evidence_advancement.py")], cwd=ROOT, check=True)
+    path = ROOT / "results/evidence_advancement/source_blind_counterpart_placement.csv"
+    rows = list(csv.DictReader(path.open()))
+    fields = list(rows[0])
+    row = next(r for r in rows if r["semantic_counterpart_status"].startswith("proved_"))
+    row["promotion"] = "graph_active_recovery"
+    row["rewrite_emitted"] = "true"
+    row["graph_active"] = "true"
+    row["global_cec_status"] = "equivalent"
+    row["source_vs_rewrite_cec"] = "equivalent"
+    row["rewrite_vs_optimized_cec"] = "equivalent"
+    row["rewrite_artifact"] = ""
+    try:
+        with path.open("w", newline="", encoding="utf-8") as fh:
+            writer = csv.DictWriter(fh, fieldnames=fields)
+            writer.writeheader()
+            writer.writerows(rows)
+        result = subprocess.run([sys.executable, str(ROOT / "scripts" / "check_evidence_advancement.py")], cwd=ROOT)
+        assert result.returncode != 0
+    finally:
+        subprocess.run([sys.executable, str(ROOT / "scripts" / "build_evidence_advancement.py")], cwd=ROOT, check=True)
+
+
+def test_checker_rejects_source_blind_graph_active_without_cec() -> None:
+    subprocess.run([sys.executable, str(ROOT / "scripts" / "build_evidence_advancement.py")], cwd=ROOT, check=True)
+    path = ROOT / "results/evidence_advancement/source_blind_counterpart_placement.csv"
+    rows = list(csv.DictReader(path.open()))
+    fields = list(rows[0])
+    row = next(r for r in rows if r["semantic_counterpart_status"].startswith("proved_"))
+    row["graph_active"] = "true"
+    row["global_cec_status"] = "not_claimed"
+    try:
+        with path.open("w", newline="", encoding="utf-8") as fh:
+            writer = csv.DictWriter(fh, fieldnames=fields)
+            writer.writeheader()
+            writer.writerows(rows)
+        result = subprocess.run([sys.executable, str(ROOT / "scripts" / "check_evidence_advancement.py")], cwd=ROOT)
+        assert result.returncode != 0
+    finally:
+        subprocess.run([sys.executable, str(ROOT / "scripts" / "build_evidence_advancement.py")], cwd=ROOT, check=True)
+
+
+def test_checker_rejects_source_blind_promotion_without_both_cec_scopes() -> None:
+    subprocess.run([sys.executable, str(ROOT / "scripts" / "build_evidence_advancement.py")], cwd=ROOT, check=True)
+    path = ROOT / "results/evidence_advancement/source_blind_counterpart_placement.csv"
+    rows = list(csv.DictReader(path.open()))
+    fields = list(rows[0])
+    row = next(r for r in rows if r["semantic_counterpart_status"].startswith("proved_"))
+    artifact = ROOT / "results/evidence_advancement/source_blind_counterpart_placement_fake.blif"
+    artifact.write_text(".model fake\n.inputs a\n.outputs y\n.names a y\n1 1\n.end\n", encoding="utf-8")
+    row["promotion"] = "graph_active_recovery"
+    row["rewrite_emitted"] = "true"
+    row["graph_active"] = "true"
+    row["global_cec_status"] = "equivalent"
+    row["source_vs_rewrite_cec"] = "equivalent"
+    row["rewrite_vs_optimized_cec"] = "not_run"
+    row["rewrite_artifact"] = str(artifact.relative_to(ROOT))
+    try:
+        with path.open("w", newline="", encoding="utf-8") as fh:
+            writer = csv.DictWriter(fh, fieldnames=fields)
+            writer.writeheader()
+            writer.writerows(rows)
+        result = subprocess.run([sys.executable, str(ROOT / "scripts" / "check_evidence_advancement.py")], cwd=ROOT)
+        assert result.returncode != 0
+    finally:
+        artifact.unlink(missing_ok=True)
+        subprocess.run([sys.executable, str(ROOT / "scripts" / "build_evidence_advancement.py")], cwd=ROOT, check=True)

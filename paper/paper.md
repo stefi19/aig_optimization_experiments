@@ -33,13 +33,15 @@ showing that the boundary language itself can change recoverability. The
 negative results are not incidental: they are replayable blocker certificates
 for missing provenance, target irrelevance, non-compact locality, and absent
 rewrite artifacts. A new evidence-advancement layer records exactly which
-future-work rows move up in evidence level today: 0/56 source-blind rows reach
-graph-active recovery, 22/48 necessity-first rows become graph-active
-CEC-backed new boundaries under the bounded truth-table rewrite language, 4/12
-operator/mode CEGIS groups are complete for their attempted rows, 3/3 tiny CC0
-RTL designs are pinned but not lowered locally because Yosys is unavailable,
-0/10 contextual ODC anchors reach graph-active placement, and 57/57 locality
-certificates have JSON proof objects. The repository therefore contributes an
+future-work rows move up in evidence level today: bounded source-blind
+exact-node placement attempts all 20 semantic-only counterpart rows but 0/56
+reach graph-active recovery because no exact source counterpart node is found
+under the configured support bound; 22/48 necessity-first rows become
+graph-active CEC-backed new boundaries under the bounded truth-table rewrite
+language; 4/12 operator/mode CEGIS groups are complete for their attempted
+rows; 3/3 tiny CC0 RTL designs are pinned but not lowered locally because Yosys
+is unavailable; 0/10 contextual ODC anchors reach graph-active placement; and
+57/57 locality certificates have JSON proof objects. The repository therefore contributes an
 auditable framework for making internal-correspondence claims after logic
 optimization without mixing evidence levels or denominators.
 
@@ -757,7 +759,7 @@ state is:
 
 | Direction | Current promoted rows | Honest interpretation |
 |---|---:|---|
-| Source-blind source-side counterpart inference | 0 / 56 | 20 rows have semantic-only counterpart evidence, but no row has a new graph-active recovery. |
+| Source-blind source-side counterpart inference | 0 / 56 | Bounded exact-node placement attempts all 20 semantic-only rows; no exact source counterpart node is found under the support bound, so no graph-active CEC-backed recovery is promoted. |
 | Graph-active rewrites from compact generated interfaces | 22 / 48 | 31 compact exact interfaces emit valid rewrite artifacts; fanout-frontier expansion promotes 4 additional rows to graph-active CEC-backed new boundaries. |
 | Bounded grammar completeness for selected CEGIS families | 4 / 12 | Only `sign_extend` and `zero_extend` are complete for their attempted blind and oracle-bus rows. |
 | Pinned redistributable RTL corpus | 3 / 3 | Three CC0 Verilog modules and source metadata are committed; local Yosys lowering is `tool_missing`. |
@@ -765,8 +767,8 @@ state is:
 | Machine-checkable locality proof objects | 57 / 57 | JSON proof objects mirror the exact-minimum locality CSV certificates. |
 
 This layer makes the next paper-worthy work precise. The direct engineering
-targets are a source-blind counterpart synthesizer, broader fanout and
-multi-output rewrite languages for the remaining identical-driver rows,
+targets are source-blind placement beyond exact source-node matching, broader
+fanout and multi-output rewrite languages for the remaining identical-driver rows,
 broader CEGIS grammars with completeness proofs for selected
 operator families, an installed and pinned Yosys lowering flow for the new RTL
 seed corpus, ODC-aware graph placement with explicit graph-activity and global

@@ -1,0 +1,57 @@
+target_id,candidate_source_window,selection_features,semantic_counterpart_status,rewrite_artifact,rewrite_emitted,graph_active,global_cec_status,promotion,blocker,source_blind,source_vs_rewrite_cec,rewrite_vs_optimized_cec,schema_version
+generated_adder_4|adder_bit1_carry_sum_region|dc2|new_n17,[],"{""max_support_inputs"": 6, ""searched_source_nodes"": 36}",proved_additive_counterpart,,false,false,not_claimed,not_promoted,no_exact_source_counterpart_node_under_bound,true,not_run,not_run,evidence_advancement_v1
+generated_adder_4|adder_bit1_carry_sum_region|dc2|new_n17,[],"{""max_support_inputs"": 6, ""searched_source_nodes"": 36}",proved_additive_counterpart,,false,false,not_claimed,not_promoted,no_exact_source_counterpart_node_under_bound,true,not_run,not_run,evidence_advancement_v1
+generated_adder_4|adder_bit1_carry_sum_region|dc2|new_n19,[],"{""max_support_inputs"": 6, ""searched_source_nodes"": 36}",proved_additive_counterpart,,false,false,not_claimed,not_promoted,no_exact_source_counterpart_node_under_bound,true,not_run,not_run,evidence_advancement_v1
+generated_adder_4|adder_bit1_carry_sum_region|resyn2|new_n17,[],"{""max_support_inputs"": 6, ""searched_source_nodes"": 36}",proved_additive_counterpart,,false,false,not_claimed,not_promoted,no_exact_source_counterpart_node_under_bound,true,not_run,not_run,evidence_advancement_v1
+generated_adder_4|adder_bit1_carry_sum_region|resyn2|new_n17,[],"{""max_support_inputs"": 6, ""searched_source_nodes"": 36}",proved_additive_counterpart,,false,false,not_claimed,not_promoted,no_exact_source_counterpart_node_under_bound,true,not_run,not_run,evidence_advancement_v1
+generated_adder_4|adder_bit1_carry_sum_region|resyn2|new_n19,[],"{""max_support_inputs"": 6, ""searched_source_nodes"": 36}",proved_additive_counterpart,,false,false,not_claimed,not_promoted,no_exact_source_counterpart_node_under_bound,true,not_run,not_run,evidence_advancement_v1
+generated_mux_tree_4|mux_tree_root|dc2|new_n10,[],"{""max_support_inputs"": 6, ""searched_source_nodes"": 9}",proved_additive_counterpart,,false,false,not_claimed,not_promoted,no_exact_source_counterpart_node_under_bound,true,not_run,not_run,evidence_advancement_v1
+generated_mux_tree_4|mux_tree_root|resyn2|new_n12,[],"{""max_support_inputs"": 6, ""searched_source_nodes"": 9}",proved_additive_counterpart,,false,false,not_claimed,not_promoted,no_exact_source_counterpart_node_under_bound,true,not_run,not_run,evidence_advancement_v1
+generated_mux_tree_4|mux_tree_root|resyn2|new_n9,[],"{""max_support_inputs"": 6, ""searched_source_nodes"": 9}",proved_additive_counterpart,,false,false,not_claimed,not_promoted,no_exact_source_counterpart_node_under_bound,true,not_run,not_run,evidence_advancement_v1
+generated_mux_tree_8|mux_tree_upper_root|dc2|new_n18,[],"{""max_support_inputs"": 6, ""searched_source_nodes"": 21}",proved_additive_counterpart,,false,false,not_claimed,not_promoted,no_exact_source_counterpart_node_under_bound,true,not_run,not_run,evidence_advancement_v1
+generated_mux_tree_8|mux_tree_upper_root|dc2|new_n24,[],"{""max_support_inputs"": 6, ""searched_source_nodes"": 21}",proved_additive_counterpart,,false,false,not_claimed,not_promoted,no_exact_source_counterpart_node_under_bound,true,not_run,not_run,evidence_advancement_v1
+generated_mux_tree_8|mux_tree_upper_root|dc2|new_n27,[],"{""max_support_inputs"": 6, ""searched_source_nodes"": 21}",proved_additive_counterpart,,false,false,not_claimed,not_promoted,no_exact_source_counterpart_node_under_bound,true,not_run,not_run,evidence_advancement_v1
+generated_mux_tree_8|mux_tree_upper_root|dc2|new_n28,[],"{""max_support_inputs"": 6, ""searched_source_nodes"": 21}",proved_additive_counterpart,,false,false,not_claimed,not_promoted,no_exact_source_counterpart_node_under_bound,true,not_run,not_run,evidence_advancement_v1
+generated_mux_tree_8|mux_tree_upper_root|dc2|new_n15,[],"{""max_support_inputs"": 6, ""searched_source_nodes"": 21}",proved_additive_counterpart,,false,false,not_claimed,not_promoted,no_exact_source_counterpart_node_under_bound,true,not_run,not_run,evidence_advancement_v1
+generated_mux_tree_8|mux_tree_upper_root|dc2|new_n19,[],"{""max_support_inputs"": 6, ""searched_source_nodes"": 21}",proved_additive_counterpart,,false,false,not_claimed,not_promoted,no_exact_source_counterpart_node_under_bound,true,not_run,not_run,evidence_advancement_v1
+generated_mux_tree_8|mux_tree_upper_root|dc2|new_n29,[],"{""max_support_inputs"": 6, ""searched_source_nodes"": 21}",proved_additive_counterpart,,false,false,not_claimed,not_promoted,no_exact_source_counterpart_node_under_bound,true,not_run,not_run,evidence_advancement_v1
+generated_mux_tree_8|mux_tree_upper_root|resyn2|new_n15,[],"{""max_support_inputs"": 6, ""searched_source_nodes"": 21}",proved_additive_counterpart,,false,false,not_claimed,not_promoted,no_exact_source_counterpart_node_under_bound,true,not_run,not_run,evidence_advancement_v1
+generated_mux_tree_8|mux_tree_upper_root|resyn2|new_n19,[],"{""max_support_inputs"": 6, ""searched_source_nodes"": 21}",proved_additive_counterpart,,false,false,not_claimed,not_promoted,no_exact_source_counterpart_node_under_bound,true,not_run,not_run,evidence_advancement_v1
+generated_mux_tree_8|mux_tree_upper_root|resyn2|new_n29,[],"{""max_support_inputs"": 6, ""searched_source_nodes"": 21}",proved_additive_counterpart,,false,false,not_claimed,not_promoted,no_exact_source_counterpart_node_under_bound,true,not_run,not_run,evidence_advancement_v1
+generated_mux_tree_8|mux_tree_upper_root|resyn2|new_n20,[],"{""max_support_inputs"": 6, ""searched_source_nodes"": 21}",proved_additive_counterpart,,false,false,not_claimed,not_promoted,no_exact_source_counterpart_node_under_bound,true,not_run,not_run,evidence_advancement_v1
+controlled_and_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_and_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_and_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_and_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_and_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_and_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_and_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_and_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_and_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_nonmonotonic_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_nonmonotonic_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_nonmonotonic_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_nonmonotonic_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_nonmonotonic_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_nonmonotonic_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_nonmonotonic_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_nonmonotonic_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_nonmonotonic_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_nonmonotonic_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_nonmonotonic_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_xor_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_xor_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_xor_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_xor_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_xor_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_xor_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_xor_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_xor_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_xor_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_xor_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_xor_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+controlled_xor_factor__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+full_adder_carry__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+full_adder_carry__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+full_adder_carry__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
+full_adder_carry__b0,[],{},not_proved,,false,false,not_claimed,not_attempted,no_globally_anchored_cut,true,not_run,not_run,evidence_advancement_v1
