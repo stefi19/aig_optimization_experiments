@@ -1597,12 +1597,12 @@ ABC global CEC</pre>
 
     <section class="slide">
       <div class="slide-content plot-slide">
-        <div><p class="eyebrow">Necessity-first target discovery</p><h2>Correct the denominator before adding target heuristics</h2><div class="inline-stats"><span>330 historical rows audited</span><span>36 provenance-incomplete</span><span>20 target-irrelevant</span><span>48 fresh necessary targets</span><span>31 compact interfaces</span></div></div>
+        <div><p class="eyebrow">Necessity-first target discovery</p><h2>Promote compact locality only through checked rewrites</h2><div class="inline-stats"><span>48 fresh necessary targets</span><span>31 compact interfaces</span><span>31 rewrite artifacts</span><span>18 graph-active CEC boundaries</span><span>13 bypass artifacts</span></div></div>
         <div class="plot-pair">
           <img src="assets/plots/necessity_provenance_reconstruction.png" alt="Provenance reconstruction status">
           <img src="assets/plots/necessity_target_funnel.png" alt="Necessity-first target funnel">
         </div>
-        <div class="meaning-box"><strong>Corrected claim:</strong> historical eligible graph-rewrite denominator is 0. Fresh generated-BLIF targets are source-blind, nonconstant, forced-observable, and reachable-necessary, but no graph rewrite artifact is emitted yet.</div>
+        <div class="meaning-box"><strong>Corrected claim:</strong> historical eligible graph-rewrite denominator is 0. Fresh generated-BLIF targets now separate exact locality, rewrite emission, and graph-active CEC-backed boundary recovery.</div>
       </div>
       <aside class="notes">This is the new methodological guardrail: structural fanout is not observability, and observability alone is not target necessity. Generated BLIF rows are provenance-complete research benchmarks, not imported external RTL.</aside>
     </section>

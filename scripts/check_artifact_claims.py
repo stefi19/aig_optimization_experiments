@@ -58,13 +58,28 @@ def _check_necessity(errors: list[str]) -> None:
     eligible = _rows("results/necessity_first_target_discovery/eligible_target_manifest.csv", errors)
     locality = _rows("results/necessity_first_target_discovery/formal_locality_results.csv", errors)
     rewrites = _rows("results/necessity_first_target_discovery/graph_rewrites.csv", errors)
+    boundary = _rows("results/necessity_first_target_discovery/boundary_recovery.csv", errors)
+    global_cec = _rows("results/necessity_first_target_discovery/global_cec.csv", errors)
     recon = _rows("results/provenance_eligibility_audit/provenance_reconstruction.csv", errors)
     if len(eligible) != 48 or any(r.get("eligibility_status") != "eligible_target_necessary" for r in eligible):
         errors.append("necessity-first eligible target manifest no longer has 48 necessary targets")
     if sum(r.get("compact_interface") == "true" for r in locality) != 31:
         errors.append("necessity-first compact-interface count drifted from 31")
-    if sum(r.get("rewrite_emitted") == "true" for r in rewrites) != 0:
-        errors.append("necessity-first graph rewrites were emitted but claims still say zero")
+    if sum(r.get("rewrite_emitted") == "true" for r in rewrites) != 31:
+        errors.append("necessity-first rewrite artifact count drifted from 31")
+    if sum(r.get("graph_active") == "true" for r in rewrites) != 18:
+        errors.append("necessity-first graph-active rewrite count drifted from 18")
+    if sum(r.get("new_boundary") == "true" for r in boundary) != 18:
+        errors.append("necessity-first CEC-backed boundary count drifted from 18")
+    cec_by_target: dict[str, dict[str, str]] = {}
+    for row in global_cec:
+        cec_by_target.setdefault(row.get("stable_target_id", ""), {})[row.get("scope", "")] = row.get("status", "")
+    for row in boundary:
+        if row.get("new_boundary") == "true":
+            scopes = cec_by_target.get(row.get("stable_target_id", ""), {})
+            rewrite = next((r for r in rewrites if r.get("stable_target_id") == row.get("stable_target_id")), {})
+            if rewrite.get("graph_active") != "true" or scopes.get("S_vs_Sprime") != "equivalent" or scopes.get("Sprime_vs_I") != "equivalent":
+                errors.append(f"necessity-first boundary lacks graph activity or CEC: {row.get('stable_target_id')}")
     counts = Counter(r.get("reconstruction_status") for r in recon)
     if counts.get("missing_optimized_artifact", 0) != 36:
         errors.append("provenance audit no longer has 36 missing optimized-artifact rows")
@@ -115,8 +130,9 @@ def _check_docs_freshness(errors: list[str]) -> None:
         "Controlled accepted transplants: 12",
         "48 fresh provenance-complete",
         "31/48 have compact exact input interfaces",
+        "Necessity-first graph-active CEC-backed new boundaries: 18/48",
         "corrected historical eligible transplantation denominator: 0",
-        "Evidence-advancement promoted rows",
+        "Evidence-advancement promoted rows: source-blind graph-active 0/56; compact interface new boundaries 18/48",
     ]
     for phrase in required_phrases:
         if phrase not in text:

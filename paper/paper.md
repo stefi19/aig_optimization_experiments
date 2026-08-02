@@ -24,8 +24,9 @@ controlled source-side counterparts and cross-netlist transplants reach
 global-CEC-backed graph-active recovery on their positive generated cases
 (10/10 and 12/12), while blind bounded semantic CEGIS recovers 3/24 regions,
 necessity-first generated targets expose 31/48 compact exact input interfaces
-but 0/48 validated graph rewrites, and corrected historical diagnostic rows
-support 0/56 graph-active recoveries. Within the controlled cross-netlist
+and now emit 31/48 valid rewrite artifacts, of which 18/48 are graph-active
+CEC-backed new boundaries. Corrected historical diagnostic rows still support
+0/56 graph-active recoveries. Within the controlled cross-netlist
 experiment, relational interfaces also expand accepted graph-active recovery
 from 9/17 direct-adapter rows to 12/17 relational-interface-enabled rows,
 showing that the boundary language itself can change recoverability. The
@@ -33,7 +34,8 @@ negative results are not incidental: they are replayable blocker certificates
 for missing provenance, target irrelevance, non-compact locality, and absent
 rewrite artifacts. A new evidence-advancement layer records exactly which
 future-work rows move up in evidence level today: 0/56 source-blind rows reach
-graph-active recovery, 0/48 necessity-first rows emit graph rewrites, 4/12
+graph-active recovery, 18/48 necessity-first rows become graph-active
+CEC-backed new boundaries under the bounded truth-table rewrite language, 4/12
 operator/mode CEGIS groups are complete for their attempted rows, 3/3 tiny CC0
 RTL designs are pinned but not lowered locally because Yosys is unavailable,
 0/10 contextual ODC anchors reach graph-active placement, and 57/57 locality
@@ -104,16 +106,22 @@ validation:
    different evidence classes. Blind recovery is 3/24 in the primary
    parametric-CEGIS table, while the larger Z3 experiment is reported as a
    separate solver-scalability diagnostic.
-5. **Negative results as certificates.** Historical and generated failures are
+5. **Compact-locality-to-rewrite promotion.** The necessity-first path now
+   converts compact exact interfaces into concrete BLIF rewrite artifacts under
+   a bounded single-output truth-table language. It emits 31 valid artifacts
+   and promotes 18 to graph-active CEC-backed new boundaries; 13 emitted
+   artifacts remain valid but are classified as direct bypasses rather than
+   constructive boundary recovery.
+6. **Negative results as certificates.** Historical and generated failures are
    not treated as uninformative misses. They are classified by replayable
    blockers: missing optimized artifacts, target irrelevance after
    reconstruction, non-compact exact interfaces, no globally anchored cut, and
-   no validated graph rewrite artifact.
-6. **A reviewer-oriented artifact contract.** Stable Make targets build paper
+   non-active rewrite artifacts.
+7. **A reviewer-oriented artifact contract.** Stable Make targets build paper
    tables and figures from committed CSVs, validate row-count freshness, run
    portable no-ABC checks, run ABC-backed checks when available, and compile
    this paper into a PDF.
-7. **Evidence advancement without count inflation.** The repository includes a
+8. **Evidence advancement without count inflation.** The repository includes a
    checked next-step layer that pins a redistributable RTL seed corpus, emits
    machine-checkable locality proof objects, and records which source-blind,
    compact-interface, CEGIS, and ODC rows still lack the obligations needed for
@@ -534,7 +542,7 @@ three rows is impossible; they do prove that the implemented direct-only
 frontier is strictly smaller than the implemented relational frontier under the
 same denominator.
 
-## 6.6 Necessity-First Auditing Finds Locality Without Rewrites
+## 6.6 Necessity-First Auditing Promotes Compact Locality to Rewrites
 
 The necessity-first target discovery phase is the artifact's clearest example
 of claim discipline. It identifies 48 provenance-complete generated targets
@@ -542,16 +550,25 @@ that pass the necessity-first filter. The locality checker proves compact exact
 input interfaces for 31/48. If the paper stopped there, it would overclaim:
 those 31 rows are exact-locality certificates, not graph-active recoveries.
 
-The graph rewrite accounting table records 0/48 validated rewrite artifacts.
+The new bounded rewrite-synthesis stage reconstructs each compact target as a
+single-output truth table over its certified interface, replaces the optimized
+target driver in BLIF, preserves existing fanouts, and then validates graph
+shape and both CEC scopes. It emits 31/48 valid rewrite artifacts. Of those, 18
+are graph-active and CEC-backed new boundaries. The remaining 13 emitted
+artifacts pass CEC but are classified as direct bypasses, so they are not
+counted as constructive boundary recovery.
+
 Thus the correct statement is:
 
 > Necessity-first generated targets expose many compact exact interfaces
-> (31/48), but the current artifact emits no validated graph-active rewrites
-> for those targets (0/48).
+> (31/48), all compact rows now emit valid rewrite artifacts (31/48), and the
+> bounded rewrite language promotes 18/48 to graph-active CEC-backed new
+> boundaries.
 
 This distinction is central to the paper. It turns a potentially confusing null
-result into a precise research finding: local semantic sufficiency is not the
-same as reconstructable graph surgery.
+result into a precise research finding: local semantic sufficiency can be made
+constructive for a substantial subset, but artifact emission and graph-active
+boundary recovery remain distinct evidence levels.
 
 ## 6.7 Historical Rows Are Diagnostic, Not a 56-Row Recovery Denominator
 
@@ -580,7 +597,7 @@ CSV inputs and checked by `make check-research-wow`.
 | Controlled cross-netlist transplants | controlled generated BLIF | 12 / 12 | formal exhaustive + ABC CEC |
 | Blind parametric CEGIS | blind generated BLIF | 3 / 24 | formal exhaustive |
 | Necessity-first compact interfaces | generated research benchmark | 31 / 48 | exact minimum certificate |
-| Necessity-first graph rewrites | generated research benchmark | 0 / 48 | artifact absence audit |
+| Necessity-first graph rewrites | generated research benchmark | 18 / 48 | truth-table rewrite + ABC CEC |
 | Formal locality previous failures | historical diagnostic | 26 / 56 | exact minimum certificate diagnostic |
 | Historical cross-netlist recovery | historical ineligible diagnostic | 0 / 56 | corrected denominator audit |
 
@@ -733,19 +750,20 @@ state is:
 | Direction | Current promoted rows | Honest interpretation |
 |---|---:|---|
 | Source-blind source-side counterpart inference | 0 / 56 | 20 rows have semantic-only counterpart evidence, but no row has a new graph-active recovery. |
-| Graph-active rewrites from compact generated interfaces | 0 / 48 | 31 compact exact interfaces are proof objects, not emitted rewrites. |
+| Graph-active rewrites from compact generated interfaces | 18 / 48 | 31 compact exact interfaces emit valid rewrite artifacts; 18 are graph-active and CEC-backed new boundaries. |
 | Bounded grammar completeness for selected CEGIS families | 4 / 12 | Only `sign_extend` and `zero_extend` are complete for their attempted blind and oracle-bus rows. |
 | Pinned redistributable RTL corpus | 3 / 3 | Three CC0 Verilog modules and source metadata are committed; local Yosys lowering is `tool_missing`. |
 | ODC-aware placement | 0 / 10 | Ten formal contextual ODC anchors exist, but none is counted as graph-active without global CEC. |
 | Machine-checkable locality proof objects | 57 / 57 | JSON proof objects mirror the exact-minimum locality CSV certificates. |
 
 This layer makes the next paper-worthy work precise. The direct engineering
-targets are a source-blind counterpart synthesizer, a rewrite emitter for the
-31 compact exact generated interfaces, broader CEGIS grammars with completeness
-proofs for selected operator families, an installed and pinned Yosys lowering
-flow for the new RTL seed corpus, ODC-aware graph placement with explicit
-graph-activity and global CEC obligations, and richer proof objects that go
-beyond mirroring replayable CSV certificates.
+targets are a source-blind counterpart synthesizer, a richer rewrite language
+that turns valid-but-bypass artifacts into constructive graph-active
+boundaries, broader CEGIS grammars with completeness proofs for selected
+operator families, an installed and pinned Yosys lowering flow for the new RTL
+seed corpus, ODC-aware graph placement with explicit graph-activity and global
+CEC obligations, and richer proof objects that go beyond mirroring replayable
+CSV certificates.
 
 # 12. Conclusion
 
@@ -754,9 +772,11 @@ right evidence contract. This artifact demonstrates that contract on AIG
 optimization experiments. Controlled source-side counterparts and cross-netlist
 transplants can reach graph-active CEC-backed recovery. Blind CEGIS can recover
 some bounded semantic regions and produce replayable counterexamples for
-failures. Necessity-first auditing can prove compact exact interfaces without
-claiming graph rewrites. Historical rows can be corrected into provenance and
-target-necessity diagnostics instead of being misused as recovery denominators.
+failures. Necessity-first auditing can now prove compact exact interfaces,
+emit concrete rewrite artifacts, and promote a subset to graph-active
+CEC-backed recovery while keeping bypass artifacts unpromoted. Historical rows
+can be corrected into provenance and target-necessity diagnostics instead of
+being misused as recovery denominators.
 
 The result is a recoverability frontier: a map of what survived, what can be
 recognized, what can be localized, what can be rewritten, and what remains

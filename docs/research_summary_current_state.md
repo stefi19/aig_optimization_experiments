@@ -991,9 +991,12 @@ artifact availability, target-node availability, PI alignment, CEC status, and
 corrected eligibility, and then runs a source-blind target selector over a
 provenance-complete generated BLIF corpus. It emits 48 fresh optimized internal
 targets; all 48 are nonconstant, forced-observable, and reachable-necessary,
-31 have compact exact input interfaces, and 0 graph rewrites are emitted. The
-valid historical eligible transplantation denominator is therefore 0, while the
-new generated-research target-discovery denominator is 48. No external RTL
+31 have compact exact input interfaces, 31 emit valid rewrite artifacts, and
+18 are graph-active CEC-backed new boundaries. The 13 remaining emitted
+artifacts are CEC-equivalent but classified as direct bypasses rather than
+graph-active boundary recovery. The valid historical eligible transplantation
+denominator is therefore 0, while the new generated-research target-discovery
+denominator is 48. No external RTL
 denominator is reported because the repository has no pinned redistributable
 external RTL corpus or pinned Yosys lowering flow.
 

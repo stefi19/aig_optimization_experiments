@@ -74,12 +74,14 @@ The necessity-first discovery run emits:
 - 48 nonconstant, forced-observable, reachable-necessary eligible targets;
 - 31 compact exact input interfaces;
 - 17 non-compact or unsupported compact-interface cases;
-- 0 graph rewrites emitted;
-- 0 global CEC claims;
-- 0 recovered boundaries.
+- 31 valid rewrite artifacts emitted;
+- 18 graph-active CEC-backed new boundaries;
+- 13 emitted artifacts are CEC-equivalent but classified as direct bypasses,
+  not graph-active boundary recovery.
 
-The zero rewrite result is not counted as a failed graph rewrite.  A graph
-rewrite is an attempt only after a rewrite artifact is emitted.
+The rewrite result is counted in tiers. Artifact emission is not enough for
+boundary recovery; a row reaches the strongest tier only when graph activity and
+both global CEC scopes pass.
 
 ## Reproduction
 

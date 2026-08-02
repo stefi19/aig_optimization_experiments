@@ -18,6 +18,7 @@ sys.path.insert(0, str(ROOT))
 
 from analyze_blif_matches import parse_blif  # noqa: E402
 from formal_locality_barriers import CandidateSignalUniverse, solve_minimum_interface, stable_hash  # noqa: E402
+from necessity_first_rewrites import RewriteSynthesisResult, synthesize_compact_interface_rewrite  # noqa: E402
 from necessity_first_targets import (  # noqa: E402
     SCHEMA_VERSION,
     TargetProvenanceRecord,
@@ -104,6 +105,7 @@ RESULT_FIELDS = {
     "eligible_target_manifest.csv": ["stable_target_id", "benchmark_id", "flow", "eligibility_status", "eligibility_stage", "reason", "schema_version"],
     "formal_locality_results.csv": ["stable_target_id", "universe_id", "solver_status", "exact_minimum_status", "tested_interface", "proved_lower_bound", "best_upper_bound", "classification", "compact_interface", "schema_version"],
     "adapter_proofs.csv": ["stable_target_id", "adapter_kind", "proof_status", "backend", "reason", "schema_version"],
+    "rewrite_function_synthesis.csv": ["stable_target_id", "optimized_target_node", "tested_interface", "truth_table_hash", "onset_size", "total_rows", "rewrite_artifact", "synthesis_status", "graph_validation_status", "blocker", "runtime_seconds", "schema_version"],
     "graph_rewrites.csv": ["stable_target_id", "rewrite_emitted", "graph_active", "rewrite_artifact", "status", "reason", "schema_version"],
     "global_cec.csv": ["stable_target_id", "scope", "status", "abc_available", "claimed_global", "reason", "schema_version"],
     "boundary_recovery.csv": ["stable_target_id", "status", "new_boundary", "reason", "schema_version"],
@@ -392,7 +394,7 @@ def _filter_target(rows: dict[str, list[dict[str, str]]], out: Path, stable_id: 
     status, stage, reason = _eligibility(structural, nonconst, forced, necessity)
     rows["eligible_target_manifest.csv"].append({"stable_target_id": stable_id, "benchmark_id": benchmark, "flow": flow, "eligibility_status": status, "eligibility_stage": stage, "reason": reason, "schema_version": SCHEMA})
     if status == "eligible_target_necessary":
-        _run_locality(rows, stable_id, benchmark, flow, source, optimized, target)
+        _run_locality(rows, out, stable_id, benchmark, flow, source, optimized, target)
     else:
         _no_downstream(rows, stable_id, reason)
 
@@ -409,7 +411,7 @@ def _eligibility(structural: bool, nonconst: str, forced: str, necessity: str) -
     return "eligible_target_necessary", "reachable_necessity", "passes_necessity_first_filter"
 
 
-def _run_locality(rows: dict[str, list[dict[str, str]]], stable_id: str, benchmark: str, flow: str, source: Path, optimized: Path, target: str) -> None:
+def _run_locality(rows: dict[str, list[dict[str, str]]], out: Path, stable_id: str, benchmark: str, flow: str, source: Path, optimized: Path, target: str) -> None:
     source_net = parse_blif(source)
     universe = CandidateSignalUniverse(
         universe_id=f"{stable_id}::source_pi",
@@ -437,10 +439,19 @@ def _run_locality(rows: dict[str, list[dict[str, str]]], stable_id: str, benchma
     compact = cert.exact_minimum_status == "exact_minimum" and cert.best_upper_bound is not None and cert.best_upper_bound <= int(CONFIG["compact_interface_width"])
     rows["formal_locality_results.csv"].append({"stable_target_id": stable_id, "universe_id": universe.universe_id, "solver_status": cert.solver_status, "exact_minimum_status": cert.exact_minimum_status, "tested_interface": json.dumps(cert.tested_interface), "proved_lower_bound": str(cert.proved_lower_bound), "best_upper_bound": "" if cert.best_upper_bound is None else str(cert.best_upper_bound), "classification": cert.classification, "compact_interface": str(compact).lower(), "schema_version": SCHEMA})
     if compact:
-        rows["adapter_proofs.csv"].append({"stable_target_id": stable_id, "adapter_kind": "input_interface", "proof_status": "interface_exact_minimum_only", "backend": cert.solver_backend, "reason": "no graph adapter emitted by this phase", "schema_version": SCHEMA})
-        rows["graph_rewrites.csv"].append({"stable_target_id": stable_id, "rewrite_emitted": "false", "graph_active": "false", "rewrite_artifact": "", "status": "not_attempted", "reason": "compact interface found but no validated graph rewrite artifact emitted", "schema_version": SCHEMA})
-        _cec_boundary_rows(rows, stable_id, "not_run_no_rewrite")
+        rewrite = synthesize_compact_interface_rewrite(
+            stable_target_id=stable_id,
+            source_path=source,
+            optimized_path=optimized,
+            optimized_target_node=target,
+            tested_interface=cert.tested_interface,
+            output_path=out / "artifacts" / "necessity_rewrites" / f"{stable_id}.interface_rewrite.blif",
+            root=ROOT,
+            abc_path=abc_binary(),
+        )
+        _append_rewrite_rows(rows, rewrite, cert.solver_backend)
     else:
+        _append_no_rewrite_synthesis(rows, stable_id, target, cert.tested_interface, cert.classification)
         _no_downstream(rows, stable_id, cert.classification)
 
 
@@ -456,6 +467,90 @@ def _cec_boundary_rows(rows: dict[str, list[dict[str, str]]], stable_id: str, re
     rows["boundary_recovery.csv"].append({"stable_target_id": stable_id, "status": "not_run", "new_boundary": "false", "reason": reason, "schema_version": SCHEMA})
     rows["critical_path_utility.csv"].append({"stable_target_id": stable_id, "status": "not_run", "mapped_targets": "0", "reason": reason, "schema_version": SCHEMA})
     rows["durability.csv"].append({"stable_target_id": stable_id, "status": "not_run", "strategy": "not_applicable", "survived": "false", "reason": reason, "schema_version": SCHEMA})
+
+
+def _append_rewrite_rows(rows: dict[str, list[dict[str, str]]], rewrite: RewriteSynthesisResult, backend: str) -> None:
+    rows["adapter_proofs.csv"].append(
+        {
+            "stable_target_id": rewrite.stable_target_id,
+            "adapter_kind": "input_interface_truth_table_rewrite",
+            "proof_status": "interface_exact_minimum_and_truth_table_synthesized" if rewrite.rewrite_emitted else "rewrite_not_emitted",
+            "backend": backend,
+            "reason": rewrite.blocker,
+            "schema_version": SCHEMA,
+        }
+    )
+    rows["rewrite_function_synthesis.csv"].append(
+        {
+            "stable_target_id": rewrite.stable_target_id,
+            "optimized_target_node": rewrite.optimized_target_node,
+            "tested_interface": json.dumps(rewrite.tested_interface),
+            "truth_table_hash": rewrite.truth_table_hash,
+            "onset_size": str(rewrite.onset_size),
+            "total_rows": str(rewrite.total_rows),
+            "rewrite_artifact": rewrite.rewrite_artifact,
+            "synthesis_status": "emitted" if rewrite.rewrite_emitted else "not_emitted",
+            "graph_validation_status": rewrite.graph_validation_status,
+            "blocker": rewrite.blocker,
+            "runtime_seconds": f"{rewrite.runtime_seconds:.6f}",
+            "schema_version": SCHEMA,
+        }
+    )
+    rows["graph_rewrites.csv"].append(
+        {
+            "stable_target_id": rewrite.stable_target_id,
+            "rewrite_emitted": str(rewrite.rewrite_emitted).lower(),
+            "graph_active": str(rewrite.graph_active).lower(),
+            "rewrite_artifact": rewrite.rewrite_artifact,
+            "status": rewrite.graph_validation_status,
+            "reason": rewrite.blocker,
+            "schema_version": SCHEMA,
+        }
+    )
+    rows["global_cec.csv"].append(
+        {
+            "stable_target_id": rewrite.stable_target_id,
+            "scope": "S_vs_Sprime",
+            "status": rewrite.cec_source_status,
+            "abc_available": str(rewrite.abc_available).lower(),
+            "claimed_global": str(rewrite.new_boundary).lower(),
+            "reason": rewrite.blocker,
+            "schema_version": SCHEMA,
+        }
+    )
+    rows["global_cec.csv"].append(
+        {
+            "stable_target_id": rewrite.stable_target_id,
+            "scope": "Sprime_vs_I",
+            "status": rewrite.cec_rewrite_vs_optimized_status,
+            "abc_available": str(rewrite.abc_available).lower(),
+            "claimed_global": str(rewrite.new_boundary).lower(),
+            "reason": rewrite.blocker,
+            "schema_version": SCHEMA,
+        }
+    )
+    rows["boundary_recovery.csv"].append({"stable_target_id": rewrite.stable_target_id, "status": "accepted" if rewrite.new_boundary else "rejected", "new_boundary": str(rewrite.new_boundary).lower(), "reason": rewrite.blocker, "schema_version": SCHEMA})
+    rows["critical_path_utility.csv"].append({"stable_target_id": rewrite.stable_target_id, "status": "mapped" if rewrite.new_boundary else "not_mapped", "mapped_targets": "1" if rewrite.new_boundary else "0", "reason": rewrite.blocker, "schema_version": SCHEMA})
+    rows["durability.csv"].append({"stable_target_id": rewrite.stable_target_id, "status": "not_run", "strategy": "not_applicable", "survived": "false", "reason": "durability_not_evaluated_for_necessity_rewrite", "schema_version": SCHEMA})
+
+
+def _append_no_rewrite_synthesis(rows: dict[str, list[dict[str, str]]], stable_id: str, target: str, interface: tuple[str, ...], reason: str) -> None:
+    rows["rewrite_function_synthesis.csv"].append(
+        {
+            "stable_target_id": stable_id,
+            "optimized_target_node": target,
+            "tested_interface": json.dumps(interface),
+            "truth_table_hash": "",
+            "onset_size": "0",
+            "total_rows": "0",
+            "rewrite_artifact": "",
+            "synthesis_status": "not_attempted",
+            "graph_validation_status": "not_run",
+            "blocker": reason,
+            "runtime_seconds": "0.000000",
+            "schema_version": SCHEMA,
+        }
+    )
 
 
 def _dataset_rows(rows: dict[str, list[dict[str, str]]]) -> None:
@@ -514,6 +609,8 @@ def _summarise_results(rows: dict[str, list[dict[str, str]]], runtime: float) ->
     counts["target_necessary_eligible"] = len(eligible)
     counts["compact_interfaces"] = sum(r["compact_interface"] == "true" for r in locality)
     counts["actual_graph_rewrites"] = sum(r["rewrite_emitted"] == "true" for r in rewrites)
+    counts["graph_active_rewrites"] = sum(r["graph_active"] == "true" for r in rewrites)
+    counts["cec_backed_new_boundaries"] = sum(r["new_boundary"] == "true" for r in rows["boundary_recovery.csv"])
     counts["historical_provenance_incomplete"] = 36
     counts["historical_target_irrelevant"] = 20
     for category, count in sorted(counts.items()):

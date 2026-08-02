@@ -46,12 +46,13 @@ Stable validation tiers:
 Current committed headline counts are checked by `scripts/check_artifact_claims.py`:
 Controlled accepted graph-active counterparts: 10; Controlled accepted
 transplants: 12; 48 fresh provenance-complete generated-research targets;
-31/48 have compact exact input interfaces; corrected historical eligible
-transplantation denominator: 0.
+31/48 have compact exact input interfaces; necessity-first graph-active
+CEC-backed new boundaries: 18/48; corrected historical eligible transplantation
+denominator: 0.
 
 Evidence-advancement promoted rows: source-blind graph-active 0/56; compact
-interface rewrites 0/48; bounded grammar completeness 4/12; pinned RTL corpus
-3/3; ODC graph-active placement 0/10; locality proof objects 57/57.
+interface new boundaries 18/48; bounded grammar completeness 4/12; pinned RTL
+corpus 3/3; ODC graph-active placement 0/10; locality proof objects 57/57.
 
 For the paper-facing synthesis layer, run `make research-wow`. It derives a
 recoverability frontier, canonical failure taxonomy, ablation/baseline summary,
@@ -3395,8 +3396,10 @@ Current committed results:
 - 48/48 are nonconstant, forced-observable, and reachable-necessary;
 - 31/48 have compact exact input interfaces under the declared source-PI
   universe;
-- 0 graph rewrites emitted, therefore 0 global CEC claims and 0 recovered
-  boundaries.
+- 31/48 emit valid rewrite artifacts;
+- 18/48 are graph-active and CEC-backed new boundaries;
+- 13 emitted artifacts are valid and CEC-equivalent but classified as direct
+  bypasses rather than graph-active boundary recovery.
 
 The fresh corpus is provenance-complete and non-controlled, but it is generated
 BLIF, not external RTL. The repository still does not contain a pinned

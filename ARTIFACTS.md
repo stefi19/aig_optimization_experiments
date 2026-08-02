@@ -60,14 +60,17 @@ Current committed headline counts:
 - Controlled accepted transplants: 12.
 - 48 fresh provenance-complete generated-research targets.
 - 31/48 have compact exact input interfaces.
+- Necessity-first graph-active CEC-backed new boundaries: 18/48.
 - corrected historical eligible transplantation denominator: 0.
 - Evidence-advancement promoted rows: source-blind graph-active 0/56; compact
-  interface rewrites 0/48; bounded grammar completeness 4/12; pinned RTL corpus
-  3/3; ODC graph-active placement 0/10; locality proof objects 57/57.
+  interface new boundaries 18/48; bounded grammar completeness 4/12; pinned
+  RTL corpus 3/3; ODC graph-active placement 0/10; locality proof objects
+  57/57.
 
 ## Expected Runtime
 
-- `make smoke`: usually under a minute after dependencies are installed.
+- `make smoke`: usually under two minutes after dependencies are installed; it
+  includes temporary necessity-first rewrite/checker runs.
 - `make artifact-check`: usually seconds to a few minutes; it does not rebuild
   ABC.
 - `make formal-abc`: can take several minutes because it builds/checks ABC and

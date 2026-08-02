@@ -10,8 +10,11 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from necessity_first_rewrites import validate_rewritten_graph  # noqa: E402
+
 DEFAULT_OUT = ROOT / "results" / "necessity_first_target_discovery"
 
 REQUIRED = {
@@ -33,6 +36,7 @@ REQUIRED = {
     "eligible_target_manifest.csv": {"stable_target_id", "eligibility_status", "eligibility_stage", "reason"},
     "formal_locality_results.csv": {"stable_target_id", "solver_status", "exact_minimum_status", "compact_interface"},
     "adapter_proofs.csv": {"stable_target_id", "proof_status", "reason"},
+    "rewrite_function_synthesis.csv": {"stable_target_id", "optimized_target_node", "tested_interface", "truth_table_hash", "rewrite_artifact", "synthesis_status", "graph_validation_status", "blocker"},
     "graph_rewrites.csv": {"stable_target_id", "rewrite_emitted", "graph_active", "status"},
     "global_cec.csv": {"stable_target_id", "scope", "status", "claimed_global"},
     "boundary_recovery.csv": {"stable_target_id", "status", "new_boundary"},
@@ -137,15 +141,38 @@ def main() -> int:
             errors.append(f"eligible target lacks reachable necessity: {sid}")
 
     locality_ids = {row["stable_target_id"] for row in tables["formal_locality_results.csv"]}
+    synthesis = {row["stable_target_id"]: row for row in tables["rewrite_function_synthesis.csv"]}
     for row in eligible:
         if row["stable_target_id"] not in locality_ids:
             errors.append(f"eligible target skipped locality analysis: {row['stable_target_id']}")
 
+    for row in tables["formal_locality_results.csv"]:
+        sid = row["stable_target_id"]
+        if sid not in synthesis:
+            errors.append(f"locality target lacks rewrite synthesis accounting: {sid}")
+        elif row["compact_interface"] == "true" and synthesis[sid]["synthesis_status"] == "not_attempted":
+            errors.append(f"compact interface was not sent to rewrite synthesis: {sid}")
+
+    cec_by_target: dict[str, dict[str, str]] = {}
+    for row in tables["global_cec.csv"]:
+        cec_by_target.setdefault(row["stable_target_id"], {})[row["scope"]] = row["status"]
+
     for row in tables["graph_rewrites.csv"]:
+        sid = row["stable_target_id"]
         if row["rewrite_emitted"] == "true" and not row["rewrite_artifact"]:
-            errors.append(f"rewrite emitted without artifact: {row['stable_target_id']}")
+            errors.append(f"rewrite emitted without artifact: {sid}")
+        if row["rewrite_artifact"] and not (ROOT / row["rewrite_artifact"]).exists():
+            errors.append(f"rewrite artifact missing: {sid} {row['rewrite_artifact']}")
+        if row["rewrite_artifact"] and sid in synthesis:
+            actual_status = validate_rewritten_graph(ROOT / row["rewrite_artifact"], synthesis[sid]["optimized_target_node"])
+            if actual_status != row["status"]:
+                errors.append(f"rewrite artifact graph validation mismatch: {sid} {actual_status} != {row['status']}")
+        if row["rewrite_emitted"] == "true" and row["status"] != "valid":
+            errors.append(f"rewrite emitted without valid graph validation: {sid}")
+        if row["graph_active"] == "true" and row["rewrite_emitted"] != "true":
+            errors.append(f"graph-active rewrite was not emitted: {sid}")
         if row["status"] != "not_attempted" and row["rewrite_emitted"] != "true":
-            errors.append(f"graph rewrite counted without emitted artifact: {row['stable_target_id']}")
+            errors.append(f"graph rewrite counted without emitted artifact: {sid}")
 
     abc_available = any(row["tool"] == "abc" and row["status"] == "available" for row in tables["environment.csv"])
     for row in tables["global_cec.csv"]:
@@ -159,6 +186,9 @@ def main() -> int:
             rewrite = next((r for r in tables["graph_rewrites.csv"] if r["stable_target_id"] == row["stable_target_id"]), {})
             if rewrite.get("graph_active") != "true":
                 errors.append(f"boundary counted without graph-active rewrite: {row['stable_target_id']}")
+            scopes = cec_by_target.get(row["stable_target_id"], {})
+            if scopes.get("S_vs_Sprime") != "equivalent" or scopes.get("Sprime_vs_I") != "equivalent":
+                errors.append(f"boundary counted without both CEC scopes: {row['stable_target_id']}")
 
     dataset_classes = Counter(row["dataset_class"] for row in tables["dataset_classification.csv"])
     if dataset_classes.get("generated_research_benchmark", 0) == 0:
@@ -176,6 +206,10 @@ def main() -> int:
         errors.append("taxonomy/eligible mismatch")
     if taxonomy.get("actual_graph_rewrites", 0) != sum(row["rewrite_emitted"] == "true" for row in tables["graph_rewrites.csv"]):
         errors.append("taxonomy/graph rewrite mismatch")
+    if taxonomy.get("graph_active_rewrites", 0) != sum(row["graph_active"] == "true" for row in tables["graph_rewrites.csv"]):
+        errors.append("taxonomy/graph-active rewrite mismatch")
+    if taxonomy.get("cec_backed_new_boundaries", 0) != sum(row["new_boundary"] == "true" for row in tables["boundary_recovery.csv"]):
+        errors.append("taxonomy/new-boundary mismatch")
 
     if errors:
         return _fail(errors)
@@ -184,7 +218,9 @@ def main() -> int:
         f"{len(tables['raw_target_candidates.csv'])} raw targets, "
         f"{len(eligible)} eligible target-necessary, "
         f"{sum(row['compact_interface'] == 'true' for row in tables['formal_locality_results.csv'])} compact interfaces, "
-        f"{sum(row['rewrite_emitted'] == 'true' for row in tables['graph_rewrites.csv'])} graph rewrites"
+        f"{sum(row['rewrite_emitted'] == 'true' for row in tables['graph_rewrites.csv'])} rewrite artifacts, "
+        f"{sum(row['graph_active'] == 'true' for row in tables['graph_rewrites.csv'])} graph-active, "
+        f"{sum(row['new_boundary'] == 'true' for row in tables['boundary_recovery.csv'])} CEC-backed boundaries"
     )
     return 0
 

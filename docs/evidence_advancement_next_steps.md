@@ -17,7 +17,7 @@ graph artifact, tool metadata, or CEC obligation is present.
 | Direction | Promoted rows | Interpretation |
 |---|---:|---|
 | Source-blind source-side counterpart inference | 0 / 56 | 20 rows have semantic-only counterpart evidence, but no row has a new graph-active recovery. |
-| Graph-active rewrites from compact exact generated interfaces | 0 / 48 | 31 compact exact interfaces remain exact-locality proof objects, not emitted rewrites. |
+| Graph-active rewrites from compact exact generated interfaces | 18 / 48 | 31 compact exact interfaces emit valid rewrite artifacts; 18 are graph-active and CEC-backed new boundaries, while 13 emitted artifacts are classified as direct bypasses. |
 | Bounded CEGIS grammar completeness | 4 / 12 | Only `sign_extend` and `zero_extend` are complete for attempted blind and oracle-bus rows. |
 | Pinned redistributable RTL corpus | 3 / 3 | Three CC0 Verilog modules are committed with source-location metadata; local Yosys lowering is recorded as `tool_missing`. |
 | ODC-aware placement | 0 / 10 | Ten formal contextual ODC anchors exist, but none is graph-active or globally CEC-backed. |
@@ -43,8 +43,8 @@ The next publishable improvements are to move rows across these exact gates:
 
 - infer new source-side counterparts without controlled source access and emit
   graph-active CEC-backed rewrites;
-- synthesize concrete rewrite artifacts for the 31 compact exact generated
-  interfaces;
+- extend the rewrite language beyond single-output truth-table replacement so
+  valid-but-bypass artifacts can become constructive graph-active boundaries;
 - extend blind CEGIS templates and add completeness proofs for selected
   operator families beyond the attempted `sign_extend` and `zero_extend` rows;
 - install and pin Yosys so the CC0 RTL corpus lowers to BLIF with source

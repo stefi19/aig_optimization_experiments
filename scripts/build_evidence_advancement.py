@@ -101,14 +101,29 @@ def build_source_blind_counterpart_inference() -> list[dict[str, str]]:
 def build_compact_interface_rewrite_attempts() -> list[dict[str, str]]:
     locality = {row["stable_target_id"]: row for row in read_csv("results/necessity_first_target_discovery/formal_locality_results.csv")}
     rewrites = {row["stable_target_id"]: row for row in read_csv("results/necessity_first_target_discovery/graph_rewrites.csv")}
+    boundary = {row["stable_target_id"]: row for row in read_csv("results/necessity_first_target_discovery/boundary_recovery.csv")}
+    cec_rows = read_csv("results/necessity_first_target_discovery/global_cec.csv")
+    cec: dict[str, dict[str, str]] = {}
+    for row in cec_rows:
+        cec.setdefault(row["stable_target_id"], {})[row["scope"]] = row["status"]
     out = []
     for target_id, loc in sorted(locality.items()):
         rewrite = rewrites[target_id]
+        boundary_row = boundary[target_id]
+        cec_scopes = cec.get(target_id, {})
         compact = loc["compact_interface"] == "true"
         emitted = rewrite["rewrite_emitted"] == "true"
-        if emitted:
-            promotion = "graph_active_rewrite_emitted"
+        graph_active = rewrite["graph_active"] == "true"
+        new_boundary = boundary_row["new_boundary"] == "true"
+        if new_boundary:
+            promotion = "graph_active_cec_recovery"
             blocker = ""
+        elif emitted and graph_active:
+            promotion = "graph_active_without_global_recovery"
+            blocker = boundary_row["reason"] or "global_cec_not_claimed"
+        elif emitted:
+            promotion = "rewrite_artifact_only_not_graph_active"
+            blocker = rewrite["reason"] or "rewrite_not_graph_active"
         elif compact:
             promotion = "exact_locality_only"
             blocker = "rewrite_synthesizer_absent_for_certified_interface"
@@ -124,7 +139,11 @@ def build_compact_interface_rewrite_attempts() -> list[dict[str, str]]:
                 "best_upper_bound": loc["best_upper_bound"],
                 "rewrite_emitted": rewrite["rewrite_emitted"],
                 "graph_active": rewrite["graph_active"],
-                "global_cec_status": "not_claimed" if not emitted else "requires_existing_rewrite_table",
+                "rewrite_artifact": rewrite["rewrite_artifact"],
+                "source_vs_rewrite_cec": cec_scopes.get("S_vs_Sprime", "not_run"),
+                "rewrite_vs_optimized_cec": cec_scopes.get("Sprime_vs_I", "not_run"),
+                "new_boundary": boundary_row["new_boundary"],
+                "global_cec_status": "equivalent" if new_boundary else "not_claimed",
                 "promotion": promotion,
                 "blocker": blocker,
                 "schema_version": SCHEMA,
@@ -278,7 +297,7 @@ def build_summary(counterpart, rewrites, grammar, rtl, odc, locality) -> list[di
     complete_ops = [r for r in grammar if r["bounded_grammar_complete_for_attempted_rows"] == "true"]
     return [
         summary_row("source_blind_counterpart_inference", len(counterpart), count(counterpart, "graph_active_recovery", "true"), "semantic counterpart rows remain separate from graph-active recovery"),
-        summary_row("compact_interface_graph_rewrites", len(rewrites), count(rewrites, "rewrite_emitted", "true"), "31 compact exact interfaces remain exact-locality proof objects, not rewrites"),
+        summary_row("compact_interface_graph_rewrites", len(rewrites), count(rewrites, "new_boundary", "true"), "31 compact exact interfaces emit 31 rewrite artifacts; 18 are graph-active and CEC-backed new boundaries"),
         summary_row("bounded_grammar_completeness", len(grammar), len(complete_ops), "complete means all attempted rows recovered for that operator/mode only"),
         summary_row("pinned_rtl_corpus", len(rtl), count(rtl, "redistributable", "true"), "Yosys lowering is recorded as tool-dependent evidence"),
         summary_row("odc_aware_placement", len(odc), count(odc, "graph_active", "true"), "formal contextual ODC anchors are not counted as graph-active placements"),

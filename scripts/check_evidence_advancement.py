@@ -68,14 +68,30 @@ def _check_rewrites(rows: list[dict[str, str]], errors: list[str]) -> None:
         errors.append(f"compact-interface rewrite denominator drifted: {len(rows)} != 48")
     compact = [r for r in rows if r.get("compact_interface") == "true"]
     emitted = [r for r in rows if r.get("rewrite_emitted") == "true"]
+    graph_active = [r for r in rows if r.get("graph_active") == "true"]
+    new_boundary = [r for r in rows if r.get("new_boundary") == "true"]
     if len(compact) != 31:
         errors.append(f"compact exact-interface count drifted: {len(compact)} != 31")
-    if len(emitted) != 0:
-        errors.append(f"graph rewrite emissions drifted from current claim: {len(emitted)} != 0")
+    if len(emitted) != 31:
+        errors.append(f"rewrite artifact emission count drifted: {len(emitted)} != 31")
+    if len(graph_active) != 18:
+        errors.append(f"graph-active rewrite count drifted: {len(graph_active)} != 18")
+    if len(new_boundary) != 18:
+        errors.append(f"CEC-backed new-boundary count drifted: {len(new_boundary)} != 18")
     for row in rows:
         if row.get("compact_interface") == "true" and row.get("rewrite_emitted") != "true":
-            if row.get("promotion") != "exact_locality_only":
-                errors.append(f"compact non-rewrite row has wrong promotion: {row.get('stable_target_id')}")
+            errors.append(f"compact row did not emit a rewrite artifact: {row.get('stable_target_id')}")
+        if row.get("rewrite_emitted") == "true":
+            artifact = ROOT / row.get("rewrite_artifact", "")
+            if not row.get("rewrite_artifact") or not artifact.exists():
+                errors.append(f"emitted rewrite artifact missing: {row.get('stable_target_id')}")
+        if row.get("new_boundary") == "true":
+            if row.get("graph_active") != "true" or row.get("rewrite_emitted") != "true":
+                errors.append(f"new-boundary row lacks emitted graph-active rewrite: {row.get('stable_target_id')}")
+            if row.get("source_vs_rewrite_cec") != "equivalent" or row.get("rewrite_vs_optimized_cec") != "equivalent":
+                errors.append(f"new-boundary row lacks both CEC scopes: {row.get('stable_target_id')}")
+            if row.get("promotion") != "graph_active_cec_recovery":
+                errors.append(f"new-boundary row has wrong promotion: {row.get('stable_target_id')}")
         if row.get("rewrite_emitted") != "true" and row.get("global_cec_status") != "not_claimed":
             errors.append(f"non-emitted rewrite row claims CEC status: {row.get('stable_target_id')}")
 
@@ -194,7 +210,7 @@ def _check_summary(
 ) -> None:
     expected = {
         "source_blind_counterpart_inference": (len(counterpart), _count(counterpart, "graph_active_recovery", "true")),
-        "compact_interface_graph_rewrites": (len(rewrites), _count(rewrites, "rewrite_emitted", "true")),
+        "compact_interface_graph_rewrites": (len(rewrites), _count(rewrites, "new_boundary", "true")),
         "bounded_grammar_completeness": (len(grammar), _count(grammar, "bounded_grammar_complete_for_attempted_rows", "true")),
         "pinned_rtl_corpus": (len(rtl), _count(rtl, "redistributable", "true")),
         "odc_aware_placement": (len(odc), _count(odc, "graph_active", "true")),

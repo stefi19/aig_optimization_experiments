@@ -29,7 +29,9 @@ def test_evidence_advancement_keeps_evidence_levels_separate() -> None:
     assert sum(r["promoted_evidence_level"] == "semantic_counterpart_only" for r in source_blind) == 20
     assert sum(r["graph_active_recovery"] == "true" for r in source_blind) == 0
     assert sum(r["compact_interface"] == "true" for r in rewrite_attempts) == 31
-    assert sum(r["rewrite_emitted"] == "true" for r in rewrite_attempts) == 0
+    assert sum(r["rewrite_emitted"] == "true" for r in rewrite_attempts) == 31
+    assert sum(r["graph_active"] == "true" for r in rewrite_attempts) == 18
+    assert sum(r["new_boundary"] == "true" for r in rewrite_attempts) == 18
     assert sum(r["proof_status"] == "proven_odc_valid" for r in odc) == 10
     assert sum(r["graph_active"] == "true" for r in odc) == 0
 
