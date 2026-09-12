@@ -529,40 +529,98 @@ def _check_odc_boundary_source(row: dict[str, str], case: dict[str, str], errors
 def _check_locality(rows: list[dict[str, str]], errors: list[str]) -> None:
     if len(rows) != 57:
         errors.append(f"locality proof-object count drifted: {len(rows)} != 57")
-    source_tables = {
-        "results/necessity_first_target_discovery/formal_locality_results.csv": _source_index(
-            "results/necessity_first_target_discovery/formal_locality_results.csv", "stable_target_id", errors
-        ),
-        "results/formal_locality_barriers/input_exact_minimum_certificates.csv": _source_index(
-            "results/formal_locality_barriers/input_exact_minimum_certificates.csv", "target_id", errors
-        ),
-    }
+    expected = _expected_locality_proof_sources(errors)
+    actual_ids = [row.get("proof_id", "") for row in rows]
+    if len(actual_ids) != len(set(actual_ids)):
+        errors.append("duplicate locality proof ids in evidence table")
+    expected_ids = set(expected)
+    actual_id_set = set(actual_ids)
+    missing = sorted(expected_ids - actual_id_set)
+    extra = sorted(actual_id_set - expected_ids)
+    if missing:
+        errors.append(f"missing expected locality proof objects: {missing}")
+    if extra:
+        errors.append(f"unexpected locality proof objects: {extra}")
     for row in rows:
+        proof_id = row.get("proof_id", "")
         if row.get("machine_checkable") != "true":
-            errors.append(f"proof-object row is not machine-checkable: {row.get('proof_id')}")
+            errors.append(f"proof-object row is not machine-checkable: {proof_id}")
         path = ROOT / row.get("proof_object_path", "")
         if not path.exists():
             errors.append(f"proof object missing: {row.get('proof_object_path')}")
             continue
         if _sha256(path) != row.get("proof_object_sha256"):
-            errors.append(f"proof-object hash mismatch: {row.get('proof_id')}")
-        proof = json.loads(path.read_text(encoding="utf-8"))
-        if proof.get("schema_version") != SCHEMA or proof.get("proof_id") != row.get("proof_id"):
-            errors.append(f"proof-object identity mismatch: {row.get('proof_id')}")
-        width = int(row.get("tested_interface_width", "0"))
+            errors.append(f"proof-object hash mismatch: {proof_id}")
+        try:
+            proof = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            errors.append(f"proof-object JSON parse failed: {proof_id}: {exc}")
+            continue
+        if proof.get("schema_version") != SCHEMA or proof.get("proof_id") != proof_id:
+            errors.append(f"proof-object identity mismatch: {proof_id}")
+        expected_source = expected.get(proof_id)
+        if expected_source is not None:
+            _check_locality_proof_source(row, proof, expected_source, errors)
+        try:
+            width = int(row.get("tested_interface_width", "0"))
+        except ValueError:
+            errors.append(f"proof-object row has invalid interface width: {proof_id}")
+            width = -1
         if len(proof.get("tested_interface", [])) != width:
-            errors.append(f"proof-object tested interface width mismatch: {row.get('proof_id')}")
-        if int(row.get("proved_lower_bound", "0")) != width or int(row.get("best_upper_bound", "0")) != width:
-            errors.append(f"proof-object row is not exact-minimum width-tight: {row.get('proof_id')}")
+            errors.append(f"proof-object tested interface width mismatch: {proof_id}")
+        try:
+            proved_lower_bound = int(row.get("proved_lower_bound", "0"))
+            best_upper_bound = int(row.get("best_upper_bound", "0"))
+        except ValueError:
+            errors.append(f"proof-object row has invalid bound metadata: {proof_id}")
+            proved_lower_bound = best_upper_bound = -1
+        if proved_lower_bound != width or best_upper_bound != width:
+            errors.append(f"proof-object row is not exact-minimum width-tight: {proof_id}")
         if proof.get("solver_status") != "unsat" or proof.get("exact_minimum_status") != "exact_minimum":
-            errors.append(f"proof-object lacks exact-minimum UNSAT certificate metadata: {row.get('proof_id')}")
-        source_table = proof.get("source_table", "")
-        source_key = proof.get("target_id", "")
-        source_row = source_tables.get(source_table, {}).get(source_key)
-        if not source_row:
-            errors.append(f"proof-object source row missing: {row.get('proof_id')}")
-        elif _hash_rows([source_row]) != proof.get("source_row_hash"):
-            errors.append(f"proof-object source row hash mismatch: {row.get('proof_id')}")
+            errors.append(f"proof-object lacks exact-minimum UNSAT certificate metadata: {proof_id}")
+
+
+def _expected_locality_proof_sources(errors: list[str]) -> dict[str, dict[str, object]]:
+    expected: dict[str, dict[str, object]] = {}
+    for source_family, rel_path, id_col in [
+        ("necessity_first_targets", "results/necessity_first_target_discovery/formal_locality_results.csv", "stable_target_id"),
+        ("formal_locality_barriers", "results/formal_locality_barriers/input_exact_minimum_certificates.csv", "certificate_id"),
+    ]:
+        for source_row in _source_rows(rel_path, errors):
+            if source_family == "necessity_first_targets" and source_row.get("compact_interface") != "true":
+                continue
+            if source_row.get("exact_minimum_status") != "exact_minimum" or source_row.get("solver_status") != "unsat":
+                continue
+            proof_id = _stable_id(source_family, source_row[id_col], source_row.get("tested_interface", ""))
+            expected[proof_id] = {
+                "source_family": source_family,
+                "source_table": rel_path,
+                "source_row": source_row,
+                "target_id": source_row.get("stable_target_id") or source_row.get("target_id"),
+            }
+    return expected
+
+
+def _check_locality_proof_source(row: dict[str, str], proof: dict[str, object], expected: dict[str, object], errors: list[str]) -> None:
+    proof_id = row.get("proof_id", "")
+    source_row = expected["source_row"]
+    if row.get("source_family") != expected["source_family"] or proof.get("source_family") != expected["source_family"]:
+        errors.append(f"proof-object source family mismatch: {proof_id}")
+    if row.get("source_table") != expected["source_table"] or proof.get("source_table") != expected["source_table"]:
+        errors.append(f"proof-object source table mismatch: {proof_id}")
+    if row.get("target_id") != expected["target_id"] or proof.get("target_id") != expected["target_id"]:
+        errors.append(f"proof-object target mismatch: {proof_id}")
+    if proof.get("source_row_hash") != _hash_rows([source_row]):
+        errors.append(f"proof-object source row hash mismatch: {proof_id}")
+    if proof.get("predicate") != "no_smaller_interface_suffices_and_listed_interface_suffices":
+        errors.append(f"proof-object predicate mismatch: {proof_id}")
+    tested_interface = json.loads(source_row["tested_interface"])
+    if proof.get("tested_interface") != tested_interface:
+        errors.append(f"proof-object tested interface disagrees with source row: {proof_id}")
+    if int(source_row["proved_lower_bound"]) != int(row.get("proved_lower_bound", "-1")):
+        errors.append(f"proof-object proved lower bound disagrees with source row: {proof_id}")
+    if int(source_row["best_upper_bound"]) != int(row.get("best_upper_bound", "-1")):
+        errors.append(f"proof-object best upper bound disagrees with source row: {proof_id}")
 
 
 def _check_summary(
@@ -632,6 +690,10 @@ def _sha256(path: Path) -> str:
 
 def _hash_rows(rows: list[dict[str, str]]) -> str:
     return hashlib.sha256(json.dumps(rows, sort_keys=True).encode("utf-8")).hexdigest()
+
+
+def _stable_id(*parts: object) -> str:
+    return hashlib.sha256(json.dumps(parts, sort_keys=True).encode("utf-8")).hexdigest()[:16]
 
 
 if __name__ == "__main__":

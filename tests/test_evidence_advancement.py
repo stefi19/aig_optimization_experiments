@@ -24,6 +24,16 @@ def _write_rows(path: Path, rows: list[dict[str, str]]) -> None:
         writer.writerows(rows)
 
 
+def _sha256(path: Path) -> str:
+    import hashlib
+
+    h = hashlib.sha256()
+    with path.open("rb") as fh:
+        for chunk in iter(lambda: fh.read(65536), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
 @pytest.fixture(scope="module", autouse=True)
 def _built_evidence() -> None:
     subprocess.run([sys.executable, str(ROOT / "scripts" / "build_evidence_advancement.py")], cwd=ROOT, check=True)
@@ -268,3 +278,35 @@ def test_checker_rejects_odc_contextual_anchor_as_graph_active() -> None:
         assert result.returncode != 0
     finally:
         _write_rows(path, original)
+
+
+def test_checker_rejects_missing_locality_proof_object_row() -> None:
+    path = ROOT / "results/evidence_advancement/locality_proof_objects.csv"
+    rows = list(csv.DictReader(path.open()))
+    original = [dict(row) for row in rows]
+    try:
+        _write_rows(path, rows[1:])
+        result = subprocess.run([sys.executable, str(ROOT / "scripts" / "check_evidence_advancement.py")], cwd=ROOT)
+        assert result.returncode != 0
+    finally:
+        _write_rows(path, original)
+
+
+def test_checker_rejects_locality_proof_object_predicate_drift() -> None:
+    table_path = ROOT / "results/evidence_advancement/locality_proof_objects.csv"
+    rows = list(csv.DictReader(table_path.open()))
+    original_rows = [dict(row) for row in rows]
+    row = rows[0]
+    proof_path = ROOT / row["proof_object_path"]
+    original_proof_text = proof_path.read_text(encoding="utf-8")
+    proof = json.loads(original_proof_text)
+    proof["predicate"] = "weaker_metadata_only_claim"
+    proof_path.write_text(json.dumps(proof, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    row["proof_object_sha256"] = _sha256(proof_path)
+    try:
+        _write_rows(table_path, rows)
+        result = subprocess.run([sys.executable, str(ROOT / "scripts" / "check_evidence_advancement.py")], cwd=ROOT)
+        assert result.returncode != 0
+    finally:
+        proof_path.write_text(original_proof_text, encoding="utf-8")
+        _write_rows(table_path, original_rows)

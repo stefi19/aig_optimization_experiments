@@ -21,7 +21,7 @@ graph artifact, tool metadata, or CEC obligation is present.
 | Bounded CEGIS grammar completeness | 4 / 12 | Only `sign_extend` and `zero_extend` are complete for attempted blind and oracle-bus rows. The checker recomputes grouped recovery counts, formal-SMT proof row counts, and proof hashes from the Z3 CEGIS source tables. |
 | Pinned redistributable RTL corpus | 3 / 3 | Three CC0 Verilog modules are committed with source-location metadata; local Yosys lowering is recorded as `tool_missing`. |
 | ODC-aware placement | 0 / 10 | Ten formal contextual ODC anchors exist, but none is graph-active or globally CEC-backed. The checker ties each accounting row back to proven-anchor and selected boundary-case source tables, preserving the distinction between contextual boundary candidates and emitted global graph rewrites. |
-| Machine-checkable locality proof objects | 57 / 57 | JSON proof objects mirror exact-minimum locality certificate rows. |
+| Machine-checkable locality proof objects | 57 / 57 | JSON proof objects mirror exact-minimum locality certificate rows. The checker regenerates the expected proof-object id set from the source locality tables, rejects missing or extra objects, and verifies each object's source family, table, row hash, predicate, interface, and bounds. |
 
 ## Evidence Rules
 
@@ -43,7 +43,8 @@ graph artifact, tool metadata, or CEC obligation is present.
   `boundary_candidate_requires_graph_cec`.
 - Locality proof objects currently mirror replayable CSV evidence. They are
   machine-checkable metadata objects, not independently checkable UNSAT proof
-  traces.
+  traces. The checked scope is complete object accounting over eligible
+  exact-minimum source rows.
 
 ## Next Promotions
 
