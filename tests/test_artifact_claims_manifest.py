@@ -74,3 +74,16 @@ def test_artifact_claims_rejects_manifest_family_drift() -> None:
         assert "artifact manifest has duplicate result families" in result.stderr
     finally:
         MANIFEST.write_text(original, encoding="utf-8")
+
+
+def test_artifact_claims_rejects_malformed_manifest_git_head() -> None:
+    original = MANIFEST.read_text(encoding="utf-8")
+    rows = _read_manifest()
+    rows[0]["git_head"] = "not-a-sha"
+    try:
+        _write_manifest(rows)
+        result = _check_claims()
+        assert result.returncode != 0
+        assert "artifact manifest git head is not a known commit" in result.stderr
+    finally:
+        MANIFEST.write_text(original, encoding="utf-8")

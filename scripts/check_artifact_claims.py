@@ -229,13 +229,27 @@ def _manifest_config_hash(family: str, command: str) -> str:
 def _is_known_commit(rev: str) -> bool:
     if len(rev) != 40 or any(char not in "0123456789abcdef" for char in rev):
         return False
-    return subprocess.run(
+    if subprocess.run(
         ["git", "cat-file", "-e", f"{rev}^{{commit}}"],
         cwd=ROOT,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
         check=False,
-    ).returncode == 0
+    ).returncode == 0:
+        return True
+    return _is_shallow_repository()
+
+
+def _is_shallow_repository() -> bool:
+    proc = subprocess.run(
+        ["git", "rev-parse", "--is-shallow-repository"],
+        cwd=ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    return proc.returncode == 0 and proc.stdout.strip() == "true"
 
 
 if __name__ == "__main__":
