@@ -199,7 +199,7 @@ def attempt_source_blind_window_expression_placement(
         "max_candidate_signals": max_candidate_signals,
         "max_support_inputs": max_support_inputs,
         "target_truth_table_hash": _hash_vector(target_vector),
-        "search_order": ("not", "binary", "mux"),
+        "search_order": ("not", "binary", "mux", "literal_binary", "literal_mux"),
         "candidate_source": "source_graph_signals_only",
     }
     if match is None:
@@ -379,7 +379,75 @@ def _find_expression_match(target_vector: tuple[int, ...], candidates: list[dict
                         "window": tuple(str(name) for name in names),
                         "support": support,
                     }
+
+    literals = _literal_expression_candidates(candidates)
+    for left_index, left in enumerate(literals):
+        for right in literals[left_index + 1 :]:
+            if left["leaves"] == right["leaves"]:
+                continue
+            support = _union_support(left["support"], right["support"])
+            if len(support) > max_support_inputs:
+                continue
+            for op_name, op in binary_ops:
+                if op(left["vector"], right["vector"]) == target_vector:
+                    return {
+                        "language": op_name,
+                        "expression": f"{op_name}({left['expression']},{right['expression']})",
+                        "window": _expression_window(left, right),
+                        "support": support,
+                    }
+
+    for selector in literals:
+        for when_one in literals:
+            for when_zero in literals:
+                leaves = _expression_window(selector, when_one, when_zero)
+                if len(leaves) != 3:
+                    continue
+                support = _union_support(selector["support"], when_one["support"], when_zero["support"])
+                if len(support) > max_support_inputs:
+                    continue
+                vector = tuple((s & a) | ((1 - s) & b) for s, a, b in zip(selector["vector"], when_one["vector"], when_zero["vector"], strict=True))
+                if vector == target_vector:
+                    return {
+                        "language": "mux",
+                        "expression": f"mux({selector['expression']},{when_one['expression']},{when_zero['expression']})",
+                        "window": leaves,
+                        "support": support,
+                    }
     return None
+
+
+def _literal_expression_candidates(candidates: list[dict[str, object]]) -> list[dict[str, object]]:
+    literals: list[dict[str, object]] = []
+    for candidate in candidates:
+        name = str(candidate["name"])
+        literals.append(
+            {
+                "expression": name,
+                "leaves": (name,),
+                "support": candidate["support"],
+                "vector": candidate["vector"],
+            }
+        )
+        literals.append(
+            {
+                "expression": f"not({name})",
+                "leaves": (name,),
+                "support": candidate["support"],
+                "vector": _invert(candidate["vector"]),
+            }
+        )
+    return literals
+
+
+def _expression_window(*expressions: dict[str, object]) -> tuple[str, ...]:
+    leaves: list[str] = []
+    for expression in expressions:
+        for leaf in expression["leaves"]:
+            name = str(leaf)
+            if name not in leaves:
+                leaves.append(name)
+    return tuple(leaves)
 
 
 def _invert(vector: object) -> tuple[int, ...]:

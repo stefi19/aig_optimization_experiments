@@ -16,7 +16,7 @@ graph artifact, tool metadata, or CEC obligation is present.
 
 | Direction | Promoted rows | Interpretation |
 |---|---:|---|
-| Source-blind source-side counterpart inference | 14 / 56 | Exact-node source-blind placement remains 0/56, but bounded window/expression placement promotes 14/56 with emitted graph-active rewrites and both CEC scopes. The checker now replays each non-empty expression witness against the source and optimized BLIF truth vectors, selected support, target hash, and source-graph-only policy. The remaining prior semantic rows are 3 identical-driver no-ops and 3 no-expression-under-bound failures. |
+| Source-blind source-side counterpart inference | 14 / 56 | Exact-node source-blind placement remains 0/56, but bounded window/expression placement promotes 14/56 with emitted graph-active rewrites and both CEC scopes. The checker now replays each non-empty expression witness against the source and optimized BLIF truth vectors, selected support, target hash, and source-graph-only policy, including nested negated source literals. The remaining prior semantic rows are 6 identical-driver no-ops: three direct no-ops plus three rows whose former no-expression failures now replay as `nor(data,not(selector))` but do not pass the graph-active gate. |
 | Graph-active rewrites from compact exact generated interfaces | 22 / 48 | 31 compact exact interfaces emit valid rewrite artifacts; bounded fanout-frontier expansion promotes 4 additional rows, while 9 emitted artifacts remain identical-driver non-active rewrites. The evidence checker cross-links each row to necessity-first provenance, graph-rewrite, boundary, and CEC-scope tables, and revalidates emitted BLIF artifacts. |
 | Bounded CEGIS grammar completeness | 4 / 12 | Only `sign_extend` and `zero_extend` are complete for attempted blind and oracle-bus rows. The checker recomputes grouped recovery counts, formal-SMT proof row counts, and proof hashes from the Z3 CEGIS source tables. |
 | Pinned redistributable RTL corpus | 3 / 3 | Three CC0 Verilog modules are committed with source-location metadata; local Yosys lowering is recorded as `tool_missing`. The checker verifies the expected design set, SPDX/module shape, source hashes, source-location metadata, and Yosys/lowered-BLIF provenance boundaries. |
@@ -52,7 +52,7 @@ graph artifact, tool metadata, or CEC obligation is present.
 The next publishable improvements are to move rows across these exact gates:
 
 - extend source-blind placement beyond the current unary/binary/mux expression
-  language to larger source windows, while preserving emitted-artifact,
+  language with negated source literals to larger or non-identical source windows, while preserving emitted-artifact,
   graph-activity, CEC, and leakage-audit gates;
 - extend the rewrite language beyond radius-1 fanout-frontier replacement so
   remaining identical-driver artifacts can become constructive graph-active

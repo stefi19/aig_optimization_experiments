@@ -87,6 +87,10 @@ def _check_source_blind_placement(rows: list[dict[str, str]], errors: list[str],
 
 def _check_source_blind_window_expression(rows: list[dict[str, str]], errors: list[str]) -> None:
     _check_source_blind_placement(rows, errors, "source-blind window-expression placement")
+    attempted = [r for r in rows if r.get("semantic_counterpart_status", "").startswith("proved_")]
+    expression_misses = [r for r in attempted if r.get("blocker") == "no_source_window_expression_under_bound"]
+    if expression_misses:
+        errors.append(f"source-blind window-expression language regressed on attempted rows: {len(expression_misses)} expression misses")
     for row in rows:
         target = row.get("target_id")
         if row.get("leakage_audit") != "pass:aligned_pi_po_source_graph_signals_only":
@@ -141,13 +145,17 @@ def _check_source_blind_expression_witness(row: dict[str, str], errors: list[str
         if expr is None:
             errors.append(f"source-blind expression witness has unparsable expression: {target}")
             return
-        op_name, args = expr
+        op_name = expr.get("op")
+        leaves = _unique_expression_leaves(expr)
+        if not op_name:
+            errors.append(f"source-blind expression witness has non-operator expression: {target}")
+            return
         if op_name != row.get("expression_language"):
             errors.append(f"source-blind expression language mismatch for {target}: {op_name} != {row.get('expression_language')}")
-        if tuple(args) != window:
+        if tuple(leaves) != window:
             errors.append(f"source-blind expression window does not match expression args: {target}")
         allowed_signals = set(source.inputs) | set(source.outputs) | {node.output for node in source.nodes}
-        unknown = [arg for arg in args if arg not in allowed_signals]
+        unknown = [arg for arg in leaves if arg not in allowed_signals]
         if unknown:
             errors.append(f"source-blind expression uses non-source signals for {target}: {unknown}")
             return
@@ -155,7 +163,7 @@ def _check_source_blind_expression_witness(row: dict[str, str], errors: list[str
             errors.append(f"source-blind expression target missing in optimized BLIF: {target}")
             return
         target_vector = _bit_vector(optimized, target_node)
-        expression_vector = _evaluate_source_expression(source, op_name, args)
+        expression_vector = _evaluate_source_expression(source, expr)
     except (KeyError, ValueError, TypeError) as exc:
         errors.append(f"source-blind expression witness replay failed for {target}: {exc}")
         return
@@ -166,7 +174,7 @@ def _check_source_blind_expression_witness(row: dict[str, str], errors: list[str
     if features.get("target_truth_table_hash") != expected_hash:
         errors.append(f"source-blind expression target hash mismatch for {target}")
 
-    support = _expression_support(source, args)
+    support = _expression_support(source, leaves)
     selected_support = tuple(features.get("selected_support", ()))
     if selected_support != support:
         errors.append(f"source-blind expression selected support mismatch for {target}: {selected_support} != {support}")
@@ -188,23 +196,90 @@ def _parse_target_id(target_id: str) -> tuple[str, str, str, str] | None:
     return parts[0], parts[1], parts[2], parts[3]
 
 
-def _parse_expression(expression: str) -> tuple[str, list[str]] | None:
-    if not expression.endswith(")") or "(" not in expression:
+def _parse_expression(expression: str) -> dict[str, object] | None:
+    expression = expression.strip()
+    if not expression:
+        return None
+    if "(" not in expression:
+        return {"signal": expression}
+    if not expression.endswith(")"):
         return None
     op_name, rest = expression.split("(", 1)
-    args = rest[:-1].split(",") if rest[:-1] else []
-    expected_arity = {"not": 1, "and": 2, "or": 2, "xor": 2, "xnor": 2, "nand": 2, "nor": 2, "mux": 3}
-    if op_name not in expected_arity or len(args) != expected_arity[op_name] or any(not arg for arg in args):
+    if not op_name:
         return None
-    return op_name, args
+    arg_text = rest[:-1]
+    raw_args = _split_expression_args(arg_text)
+    if raw_args is None:
+        return None
+    args = [_parse_expression(arg) for arg in raw_args]
+    if any(arg is None for arg in args):
+        return None
+    expected_arity = {"not": 1, "and": 2, "or": 2, "xor": 2, "xnor": 2, "nand": 2, "nor": 2, "mux": 3}
+    if op_name not in expected_arity or len(args) != expected_arity[op_name]:
+        return None
+    return {"op": op_name, "args": args}
+
+
+def _split_expression_args(text: str) -> list[str] | None:
+    if not text:
+        return []
+    args: list[str] = []
+    start = 0
+    depth = 0
+    for index, char in enumerate(text):
+        if char == "(":
+            depth += 1
+        elif char == ")":
+            depth -= 1
+            if depth < 0:
+                return None
+        elif char == "," and depth == 0:
+            arg = text[start:index].strip()
+            if not arg:
+                return None
+            args.append(arg)
+            start = index + 1
+    if depth != 0:
+        return None
+    tail = text[start:].strip()
+    if not tail:
+        return None
+    args.append(tail)
+    return args
+
+
+def _unique_expression_leaves(expr: dict[str, object]) -> list[str]:
+    leaves: list[str] = []
+    for leaf in _expression_leaves(expr):
+        if leaf not in leaves:
+            leaves.append(leaf)
+    return leaves
+
+
+def _expression_leaves(expr: dict[str, object]) -> list[str]:
+    signal = expr.get("signal")
+    if isinstance(signal, str):
+        return [signal]
+    leaves: list[str] = []
+    for arg in expr.get("args", []):
+        if isinstance(arg, dict):
+            leaves.extend(_expression_leaves(arg))
+    return leaves
 
 
 def _bit_vector(net: BlifNetwork, node: str) -> tuple[int, ...]:
     return tuple(vector_eval(net, (node,), assignment)[0] for assignment in all_assignments(tuple(net.inputs)))
 
 
-def _evaluate_source_expression(net: BlifNetwork, op_name: str, args: list[str]) -> tuple[int, ...]:
-    vectors = [_bit_vector(net, arg) for arg in args]
+def _evaluate_source_expression(net: BlifNetwork, expr: dict[str, object]) -> tuple[int, ...]:
+    signal = expr.get("signal")
+    if isinstance(signal, str):
+        return _bit_vector(net, signal)
+    op_name = expr.get("op")
+    args = expr.get("args", [])
+    if not isinstance(op_name, str) or not isinstance(args, list) or any(not isinstance(arg, dict) for arg in args):
+        raise ValueError(f"unsupported expression: {expr}")
+    vectors = [_evaluate_source_expression(net, arg) for arg in args]
     if op_name == "not":
         return tuple(1 - bit for bit in vectors[0])
     if op_name == "and":

@@ -278,3 +278,49 @@ def test_source_blind_window_expression_rejects_bypass(tmp_path: Path) -> None:
     )
     assert not result.rewrite_emitted
     assert result.blocker == "direct_bypass"
+
+
+def test_source_blind_window_expression_uses_negated_literal_inside_binary(tmp_path: Path) -> None:
+    source = tmp_path / "source.blif"
+    optimized = tmp_path / "optimized.blif"
+    _write_blif(
+        source,
+        """
+        .model source
+        .inputs d s
+        .outputs y
+        .names d y
+        1 1
+        .end
+        """,
+    )
+    _write_blif(
+        optimized,
+        """
+        .model optimized
+        .inputs d s
+        .outputs y
+        .names d nd
+        0 1
+        .names nd s t
+        11 1
+        .names t y
+        1 1
+        .end
+        """,
+    )
+    result = attempt_source_blind_window_expression_placement(
+        target_id="controlled|region|flow|t",
+        semantic_counterpart_status="proved_additive_counterpart",
+        source_path=source,
+        optimized_path=optimized,
+        optimized_target_node="t",
+        output_path=tmp_path / "rewrite.blif",
+        root=tmp_path,
+        abc_path=_missing_abc(tmp_path),
+    )
+    assert result.rewrite_emitted
+    assert result.expression_language == "nor"
+    assert result.expression == "nor(d,not(s))"
+    assert result.candidate_source_window == ("d", "s")
+    assert result.selection_features["search_order"] == ("not", "binary", "mux", "literal_binary", "literal_mux")

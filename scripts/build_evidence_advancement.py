@@ -444,8 +444,9 @@ def build_locality_proof_objects() -> list[dict[str, str]]:
 def build_summary(counterpart, rewrites, grammar, rtl, odc, locality) -> list[dict[str, str]]:
     complete_ops = [r for r in grammar if r["bounded_grammar_complete_for_attempted_rows"] == "true"]
     source_blind_promoted = count(counterpart, "graph_active_recovery", "true")
+    source_blind_noops = count(counterpart, "promoted_evidence_level", "semantic_counterpart_only")
     return [
-        summary_row("source_blind_counterpart_inference", len(counterpart), source_blind_promoted, f"20 rows with prior semantic counterpart evidence are attempted by bounded source-blind window/expression placement; {source_blind_promoted} emit graph-active CEC-backed rewrites"),
+        summary_row("source_blind_counterpart_inference", len(counterpart), source_blind_promoted, f"20 rows with prior semantic counterpart evidence are attempted by bounded source-blind window/expression placement; {source_blind_promoted} emit graph-active CEC-backed rewrites and {source_blind_noops} remain semantic-only no-ops"),
         summary_row("compact_interface_graph_rewrites", len(rewrites), count(rewrites, "new_boundary", "true"), "31 compact exact interfaces emit 31 rewrite artifacts; single-output plus fanout-aware rewrite languages promote 22 graph-active CEC-backed new boundaries"),
         summary_row("bounded_grammar_completeness", len(grammar), len(complete_ops), "complete means all attempted rows recovered for that operator/mode only"),
         summary_row("pinned_rtl_corpus", len(rtl), count(rtl, "redistributable", "true"), "Yosys lowering is recorded as tool-dependent evidence"),
