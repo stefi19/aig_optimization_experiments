@@ -1,0 +1,30 @@
+{
+  "anchor_cut_id": "",
+  "anchor_expression": "",
+  "benchmark": "",
+  "decomposition_status": "unsupported_no_replay_artifacts",
+  "minimal_support": [],
+  "minimality_status": "exact_boolean_support",
+  "obligations": {
+    "global_cec_equivalent": false,
+    "graph_active": false,
+    "rewrite_vs_optimized_cec": "not_run",
+    "source_graph_or_pi_only": false,
+    "source_vs_rewrite_cec": "not_run",
+    "support_bound": true,
+    "target_vector_replayed": false
+  },
+  "optimization_flow": "",
+  "optimized_target_node": "",
+  "proof_id": "849dca8d4a095b0a",
+  "proof_status": "unsupported_no_replay_artifacts",
+  "proof_style": "proof_carrying_virtual_anchor_synthesis",
+  "rewrite_artifact": "",
+  "rewrite_support": [],
+  "schema_version": "evidence_advancement_v1",
+  "source_result": "fresh_utility_target",
+  "source_row_hash": "3a4d40930c73342c005419aa9b277e679b02741125e9806f08c2e6fe4e004ae8",
+  "source_table": "results/active_source_counterpart_refactoring/development_results.csv",
+  "target_id": "controlled_nonmonotonic_factor__b0",
+  "target_truth_table_hash": ""
+}

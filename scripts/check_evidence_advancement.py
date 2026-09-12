@@ -27,6 +27,10 @@ def main() -> int:
     placement = _rows("source_blind_counterpart_placement.csv", errors)
     window_expression = _rows("source_blind_window_expression_placement.csv", errors)
     counterpart = _rows("source_blind_counterpart_inference.csv", errors)
+    latent_cuts = _rows("latent_source_cut_bank.csv", errors)
+    decompositions = _rows("optimized_target_decompositions.csv", errors)
+    virtual_anchors = _rows("virtual_anchor_certificates.csv", errors)
+    constructive = _rows("constructive_rewrite_selection.csv", errors)
     rewrites = _rows("compact_interface_rewrite_attempts.csv", errors)
     grammar = _rows("grammar_completeness_certificates.csv", errors)
     rtl = _rows("rtl_corpus_manifest.csv", errors)
@@ -34,16 +38,17 @@ def main() -> int:
     locality = _rows("locality_proof_objects.csv", errors)
     summary = _rows("evidence_advancement_summary.csv", errors)
 
-    _check_schema(placement + window_expression + counterpart + rewrites + grammar + rtl + odc + locality + summary, errors)
+    _check_schema(placement + window_expression + counterpart + latent_cuts + decompositions + virtual_anchors + constructive + rewrites + grammar + rtl + odc + locality + summary, errors)
     _check_source_blind_placement(placement, errors, "source-blind exact-node placement")
     _check_source_blind_window_expression(window_expression, errors)
     _check_counterpart(counterpart, window_expression, errors)
+    _check_proof_carrying_anchor_synthesis(latent_cuts, decompositions, virtual_anchors, constructive, errors)
     _check_rewrites(rewrites, errors)
     _check_grammar(grammar, errors)
     _check_rtl(rtl, errors)
     _check_odc(odc, errors)
     _check_locality(locality, errors)
-    _check_summary(summary, counterpart, rewrites, grammar, rtl, odc, locality, errors)
+    _check_summary(summary, counterpart, virtual_anchors, constructive, rewrites, grammar, rtl, odc, locality, errors)
 
     if errors:
         for error in errors:
@@ -345,6 +350,287 @@ def _check_counterpart(rows: list[dict[str, str]], placement: list[dict[str, str
                 errors.append(f"source-blind inference/placement target order mismatch: {row.get('target_id')} != {placed.get('target_id')}")
             if (row.get("graph_active_recovery") == "true") != (placed.get("promotion") == "graph_active_recovery"):
                 errors.append(f"source-blind inference does not derive graph-active status from placement: {row.get('target_id')}")
+
+
+def _check_proof_carrying_anchor_synthesis(
+    latent_cuts: list[dict[str, str]],
+    decompositions: list[dict[str, str]],
+    virtual_anchors: list[dict[str, str]],
+    constructive: list[dict[str, str]],
+    errors: list[str],
+) -> None:
+    source_rows = _source_rows("results/active_source_counterpart_refactoring/development_results.csv", errors)
+    if len(decompositions) != 56 or len(virtual_anchors) != 56 or len(constructive) != 56:
+        errors.append(
+            "proof-carrying anchor synthesis denominator drifted: "
+            f"{len(decompositions)}, {len(virtual_anchors)}, {len(constructive)} != 56"
+        )
+    if len(latent_cuts) != 768:
+        errors.append(f"latent source cut bank drifted: {len(latent_cuts)} != 768")
+
+    cut_index = _check_latent_source_cut_bank(latent_cuts, errors)
+    decomp_index = {row.get("target_instance_id", ""): row for row in decompositions}
+    constructive_index = {row.get("target_instance_id", ""): row for row in constructive}
+    if len(decomp_index) != len(decompositions):
+        errors.append("optimized decomposition table has duplicate target instances")
+    if len(constructive_index) != len(constructive):
+        errors.append("constructive rewrite table has duplicate target instances")
+
+    for index, source_row in enumerate(source_rows):
+        target_instance_id = _stable_id(index, source_row.get("target_id", ""))
+        decomp = decomp_index.get(target_instance_id)
+        rewrite = constructive_index.get(target_instance_id)
+        if decomp is None or rewrite is None:
+            errors.append(f"missing proof-carrying rows for target instance: {target_instance_id}")
+            continue
+        _check_virtual_decomposition_source(index, source_row, decomp, cut_index, errors)
+        _check_constructive_virtual_rewrite(source_row, decomp, rewrite, errors)
+
+    cert_index = {row.get("target_instance_id", ""): row for row in virtual_anchors}
+    if len(cert_index) != len(virtual_anchors):
+        errors.append("virtual-anchor certificate table has duplicate target instances")
+    for index, source_row in enumerate(source_rows):
+        target_instance_id = _stable_id(index, source_row.get("target_id", ""))
+        cert = cert_index.get(target_instance_id)
+        decomp = decomp_index.get(target_instance_id, {})
+        rewrite = constructive_index.get(target_instance_id, {})
+        if cert is None:
+            errors.append(f"missing virtual-anchor certificate row: {target_instance_id}")
+            continue
+        _check_virtual_anchor_certificate(source_row, cert, decomp, rewrite, errors)
+
+    if _count(virtual_anchors, "proof_status", "proven_virtual_anchor") != 20:
+        errors.append("proof-carrying virtual anchor proven count drifted from 20")
+    if _count(constructive, "objective_status", "graph_active_cec_recovery") != 20:
+        errors.append("constructive virtual anchor recovery count drifted from 20")
+    if _count(decompositions, "decomposition_status", "unsupported_no_replay_artifacts") != 36:
+        errors.append("non-materialized virtual-anchor blocker count drifted from 36")
+
+
+def _check_latent_source_cut_bank(rows: list[dict[str, str]], errors: list[str]) -> dict[str, dict[str, str]]:
+    index: dict[str, dict[str, str]] = {}
+    source_cache: dict[str, tuple[BlifNetwork, dict[str, tuple[int, ...]], dict[str, tuple[str, ...]]]] = {}
+    for row in rows:
+        cut_id = row.get("cut_id", "")
+        if cut_id in index:
+            errors.append(f"duplicate latent source cut id: {cut_id}")
+        index[cut_id] = row
+        source_path = ROOT / row.get("source_artifact", "")
+        if not source_path.exists():
+            errors.append(f"latent source cut lacks source artifact: {cut_id}")
+            continue
+        try:
+            source, vector_map, support_map = _cached_source_analysis(row.get("source_artifact", ""), source_cache)
+            support = tuple(json.loads(row.get("support", "[]")))
+            leaves = tuple(json.loads(row.get("source_leaves", "[]")))
+            expr = _parse_expression(row.get("expression", ""))
+        except (json.JSONDecodeError, TypeError) as exc:
+            errors.append(f"latent source cut has invalid JSON/expression metadata for {cut_id}: {exc}")
+            continue
+        if expr is None:
+            errors.append(f"latent source cut expression is unparsable: {cut_id}")
+            continue
+        allowed = set(source.inputs) | set(source.outputs) | {node.output for node in source.nodes}
+        if any(name not in allowed for name in leaves):
+            errors.append(f"latent source cut uses non-source leaves: {cut_id}")
+        try:
+            vector = _evaluate_expression_from_vectors(expr, vector_map)
+        except (KeyError, ValueError, TypeError) as exc:
+            errors.append(f"latent source cut replay failed for {cut_id}: {exc}")
+            continue
+        if row.get("truth_table_hash") != _hash_vector(vector):
+            errors.append(f"latent source cut truth hash mismatch: {cut_id}")
+        if row.get("complement_truth_table_hash") != _hash_vector(tuple(1 - bit for bit in vector)):
+            errors.append(f"latent source cut complement hash mismatch: {cut_id}")
+        expected_support = _expression_support_from_map(support_map, list(leaves))
+        if tuple(sorted(support)) != expected_support:
+            errors.append(f"latent source cut support mismatch for {cut_id}: {support} != {expected_support}")
+        if int(row.get("support_size", "-1")) != len(support):
+            errors.append(f"latent source cut support size mismatch: {cut_id}")
+        if int(row.get("support_bound", "0")) < len(support):
+            errors.append(f"latent source cut exceeds support bound: {cut_id}")
+        if row.get("replay_status") != "source_graph_or_pi_replayable":
+            errors.append(f"latent source cut has wrong replay status: {cut_id}")
+        if not row.get("canonical_truth_table_hash") or not row.get("npn_class"):
+            errors.append(f"latent source cut lacks canonical metadata: {cut_id}")
+    return index
+
+
+def _cached_source_analysis(
+    rel_path: str,
+    source_cache: dict[str, tuple[BlifNetwork, dict[str, tuple[int, ...]], dict[str, tuple[str, ...]]]],
+) -> tuple[BlifNetwork, dict[str, tuple[int, ...]], dict[str, tuple[str, ...]]]:
+    if rel_path in source_cache:
+        return source_cache[rel_path]
+    source = parse_blif(ROOT / rel_path)
+    assignments = list(all_assignments(tuple(source.inputs)))
+    scalar_values = [scalar_eval_exact(source, assignment) for assignment in assignments]
+    signal_names = tuple(dict.fromkeys([*source.inputs, *[node.output for node in source.nodes], *source.outputs]))
+    vector_map = {
+        name: tuple(int(values[name]) & 1 for values in scalar_values)
+        for name in signal_names
+        if all(name in values for values in scalar_values)
+    }
+    structural = structural_supports(source)
+    support_map = {
+        name: ((name,) if name in source.inputs else tuple(signal for signal in sorted(structural.get(name, ())) if signal in source.inputs))
+        for name in signal_names
+    }
+    source_cache[rel_path] = (source, vector_map, support_map)
+    return source_cache[rel_path]
+
+
+def _evaluate_expression_from_vectors(expr: dict[str, object], vector_map: dict[str, tuple[int, ...]]) -> tuple[int, ...]:
+    signal = expr.get("signal")
+    if isinstance(signal, str):
+        return vector_map[signal]
+    op_name = expr.get("op")
+    args = expr.get("args", [])
+    if not isinstance(op_name, str) or not isinstance(args, list) or any(not isinstance(arg, dict) for arg in args):
+        raise ValueError(f"unsupported expression: {expr}")
+    vectors = [_evaluate_expression_from_vectors(arg, vector_map) for arg in args]
+    if op_name == "not":
+        return tuple(1 - bit for bit in vectors[0])
+    if op_name == "and":
+        return tuple(a & b for a, b in zip(vectors[0], vectors[1], strict=True))
+    if op_name == "or":
+        return tuple(a | b for a, b in zip(vectors[0], vectors[1], strict=True))
+    if op_name == "xor":
+        return tuple(a ^ b for a, b in zip(vectors[0], vectors[1], strict=True))
+    if op_name == "xnor":
+        return tuple(1 ^ (a ^ b) for a, b in zip(vectors[0], vectors[1], strict=True))
+    if op_name == "nand":
+        return tuple(1 - (a & b) for a, b in zip(vectors[0], vectors[1], strict=True))
+    if op_name == "nor":
+        return tuple(1 - (a | b) for a, b in zip(vectors[0], vectors[1], strict=True))
+    if op_name == "mux":
+        return tuple((s & a) | ((1 - s) & b) for s, a, b in zip(vectors[0], vectors[1], vectors[2], strict=True))
+    raise ValueError(f"unsupported operator: {op_name}")
+
+
+def _expression_support_from_map(support_map: dict[str, tuple[str, ...]], args: list[str]) -> tuple[str, ...]:
+    out: list[str] = []
+    for arg in args:
+        for name in support_map.get(arg, ()):
+            if name not in out:
+                out.append(name)
+    return tuple(sorted(out))
+
+
+def _check_virtual_decomposition_source(
+    index: int,
+    source_row: dict[str, str],
+    decomp: dict[str, str],
+    cut_index: dict[str, dict[str, str]],
+    errors: list[str],
+) -> None:
+    target_instance_id = _stable_id(index, source_row.get("target_id", ""))
+    if decomp.get("target_instance_id") != target_instance_id or decomp.get("target_id") != source_row.get("target_id"):
+        errors.append(f"virtual decomposition target-instance mismatch: {target_instance_id}")
+    parsed = _parse_target_id(source_row.get("target_id", ""))
+    if parsed is None:
+        if decomp.get("decomposition_status") != "unsupported_no_replay_artifacts":
+            errors.append(f"non-materialized target was overclaimed by decomposition: {target_instance_id}")
+        return
+    benchmark, _region, flow, target_node = parsed
+    source_path = ROOT / "variants" / f"{benchmark}_original.blif"
+    optimized_path = ROOT / "variants" / f"{benchmark}_{flow}.blif"
+    if not source_path.exists() or not optimized_path.exists():
+        if decomp.get("decomposition_status") != "unsupported_no_replay_artifacts":
+            errors.append(f"missing replay artifacts were overclaimed by decomposition: {target_instance_id}")
+        return
+    optimized = parse_blif(optimized_path)
+    target_vector = _bit_vector(optimized, target_node)
+    expected_support = _exact_support_from_vector(tuple(optimized.inputs), target_vector)
+    if tuple(json.loads(decomp.get("target_support", "[]"))) != expected_support:
+        errors.append(f"virtual decomposition target support mismatch: {target_instance_id}")
+    if decomp.get("target_truth_table_hash") != _hash_vector(target_vector):
+        errors.append(f"virtual decomposition target hash mismatch: {target_instance_id}")
+    if decomp.get("materialized_replay") != "true":
+        errors.append(f"materialized target was not marked replayable: {target_instance_id}")
+    if decomp.get("decomposition_status") in {"exact_virtual_anchor", "complement_virtual_anchor", "cegis_binary_decomposition"}:
+        cut = cut_index.get(decomp.get("anchor_cut_id", ""))
+        if cut is None:
+            errors.append(f"virtual decomposition references missing cut: {target_instance_id}")
+        elif decomp.get("target_truth_table_hash") not in {cut.get("truth_table_hash"), cut.get("complement_truth_table_hash")}:
+            errors.append(f"virtual decomposition cut does not match target hash: {target_instance_id}")
+    elif decomp.get("decomposition_status") == "pi_truth_table_anchor":
+        if not decomp.get("anchor_expression", "").startswith("truth_table("):
+            errors.append(f"PI truth-table decomposition lacks expression: {target_instance_id}")
+    else:
+        errors.append(f"unexpected virtual decomposition status: {target_instance_id} {decomp.get('decomposition_status')}")
+
+
+def _check_constructive_virtual_rewrite(
+    source_row: dict[str, str],
+    decomp: dict[str, str],
+    rewrite: dict[str, str],
+    errors: list[str],
+) -> None:
+    if rewrite.get("target_instance_id") != decomp.get("target_instance_id") or rewrite.get("target_id") != decomp.get("target_id"):
+        errors.append(f"constructive rewrite target mismatch: {decomp.get('target_instance_id')}")
+    if decomp.get("decomposition_status", "").startswith("unsupported"):
+        if rewrite.get("objective_status") != "not_attempted" or rewrite.get("rewrite_emitted") != "false":
+            errors.append(f"unsupported virtual anchor emitted rewrite: {decomp.get('target_instance_id')}")
+        return
+    artifact = ROOT / rewrite.get("rewrite_artifact", "")
+    if rewrite.get("objective_status") == "graph_active_cec_recovery":
+        if rewrite.get("rewrite_emitted") != "true" or rewrite.get("graph_active") != "true":
+            errors.append(f"constructive recovery lacks emitted graph-active rewrite: {decomp.get('target_instance_id')}")
+        if rewrite.get("source_vs_rewrite_cec") != "equivalent" or rewrite.get("rewrite_vs_optimized_cec") != "equivalent":
+            errors.append(f"constructive recovery lacks both CEC scopes: {decomp.get('target_instance_id')}")
+        if not artifact.exists():
+            errors.append(f"constructive rewrite artifact missing: {decomp.get('target_instance_id')}")
+        else:
+            status = validate_rewritten_graph(artifact, rewrite.get("optimized_target_node", ""))
+            if status != "valid":
+                errors.append(f"constructive rewrite artifact validation failed: {decomp.get('target_instance_id')} {status}")
+    if rewrite.get("rewrite_support_status") == "constructive_expanded_support":
+        minimal = tuple(json.loads(rewrite.get("minimal_support", "[]")))
+        expanded = tuple(json.loads(rewrite.get("rewrite_support", "[]")))
+        if len(expanded) <= len(minimal):
+            errors.append(f"constructive support was not expanded: {decomp.get('target_instance_id')}")
+    if rewrite.get("global_cec_status") == "equivalent" and rewrite.get("objective_status") != "graph_active_cec_recovery":
+        errors.append(f"constructive rewrite has equivalent CEC without recovery status: {decomp.get('target_instance_id')}")
+
+
+def _check_virtual_anchor_certificate(
+    source_row: dict[str, str],
+    cert: dict[str, str],
+    decomp: dict[str, str],
+    rewrite: dict[str, str],
+    errors: list[str],
+) -> None:
+    proof_path = ROOT / cert.get("proof_object_path", "")
+    target_instance_id = cert.get("target_instance_id", "")
+    if not proof_path.exists():
+        errors.append(f"virtual-anchor proof object missing: {target_instance_id}")
+        return
+    if _sha256(proof_path) != cert.get("proof_object_sha256"):
+        errors.append(f"virtual-anchor proof object hash mismatch: {target_instance_id}")
+    try:
+        proof = json.loads(proof_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        errors.append(f"virtual-anchor proof object is invalid JSON for {target_instance_id}: {exc}")
+        return
+    if proof.get("source_row_hash") != _hash_rows([source_row]):
+        errors.append(f"virtual-anchor proof source row hash mismatch: {target_instance_id}")
+    for field in ("target_id", "target_truth_table_hash", "decomposition_status"):
+        if proof.get(field) != cert.get(field):
+            errors.append(f"virtual-anchor certificate/proof {field} mismatch: {target_instance_id}")
+    if cert.get("decomposition_status") != decomp.get("decomposition_status"):
+        errors.append(f"virtual-anchor certificate/decomposition mismatch: {target_instance_id}")
+    if cert.get("constructive_status") != rewrite.get("objective_status"):
+        errors.append(f"virtual-anchor certificate/constructive mismatch: {target_instance_id}")
+    if cert.get("proof_status") == "proven_virtual_anchor":
+        obligations = proof.get("obligations", {})
+        if not isinstance(obligations, dict) or not all(
+            obligations.get(key) is True
+            for key in ("source_graph_or_pi_only", "target_vector_replayed", "support_bound", "graph_active", "global_cec_equivalent")
+        ):
+            errors.append(f"proven virtual-anchor proof lacks discharged obligations: {target_instance_id}")
+        if cert.get("global_cec_status") != "equivalent":
+            errors.append(f"proven virtual-anchor certificate lacks global CEC: {target_instance_id}")
 
 
 def _check_rewrites(rows: list[dict[str, str]], errors: list[str]) -> None:
@@ -732,6 +1018,8 @@ def _check_locality_proof_source(row: dict[str, str], proof: dict[str, object], 
 def _check_summary(
     summary: list[dict[str, str]],
     counterpart: list[dict[str, str]],
+    virtual_anchors: list[dict[str, str]],
+    constructive: list[dict[str, str]],
     rewrites: list[dict[str, str]],
     grammar: list[dict[str, str]],
     rtl: list[dict[str, str]],
@@ -741,6 +1029,8 @@ def _check_summary(
 ) -> None:
     expected = {
         "source_blind_counterpart_inference": (len(counterpart), _count(counterpart, "graph_active_recovery", "true")),
+        "proof_carrying_virtual_anchors": (len(virtual_anchors), _count(virtual_anchors, "proof_status", "proven_virtual_anchor")),
+        "constructive_virtual_anchor_rewrites": (len(constructive), _count(constructive, "objective_status", "graph_active_cec_recovery")),
         "compact_interface_graph_rewrites": (len(rewrites), _count(rewrites, "new_boundary", "true")),
         "bounded_grammar_completeness": (len(grammar), _count(grammar, "bounded_grammar_complete_for_attempted_rows", "true")),
         "pinned_rtl_corpus": (len(rtl), _count(rtl, "redistributable", "true")),
@@ -786,6 +1076,23 @@ def _count(rows: list[dict[str, str]], key: str, value: str) -> int:
     return sum(row.get(key) == value for row in rows)
 
 
+def _exact_support_from_vector(inputs: tuple[str, ...], vector: tuple[int, ...]) -> tuple[str, ...]:
+    support: list[str] = []
+    assignments = list(all_assignments(inputs))
+    for name in inputs:
+        reduced: dict[tuple[tuple[str, int], ...], int] = {}
+        depends = False
+        for assignment, value in zip(assignments, vector, strict=True):
+            key = tuple((other, int(assignment[other])) for other in inputs if other != name)
+            if key in reduced and reduced[key] != value:
+                depends = True
+                break
+            reduced[key] = value
+        if depends:
+            support.append(name)
+    return tuple(support)
+
+
 def _sha256(path: Path) -> str:
     h = hashlib.sha256()
     with path.open("rb") as fh:
@@ -796,6 +1103,10 @@ def _sha256(path: Path) -> str:
 
 def _hash_rows(rows: list[dict[str, str]]) -> str:
     return hashlib.sha256(json.dumps(rows, sort_keys=True).encode("utf-8")).hexdigest()
+
+
+def _hash_vector(vector: tuple[int, ...]) -> str:
+    return hashlib.sha256(json.dumps(vector).encode("ascii")).hexdigest()[:16]
 
 
 def _stable_id(*parts: object) -> str:

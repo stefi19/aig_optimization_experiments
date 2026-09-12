@@ -567,6 +567,7 @@ def claims_to_tables() -> str:
 | Necessity-first generated targets separate exact interface existence, emitted rewrite artifacts, and graph-active CEC-backed boundary recovery. | `results/necessity_first_target_discovery/formal_locality_results.csv`; `results/necessity_first_target_discovery/graph_rewrites.csv`; `results/necessity_first_target_discovery/boundary_recovery.csv` | generated research benchmark | `python scripts/check_necessity_first_target_results.py` |
 | Historical null results are explained by provenance and target-necessity audits, not by a 56-row eligible graph-rewrite denominator. | `results/provenance_eligibility_audit/provenance_reconstruction.csv`; `results/research_wow/failure_taxonomy.csv` | historical diagnostic | `python scripts/check_provenance_eligibility_results.py` |
 | Evidence advancement moves rows only when extra obligations are present: source-blind graph-active 14/56, compact interface new boundaries 22/48, bounded grammar completeness 4/12, pinned RTL corpus 3/3, ODC graph-active placement 0/10, locality proof objects 57/57. | `results/evidence_advancement/evidence_advancement_summary.csv`; `results/evidence_advancement/source_blind_counterpart_placement.csv`; `results/evidence_advancement/source_blind_window_expression_placement.csv`; `results/evidence_advancement/locality_proof_objects.csv` | evidence-level advancement accounting | `python scripts/check_evidence_advancement.py` |
+| Proof-carrying virtual-anchor synthesis promotes 20/56 replayable source-blind rows, including 6 former identical-driver cases recovered by constructive expanded-support graph edits; 36 rows remain blocked by missing materialized replay artifacts. | `results/evidence_advancement/latent_source_cut_bank.csv`; `results/evidence_advancement/optimized_target_decompositions.csv`; `results/evidence_advancement/virtual_anchor_certificates.csv`; `results/evidence_advancement/constructive_rewrite_selection.csv` | proof-carrying source/PI-derived virtual anchors | `python scripts/check_evidence_advancement.py` |
 | The artifact's headline figure is generated from committed evidence and does not merge blind, oracle, controlled, generated, and historical denominators. | `paper/figures/recoverability_frontier.png`; `results/research_wow/recoverability_frontier.csv` | artifact-derived summary | `python scripts/check_research_wow.py` |
 """
 
@@ -620,7 +621,7 @@ Use `results/research_wow/recoverability_frontier.csv` as the main table and `re
 
 Use `paper/figures/interface_ablation.png` as the targeted cross-netlist ablation figure.
 
-Use `results/evidence_advancement/evidence_advancement_summary.csv` to describe next-step promotions without changing headline recovery counts.
+Use `results/evidence_advancement/evidence_advancement_summary.csv` and the proof-carrying virtual-anchor certificates to describe next-step promotions without changing headline recovery counts.
 
 ## Failure Taxonomy
 

@@ -1,0 +1,38 @@
+{
+  "anchor_cut_id": "",
+  "anchor_expression": "truth_table(d2,d6,s0)",
+  "benchmark": "generated_mux_tree_8",
+  "decomposition_status": "pi_truth_table_anchor",
+  "minimal_support": [
+    "d2",
+    "d6",
+    "s0"
+  ],
+  "minimality_status": "exact_boolean_support",
+  "obligations": {
+    "global_cec_equivalent": true,
+    "graph_active": true,
+    "rewrite_vs_optimized_cec": "equivalent",
+    "source_graph_or_pi_only": true,
+    "source_vs_rewrite_cec": "equivalent",
+    "support_bound": true,
+    "target_vector_replayed": true
+  },
+  "optimization_flow": "dc2",
+  "optimized_target_node": "new_n19",
+  "proof_id": "542bb97f92771578",
+  "proof_status": "proven_virtual_anchor",
+  "proof_style": "proof_carrying_virtual_anchor_synthesis",
+  "rewrite_artifact": "results/evidence_advancement/artifacts/proof_carrying_virtual_anchors/542bb97f92771578.blif",
+  "rewrite_support": [
+    "d2",
+    "d6",
+    "s0"
+  ],
+  "schema_version": "evidence_advancement_v1",
+  "source_result": "old_materialized_anchor",
+  "source_row_hash": "a7198d4785e79a86d68ff42bc49f44583db99b18aec74f1de5e5a711dfb93d19",
+  "source_table": "results/active_source_counterpart_refactoring/development_results.csv",
+  "target_id": "generated_mux_tree_8|mux_tree_upper_root|dc2|new_n19",
+  "target_truth_table_hash": "3601f7a8a88ce309"
+}

@@ -1,0 +1,36 @@
+{
+  "anchor_cut_id": "9b6fdc7b58f449f2",
+  "anchor_expression": "not(new_n17)",
+  "benchmark": "generated_adder_4",
+  "decomposition_status": "complement_virtual_anchor",
+  "minimal_support": [
+    "a0",
+    "b0"
+  ],
+  "minimality_status": "exact_boolean_support",
+  "obligations": {
+    "global_cec_equivalent": true,
+    "graph_active": true,
+    "rewrite_vs_optimized_cec": "equivalent",
+    "source_graph_or_pi_only": true,
+    "source_vs_rewrite_cec": "equivalent",
+    "support_bound": true,
+    "target_vector_replayed": true
+  },
+  "optimization_flow": "dc2",
+  "optimized_target_node": "new_n17",
+  "proof_id": "40225387e371bbff",
+  "proof_status": "proven_virtual_anchor",
+  "proof_style": "proof_carrying_virtual_anchor_synthesis",
+  "rewrite_artifact": "results/evidence_advancement/artifacts/proof_carrying_virtual_anchors/40225387e371bbff.blif",
+  "rewrite_support": [
+    "a0",
+    "b0"
+  ],
+  "schema_version": "evidence_advancement_v1",
+  "source_result": "old_materialized_anchor",
+  "source_row_hash": "a86f9894232bbace2ea87f7cc54f3ca352040e6145a60715355dc791eb296ed8",
+  "source_table": "results/active_source_counterpart_refactoring/development_results.csv",
+  "target_id": "generated_adder_4|adder_bit1_carry_sum_region|dc2|new_n17",
+  "target_truth_table_hash": "1831277e368b3f87"
+}

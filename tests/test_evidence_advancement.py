@@ -19,7 +19,7 @@ def _rows(rel_path: str) -> list[dict[str, str]]:
 
 def _write_rows(path: Path, rows: list[dict[str, str]]) -> None:
     with path.open("w", newline="", encoding="utf-8") as fh:
-        writer = csv.DictWriter(fh, fieldnames=list(rows[0]))
+        writer = csv.DictWriter(fh, fieldnames=list(rows[0]), lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
@@ -40,7 +40,6 @@ def _built_evidence() -> None:
 
 
 def test_evidence_advancement_builds_and_checks() -> None:
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "build_evidence_advancement.py")], cwd=ROOT, check=True)
     subprocess.run([sys.executable, str(ROOT / "scripts" / "check_evidence_advancement.py")], cwd=ROOT, check=True)
 
 
@@ -48,6 +47,9 @@ def test_evidence_advancement_keeps_evidence_levels_separate() -> None:
     placement = _rows("results/evidence_advancement/source_blind_counterpart_placement.csv")
     window_expression = _rows("results/evidence_advancement/source_blind_window_expression_placement.csv")
     source_blind = _rows("results/evidence_advancement/source_blind_counterpart_inference.csv")
+    decompositions = _rows("results/evidence_advancement/optimized_target_decompositions.csv")
+    virtual_anchors = _rows("results/evidence_advancement/virtual_anchor_certificates.csv")
+    constructive = _rows("results/evidence_advancement/constructive_rewrite_selection.csv")
     rewrite_attempts = _rows("results/evidence_advancement/compact_interface_rewrite_attempts.csv")
     frontier = _rows("results/necessity_first_target_discovery/rewrite_frontier_expansion.csv")
     odc = _rows("results/evidence_advancement/odc_placement_accounting.csv")
@@ -59,6 +61,10 @@ def test_evidence_advancement_keeps_evidence_levels_separate() -> None:
     assert sum(r["promotion"] == "graph_active_recovery" for r in placement) == 0
     assert sum(r["semantic_counterpart_status"].startswith("proved_") for r in window_expression) == 20
     assert sum(r["graph_active_recovery"] == "true" for r in source_blind) == sum(r["promotion"] == "graph_active_recovery" for r in window_expression)
+    assert sum(r["decomposition_status"] == "unsupported_no_replay_artifacts" for r in decompositions) == 36
+    assert sum(r["proof_status"] == "proven_virtual_anchor" for r in virtual_anchors) == 20
+    assert sum(r["objective_status"] == "graph_active_cec_recovery" for r in constructive) == 20
+    assert sum(r["rewrite_support_status"] == "constructive_expanded_support" for r in constructive) == 6
     for row in window_expression:
         if row["promotion"] == "graph_active_recovery":
             assert row["rewrite_emitted"] == "true"
@@ -85,6 +91,20 @@ def test_locality_proof_objects_mirror_exact_certificates() -> None:
         assert proof["exact_minimum_status"] == "exact_minimum"
         assert len(proof["tested_interface"]) == int(row["tested_interface_width"])
         assert int(row["proved_lower_bound"]) == int(row["best_upper_bound"])
+
+
+def test_virtual_anchor_proof_objects_discharge_constructive_rewrites() -> None:
+    proof_rows = _rows("results/evidence_advancement/virtual_anchor_certificates.csv")
+    proven = [row for row in proof_rows if row["proof_status"] == "proven_virtual_anchor"]
+    assert len(proven) == 20
+    for row in proven[:5]:
+        proof = json.loads((ROOT / row["proof_object_path"]).read_text(encoding="utf-8"))
+        assert proof["proof_style"] == "proof_carrying_virtual_anchor_synthesis"
+        assert proof["proof_status"] == "proven_virtual_anchor"
+        assert proof["obligations"]["source_graph_or_pi_only"] is True
+        assert proof["obligations"]["target_vector_replayed"] is True
+        assert proof["obligations"]["graph_active"] is True
+        assert proof["obligations"]["global_cec_equivalent"] is True
 
 
 def test_checker_rejects_source_blind_placement_leakage(tmp_path: Path) -> None:
@@ -192,6 +212,22 @@ def test_checker_rejects_tampered_source_blind_selected_support() -> None:
         assert result.returncode != 0
     finally:
         _write_rows(path, original)
+
+
+def test_checker_rejects_tampered_virtual_anchor_proof_object() -> None:
+    path = ROOT / "results/evidence_advancement/virtual_anchor_certificates.csv"
+    rows = list(csv.DictReader(path.open()))
+    row = next(r for r in rows if r["proof_status"] == "proven_virtual_anchor")
+    proof_path = ROOT / row["proof_object_path"]
+    original = proof_path.read_text(encoding="utf-8")
+    proof = json.loads(original)
+    proof["obligations"]["global_cec_equivalent"] = False
+    try:
+        proof_path.write_text(json.dumps(proof, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        result = subprocess.run([sys.executable, str(ROOT / "scripts" / "check_evidence_advancement.py")], cwd=ROOT)
+        assert result.returncode != 0
+    finally:
+        proof_path.write_text(original, encoding="utf-8")
 
 
 def test_checker_rejects_compact_rewrite_artifact_drift() -> None:

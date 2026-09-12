@@ -53,6 +53,10 @@ denominator: 0.
 Evidence-advancement promoted rows: source-blind graph-active 14/56; compact
 interface new boundaries 22/48; bounded grammar completeness 4/12; pinned RTL
 corpus 3/3; ODC graph-active placement 0/10; locality proof objects 57/57.
+Proof-carrying virtual-anchor synthesis now promotes 20/56 replayable
+source-blind rows with source/PI-only certificates and graph-active CEC-backed
+replacement artifacts, including the 6 former identical-driver rows via
+constructive expanded-support rewrites.
 The exact-node source-blind audit still promotes 0/56, but bounded
 window/expression placement promotes 14/56 by synthesizing graph-active
 CEC-backed rewrites from source graph expressions over the same 20 prior

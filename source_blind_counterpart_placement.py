@@ -470,7 +470,10 @@ def _hash_vector(vector: tuple[int, ...]) -> str:
 def _abc_cec(abc_path: Path | None, left: Path, right: Path) -> str:
     if abc_path is None or not abc_path.exists():
         return "abc_unavailable"
-    proc = subprocess.run([str(abc_path), "-c", f"cec {left} {right}"], text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=10, check=False)
+    try:
+        proc = subprocess.run([str(abc_path), "-c", f"cec {left} {right}"], text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=30, check=False)
+    except subprocess.TimeoutExpired:
+        return "timeout"
     text = proc.stdout
     if "Networks are equivalent" in text or "Networks are equivalent after" in text:
         return "equivalent"

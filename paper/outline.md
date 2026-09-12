@@ -46,7 +46,7 @@ Use `results/research_wow/recoverability_frontier.csv` as the main table and `re
 
 Use `paper/figures/interface_ablation.png` as the targeted cross-netlist ablation figure.
 
-Use `results/evidence_advancement/evidence_advancement_summary.csv` to describe next-step promotions without changing headline recovery counts.
+Use `results/evidence_advancement/evidence_advancement_summary.csv` and the proof-carrying virtual-anchor certificates to describe next-step promotions without changing headline recovery counts.
 
 ## Failure Taxonomy
 

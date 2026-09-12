@@ -1,0 +1,37 @@
+{
+  "anchor_cut_id": "4655be3fe3303949",
+  "anchor_expression": "not(or(d1,not(s1)))",
+  "benchmark": "generated_mux_tree_4",
+  "decomposition_status": "cegis_binary_decomposition",
+  "minimal_support": [
+    "d1",
+    "s1"
+  ],
+  "minimality_status": "exact_boolean_support",
+  "obligations": {
+    "global_cec_equivalent": true,
+    "graph_active": true,
+    "rewrite_vs_optimized_cec": "equivalent",
+    "source_graph_or_pi_only": true,
+    "source_vs_rewrite_cec": "equivalent",
+    "support_bound": true,
+    "target_vector_replayed": true
+  },
+  "optimization_flow": "resyn2",
+  "optimized_target_node": "new_n12",
+  "proof_id": "f621795ff558047f",
+  "proof_status": "proven_virtual_anchor",
+  "proof_style": "proof_carrying_virtual_anchor_synthesis",
+  "rewrite_artifact": "results/evidence_advancement/artifacts/proof_carrying_virtual_anchors/f621795ff558047f.blif",
+  "rewrite_support": [
+    "d1",
+    "s1",
+    "d0"
+  ],
+  "schema_version": "evidence_advancement_v1",
+  "source_result": "old_materialized_anchor",
+  "source_row_hash": "4395d3d01b59dd15445727fb5c801a212c35cf505cbc0b19426c12b26829e580",
+  "source_table": "results/active_source_counterpart_refactoring/development_results.csv",
+  "target_id": "generated_mux_tree_4|mux_tree_root|resyn2|new_n12",
+  "target_truth_table_hash": "645cbc78d7169af2"
+}

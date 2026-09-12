@@ -760,6 +760,7 @@ state is:
 | Direction | Current promoted rows | Honest interpretation |
 |---|---:|---|
 | Source-blind source-side counterpart inference | 14 / 56 | Exact-node source-blind placement remains 0/56, but bounded window/expression placement promotes 14/56 with emitted graph-active rewrites and both CEC scopes. The remaining prior semantic rows are 3 identical-driver no-ops and 3 no-expression-under-bound failures. |
+| Proof-carrying virtual anchor synthesis | 20 / 56 | Latent source cuts and PI truth-table anchors synthesize source-derived virtual anchors with JSON certificates; constructive expanded-support rewrites recover the 6 former identical-driver rows while 36 remain blocked by missing materialized replay pairs. |
 | Graph-active rewrites from compact generated interfaces | 22 / 48 | 31 compact exact interfaces emit valid rewrite artifacts; fanout-frontier expansion promotes 4 additional rows to graph-active CEC-backed new boundaries. |
 | Bounded grammar completeness for selected CEGIS families | 4 / 12 | Only `sign_extend` and `zero_extend` are complete for their attempted blind and oracle-bus rows. |
 | Pinned redistributable RTL corpus | 3 / 3 | Three CC0 Verilog modules and source metadata are committed; local Yosys lowering is `tool_missing`. |
@@ -767,9 +768,10 @@ state is:
 | Machine-checkable locality proof objects | 57 / 57 | JSON proof objects mirror the exact-minimum locality CSV certificates. |
 
 This layer makes the next paper-worthy work precise. The direct engineering
-targets are source-blind placement beyond the current unary/binary/mux
-expression language, broader fanout and multi-output rewrite languages for the remaining identical-driver rows,
-broader CEGIS grammars with completeness proofs for selected
+targets are materializing replayable source/optimized BLIF pairs for the 36
+fresh utility targets still blocked before anchor synthesis, lifting PI
+truth-table anchors into reusable source-cut decompositions, broader CEGIS
+grammars with completeness proofs for selected
 operator families, an installed and pinned Yosys lowering flow for the new RTL
 seed corpus, ODC-aware graph placement with explicit graph-activity and global
 CEC obligations, and richer proof objects that go beyond mirroring replayable
