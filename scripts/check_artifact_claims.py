@@ -182,7 +182,9 @@ def _check_docs_freshness(errors: list[str]) -> None:
     )
     summary = {row.get("direction"): row for row in _rows("results/evidence_advancement/evidence_advancement_summary.csv", errors)}
     source_blind = summary.get("source_blind_counterpart_inference", {})
+    virtual = summary.get("proof_carrying_virtual_anchors", {})
     source_blind_phrase = f"Evidence-advancement promoted rows: source-blind graph-active {source_blind.get('promoted_rows', '?')}/{source_blind.get('input_rows', '?')}; compact interface new boundaries 22/48"
+    virtual_phrase = f"Proof-carrying virtual-anchor synthesis now promotes {virtual.get('promoted_rows', '?')}/{virtual.get('input_rows', '?')}"
     required_phrases = [
         "Controlled accepted graph-active counterparts: 10",
         "Controlled accepted transplants: 12",
@@ -191,6 +193,7 @@ def _check_docs_freshness(errors: list[str]) -> None:
         "Necessity-first graph-active CEC-backed new boundaries: 22/48",
         "corrected historical eligible transplantation denominator: 0",
         source_blind_phrase,
+        virtual_phrase,
     ]
     for phrase in required_phrases:
         if phrase not in text:

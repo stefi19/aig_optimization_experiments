@@ -1,0 +1,28 @@
+.model proof_carrying_replay_optimized
+.inputs x0 x1 r0
+.outputs y0
+.names x0 x1 r0 pcva_33a1c7c69eeb3175
+010 1
+011 1
+100 1
+101 1
+.names x0 x1 new_n5
+01 1
+.names x0 x1 new_n6
+10 1
+.names new_n5 new_n6 new_n7
+00 1
+.names r0 new_n7 new_n8
+11 1
+.names new_n7 new_n8 new_n9
+11 1
+.names r0 new_n7 new_n10
+00 1
+.names new_n7 new_n10 new_n11
+01 1
+.names pcva_33a1c7c69eeb3175 x0 x1 r0 y0
+0001 1
+0111 1
+1010 1
+1100 1
+.end

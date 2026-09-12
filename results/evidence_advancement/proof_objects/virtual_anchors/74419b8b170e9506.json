@@ -1,30 +1,38 @@
 {
-  "anchor_cut_id": "",
-  "anchor_expression": "",
-  "benchmark": "",
-  "decomposition_status": "unsupported_no_replay_artifacts",
-  "minimal_support": [],
+  "anchor_cut_id": "a1cce9fd2d10a8bb",
+  "anchor_expression": "cout",
+  "benchmark": "5c300a974ba662e5",
+  "decomposition_status": "exact_virtual_anchor",
+  "minimal_support": [
+    "a",
+    "b",
+    "cin"
+  ],
   "minimality_status": "exact_boolean_support",
   "obligations": {
-    "global_cec_equivalent": false,
-    "graph_active": false,
-    "rewrite_vs_optimized_cec": "not_run",
-    "source_graph_or_pi_only": false,
-    "source_vs_rewrite_cec": "not_run",
+    "global_cec_equivalent": true,
+    "graph_active": true,
+    "rewrite_vs_optimized_cec": "equivalent",
+    "source_graph_or_pi_only": true,
+    "source_vs_rewrite_cec": "equivalent",
     "support_bound": true,
-    "target_vector_replayed": false
+    "target_vector_replayed": true
   },
-  "optimization_flow": "",
-  "optimized_target_node": "",
+  "optimization_flow": "semantic_frontier_materialized",
+  "optimized_target_node": "pcva_74419b8b170e9506",
   "proof_id": "74419b8b170e9506",
-  "proof_status": "unsupported_no_replay_artifacts",
+  "proof_status": "proven_virtual_anchor",
   "proof_style": "proof_carrying_virtual_anchor_synthesis",
-  "rewrite_artifact": "",
-  "rewrite_support": [],
+  "rewrite_artifact": "results/evidence_advancement/artifacts/proof_carrying_virtual_anchors/74419b8b170e9506.blif",
+  "rewrite_support": [
+    "a",
+    "b",
+    "cin"
+  ],
   "schema_version": "evidence_advancement_v1",
   "source_result": "fresh_utility_target",
   "source_row_hash": "27814a0d739d6dd5391a88bda1fb1039ac16a2c3d3fff3378b584990fe6c88d9",
   "source_table": "results/active_source_counterpart_refactoring/development_results.csv",
   "target_id": "full_adder_carry__b0",
-  "target_truth_table_hash": ""
+  "target_truth_table_hash": "f362bf34947fde3f"
 }

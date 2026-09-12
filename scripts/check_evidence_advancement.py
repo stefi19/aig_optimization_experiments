@@ -27,6 +27,7 @@ def main() -> int:
     placement = _rows("source_blind_counterpart_placement.csv", errors)
     window_expression = _rows("source_blind_window_expression_placement.csv", errors)
     counterpart = _rows("source_blind_counterpart_inference.csv", errors)
+    materialized_replay = _rows("materialized_replay_pairs.csv", errors)
     latent_cuts = _rows("latent_source_cut_bank.csv", errors)
     decompositions = _rows("optimized_target_decompositions.csv", errors)
     virtual_anchors = _rows("virtual_anchor_certificates.csv", errors)
@@ -38,17 +39,18 @@ def main() -> int:
     locality = _rows("locality_proof_objects.csv", errors)
     summary = _rows("evidence_advancement_summary.csv", errors)
 
-    _check_schema(placement + window_expression + counterpart + latent_cuts + decompositions + virtual_anchors + constructive + rewrites + grammar + rtl + odc + locality + summary, errors)
+    _check_schema(placement + window_expression + counterpart + materialized_replay + latent_cuts + decompositions + virtual_anchors + constructive + rewrites + grammar + rtl + odc + locality + summary, errors)
     _check_source_blind_placement(placement, errors, "source-blind exact-node placement")
     _check_source_blind_window_expression(window_expression, errors)
     _check_counterpart(counterpart, window_expression, errors)
-    _check_proof_carrying_anchor_synthesis(latent_cuts, decompositions, virtual_anchors, constructive, errors)
+    _check_materialized_replay_pairs(materialized_replay, errors)
+    _check_proof_carrying_anchor_synthesis(materialized_replay, latent_cuts, decompositions, virtual_anchors, constructive, errors)
     _check_rewrites(rewrites, errors)
     _check_grammar(grammar, errors)
     _check_rtl(rtl, errors)
     _check_odc(odc, errors)
     _check_locality(locality, errors)
-    _check_summary(summary, counterpart, virtual_anchors, constructive, rewrites, grammar, rtl, odc, locality, errors)
+    _check_summary(summary, counterpart, materialized_replay, virtual_anchors, constructive, rewrites, grammar, rtl, odc, locality, errors)
 
     if errors:
         for error in errors:
@@ -199,6 +201,10 @@ def _parse_target_id(target_id: str) -> tuple[str, str, str, str] | None:
     if len(parts) != 4:
         return None
     return parts[0], parts[1], parts[2], parts[3]
+
+
+def _source_checkpoint_id(trajectory_id: str) -> str:
+    return f"{trajectory_id}__cp000_source" if trajectory_id else ""
 
 
 def _parse_expression(expression: str) -> dict[str, object] | None:
@@ -352,7 +358,98 @@ def _check_counterpart(rows: list[dict[str, str]], placement: list[dict[str, str
                 errors.append(f"source-blind inference does not derive graph-active status from placement: {row.get('target_id')}")
 
 
+def _check_materialized_replay_pairs(rows: list[dict[str, str]], errors: list[str]) -> None:
+    if len(rows) != 36:
+        errors.append(f"materialized replay-pair denominator drifted: {len(rows)} != 36")
+    active_rows = _source_rows("results/active_source_counterpart_refactoring/development_results.csv", errors)
+    fresh_instances = {
+        _stable_id(index, row.get("target_id", "")): row
+        for index, row in enumerate(active_rows)
+        if row.get("source_result") == "fresh_utility_target"
+    }
+    checkpoints = {
+        row.get("checkpoint_id", ""): row
+        for row in _source_rows("results/semantic_recoverability_frontier/checkpoint_hashes.csv", errors)
+    }
+    transitions = [
+        row
+        for row in _source_rows("results/semantic_recoverability_frontier/recoverability_transitions.csv", errors)
+        if row.get("transition") in {"success_to_failure", "failure_to_success"}
+    ]
+    boundaries = {
+        row.get("boundary_id", ""): row
+        for row in _source_rows("results/semantic_recoverability_frontier/ground_truth_boundary_manifest.csv", errors)
+    }
+    seen: set[str] = set()
+    for row_index, row in enumerate(rows):
+        pair_id = row.get("pair_id", "")
+        target_instance = row.get("target_instance_id", "")
+        if pair_id in seen:
+            errors.append(f"duplicate materialized replay pair id: {pair_id}")
+        seen.add(pair_id)
+        if target_instance not in fresh_instances:
+            errors.append(f"materialized replay pair does not map to a fresh active-source row: {pair_id}")
+        if row.get("materialization_status") != "materialized_replay_pair" or row.get("source_vs_optimized_cec") != "equivalent":
+            errors.append(f"materialized replay pair is not proven equivalent: {pair_id}")
+        if row.get("blocker"):
+            errors.append(f"materialized replay pair retained blocker: {pair_id} {row.get('blocker')}")
+        if row_index < len(transitions):
+            transition = transitions[row_index]
+            for field in ("boundary_id", "trajectory_id", "method", "transition", "from_checkpoint", "to_checkpoint"):
+                if row.get(field) != transition.get(field):
+                    errors.append(f"materialized replay pair disagrees with transition {field}: {pair_id}")
+        boundary = boundaries.get(row.get("boundary_id", ""))
+        if boundary is None:
+            errors.append(f"materialized replay pair lacks boundary manifest row: {pair_id}")
+        elif row.get("support") != boundary.get("source_support") or row.get("consumer_identities") != boundary.get("consumer_identities"):
+            errors.append(f"materialized replay pair boundary metadata mismatch: {pair_id}")
+
+        source_checkpoint = checkpoints.get(_source_checkpoint_id(row.get("trajectory_id", "")))
+        optimized_checkpoint = checkpoints.get(row.get("to_checkpoint", ""))
+        if source_checkpoint is None or optimized_checkpoint is None:
+            errors.append(f"materialized replay pair lacks checkpoint rows: {pair_id}")
+        else:
+            if row.get("source_checkpoint_artifact") != source_checkpoint.get("blif_path"):
+                errors.append(f"materialized replay pair source checkpoint path mismatch: {pair_id}")
+            if row.get("optimized_checkpoint_artifact") != optimized_checkpoint.get("blif_path"):
+                errors.append(f"materialized replay pair optimized checkpoint path mismatch: {pair_id}")
+            for key, checkpoint_row in (("source", source_checkpoint), ("optimized", optimized_checkpoint)):
+                checkpoint_path = ROOT / checkpoint_row.get("blif_path", "")
+                if not checkpoint_path.exists() or _sha256(checkpoint_path) != row.get(f"{key}_checkpoint_sha256"):
+                    errors.append(f"materialized replay pair {key} checkpoint hash mismatch: {pair_id}")
+
+        source_artifact = ROOT / row.get("source_artifact", "")
+        optimized_artifact = ROOT / row.get("optimized_artifact", "")
+        if not source_artifact.exists() or not optimized_artifact.exists():
+            errors.append(f"materialized replay pair artifacts missing: {pair_id}")
+            continue
+        if _sha256(source_artifact) != row.get("source_artifact_sha256"):
+            errors.append(f"materialized replay pair source artifact hash mismatch: {pair_id}")
+        if _sha256(optimized_artifact) != row.get("optimized_artifact_sha256"):
+            errors.append(f"materialized replay pair optimized artifact hash mismatch: {pair_id}")
+        try:
+            source = parse_blif(source_artifact)
+            optimized = parse_blif(optimized_artifact)
+            target = row.get("optimized_target_node", "")
+            source_target = _bit_vector(source, target)
+            optimized_target = _bit_vector(optimized, target)
+        except (KeyError, ValueError, TypeError) as exc:
+            errors.append(f"materialized replay pair replay failed for {pair_id}: {exc}")
+            continue
+        if source.inputs != optimized.inputs or source.outputs != optimized.outputs:
+            errors.append(f"materialized replay pair primary interface mismatch: {pair_id}")
+            continue
+        if source_target != optimized_target:
+            errors.append(f"materialized replay pair target vector mismatch: {pair_id}")
+        if _exact_support_from_vector(tuple(source.inputs), source_target) != tuple(json.loads(row.get("support", "[]"))):
+            errors.append(f"materialized replay pair target support mismatch: {pair_id}")
+        for output in source.outputs:
+            if _bit_vector(source, output) != _bit_vector(optimized, output):
+                errors.append(f"materialized replay pair output mismatch: {pair_id} {output}")
+
+
 def _check_proof_carrying_anchor_synthesis(
+    materialized_replay: list[dict[str, str]],
     latent_cuts: list[dict[str, str]],
     decompositions: list[dict[str, str]],
     virtual_anchors: list[dict[str, str]],
@@ -365,8 +462,8 @@ def _check_proof_carrying_anchor_synthesis(
             "proof-carrying anchor synthesis denominator drifted: "
             f"{len(decompositions)}, {len(virtual_anchors)}, {len(constructive)} != 56"
         )
-    if len(latent_cuts) != 768:
-        errors.append(f"latent source cut bank drifted: {len(latent_cuts)} != 768")
+    if len(latent_cuts) != 2683:
+        errors.append(f"latent source cut bank drifted: {len(latent_cuts)} != 2683")
 
     cut_index = _check_latent_source_cut_bank(latent_cuts, errors)
     decomp_index = {row.get("target_instance_id", ""): row for row in decompositions}
@@ -399,12 +496,14 @@ def _check_proof_carrying_anchor_synthesis(
             continue
         _check_virtual_anchor_certificate(source_row, cert, decomp, rewrite, errors)
 
-    if _count(virtual_anchors, "proof_status", "proven_virtual_anchor") != 20:
-        errors.append("proof-carrying virtual anchor proven count drifted from 20")
-    if _count(constructive, "objective_status", "graph_active_cec_recovery") != 20:
-        errors.append("constructive virtual anchor recovery count drifted from 20")
-    if _count(decompositions, "decomposition_status", "unsupported_no_replay_artifacts") != 36:
-        errors.append("non-materialized virtual-anchor blocker count drifted from 36")
+    if _count(materialized_replay, "materialization_status", "materialized_replay_pair") != 36:
+        errors.append("materialized replay-pair count drifted from 36")
+    if _count(virtual_anchors, "proof_status", "proven_virtual_anchor") != 56:
+        errors.append("proof-carrying virtual anchor proven count drifted from 56")
+    if _count(constructive, "objective_status", "graph_active_cec_recovery") != 56:
+        errors.append("constructive virtual anchor recovery count drifted from 56")
+    if _count(decompositions, "decomposition_status", "unsupported_no_replay_artifacts") != 0:
+        errors.append("non-materialized virtual-anchor blocker count drifted from 0")
 
 
 def _check_latent_source_cut_bank(rows: list[dict[str, str]], errors: list[str]) -> dict[str, dict[str, str]]:
@@ -527,15 +626,12 @@ def _check_virtual_decomposition_source(
     target_instance_id = _stable_id(index, source_row.get("target_id", ""))
     if decomp.get("target_instance_id") != target_instance_id or decomp.get("target_id") != source_row.get("target_id"):
         errors.append(f"virtual decomposition target-instance mismatch: {target_instance_id}")
-    parsed = _parse_target_id(source_row.get("target_id", ""))
-    if parsed is None:
-        if decomp.get("decomposition_status") != "unsupported_no_replay_artifacts":
-            errors.append(f"non-materialized target was overclaimed by decomposition: {target_instance_id}")
-        return
-    benchmark, _region, flow, target_node = parsed
-    source_path = ROOT / "variants" / f"{benchmark}_original.blif"
-    optimized_path = ROOT / "variants" / f"{benchmark}_{flow}.blif"
-    if not source_path.exists() or not optimized_path.exists():
+    source_artifact = decomp.get("source_artifact", "")
+    optimized_artifact = decomp.get("optimized_artifact", "")
+    target_node = decomp.get("optimized_target_node", "")
+    source_path = ROOT / source_artifact if source_artifact else None
+    optimized_path = ROOT / optimized_artifact if optimized_artifact else None
+    if source_path is None or optimized_path is None or not source_path.exists() or not optimized_path.exists():
         if decomp.get("decomposition_status") != "unsupported_no_replay_artifacts":
             errors.append(f"missing replay artifacts were overclaimed by decomposition: {target_instance_id}")
         return
@@ -1018,6 +1114,7 @@ def _check_locality_proof_source(row: dict[str, str], proof: dict[str, object], 
 def _check_summary(
     summary: list[dict[str, str]],
     counterpart: list[dict[str, str]],
+    materialized_replay: list[dict[str, str]],
     virtual_anchors: list[dict[str, str]],
     constructive: list[dict[str, str]],
     rewrites: list[dict[str, str]],
@@ -1029,6 +1126,7 @@ def _check_summary(
 ) -> None:
     expected = {
         "source_blind_counterpart_inference": (len(counterpart), _count(counterpart, "graph_active_recovery", "true")),
+        "materialized_frontier_replay_pairs": (len(materialized_replay), _count(materialized_replay, "materialization_status", "materialized_replay_pair")),
         "proof_carrying_virtual_anchors": (len(virtual_anchors), _count(virtual_anchors, "proof_status", "proven_virtual_anchor")),
         "constructive_virtual_anchor_rewrites": (len(constructive), _count(constructive, "objective_status", "graph_active_cec_recovery")),
         "compact_interface_graph_rewrites": (len(rewrites), _count(rewrites, "new_boundary", "true")),

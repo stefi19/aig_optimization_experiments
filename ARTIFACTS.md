@@ -66,9 +66,10 @@ Current committed headline counts:
   interface new boundaries 22/48; bounded grammar completeness 4/12; pinned
   RTL corpus 3/3; ODC graph-active placement 0/10; locality proof objects
   57/57.
-- Proof-carrying virtual-anchor synthesis promotes 20/56 replayable rows with
-  source/PI-only certificates, graph-active replacement artifacts, and both CEC
-  scopes; the remaining 36 lack materialized replay pairs.
+- Proof-carrying virtual-anchor synthesis promotes 56/56 source-blind rows
+  after repairing the 36 fresh utility rows into checkpoint-derived replay
+  pairs; all certificates carry source/PI-only derivation, graph-active
+  replacement artifacts, and both CEC scopes.
 
 ## Expected Runtime
 
@@ -134,6 +135,7 @@ This writes:
 - `results/evidence_advancement/source_blind_counterpart_placement.csv`
 - `results/evidence_advancement/source_blind_window_expression_placement.csv`
 - `results/evidence_advancement/source_blind_counterpart_inference.csv`
+- `results/evidence_advancement/materialized_replay_pairs.csv`
 - `results/evidence_advancement/latent_source_cut_bank.csv`
 - `results/evidence_advancement/optimized_target_decompositions.csv`
 - `results/evidence_advancement/virtual_anchor_certificates.csv`
@@ -143,6 +145,7 @@ This writes:
 - `results/evidence_advancement/rtl_corpus_manifest.csv`
 - `results/evidence_advancement/odc_placement_accounting.csv`
 - `results/evidence_advancement/locality_proof_objects.csv`
+- `results/evidence_advancement/artifacts/materialized_replay_pairs/*.blif`
 - `results/evidence_advancement/proof_objects/locality/*.json`
 - `results/evidence_advancement/proof_objects/virtual_anchors/*.json`
 

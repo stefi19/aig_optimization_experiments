@@ -1,0 +1,34 @@
+.model proof_carrying_virtual_anchor
+.inputs a b cin
+.outputs sum cout
+.names a b cin pcva_74419b8b170e9506
+011 1
+101 1
+110 1
+111 1
+.names a b new_n6
+01 1
+.names a b new_n7
+10 1
+.names new_n6 new_n7 new_n8
+00 1
+.names cin new_n8 new_n9
+11 1
+.names cin new_n8 new_n10
+00 1
+.names new_n9 new_n10 sum
+00 0
+.names a b new_n12
+11 1
+.names a cin new_n13
+11 1
+.names b cin new_n14
+11 1
+.names new_n12 new_n13 new_n15
+00 1
+.names pcva_74419b8b170e9506 a b cin cout
+1011 1
+1101 1
+1110 1
+1111 1
+.end

@@ -47,6 +47,7 @@ def test_evidence_advancement_keeps_evidence_levels_separate() -> None:
     placement = _rows("results/evidence_advancement/source_blind_counterpart_placement.csv")
     window_expression = _rows("results/evidence_advancement/source_blind_window_expression_placement.csv")
     source_blind = _rows("results/evidence_advancement/source_blind_counterpart_inference.csv")
+    replay_pairs = _rows("results/evidence_advancement/materialized_replay_pairs.csv")
     decompositions = _rows("results/evidence_advancement/optimized_target_decompositions.csv")
     virtual_anchors = _rows("results/evidence_advancement/virtual_anchor_certificates.csv")
     constructive = _rows("results/evidence_advancement/constructive_rewrite_selection.csv")
@@ -61,9 +62,11 @@ def test_evidence_advancement_keeps_evidence_levels_separate() -> None:
     assert sum(r["promotion"] == "graph_active_recovery" for r in placement) == 0
     assert sum(r["semantic_counterpart_status"].startswith("proved_") for r in window_expression) == 20
     assert sum(r["graph_active_recovery"] == "true" for r in source_blind) == sum(r["promotion"] == "graph_active_recovery" for r in window_expression)
-    assert sum(r["decomposition_status"] == "unsupported_no_replay_artifacts" for r in decompositions) == 36
-    assert sum(r["proof_status"] == "proven_virtual_anchor" for r in virtual_anchors) == 20
-    assert sum(r["objective_status"] == "graph_active_cec_recovery" for r in constructive) == 20
+    assert sum(r["materialization_status"] == "materialized_replay_pair" for r in replay_pairs) == 36
+    assert sum(r["source_vs_optimized_cec"] == "equivalent" for r in replay_pairs) == 36
+    assert sum(r["decomposition_status"] == "unsupported_no_replay_artifacts" for r in decompositions) == 0
+    assert sum(r["proof_status"] == "proven_virtual_anchor" for r in virtual_anchors) == 56
+    assert sum(r["objective_status"] == "graph_active_cec_recovery" for r in constructive) == 56
     assert sum(r["rewrite_support_status"] == "constructive_expanded_support" for r in constructive) == 6
     for row in window_expression:
         if row["promotion"] == "graph_active_recovery":
@@ -96,7 +99,7 @@ def test_locality_proof_objects_mirror_exact_certificates() -> None:
 def test_virtual_anchor_proof_objects_discharge_constructive_rewrites() -> None:
     proof_rows = _rows("results/evidence_advancement/virtual_anchor_certificates.csv")
     proven = [row for row in proof_rows if row["proof_status"] == "proven_virtual_anchor"]
-    assert len(proven) == 20
+    assert len(proven) == 56
     for row in proven[:5]:
         proof = json.loads((ROOT / row["proof_object_path"]).read_text(encoding="utf-8"))
         assert proof["proof_style"] == "proof_carrying_virtual_anchor_synthesis"
@@ -105,6 +108,17 @@ def test_virtual_anchor_proof_objects_discharge_constructive_rewrites() -> None:
         assert proof["obligations"]["target_vector_replayed"] is True
         assert proof["obligations"]["graph_active"] is True
         assert proof["obligations"]["global_cec_equivalent"] is True
+
+
+def test_materialized_replay_pairs_are_checked_evidence() -> None:
+    replay_rows = _rows("results/evidence_advancement/materialized_replay_pairs.csv")
+    assert len(replay_rows) == 36
+    for row in replay_rows[:5]:
+        assert row["materialization_status"] == "materialized_replay_pair"
+        assert row["source_vs_optimized_cec"] == "equivalent"
+        assert (ROOT / row["source_artifact"]).exists()
+        assert (ROOT / row["optimized_artifact"]).exists()
+        assert row["optimized_target_node"].startswith("pcva_")
 
 
 def test_checker_rejects_source_blind_placement_leakage(tmp_path: Path) -> None:

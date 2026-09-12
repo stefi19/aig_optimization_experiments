@@ -1,0 +1,21 @@
+.model proof_carrying_virtual_anchor
+.inputs x0 x1 r0
+.outputs y0
+.names x0 x1 pcva_37a116ba534fd473
+01 1
+10 1
+.names x1 r0 new_n5
+11 1
+.names x1 r0 new_n6
+00 1
+.names x0 new_n6 new_n7
+10 1
+.names new_n5 new_n7 new_n8
+00 1
+.names x0 new_n5 new_n9
+11 1
+.names pcva_37a116ba534fd473 x0 x1 r0 y0
+0110 1
+1011 1
+1101 1
+.end

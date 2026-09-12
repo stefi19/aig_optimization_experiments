@@ -1,0 +1,24 @@
+.model proof_carrying_replay_source
+.inputs a b cin
+.outputs sum cout
+.names a b ab_xor
+01 1
+10 1
+.names ab_xor cin sum
+01 1
+10 1
+.names a b ab_and
+11 1
+.names a cin a_cin_and
+11 1
+.names b cin b_cin_and
+11 1
+.names ab_and a_cin_and b_cin_and cout
+1-- 1
+-1- 1
+--1 1
+.names a b cin pcva_c30982c90c06c27a
+11- 1
+1-1 1
+-11 1
+.end

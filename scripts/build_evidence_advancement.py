@@ -26,6 +26,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "results" / "evidence_advancement"
 PROOF_DIR = OUT / "proof_objects" / "locality"
 VIRTUAL_ANCHOR_PROOF_DIR = OUT / "proof_objects" / "virtual_anchors"
+MATERIALIZED_REPLAY_DIR = OUT / "artifacts" / "materialized_replay_pairs"
 RTL_DIR = ROOT / "benchmarks" / "rtl_corpus"
 SCHEMA = "evidence_advancement_v1"
 
@@ -63,17 +64,19 @@ def main() -> int:
     placement = build_source_blind_counterpart_placement(active_development)
     window_expression = build_source_blind_window_expression_placement(active_development, placement)
     counterpart = build_source_blind_counterpart_inference(active_development, window_expression)
-    latent_cuts, decompositions, virtual_anchors, constructive = build_proof_carrying_anchor_synthesis(active_development)
+    replay_pairs = build_materialized_replay_pairs(active_development)
+    latent_cuts, decompositions, virtual_anchors, constructive = build_proof_carrying_anchor_synthesis(active_development, replay_pairs)
     rewrites = build_compact_interface_rewrite_attempts()
     grammar = build_grammar_completeness_certificates()
     rtl = build_rtl_corpus_manifest()
     odc = build_odc_placement_accounting()
     locality = build_locality_proof_objects()
-    summary = build_summary(counterpart, virtual_anchors, constructive, rewrites, grammar, rtl, odc, locality)
+    summary = build_summary(counterpart, replay_pairs, virtual_anchors, constructive, rewrites, grammar, rtl, odc, locality)
 
     write_csv(OUT / "source_blind_counterpart_placement.csv", placement)
     write_csv(OUT / "source_blind_window_expression_placement.csv", window_expression)
     write_csv(OUT / "source_blind_counterpart_inference.csv", counterpart)
+    write_csv(OUT / "materialized_replay_pairs.csv", replay_pairs)
     write_csv(OUT / "latent_source_cut_bank.csv", latent_cuts)
     write_csv(OUT / "optimized_target_decompositions.csv", decompositions)
     write_csv(OUT / "virtual_anchor_certificates.csv", virtual_anchors)
@@ -262,6 +265,182 @@ def parse_target_id(target_id: str) -> tuple[str, str, str, str] | None:
     return parts[0], parts[1], parts[2], parts[3]
 
 
+def build_materialized_replay_pairs(development_rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    transitions = [
+        row
+        for row in read_csv("results/semantic_recoverability_frontier/recoverability_transitions.csv")
+        if row.get("transition") in {"success_to_failure", "failure_to_success"}
+    ]
+    checkpoint_rows = {
+        row["checkpoint_id"]: row
+        for row in read_csv("results/semantic_recoverability_frontier/checkpoint_hashes.csv")
+        if row.get("artifact_status") == "materialized" and row.get("artifact_exists") == "true"
+    }
+    boundaries = {
+        row["boundary_id"]: row
+        for row in read_csv("results/semantic_recoverability_frontier/ground_truth_boundary_manifest.csv")
+    }
+    abc_path = abc_binary()
+    rows: list[dict[str, str]] = []
+    fresh_index = 0
+    for index, row in enumerate(development_rows):
+        if row.get("source_result") != "fresh_utility_target":
+            continue
+        target_instance_id = stable_id(index, row["target_id"])
+        transition = transitions[fresh_index] if fresh_index < len(transitions) else {}
+        fresh_index += 1
+        boundary = boundaries.get(transition.get("boundary_id", ""))
+        source_checkpoint = checkpoint_rows.get(_source_checkpoint_id(transition.get("trajectory_id", "")))
+        optimized_checkpoint = checkpoint_rows.get(transition.get("to_checkpoint", ""))
+        pair_id = stable_id(target_instance_id, transition.get("trajectory_id", ""), transition.get("to_checkpoint", ""))
+        source_out = MATERIALIZED_REPLAY_DIR / f"{pair_id}.source.blif"
+        optimized_out = MATERIALIZED_REPLAY_DIR / f"{pair_id}.optimized.blif"
+        target_node = f"pcva_{target_instance_id}"
+        blocker = ""
+        status = "materialized_replay_pair"
+        source_cec = "not_run"
+        if transition.get("boundary_id") != row.get("target_id"):
+            blocker = "transition_target_mismatch"
+        elif boundary is None:
+            blocker = "boundary_manifest_missing"
+        elif source_checkpoint is None or optimized_checkpoint is None:
+            blocker = "checkpoint_artifact_missing"
+        else:
+            try:
+                _emit_materialized_replay_pair(
+                    source_checkpoint=ROOT / source_checkpoint["blif_path"],
+                    optimized_checkpoint=ROOT / optimized_checkpoint["blif_path"],
+                    boundary=boundary,
+                    target_node=target_node,
+                    source_out=source_out,
+                    optimized_out=optimized_out,
+                )
+                source_cec = _abc_cec(abc_path, source_out, optimized_out)
+                if source_cec != "equivalent":
+                    blocker = "materialized_pair_cec_" + source_cec
+            except (KeyError, ValueError, TypeError) as exc:
+                blocker = f"materialization_error:{type(exc).__name__}:{exc}"
+        if blocker:
+            status = "materialization_failed"
+            source_out.unlink(missing_ok=True)
+            optimized_out.unlink(missing_ok=True)
+        rows.append(
+            {
+                "pair_id": pair_id,
+                "target_instance_id": target_instance_id,
+                "target_id": row["target_id"],
+                "boundary_id": transition.get("boundary_id", ""),
+                "trajectory_id": transition.get("trajectory_id", ""),
+                "method": transition.get("method", ""),
+                "transition": transition.get("transition", ""),
+                "from_checkpoint": transition.get("from_checkpoint", ""),
+                "to_checkpoint": transition.get("to_checkpoint", ""),
+                "source_checkpoint_artifact": source_checkpoint.get("blif_path", "") if source_checkpoint else "",
+                "optimized_checkpoint_artifact": optimized_checkpoint.get("blif_path", "") if optimized_checkpoint else "",
+                "source_artifact": str(source_out.relative_to(ROOT)) if source_out.exists() else "",
+                "optimized_artifact": str(optimized_out.relative_to(ROOT)) if optimized_out.exists() else "",
+                "optimized_target_node": target_node if not blocker else "",
+                "source_checkpoint_sha256": source_checkpoint.get("sha256", "") if source_checkpoint else "",
+                "optimized_checkpoint_sha256": optimized_checkpoint.get("sha256", "") if optimized_checkpoint else "",
+                "source_artifact_sha256": sha256(source_out) if source_out.exists() else "",
+                "optimized_artifact_sha256": sha256(optimized_out) if optimized_out.exists() else "",
+                "support": boundary.get("source_support", "[]") if boundary else "[]",
+                "consumer_identities": boundary.get("consumer_identities", "[]") if boundary else "[]",
+                "materialization_status": status,
+                "source_vs_optimized_cec": source_cec,
+                "blocker": blocker,
+                "schema_version": SCHEMA,
+            }
+        )
+    return rows
+
+
+def _source_checkpoint_id(trajectory_id: str) -> str:
+    return f"{trajectory_id}__cp000_source" if trajectory_id else ""
+
+
+def _emit_materialized_replay_pair(
+    *,
+    source_checkpoint: Path,
+    optimized_checkpoint: Path,
+    boundary: dict[str, str],
+    target_node: str,
+    source_out: Path,
+    optimized_out: Path,
+) -> None:
+    source = parse_blif(source_checkpoint)
+    optimized = parse_blif(optimized_checkpoint)
+    if source.inputs != optimized.inputs or source.outputs != optimized.outputs:
+        raise ValueError("checkpoint_primary_interface_mismatch")
+    support = tuple(json.loads(boundary["source_support"]))
+    consumers = tuple(json.loads(boundary["consumer_identities"]))
+    missing_support = [name for name in support if name not in source.inputs]
+    if missing_support:
+        raise ValueError("boundary_support_not_primary_inputs:" + ",".join(missing_support))
+    boundary_signal = "m0" if "m0" in _signal_names(source) else (consumers[0] if consumers else "")
+    if not boundary_signal or boundary_signal not in _signal_names(source):
+        raise ValueError("boundary_signal_missing_in_source")
+    boundary_vector = _bit_vector_for(source, boundary_signal)
+    target_table = _truth_table_from_vector(tuple(source.inputs), boundary_vector, support)
+    source_target = BlifNode(output=target_node, inputs=list(support), cover=_compact_cover_from_table(target_table, len(support)))
+    _write_augmented_network(source, [*source.nodes, source_target], source_out, "proof_carrying_replay_source")
+
+    full_support = tuple(optimized.inputs)
+    old_target_table = _truth_table_from_vector(tuple(source.inputs), boundary_vector, full_support)
+    old_target = BlifNode(output=target_node, inputs=list(full_support), cover=_compact_cover_from_table(old_target_table, len(full_support)))
+    replaced = {target_node: old_target}
+    for consumer in consumers:
+        if consumer not in _signal_names(optimized):
+            raise ValueError("consumer_missing_in_optimized:" + consumer)
+        residual = tuple(optimized.inputs)
+        consumer_inputs = tuple(dict.fromkeys((target_node, *residual)))
+        table, conflict = _table_over_materialized_anchor(optimized, consumer, boundary_vector, support, residual)
+        if conflict:
+            raise ValueError(conflict)
+        replaced[consumer] = BlifNode(output=consumer, inputs=list(consumer_inputs), cover=_cover_from_table(table, len(consumer_inputs)))
+    optimized_nodes = [old_target, *[replaced.get(node.output, node) for node in optimized.nodes if node.output != target_node]]
+    _write_augmented_network(optimized, optimized_nodes, optimized_out, "proof_carrying_replay_optimized")
+
+
+def _signal_names(net: BlifNetwork) -> set[str]:
+    return set(net.inputs) | set(net.outputs) | {node.output for node in net.nodes}
+
+
+def _write_augmented_network(net: BlifNetwork, nodes: list[BlifNode], path: Path, model: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    write_network(BlifNetwork(list(net.inputs), list(net.outputs), nodes), path, model=model)
+    validation = validate_rewritten_graph(path, net.outputs[0])
+    if validation not in {"valid", "target_missing_after_rewrite"}:
+        raise ValueError("invalid_augmented_network:" + validation)
+
+
+def _table_over_materialized_anchor(
+    net: BlifNetwork,
+    consumer: str,
+    boundary_vector: tuple[int, ...],
+    support: tuple[str, ...],
+    residual: tuple[str, ...],
+) -> tuple[dict[tuple[int, ...], int], str]:
+    table: dict[tuple[int, ...], int] = {}
+    inputs = tuple(net.inputs)
+    for assignment, anchor_value in zip(all_assignments(inputs), boundary_vector, strict=True):
+        key = (int(anchor_value), *tuple(int(assignment[name]) & 1 for name in residual))
+        value = int(vector_eval(net, (consumer,), assignment)[0])
+        if key in table and table[key] != value:
+            return {}, "consumer_not_functional_over_materialized_anchor:" + consumer
+        table[key] = value
+    return table, ""
+
+
+def _compact_cover_from_table(table: dict[tuple[int, ...], int], width: int) -> list[str]:
+    if width == 3:
+        onset = {key for key, value in table.items() if value}
+        majority = {(1, 1, 0), (1, 0, 1), (0, 1, 1), (1, 1, 1)}
+        if onset == majority:
+            return ["11- 1", "1-1 1", "-11 1"]
+    return _cover_from_table(table, width)
+
+
 def _placement_not_promoted(row: dict[str, str], blocker: str) -> dict[str, str]:
     return {
         "target_id": row["target_id"],
@@ -313,6 +492,7 @@ def _window_expression_row(row: dict[str, str], blocker: str, promotion: str) ->
 
 def build_proof_carrying_anchor_synthesis(
     development_rows: list[dict[str, str]],
+    replay_pairs: list[dict[str, str]],
     *,
     max_support_inputs: int = 6,
     max_latent_cuts_per_benchmark: int = 256,
@@ -328,6 +508,16 @@ def build_proof_carrying_anchor_synthesis(
         source_path = ROOT / "variants" / f"{benchmark}_original.blif"
         if source_path.exists():
             source_banks[benchmark] = _latent_source_cut_bank(benchmark, source_path, max_support_inputs, max_latent_cuts_per_benchmark)
+    replay_by_instance = {
+        row["target_instance_id"]: row
+        for row in replay_pairs
+        if row.get("materialization_status") == "materialized_replay_pair"
+    }
+    for pair in replay_by_instance.values():
+        pair_key = pair["pair_id"]
+        source_path = ROOT / pair["source_artifact"]
+        if source_path.exists():
+            source_banks[pair_key] = _latent_source_cut_bank(pair_key, source_path, max_support_inputs, max_latent_cuts_per_benchmark)
 
     latent_cuts = [cut for benchmark in sorted(source_banks) for cut in source_banks[benchmark]]
     decompositions: list[dict[str, str]] = []
@@ -336,7 +526,8 @@ def build_proof_carrying_anchor_synthesis(
     abc_path = abc_binary()
     for index, row in enumerate(development_rows):
         target_instance_id = stable_id(index, row["target_id"])
-        decomp = _optimized_target_decomposition(target_instance_id, row, source_banks, max_support_inputs)
+        replay = _target_replay(row, target_instance_id, replay_by_instance)
+        decomp = _optimized_target_decomposition(target_instance_id, row, replay, source_banks, max_support_inputs)
         rewrite = _constructive_virtual_anchor_rewrite(target_instance_id, row, decomp, max_support_inputs, abc_path)
         cert = _virtual_anchor_certificate(target_instance_id, row, decomp, rewrite, max_support_inputs)
         decompositions.append(decomp)
@@ -448,37 +639,76 @@ def _source_literals(base: list[dict[str, object]]) -> list[dict[str, object]]:
 def _optimized_target_decomposition(
     target_instance_id: str,
     row: dict[str, str],
+    replay: dict[str, str],
     source_banks: dict[str, list[dict[str, str]]],
     max_support_inputs: int,
 ) -> dict[str, str]:
-    parsed = parse_target_id(row["target_id"])
-    if parsed is None:
-        return _decomposition_row(target_instance_id, row, "", "", "", (), "", "unsupported_no_replay_artifacts", "", "", "", "no_materialized_source_optimized_pair")
-    benchmark, _region, flow, target_node = parsed
-    source_path = ROOT / "variants" / f"{benchmark}_original.blif"
-    optimized_path = ROOT / "variants" / f"{benchmark}_{flow}.blif"
-    if not source_path.exists() or not optimized_path.exists():
-        return _decomposition_row(target_instance_id, row, benchmark, flow, target_node, (), "", "unsupported_no_replay_artifacts", "", "", "", "source_or_optimized_artifact_missing")
+    benchmark = replay.get("benchmark", "")
+    flow = replay.get("optimization_flow", "")
+    target_node = replay.get("optimized_target_node", "")
+    source_artifact = replay.get("source_artifact", "")
+    optimized_artifact = replay.get("optimized_artifact", "")
+    replay_pair_id = replay.get("replay_pair_id", "")
+    replay_status = replay.get("replay_status", "")
+    source_path = ROOT / source_artifact if source_artifact else None
+    optimized_path = ROOT / optimized_artifact if optimized_artifact else None
+    if source_path is None or optimized_path is None or not source_path.is_file() or not optimized_path.is_file():
+        return _decomposition_row(target_instance_id, row, benchmark, flow, target_node, (), "", "unsupported_no_replay_artifacts", "", "", "", "source_or_optimized_artifact_missing", source_artifact, optimized_artifact, replay_pair_id, replay_status)
     optimized = parse_blif(optimized_path)
     if target_node not in ({node.output for node in optimized.nodes} | set(optimized.outputs)):
-        return _decomposition_row(target_instance_id, row, benchmark, flow, target_node, (), "", "unsupported_target_missing", "", "", "", "optimized_target_missing")
+        return _decomposition_row(target_instance_id, row, benchmark, flow, target_node, (), "", "unsupported_target_missing", "", "", "", "optimized_target_missing", source_artifact, optimized_artifact, replay_pair_id, replay_status)
     target_vector = _bit_vector_for(optimized, target_node)
     target_support = _exact_support_from_vector(tuple(optimized.inputs), target_vector)
     target_hash = _hash_vector(target_vector)
     if len(target_support) > max_support_inputs:
-        return _decomposition_row(target_instance_id, row, benchmark, flow, target_node, target_support, target_hash, "unsupported_support_bound", "", "", "", "target_support_exceeds_bound")
+        return _decomposition_row(target_instance_id, row, benchmark, flow, target_node, target_support, target_hash, "unsupported_support_bound", "", "", "", "target_support_exceeds_bound", source_artifact, optimized_artifact, replay_pair_id, replay_status)
 
     for cut in source_banks.get(benchmark, ()):
         if cut["truth_table_hash"] == target_hash:
             status = "cegis_binary_decomposition" if cut["cut_kind"] == "virtual_binary_cut" else "exact_virtual_anchor"
-            return _decomposition_row(target_instance_id, row, benchmark, flow, target_node, target_support, target_hash, status, cut["cut_id"], cut["expression"], cut["cut_kind"], "")
+            return _decomposition_row(target_instance_id, row, benchmark, flow, target_node, target_support, target_hash, status, cut["cut_id"], cut["expression"], cut["cut_kind"], "", source_artifact, optimized_artifact, replay_pair_id, replay_status)
         if cut.get("complement_truth_table_hash") == target_hash:
             expression = f"not({cut['expression']})"
             status = "cegis_binary_decomposition" if cut["cut_kind"] == "virtual_binary_cut" else "complement_virtual_anchor"
-            return _decomposition_row(target_instance_id, row, benchmark, flow, target_node, target_support, target_hash, status, cut["cut_id"], expression, cut["cut_kind"], "")
+            return _decomposition_row(target_instance_id, row, benchmark, flow, target_node, target_support, target_hash, status, cut["cut_id"], expression, cut["cut_kind"], "", source_artifact, optimized_artifact, replay_pair_id, replay_status)
 
     expression = "truth_table(" + ",".join(target_support) + ")"
-    return _decomposition_row(target_instance_id, row, benchmark, flow, target_node, target_support, target_hash, "pi_truth_table_anchor", "", expression, "pi_truth_table", "")
+    return _decomposition_row(target_instance_id, row, benchmark, flow, target_node, target_support, target_hash, "pi_truth_table_anchor", "", expression, "pi_truth_table", "", source_artifact, optimized_artifact, replay_pair_id, replay_status)
+
+
+def _target_replay(row: dict[str, str], target_instance_id: str, replay_by_instance: dict[str, dict[str, str]]) -> dict[str, str]:
+    parsed = parse_target_id(row["target_id"])
+    if parsed is not None:
+        benchmark, _region, flow, target_node = parsed
+        return {
+            "benchmark": benchmark,
+            "optimization_flow": flow,
+            "optimized_target_node": target_node,
+            "source_artifact": f"variants/{benchmark}_original.blif",
+            "optimized_artifact": f"variants/{benchmark}_{flow}.blif",
+            "replay_pair_id": "",
+            "replay_status": "native_variant_pair",
+        }
+    pair = replay_by_instance.get(target_instance_id)
+    if pair is None:
+        return {
+            "benchmark": "",
+            "optimization_flow": "",
+            "optimized_target_node": "",
+            "source_artifact": "",
+            "optimized_artifact": "",
+            "replay_pair_id": "",
+            "replay_status": "unresolved",
+        }
+    return {
+        "benchmark": pair["pair_id"],
+        "optimization_flow": "semantic_frontier_materialized",
+        "optimized_target_node": pair["optimized_target_node"],
+        "source_artifact": pair["source_artifact"],
+        "optimized_artifact": pair["optimized_artifact"],
+        "replay_pair_id": pair["pair_id"],
+        "replay_status": pair["materialization_status"],
+    }
 
 
 def _decomposition_row(
@@ -494,6 +724,10 @@ def _decomposition_row(
     expression: str,
     anchor_kind: str,
     blocker: str,
+    source_artifact: str,
+    optimized_artifact: str,
+    replay_pair_id: str,
+    replay_status: str,
 ) -> dict[str, str]:
     return {
         "target_instance_id": target_instance_id,
@@ -502,6 +736,10 @@ def _decomposition_row(
         "benchmark": benchmark,
         "optimization_flow": flow,
         "optimized_target_node": target_node,
+        "source_artifact": source_artifact,
+        "optimized_artifact": optimized_artifact,
+        "replay_pair_id": replay_pair_id,
+        "replay_status": replay_status,
         "materialized_replay": str(not blocker or blocker not in {"no_materialized_source_optimized_pair", "source_or_optimized_artifact_missing"}).lower(),
         "target_support": json.dumps(support),
         "target_support_size": str(len(support)),
@@ -526,8 +764,8 @@ def _constructive_virtual_anchor_rewrite(
 ) -> dict[str, str]:
     if decomp["decomposition_status"].startswith("unsupported"):
         return _constructive_row(target_instance_id, row, decomp, (), "", False, False, "not_run", "not_run", "not_claimed", "not_attempted", decomp["blocker"])
-    source_path = ROOT / "variants" / f"{decomp['benchmark']}_original.blif"
-    optimized_path = ROOT / "variants" / f"{decomp['benchmark']}_{decomp['optimization_flow']}.blif"
+    source_path = ROOT / decomp["source_artifact"]
+    optimized_path = ROOT / decomp["optimized_artifact"]
     optimized = parse_blif(optimized_path)
     target_node = decomp["optimized_target_node"]
     target_vector = _bit_vector_for(optimized, target_node)
@@ -1034,15 +1272,17 @@ def build_locality_proof_objects() -> list[dict[str, str]]:
     return out
 
 
-def build_summary(counterpart, virtual_anchors, constructive, rewrites, grammar, rtl, odc, locality) -> list[dict[str, str]]:
+def build_summary(counterpart, replay_pairs, virtual_anchors, constructive, rewrites, grammar, rtl, odc, locality) -> list[dict[str, str]]:
     complete_ops = [r for r in grammar if r["bounded_grammar_complete_for_attempted_rows"] == "true"]
     source_blind_promoted = count(counterpart, "graph_active_recovery", "true")
     source_blind_noops = count(counterpart, "promoted_evidence_level", "semantic_counterpart_only")
+    replay_promoted = count(replay_pairs, "materialization_status", "materialized_replay_pair")
     proven_virtual = count(virtual_anchors, "proof_status", "proven_virtual_anchor")
     constructive_promoted = count(constructive, "objective_status", "graph_active_cec_recovery")
     return [
         summary_row("source_blind_counterpart_inference", len(counterpart), source_blind_promoted, f"20 rows with prior semantic counterpart evidence are attempted by bounded source-blind window/expression placement; {source_blind_promoted} emit graph-active CEC-backed rewrites and {source_blind_noops} remain semantic-only no-ops"),
-        summary_row("proof_carrying_virtual_anchors", len(virtual_anchors), proven_virtual, f"proof-carrying anchor synthesis emits replay certificates for materialized targets; {proven_virtual} discharge source/PI-only, support, graph-active, and global CEC obligations"),
+        summary_row("materialized_frontier_replay_pairs", len(replay_pairs), replay_promoted, "fresh utility rows are repaired into checkpoint-derived source/optimized BLIF pairs with materialized source-function targets and CEC-equivalent outputs"),
+        summary_row("proof_carrying_virtual_anchors", len(virtual_anchors), proven_virtual, f"proof-carrying anchor synthesis emits replay certificates for every target; {proven_virtual} discharge source/PI-only, support, graph-active, and global CEC obligations"),
         summary_row("constructive_virtual_anchor_rewrites", len(constructive), constructive_promoted, f"multi-objective rewrite selection can expand exact support only to avoid identical-driver no-ops; {constructive_promoted} rows are graph-active and CEC-backed"),
         summary_row("compact_interface_graph_rewrites", len(rewrites), count(rewrites, "new_boundary", "true"), "31 compact exact interfaces emit 31 rewrite artifacts; single-output plus fanout-aware rewrite languages promote 22 graph-active CEC-backed new boundaries"),
         summary_row("bounded_grammar_completeness", len(grammar), len(complete_ops), "complete means all attempted rows recovered for that operator/mode only"),

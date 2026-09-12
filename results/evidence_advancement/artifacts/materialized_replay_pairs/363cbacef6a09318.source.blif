@@ -1,0 +1,14 @@
+.model proof_carrying_replay_source
+.inputs x0 x1 r0
+.outputs y0
+.names x0 x1 r0 m0
+110 1
+111 1
+.names x0 x1 r0 m0 y0
+1101 1
+0010 1
+1010 1
+0110 1
+.names x0 x1 pcva_7c0b8d5ac3fccb5e
+11 1
+.end

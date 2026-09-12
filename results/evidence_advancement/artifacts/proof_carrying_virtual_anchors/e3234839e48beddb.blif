@@ -1,0 +1,31 @@
+.model proof_carrying_virtual_anchor
+.inputs x0 x1 r0
+.outputs y0
+.names x0 x1 pcva_e3234839e48beddb
+01 1
+10 1
+.names x0 x1 new_n5
+01 1
+.names x0 x1 new_n6
+10 1
+.names new_n5 new_n6 new_n7
+00 1
+.names r0 new_n7 new_n8
+10 1
+.names x1 new_n8 new_n9
+01 1
+.names r0 new_n7 new_n10
+01 1
+.names x1 new_n10 new_n11
+11 1
+.names new_n9 new_n11 new_n12
+00 1
+.names x0 new_n12 new_n13
+10 1
+.names new_n5 new_n8 new_n14
+11 1
+.names pcva_e3234839e48beddb x0 x1 r0 y0
+0110 1
+1011 1
+1101 1
+.end
