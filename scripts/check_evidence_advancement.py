@@ -376,11 +376,28 @@ def _check_compact_rewrite_sources(
 
 
 def _check_grammar(rows: list[dict[str, str]], errors: list[str]) -> None:
+    grouped = {
+        (row.get("mode", ""), row.get("operator", "")): row
+        for row in _source_rows("results/blind_semantic_cegis/z3_recovery_by_operator.csv", errors)
+    }
+    proofs_by_group: dict[tuple[str, str], list[dict[str, str]]] = {}
+    for proof in _source_rows("results/blind_semantic_cegis/z3_formal_proofs.csv", errors):
+        if proof.get("formal_status") == "formally_verified_region":
+            proofs_by_group.setdefault((proof.get("mode", ""), proof.get("operator", "")), []).append(proof)
+
     expected_complete = {("blind", "sign_extend"), ("blind", "zero_extend"), ("oracle_bus", "sign_extend"), ("oracle_bus", "zero_extend")}
     complete = {(r.get("mode", ""), r.get("operator", "")) for r in rows if r.get("bounded_grammar_complete_for_attempted_rows") == "true"}
     if complete != expected_complete:
         errors.append(f"bounded grammar complete groups drifted: {sorted(complete)} != {sorted(expected_complete)}")
     for row in rows:
+        key = (row.get("mode", ""), row.get("operator", ""))
+        grouped_row = grouped.get(key)
+        if grouped_row is None:
+            errors.append(f"grammar row lacks grouped Z3 recovery source: {key}")
+            continue
+        for field in ("regions_attempted", "regions_recovered"):
+            if row.get(field) != grouped_row.get(field):
+                errors.append(f"grammar row disagrees with grouped Z3 {field}: {key}")
         attempted = int(row.get("regions_attempted", "0"))
         recovered = int(row.get("regions_recovered", "0"))
         is_complete = row.get("bounded_grammar_complete_for_attempted_rows") == "true"
@@ -392,6 +409,20 @@ def _check_grammar(rows: list[dict[str, str]], errors: list[str]) -> None:
             errors.append(f"incomplete grammar row lacks limitation for {row.get('mode')}:{row.get('operator')}")
         if row.get("proof_backend") != "z3" or not row.get("proof_hash"):
             errors.append(f"grammar row lacks Z3 proof hash for {row.get('mode')}:{row.get('operator')}")
+        proof_rows = proofs_by_group.get(key, [])
+        if int(row.get("proof_row_count", "0")) != len(proof_rows):
+            errors.append(f"grammar proof row count mismatch for {row.get('mode')}:{row.get('operator')}")
+        if row.get("proof_hash") != _hash_rows(proof_rows):
+            errors.append(f"grammar proof hash mismatch for {row.get('mode')}:{row.get('operator')}")
+        if len(proof_rows) != recovered:
+            errors.append(f"grammar recovered count is not backed by proof rows for {row.get('mode')}:{row.get('operator')}")
+        for proof in proof_rows:
+            if proof.get("formal_backend") != "z3" or proof.get("formal_evidence_level") != "formal_smt" or proof.get("solver_result") != "unsat":
+                errors.append(f"grammar proof row is not accepted Z3 SMT evidence: {proof.get('candidate_id')}")
+        if is_complete:
+            proof_region_ids = {proof.get("region_id", "") for proof in proof_rows}
+            if len(proof_region_ids) != attempted:
+                errors.append(f"complete grammar group lacks one proof per attempted region: {row.get('mode')}:{row.get('operator')}")
 
 
 def _check_rtl(rows: list[dict[str, str]], errors: list[str]) -> None:

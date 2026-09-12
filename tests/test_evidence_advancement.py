@@ -210,3 +210,31 @@ def test_checker_rejects_compact_rewrite_cec_scope_drift() -> None:
         assert result.returncode != 0
     finally:
         _write_rows(path, original)
+
+
+def test_checker_rejects_grammar_proof_hash_drift() -> None:
+    path = ROOT / "results/evidence_advancement/grammar_completeness_certificates.csv"
+    rows = list(csv.DictReader(path.open()))
+    original = [dict(row) for row in rows]
+    row = next(r for r in rows if r["bounded_grammar_complete_for_attempted_rows"] == "true")
+    row["proof_hash"] = "0" * 64
+    try:
+        _write_rows(path, rows)
+        result = subprocess.run([sys.executable, str(ROOT / "scripts" / "check_evidence_advancement.py")], cwd=ROOT)
+        assert result.returncode != 0
+    finally:
+        _write_rows(path, original)
+
+
+def test_checker_rejects_grammar_grouped_count_drift() -> None:
+    path = ROOT / "results/evidence_advancement/grammar_completeness_certificates.csv"
+    rows = list(csv.DictReader(path.open()))
+    original = [dict(row) for row in rows]
+    row = next(r for r in rows if r["mode"] == "blind" and r["operator"] == "sign_extend")
+    row["regions_recovered"] = str(int(row["regions_recovered"]) - 1)
+    try:
+        _write_rows(path, rows)
+        result = subprocess.run([sys.executable, str(ROOT / "scripts" / "check_evidence_advancement.py")], cwd=ROOT)
+        assert result.returncode != 0
+    finally:
+        _write_rows(path, original)
