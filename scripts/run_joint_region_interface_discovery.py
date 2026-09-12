@@ -24,5 +24,6 @@ if __name__ == "__main__":
     _runpy.run_module(_TARGET_MODULE, run_name="__main__")
 else:
     _module = _importlib.import_module(_TARGET_MODULE)
+    _sys.modules[__name__] = _module
     globals().update({name: value for name, value in vars(_module).items() if not name.startswith("__")})
     __all__ = [name for name in globals() if not name.startswith("_")]
