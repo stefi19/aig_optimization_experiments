@@ -428,32 +428,63 @@ def _check_grammar(rows: list[dict[str, str]], errors: list[str]) -> None:
 def _check_rtl(rows: list[dict[str, str]], errors: list[str]) -> None:
     if len(rows) != 3:
         errors.append(f"RTL corpus manifest drifted: {len(rows)} != 3")
+    expected_designs = {"rtl_affine4", "rtl_mux_arith4", "rtl_popcount4"}
+    design_ids = [row.get("design_id", "") for row in rows]
+    if set(design_ids) != expected_designs:
+        errors.append(f"RTL corpus design set drifted: {sorted(design_ids)} != {sorted(expected_designs)}")
+    if len(design_ids) != len(set(design_ids)):
+        errors.append("RTL corpus manifest contains duplicate design ids")
     for row in rows:
+        design_id = row.get("design_id", "")
         if row.get("redistributable") != "true" or row.get("license") != "CC0-1.0":
-            errors.append(f"RTL corpus row is not redistributable CC0: {row.get('design_id')}")
+            errors.append(f"RTL corpus row is not redistributable CC0: {design_id}")
         rtl_path = ROOT / row.get("rtl_path", "")
         if not rtl_path.exists():
             errors.append(f"RTL source missing: {row.get('rtl_path')}")
             continue
+        rtl_text = rtl_path.read_text(encoding="utf-8")
+        if not rtl_text.startswith("// SPDX-License-Identifier: CC0-1.0\n"):
+            errors.append(f"RTL source lacks CC0 SPDX header: {row.get('rtl_path')}")
+        if f"module {design_id}(" not in rtl_text:
+            errors.append(f"RTL source module declaration does not match design id: {design_id}")
+        if "endmodule" not in rtl_text:
+            errors.append(f"RTL source lacks endmodule: {design_id}")
         if _sha256(rtl_path) != row.get("rtl_sha256"):
             errors.append(f"RTL hash mismatch: {row.get('rtl_path')}")
-        metadata = json.loads(row.get("source_location_metadata", "{}"))
-        if metadata.get("module") != row.get("design_id") or metadata.get("source") != row.get("rtl_path"):
-            errors.append(f"RTL source-location metadata mismatch: {row.get('design_id')}")
+        try:
+            metadata = json.loads(row.get("source_location_metadata", "{}"))
+        except json.JSONDecodeError as exc:
+            errors.append(f"RTL source-location metadata is invalid JSON for {design_id}: {exc}")
+            metadata = {}
+        if (
+            metadata.get("module") != design_id
+            or metadata.get("source") != row.get("rtl_path")
+            or metadata.get("generator") != "build_evidence_advancement.py"
+        ):
+            errors.append(f"RTL source-location metadata mismatch: {design_id}")
         status = row.get("lowering_status")
         if status == "lowered_blif":
             lowered = ROOT / row.get("lowered_blif", "")
             if not lowered.exists():
-                errors.append(f"lowered BLIF missing for {row.get('design_id')}")
+                errors.append(f"lowered BLIF missing for {design_id}")
             if row.get("evidence_level") != "rtl_lowered_with_tool":
-                errors.append(f"lowered RTL row has wrong evidence level: {row.get('design_id')}")
+                errors.append(f"lowered RTL row has wrong evidence level: {design_id}")
+            if not row.get("yosys_path") or row.get("yosys_version") in {"", "unavailable"}:
+                errors.append(f"lowered RTL row lacks Yosys provenance: {design_id}")
+            if lowered.exists():
+                try:
+                    parse_blif(lowered)
+                except Exception as exc:  # pragma: no cover - defensive around optional Yosys output
+                    errors.append(f"lowered BLIF does not parse for {design_id}: {exc}")
         elif status == "tool_missing":
             if row.get("lowered_blif"):
-                errors.append(f"tool-missing RTL row has lowered BLIF: {row.get('design_id')}")
+                errors.append(f"tool-missing RTL row has lowered BLIF: {design_id}")
             if row.get("evidence_level") != "rtl_corpus_pinned":
-                errors.append(f"tool-missing RTL row has wrong evidence level: {row.get('design_id')}")
+                errors.append(f"tool-missing RTL row has wrong evidence level: {design_id}")
+            if row.get("yosys_path") or row.get("yosys_version") != "unavailable":
+                errors.append(f"tool-missing RTL row claims Yosys provenance: {design_id}")
         else:
-            errors.append(f"unexpected RTL lowering status for {row.get('design_id')}: {status}")
+            errors.append(f"unexpected RTL lowering status for {design_id}: {status}")
 
 
 def _check_odc(rows: list[dict[str, str]], errors: list[str]) -> None:

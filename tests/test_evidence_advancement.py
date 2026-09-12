@@ -310,3 +310,34 @@ def test_checker_rejects_locality_proof_object_predicate_drift() -> None:
     finally:
         proof_path.write_text(original_proof_text, encoding="utf-8")
         _write_rows(table_path, original_rows)
+
+
+def test_checker_rejects_rtl_corpus_design_set_drift() -> None:
+    path = ROOT / "results/evidence_advancement/rtl_corpus_manifest.csv"
+    rows = list(csv.DictReader(path.open()))
+    original = [dict(row) for row in rows]
+    rows[0]["design_id"] = "rtl_untracked"
+    try:
+        _write_rows(path, rows)
+        result = subprocess.run([sys.executable, str(ROOT / "scripts" / "check_evidence_advancement.py")], cwd=ROOT)
+        assert result.returncode != 0
+    finally:
+        _write_rows(path, original)
+
+
+def test_checker_rejects_rtl_source_license_drift() -> None:
+    table_path = ROOT / "results/evidence_advancement/rtl_corpus_manifest.csv"
+    rows = list(csv.DictReader(table_path.open()))
+    original_rows = [dict(row) for row in rows]
+    row = rows[0]
+    rtl_path = ROOT / row["rtl_path"]
+    original_text = rtl_path.read_text(encoding="utf-8")
+    rtl_path.write_text(original_text.replace("// SPDX-License-Identifier: CC0-1.0\n", "", 1), encoding="utf-8")
+    row["rtl_sha256"] = _sha256(rtl_path)
+    try:
+        _write_rows(table_path, rows)
+        result = subprocess.run([sys.executable, str(ROOT / "scripts" / "check_evidence_advancement.py")], cwd=ROOT)
+        assert result.returncode != 0
+    finally:
+        rtl_path.write_text(original_text, encoding="utf-8")
+        _write_rows(table_path, original_rows)
