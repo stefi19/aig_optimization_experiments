@@ -89,7 +89,10 @@ make build-artifact-manifest
 This writes `results/artifact_manifest.csv`, including the primary artifact,
 SHA-256 digest, row count, reproduction command, git SHA, config hash,
 Python/Z3 versions, ABC revision, dataset classes, and schema version for each
-major result family.
+major result family. `scripts/check_artifact_claims.py` verifies the manifest
+against the committed artifact files, including family coverage, primary paths,
+reproduction commands, config hashes, artifact digests, row counts, schema
+version, dataset-class JSON shape, and valid commit provenance.
 
 ## Research-Wow Layer
 

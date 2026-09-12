@@ -4,12 +4,30 @@
 from __future__ import annotations
 
 import csv
+import hashlib
+import json
+import subprocess
 import sys
 from collections import Counter
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+ABC_REV = "bcfdf592289a408cd67ec19260f8a60a37b085b6"
+ARTIFACT_MANIFEST_SCHEMA = "artifact_manifest_v1"
+
+EXPECTED_MANIFEST = {
+    "core_correspondence": ("results/summary_metrics.csv", "make generate-variants analyze"),
+    "sat_refinement": ("results/sat_summary.csv", "make sat-pipeline"),
+    "blind_semantic_cegis": ("results/blind_semantic_cegis/blind_semantic_recovery_summary.csv", "make blind-semantic-cegis-all"),
+    "semantic_recoverability_frontier": ("results/semantic_recoverability_frontier/final_supported_claims_summary.md", "make semantic-recoverability-all"),
+    "active_source_counterparts": ("results/active_source_counterpart_refactoring/final_supported_claims_summary.md", "make active-source-counterparts-all"),
+    "cross_netlist_transplantation": ("results/cross_netlist_cut_transplantation/supported_claims_summary.md", "make cross-netlist-transplant-all"),
+    "formal_locality_barriers": ("results/formal_locality_barriers/formal_locality_barrier_summary.md", "make formal-locality-all"),
+    "necessity_first_targets": ("results/necessity_first_target_discovery/corrected_scientific_claims.csv", "make necessity-targets-all"),
+    "research_wow": ("results/research_wow/recoverability_frontier.csv", "make research-wow"),
+    "evidence_advancement": ("results/evidence_advancement/evidence_advancement_summary.csv", "make evidence-advancement"),
+}
 
 
 def main() -> int:
@@ -105,24 +123,55 @@ def _check_blind_cegis(errors: list[str]) -> None:
 def _check_manifest(errors: list[str]) -> None:
     manifest = _rows("results/artifact_manifest.csv", errors)
     families = {r.get("result_family") for r in manifest}
-    required = {
-        "core_correspondence",
-        "sat_refinement",
-        "blind_semantic_cegis",
-        "semantic_recoverability_frontier",
-        "active_source_counterparts",
-        "cross_netlist_transplantation",
-        "formal_locality_barriers",
-        "necessity_first_targets",
-        "research_wow",
-        "evidence_advancement",
-    }
+    required = set(EXPECTED_MANIFEST)
     missing = required - families
+    extra = families - required
     if missing:
         errors.append(f"artifact manifest missing families: {sorted(missing)}")
+    if extra:
+        errors.append(f"artifact manifest has unexpected families: {sorted(extra)}")
+    if len(manifest) != len(families):
+        errors.append("artifact manifest has duplicate result families")
     for row in manifest:
-        if not row.get("artifact_sha256") or row.get("artifact_rows") == "0":
-            errors.append(f"artifact manifest has empty artifact entry: {row.get('result_family')}")
+        family = row.get("result_family", "")
+        if row.get("schema_version") != ARTIFACT_MANIFEST_SCHEMA:
+            errors.append(f"artifact manifest schema drift: {family}")
+        expected = EXPECTED_MANIFEST.get(family)
+        if expected is None:
+            continue
+        expected_path, expected_command = expected
+        if row.get("primary_artifact") != expected_path:
+            errors.append(f"artifact manifest primary path drift for {family}")
+        if row.get("reproduction_command") != expected_command:
+            errors.append(f"artifact manifest reproduction command drift for {family}")
+        if row.get("abc_revision") != ABC_REV:
+            errors.append(f"artifact manifest ABC revision drift for {family}")
+        expected_config_hash = _manifest_config_hash(family, expected_command)
+        if row.get("config_hash") != expected_config_hash:
+            errors.append(f"artifact manifest config hash drift for {family}")
+        try:
+            dataset_classes = json.loads(row.get("dataset_classes", "[]"))
+        except json.JSONDecodeError as exc:
+            errors.append(f"artifact manifest dataset classes are invalid JSON for {family}: {exc}")
+            dataset_classes = []
+        if not isinstance(dataset_classes, list):
+            errors.append(f"artifact manifest dataset classes are not a list for {family}")
+        artifact = ROOT / expected_path
+        if not artifact.exists():
+            errors.append(f"artifact manifest primary artifact missing for {family}: {expected_path}")
+            continue
+        if row.get("artifact_sha256") != _sha256(artifact):
+            errors.append(f"artifact manifest hash mismatch for {family}")
+        try:
+            artifact_rows = int(row.get("artifact_rows", "0"))
+        except ValueError:
+            errors.append(f"artifact manifest row count is not numeric for {family}")
+            artifact_rows = -1
+        if artifact_rows != _row_count(artifact) or artifact_rows <= 0:
+            errors.append(f"artifact manifest row count mismatch for {family}")
+        git_head = row.get("git_head", "")
+        if not _is_known_commit(git_head):
+            errors.append(f"artifact manifest git head is not a known commit for {family}: {git_head}")
 
 
 def _check_docs_freshness(errors: list[str]) -> None:
@@ -155,6 +204,38 @@ def _rows(rel_path: str, errors: list[str]) -> list[dict[str, str]]:
         return []
     with path.open(newline="", encoding="utf-8") as fh:
         return list(csv.DictReader(fh))
+
+
+def _sha256(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as fh:
+        for chunk in iter(lambda: fh.read(65536), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def _row_count(path: Path) -> int:
+    if path.suffix != ".csv":
+        return max(0, len(path.read_text(encoding="utf-8").splitlines()) - 1)
+    with path.open(newline="", encoding="utf-8") as fh:
+        return sum(1 for _ in csv.DictReader(fh))
+
+
+def _manifest_config_hash(family: str, command: str) -> str:
+    payload = {"family": family, "command": command, "abc_rev": ABC_REV}
+    return hashlib.sha256(json.dumps(payload, sort_keys=True).encode("utf-8")).hexdigest()[:16]
+
+
+def _is_known_commit(rev: str) -> bool:
+    if len(rev) != 40 or any(char not in "0123456789abcdef" for char in rev):
+        return False
+    return subprocess.run(
+        ["git", "cat-file", "-e", f"{rev}^{{commit}}"],
+        cwd=ROOT,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    ).returncode == 0
 
 
 if __name__ == "__main__":
