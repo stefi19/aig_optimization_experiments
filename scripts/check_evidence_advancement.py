@@ -14,6 +14,11 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "results" / "evidence_advancement"
 SCHEMA = "evidence_advancement_v1"
 
+sys.path.insert(0, str(ROOT))
+
+from analyze_blif_matches import BlifNetwork, parse_blif  # noqa: E402
+from formal_locality_barriers import all_assignments, scalar_eval_exact, structural_supports, vector_eval  # noqa: E402
+
 
 def main() -> int:
     errors: list[str] = []
@@ -89,6 +94,158 @@ def _check_source_blind_window_expression(rows: list[dict[str, str]], errors: li
                 errors.append(f"source-blind window-expression promotion lacks expression: {target}")
             if row.get("blocker"):
                 errors.append(f"source-blind window-expression promoted row still has blocker: {target}")
+        if row.get("expression"):
+            _check_source_blind_expression_witness(row, errors)
+
+
+def _check_source_blind_expression_witness(row: dict[str, str], errors: list[str]) -> None:
+    target = row.get("target_id", "")
+    parsed = _parse_target_id(target)
+    if parsed is None:
+        errors.append(f"source-blind expression row has unparseable target id: {target}")
+        return
+    benchmark, _region, flow, target_node = parsed
+    source_path = ROOT / "variants" / f"{benchmark}_original.blif"
+    optimized_path = ROOT / "variants" / f"{benchmark}_{flow}.blif"
+    if not source_path.exists() or not optimized_path.exists():
+        errors.append(f"source-blind expression witness lacks replay BLIFs: {target}")
+        return
+
+    try:
+        window = tuple(json.loads(row.get("candidate_source_window", "[]")))
+        features = json.loads(row.get("selection_features", "{}"))
+    except json.JSONDecodeError as exc:
+        errors.append(f"source-blind expression witness has invalid JSON metadata for {target}: {exc}")
+        return
+    if not isinstance(features, dict):
+        errors.append(f"source-blind expression witness features are not a JSON object: {target}")
+        return
+    if features.get("candidate_source") != "source_graph_signals_only":
+        errors.append(f"source-blind expression witness is not source-graph-only: {target}")
+    if features.get("selection_policy") != "first_exact_vector_match_in_bounded_language":
+        errors.append(f"source-blind expression witness has unexpected selection policy: {target}")
+    try:
+        selected_window_width = int(features.get("selected_window_width", len(window)))
+    except (TypeError, ValueError):
+        errors.append(f"source-blind expression witness has invalid window-width metadata: {target}")
+        selected_window_width = -1
+    if selected_window_width != len(window):
+        errors.append(f"source-blind expression witness window-width metadata mismatch: {target}")
+
+    try:
+        source = parse_blif(source_path)
+        optimized = parse_blif(optimized_path)
+        expr = _parse_expression(row.get("expression", ""))
+        if expr is None:
+            errors.append(f"source-blind expression witness has unparsable expression: {target}")
+            return
+        op_name, args = expr
+        if op_name != row.get("expression_language"):
+            errors.append(f"source-blind expression language mismatch for {target}: {op_name} != {row.get('expression_language')}")
+        if tuple(args) != window:
+            errors.append(f"source-blind expression window does not match expression args: {target}")
+        allowed_signals = set(source.inputs) | set(source.outputs) | {node.output for node in source.nodes}
+        unknown = [arg for arg in args if arg not in allowed_signals]
+        if unknown:
+            errors.append(f"source-blind expression uses non-source signals for {target}: {unknown}")
+            return
+        if target_node not in ({node.output for node in optimized.nodes} | set(optimized.outputs)):
+            errors.append(f"source-blind expression target missing in optimized BLIF: {target}")
+            return
+        target_vector = _bit_vector(optimized, target_node)
+        expression_vector = _evaluate_source_expression(source, op_name, args)
+    except (KeyError, ValueError, TypeError) as exc:
+        errors.append(f"source-blind expression witness replay failed for {target}: {exc}")
+        return
+
+    if expression_vector != target_vector:
+        errors.append(f"source-blind expression witness does not reproduce optimized target vector: {target}")
+    expected_hash = _hash_vector(target_vector)
+    if features.get("target_truth_table_hash") != expected_hash:
+        errors.append(f"source-blind expression target hash mismatch for {target}")
+
+    support = _expression_support(source, args)
+    selected_support = tuple(features.get("selected_support", ()))
+    if selected_support != support:
+        errors.append(f"source-blind expression selected support mismatch for {target}: {selected_support} != {support}")
+    try:
+        max_support = int(features.get("max_support_inputs", "0"))
+    except (TypeError, ValueError):
+        errors.append(f"source-blind expression witness has invalid support-bound metadata: {target}")
+        max_support = 0
+    if max_support <= 0 or len(support) > max_support:
+        errors.append(f"source-blind expression support exceeds declared bound for {target}: {len(support)} > {max_support}")
+    if _truth_table_from_vector(source, target_vector, support) is None:
+        errors.append(f"source-blind expression target is not functional over selected support: {target}")
+
+
+def _parse_target_id(target_id: str) -> tuple[str, str, str, str] | None:
+    parts = target_id.split("|")
+    if len(parts) != 4:
+        return None
+    return parts[0], parts[1], parts[2], parts[3]
+
+
+def _parse_expression(expression: str) -> tuple[str, list[str]] | None:
+    if not expression.endswith(")") or "(" not in expression:
+        return None
+    op_name, rest = expression.split("(", 1)
+    args = rest[:-1].split(",") if rest[:-1] else []
+    expected_arity = {"not": 1, "and": 2, "or": 2, "xor": 2, "xnor": 2, "nand": 2, "nor": 2, "mux": 3}
+    if op_name not in expected_arity or len(args) != expected_arity[op_name] or any(not arg for arg in args):
+        return None
+    return op_name, args
+
+
+def _bit_vector(net: BlifNetwork, node: str) -> tuple[int, ...]:
+    return tuple(vector_eval(net, (node,), assignment)[0] for assignment in all_assignments(tuple(net.inputs)))
+
+
+def _evaluate_source_expression(net: BlifNetwork, op_name: str, args: list[str]) -> tuple[int, ...]:
+    vectors = [_bit_vector(net, arg) for arg in args]
+    if op_name == "not":
+        return tuple(1 - bit for bit in vectors[0])
+    if op_name == "and":
+        return tuple(a & b for a, b in zip(vectors[0], vectors[1], strict=True))
+    if op_name == "or":
+        return tuple(a | b for a, b in zip(vectors[0], vectors[1], strict=True))
+    if op_name == "xor":
+        return tuple(a ^ b for a, b in zip(vectors[0], vectors[1], strict=True))
+    if op_name == "xnor":
+        return tuple(1 ^ (a ^ b) for a, b in zip(vectors[0], vectors[1], strict=True))
+    if op_name == "nand":
+        return tuple(1 - (a & b) for a, b in zip(vectors[0], vectors[1], strict=True))
+    if op_name == "nor":
+        return tuple(1 - (a | b) for a, b in zip(vectors[0], vectors[1], strict=True))
+    if op_name == "mux":
+        return tuple((s & a) | ((1 - s) & b) for s, a, b in zip(vectors[0], vectors[1], vectors[2], strict=True))
+    raise ValueError(f"unsupported expression operator: {op_name}")
+
+
+def _expression_support(net: BlifNetwork, args: list[str]) -> tuple[str, ...]:
+    support_by_node = structural_supports(net)
+    out: list[str] = []
+    for arg in args:
+        support = (arg,) if arg in net.inputs else tuple(name for name in sorted(support_by_node.get(arg, ())) if name in net.inputs)
+        for name in support:
+            if name not in out:
+                out.append(name)
+    return tuple(sorted(out))
+
+
+def _truth_table_from_vector(net: BlifNetwork, vector: tuple[int, ...], support: tuple[str, ...]) -> dict[tuple[int, ...], int] | None:
+    table: dict[tuple[int, ...], int] = {}
+    for assignment, value in zip(all_assignments(tuple(net.inputs)), vector, strict=True):
+        values = scalar_eval_exact(net, assignment)
+        key = tuple(int(values[name]) & 1 for name in support)
+        if key in table and table[key] != value:
+            return None
+        table[key] = value
+    return table
+
+
+def _hash_vector(vector: tuple[int, ...]) -> str:
+    return hashlib.sha256(json.dumps(vector).encode("ascii")).hexdigest()[:16]
 
 
 def _check_counterpart(rows: list[dict[str, str]], placement: list[dict[str, str]], errors: list[str]) -> None:

@@ -146,3 +146,39 @@ def test_checker_rejects_source_blind_promotion_without_both_cec_scopes() -> Non
     finally:
         artifact.unlink(missing_ok=True)
         _write_rows(path, original)
+
+
+def test_checker_rejects_tampered_source_blind_expression_witness() -> None:
+    path = ROOT / "results/evidence_advancement/source_blind_window_expression_placement.csv"
+    rows = list(csv.DictReader(path.open()))
+    original = [dict(row) for row in rows]
+    row = next(r for r in rows if r["promotion"] == "graph_active_recovery" and r["expression_language"] != "not")
+    window = json.loads(row["candidate_source_window"])
+    row["expression_language"] = "not"
+    row["expression"] = f"not({window[0]})"
+    row["candidate_source_window"] = json.dumps([window[0]])
+    features = json.loads(row["selection_features"])
+    features["selected_window_width"] = 1
+    row["selection_features"] = json.dumps(features, sort_keys=True)
+    try:
+        _write_rows(path, rows)
+        result = subprocess.run([sys.executable, str(ROOT / "scripts" / "check_evidence_advancement.py")], cwd=ROOT)
+        assert result.returncode != 0
+    finally:
+        _write_rows(path, original)
+
+
+def test_checker_rejects_tampered_source_blind_selected_support() -> None:
+    path = ROOT / "results/evidence_advancement/source_blind_window_expression_placement.csv"
+    rows = list(csv.DictReader(path.open()))
+    original = [dict(row) for row in rows]
+    row = next(r for r in rows if r["promotion"] == "graph_active_recovery")
+    features = json.loads(row["selection_features"])
+    features["selected_support"] = []
+    row["selection_features"] = json.dumps(features, sort_keys=True)
+    try:
+        _write_rows(path, rows)
+        result = subprocess.run([sys.executable, str(ROOT / "scripts" / "check_evidence_advancement.py")], cwd=ROOT)
+        assert result.returncode != 0
+    finally:
+        _write_rows(path, original)
