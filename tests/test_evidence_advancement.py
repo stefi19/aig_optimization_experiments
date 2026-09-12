@@ -238,3 +238,33 @@ def test_checker_rejects_grammar_grouped_count_drift() -> None:
         assert result.returncode != 0
     finally:
         _write_rows(path, original)
+
+
+def test_checker_rejects_odc_boundary_success_drift() -> None:
+    path = ROOT / "results/evidence_advancement/odc_placement_accounting.csv"
+    rows = list(csv.DictReader(path.open()))
+    original = [dict(row) for row in rows]
+    row = next(r for r in rows if r["boundary_success"] == "true")
+    row["boundary_success"] = "false"
+    row["promotion"] = "contextual_anchor_only"
+    try:
+        _write_rows(path, rows)
+        result = subprocess.run([sys.executable, str(ROOT / "scripts" / "check_evidence_advancement.py")], cwd=ROOT)
+        assert result.returncode != 0
+    finally:
+        _write_rows(path, original)
+
+
+def test_checker_rejects_odc_contextual_anchor_as_graph_active() -> None:
+    path = ROOT / "results/evidence_advancement/odc_placement_accounting.csv"
+    rows = list(csv.DictReader(path.open()))
+    original = [dict(row) for row in rows]
+    row = rows[0]
+    row["graph_active"] = "true"
+    row["global_cec_status"] = "equivalent"
+    try:
+        _write_rows(path, rows)
+        result = subprocess.run([sys.executable, str(ROOT / "scripts" / "check_evidence_advancement.py")], cwd=ROOT)
+        assert result.returncode != 0
+    finally:
+        _write_rows(path, original)

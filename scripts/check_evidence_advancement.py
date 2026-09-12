@@ -459,14 +459,71 @@ def _check_rtl(rows: list[dict[str, str]], errors: list[str]) -> None:
 def _check_odc(rows: list[dict[str, str]], errors: list[str]) -> None:
     if len(rows) != 10:
         errors.append(f"ODC anchor accounting denominator drifted: {len(rows)} != 10")
+    anchors = _source_index("results/odc_anchor_generation/odc_proven_anchors.csv", "case_id", errors)
+    boundary_cases = _source_rows("results/odc_anchor_generation/odc_boundary_recovery_cases.csv", errors)
+    selected_cases: dict[tuple[str, str], dict[str, str]] = {}
+    for case in boundary_cases:
+        if case.get("anchor_mode") == "formal_plus_odc":
+            selected_cases[(case.get("benchmark", ""), case.get("optimization", ""))] = case
+    seen_case_ids: set[str] = set()
     for row in rows:
-        if row.get("proof_status") != "proven_odc_valid":
-            errors.append(f"ODC row is not a proven contextual anchor: {row.get('case_id')}")
+        case_id = row.get("case_id", "")
+        if case_id in seen_case_ids:
+            errors.append(f"duplicate ODC accounting row: {case_id}")
+        seen_case_ids.add(case_id)
+        anchor = anchors.get(case_id)
+        if anchor is None:
+            errors.append(f"ODC accounting row lacks proven-anchor source: {case_id}")
+        else:
+            _check_odc_anchor_source(row, anchor, errors)
+        selected_case = selected_cases.get((row.get("benchmark", ""), row.get("optimization", "")))
+        if selected_case is None:
+            errors.append(f"ODC accounting row lacks selected boundary case: {case_id}")
+        else:
+            _check_odc_boundary_source(row, selected_case, errors)
         if row.get("graph_active") == "true" and row.get("global_cec_status") != "equivalent":
-            errors.append(f"ODC graph-active row lacks global CEC: {row.get('case_id')}")
+            errors.append(f"ODC graph-active row lacks global CEC: {case_id}")
     graph_active = [r for r in rows if r.get("graph_active") == "true"]
     if len(graph_active) != 0:
         errors.append(f"ODC graph-active placement count drifted from current claim: {len(graph_active)} != 0")
+
+
+def _check_odc_anchor_source(row: dict[str, str], anchor: dict[str, str], errors: list[str]) -> None:
+    case_id = row.get("case_id", "")
+    for field in ("benchmark", "optimization", "proof_status", "evidence_level"):
+        if row.get(field) != anchor.get(field):
+            errors.append(f"ODC accounting row disagrees with proven anchor {field}: {case_id}")
+    if row.get("proof_status") != "proven_odc_valid":
+        errors.append(f"ODC row is not a proven contextual anchor: {case_id}")
+    if anchor.get("mapping_category") != "formal_odc_valid_anchor":
+        errors.append(f"ODC proven anchor has wrong mapping category: {case_id}")
+    if anchor.get("equivalence_scope") != "contextual":
+        errors.append(f"ODC proven anchor is not contextual scope: {case_id}")
+    if anchor.get("sat_result") != "verified_equivalent":
+        errors.append(f"ODC proven anchor lacks verified contextual equivalence: {case_id}")
+    source_result = ROOT / anchor.get("source_result_file", "")
+    if not anchor.get("source_result_file") or not source_result.exists():
+        errors.append(f"ODC proven anchor source result file missing: {case_id}")
+
+
+def _check_odc_boundary_source(row: dict[str, str], case: dict[str, str], errors: list[str]) -> None:
+    case_id = row.get("case_id", "")
+    success = case.get("success") == "True"
+    expected_promotion = "boundary_candidate_requires_graph_cec" if success else "contextual_anchor_only"
+    if row.get("placement_attempted") != "true":
+        errors.append(f"ODC accounting row was not marked attempted: {case_id}")
+    if row.get("boundary_success") != str(success).lower():
+        errors.append(f"ODC accounting row disagrees with selected boundary success: {case_id}")
+    if row.get("blocker") != case.get("classification", ""):
+        errors.append(f"ODC accounting row disagrees with selected boundary blocker: {case_id}")
+    if row.get("promotion") != expected_promotion:
+        errors.append(f"ODC accounting row has wrong contextual promotion: {case_id}")
+    if success and case.get("boundary_contextual_validation_status") != "boundary_contextually_valid":
+        errors.append(f"successful ODC boundary case lacks contextual validation: {case_id}")
+    if success and case.get("boundary_contextual_proof_status") != "proven_odc_valid":
+        errors.append(f"successful ODC boundary case lacks contextual proof: {case_id}")
+    if row.get("graph_active") != "false" or row.get("global_cec_status") != "not_claimed":
+        errors.append(f"ODC contextual accounting overclaims graph-active/global evidence: {case_id}")
 
 
 def _check_locality(rows: list[dict[str, str]], errors: list[str]) -> None:

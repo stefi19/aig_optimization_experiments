@@ -20,7 +20,7 @@ graph artifact, tool metadata, or CEC obligation is present.
 | Graph-active rewrites from compact exact generated interfaces | 22 / 48 | 31 compact exact interfaces emit valid rewrite artifacts; bounded fanout-frontier expansion promotes 4 additional rows, while 9 emitted artifacts remain identical-driver non-active rewrites. The evidence checker cross-links each row to necessity-first provenance, graph-rewrite, boundary, and CEC-scope tables, and revalidates emitted BLIF artifacts. |
 | Bounded CEGIS grammar completeness | 4 / 12 | Only `sign_extend` and `zero_extend` are complete for attempted blind and oracle-bus rows. The checker recomputes grouped recovery counts, formal-SMT proof row counts, and proof hashes from the Z3 CEGIS source tables. |
 | Pinned redistributable RTL corpus | 3 / 3 | Three CC0 Verilog modules are committed with source-location metadata; local Yosys lowering is recorded as `tool_missing`. |
-| ODC-aware placement | 0 / 10 | Ten formal contextual ODC anchors exist, but none is graph-active or globally CEC-backed. |
+| ODC-aware placement | 0 / 10 | Ten formal contextual ODC anchors exist, but none is graph-active or globally CEC-backed. The checker ties each accounting row back to proven-anchor and selected boundary-case source tables, preserving the distinction between contextual boundary candidates and emitted global graph rewrites. |
 | Machine-checkable locality proof objects | 57 / 57 | JSON proof objects mirror exact-minimum locality certificate rows. |
 
 ## Evidence Rules
@@ -39,7 +39,8 @@ graph artifact, tool metadata, or CEC obligation is present.
 - A pinned RTL source is not a lowered netlist unless the Yosys command succeeds
   and the lowered BLIF exists.
 - ODC validity is contextual; graph-active ODC placement still needs an emitted
-  graph edit and global CEC.
+  graph edit and global CEC. Contextual boundary successes remain blocked at
+  `boundary_candidate_requires_graph_cec`.
 - Locality proof objects currently mirror replayable CSV evidence. They are
   machine-checkable metadata objects, not independently checkable UNSAT proof
   traces.
