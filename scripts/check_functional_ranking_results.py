@@ -1,74 +1,28 @@
-#!/usr/bin/env python3
-"""Validate functional-ranking result schemas."""
+"""Compatibility adapter for :mod:`scripts.validation.check_functional_ranking_results`.
+
+The research codebase now keeps implementation modules in logical script
+subpackages.  This root-level file is intentionally tiny: it preserves the
+long-standing `python scripts/check_functional_ranking_results.py` command used in old notes, Makefile
+targets, CI logs, and external reproductions while delegating all real work to
+`python -m scripts.validation.check_functional_ranking_results`.
+"""
 
 from __future__ import annotations
 
-import csv
-from pathlib import Path
+import importlib as _importlib
+import runpy as _runpy
+import sys as _sys
+from pathlib import Path as _Path
 
-ROOT = Path(__file__).resolve().parents[1]
+_REPO_ROOT = _Path(__file__).resolve().parents[1]
+if str(_REPO_ROOT) not in _sys.path:
+    _sys.path.insert(0, str(_REPO_ROOT))
 
-REQUIRED = {
-    "results/cofactor_sensitivity/cofactor_sensitivity_features.csv": {
-        "benchmark",
-        "optimization",
-        "original_node",
-        "optimized_node",
-        "candidate_rank",
-        "sat_status",
-        "formal_label",
-        "cofactor_consistency_score",
-        "max_cofactor_error",
-        "sensitivity_cosine_similarity",
-        "boolean_difference_similarity",
-        "functional_feature_evidence_level",
-        "baseline",
-        "full_combined",
-    },
-    "results/ranking_ablation/ranking_ablation_overall.csv": {
-        "ranking_mode",
-        "precision_at_1",
-        "precision_at_5",
-        "mean_reciprocal_rank",
-        "sat_cec_calls_per_verified_recovery",
-    },
-    "results/ranking_ablation/critical_path_enhanced_ranking.csv": {
-        "benchmark",
-        "optimization",
-        "optimized_node",
-        "mapped_original_node",
-        "mapping_category",
-        "ranking_mode",
-        "baseline_rank",
-        "enhanced_rank",
-        "functional_feature_evidence_level",
-    },
-}
-
-
-def header(path: Path) -> set[str]:
-    with path.open(newline="", encoding="utf-8") as fh:
-        return set(next(csv.reader(fh), []))
-
-
-def main() -> int:
-    problems = []
-    for rel_path, required in REQUIRED.items():
-        path = ROOT / rel_path
-        if not path.exists():
-            problems.append(f"{rel_path}: missing")
-            continue
-        missing = sorted(required - header(path))
-        if missing:
-            problems.append(f"{rel_path}: missing columns {', '.join(missing)}")
-    if problems:
-        print("Functional ranking result check: STALE")
-        for problem in problems:
-            print(f"  - {problem}")
-        return 1
-    print("Functional ranking result check: OK")
-    return 0
-
+_TARGET_MODULE = "scripts.validation.check_functional_ranking_results"
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    _runpy.run_module(_TARGET_MODULE, run_name="__main__")
+else:
+    _module = _importlib.import_module(_TARGET_MODULE)
+    globals().update({name: value for name, value in vars(_module).items() if not name.startswith("__")})
+    __all__ = [name for name in globals() if not name.startswith("_")]

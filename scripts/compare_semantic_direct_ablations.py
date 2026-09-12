@@ -1,87 +1,28 @@
-#!/usr/bin/env python3
-"""Write lightweight ablations for direct semantic recovery."""
+"""Compatibility adapter for :mod:`scripts.semantic.compare_semantic_direct_ablations`.
+
+The research codebase now keeps implementation modules in logical script
+subpackages.  This root-level file is intentionally tiny: it preserves the
+long-standing `python scripts/compare_semantic_direct_ablations.py` command used in old notes, Makefile
+targets, CI logs, and external reproductions while delegating all real work to
+`python -m scripts.semantic.compare_semantic_direct_ablations`.
+"""
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
+import importlib as _importlib
+import runpy as _runpy
+import sys as _sys
+from pathlib import Path as _Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+_REPO_ROOT = _Path(__file__).resolve().parents[1]
+if str(_REPO_ROOT) not in _sys.path:
+    _sys.path.insert(0, str(_REPO_ROOT))
 
-from semantic_direct_recovery import read_csv
-from semantic_region import write_csv
-from semantic_region_pipeline import RESULT_DIR
-
-
-DEPENDENCY_ABLATION_FIELDS = [
-    "family_order_mode",
-    "eligible_regions",
-    "generated_candidates",
-    "formal_checks",
-    "recovered_regions",
-    "formal_recovery_rate",
-    "formal_calls_per_recovery",
-    "note",
-]
-
-SIM_ABLATION_FIELDS = [
-    "simulation_filter_mode",
-    "simulation_checked",
-    "formal_calls",
-    "false_survivors",
-    "verified_candidates",
-    "recovered_regions",
-    "note",
-]
-
-
-def main() -> int:
-    summary = next(row for row in read_csv(RESULT_DIR / "semantic_ground_truth_recovery.csv") if row["scope"] == "overall")
-    formal = read_csv(RESULT_DIR / "semantic_formal_results.csv")
-    sim = read_csv(RESULT_DIR / "semantic_candidate_simulation.csv")
-    verified = read_csv(RESULT_DIR / "semantic_verified_candidates.csv")
-    recovered = len({row["region_id"] for row in verified})
-    calls = int(summary["formal_checks"])
-    dependency_rows = []
-    for mode in ("fixed_order", "dependency_ranked", "oracle_family"):
-        note = "primary run uses dependency-ranked ordering" if mode == "dependency_ranked" else "reported as bounded-budget comparison; rerun candidate generation with this mode for exact call ordering"
-        dependency_rows.append({
-            "family_order_mode": mode,
-            "eligible_regions": summary["eligible_regions"],
-            "generated_candidates": summary["generated_candidates"],
-            "formal_checks": summary["formal_checks"],
-            "recovered_regions": summary["recovered_regions"],
-            "formal_recovery_rate": summary["formal_recovery_rate"],
-            "formal_calls_per_recovery": f"{calls / max(1, recovered):.6f}",
-            "note": note,
-        })
-    false_survivors = sum(1 for row in formal if row["formal_status"] == "disproven")
-    sim_rows = [
-        {
-            "simulation_filter_mode": "no_simulation_filter",
-            "simulation_checked": summary["generated_candidates"],
-            "formal_calls": summary["generated_candidates"],
-            "false_survivors": "not_measured_without_full_formal_run",
-            "verified_candidates": summary["verified_candidates"],
-            "recovered_regions": summary["recovered_regions"],
-            "note": "diagnostic estimate; primary run uses simulation filtering before formal checks",
-        },
-        {
-            "simulation_filter_mode": "semantic_patterns",
-            "simulation_checked": str(len(sim)),
-            "formal_calls": str(len(formal)),
-            "false_survivors": str(false_survivors),
-            "verified_candidates": str(len(verified)),
-            "recovered_regions": str(recovered),
-            "note": "primary measured run",
-        },
-    ]
-    write_csv(dependency_rows, RESULT_DIR / "semantic_dependency_ranking_ablation.csv", DEPENDENCY_ABLATION_FIELDS)
-    write_csv(sim_rows, RESULT_DIR / "semantic_simulation_filter_ablation.csv", SIM_ABLATION_FIELDS)
-    print("Wrote semantic direct recovery ablations")
-    return 0
-
+_TARGET_MODULE = "scripts.semantic.compare_semantic_direct_ablations"
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    _runpy.run_module(_TARGET_MODULE, run_name="__main__")
+else:
+    _module = _importlib.import_module(_TARGET_MODULE)
+    globals().update({name: value for name, value in vars(_module).items() if not name.startswith("__")})
+    __all__ = [name for name in globals() if not name.startswith("_")]

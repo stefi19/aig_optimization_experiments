@@ -23,6 +23,7 @@ For evidence-advancement next steps, see
 [`docs/evidence_advancement_next_steps.md`](docs/evidence_advancement_next_steps.md).
 For artifact-evaluation instructions, see [`ARTIFACTS.md`](ARTIFACTS.md).
 For a claim-to-evidence ledger, see [`CLAIMS.md`](CLAIMS.md).
+For the organized research automation layout, see [`scripts/README.md`](scripts/README.md).
 
 ## Artifact Quickstart
 
@@ -42,6 +43,22 @@ Stable validation tiers:
 - `make reproduce-paper-tables`
 - `make demo-wow`
 - `make paper-pdf`
+
+## Repository Organization
+
+The repository now separates maintained research automation from legacy command
+paths.  Implementation scripts live in logical packages under `scripts/`:
+`abc/`, `analysis/`, `benchmarks/`, `boundary/`, `evidence/`,
+`materialization/`, `publication/`, `recoverability/`, `semantic/`,
+`validation/`, and `visualization/`.  The root-level `scripts/*.py` files are
+thin compatibility adapters, so older commands such as
+`python scripts/check_evidence_advancement.py` still work while new automation
+can use the clearer package form:
+
+```bash
+python -m scripts.evidence.build_evidence_advancement
+python -m scripts.validation.check_evidence_advancement
+```
 
 Current committed headline counts are checked by `scripts/check_artifact_claims.py`:
 Controlled accepted graph-active counterparts: 10; Controlled accepted

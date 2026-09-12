@@ -26,7 +26,7 @@ jobs:
         run: python -m pip install -r requirements.txt
 
       - name: Run Z3 smoke checks
-        run: python scripts/check_z3.py
+        run: python -m scripts.validation.check_z3
 
       - name: Run portable no-ABC regression tests
         env:
@@ -43,12 +43,12 @@ jobs:
         env:
           AIG_ABC: ${{ runner.temp }}/missing-abc
         run: |
-          python scripts/run_joint_region_interface_discovery.py \
+          python -m scripts.recoverability.run_joint_region_interface_discovery \
             --mode controlled \
             --max-real-seeds 0 \
             --output-dir "$RUNNER_TEMP/joint_results" \
             --bench-dir "$RUNNER_TEMP/joint_bench"
-          python scripts/check_joint_region_interface_results.py \
+          python -m scripts.validation.check_joint_region_interface_results \
             --output-dir "$RUNNER_TEMP/joint_results" \
             --allow-no-abc
 
@@ -56,11 +56,11 @@ jobs:
         env:
           AIG_ABC: ${{ runner.temp }}/missing-abc
         run: |
-          python scripts/run_semantic_functional_refactoring.py \
+          python -m scripts.recoverability.run_semantic_functional_refactoring \
             --mode controlled \
             --output-dir "$RUNNER_TEMP/functional_results" \
             --bench-dir "$RUNNER_TEMP/functional_bench"
-          python scripts/check_semantic_functional_refactoring_results.py \
+          python -m scripts.validation.check_semantic_functional_refactoring_results \
             --output-dir "$RUNNER_TEMP/functional_results" \
             --allow-no-abc
 
@@ -68,11 +68,11 @@ jobs:
         env:
           AIG_ABC: ${{ runner.temp }}/missing-abc
         run: |
-          python scripts/run_semantic_recoverability_frontier.py \
+          python -m scripts.recoverability.run_semantic_recoverability_frontier \
             --mode controlled \
             --output-dir "$RUNNER_TEMP/recoverability_results" \
             --bench-dir "$RUNNER_TEMP/recoverability_bench"
-          python scripts/check_semantic_recoverability_results.py \
+          python -m scripts.validation.check_semantic_recoverability_results \
             --output-dir "$RUNNER_TEMP/recoverability_results" \
             --allow-no-abc
 
@@ -80,11 +80,11 @@ jobs:
         env:
           AIG_ABC: ${{ runner.temp }}/missing-abc
         run: |
-          python scripts/run_active_source_counterpart_refactoring.py \
+          python -m scripts.recoverability.run_active_source_counterpart_refactoring \
             --mode controlled \
             --output-dir "$RUNNER_TEMP/active_results" \
             --bench-dir "$RUNNER_TEMP/active_bench"
-          python scripts/check_active_source_counterpart_results.py \
+          python -m scripts.validation.check_active_source_counterpart_results \
             --output-dir "$RUNNER_TEMP/active_results" \
             --allow-no-abc
 
@@ -92,11 +92,11 @@ jobs:
         env:
           AIG_ABC: ${{ runner.temp }}/missing-abc
         run: |
-          python scripts/run_cross_netlist_cut_transplantation.py \
+          python -m scripts.recoverability.run_cross_netlist_cut_transplantation \
             --mode controlled \
             --output-dir "$RUNNER_TEMP/cross_results" \
             --bench-dir "$RUNNER_TEMP/cross_bench"
-          python scripts/check_cross_netlist_transplant_results.py \
+          python -m scripts.validation.check_cross_netlist_transplant_results \
             --output-dir "$RUNNER_TEMP/cross_results" \
             --allow-no-abc
 
@@ -104,10 +104,10 @@ jobs:
         env:
           AIG_ABC: ${{ runner.temp }}/missing-abc
         run: |
-          python scripts/run_formal_locality_barriers.py \
+          python -m scripts.recoverability.run_formal_locality_barriers \
             --mode controlled \
             --output-dir "$RUNNER_TEMP/locality_results"
-          python scripts/check_formal_locality_barrier_results.py \
+          python -m scripts.validation.check_formal_locality_barrier_results \
             --output-dir "$RUNNER_TEMP/locality_results" \
             --allow-no-abc
 
@@ -115,13 +115,13 @@ jobs:
         env:
           AIG_ABC: ${{ runner.temp }}/missing-abc
         run: |
-          python scripts/run_necessity_first_targets.py \
+          python -m scripts.recoverability.run_necessity_first_targets \
             --mode all \
             --audit-dir "$RUNNER_TEMP/provenance_audit" \
             --output-dir "$RUNNER_TEMP/necessity_results"
-          python scripts/check_provenance_eligibility_results.py \
+          python -m scripts.validation.check_provenance_eligibility_results \
             --output-dir "$RUNNER_TEMP/provenance_audit"
-          python scripts/check_necessity_first_target_results.py \
+          python -m scripts.validation.check_necessity_first_target_results \
             --output-dir "$RUNNER_TEMP/necessity_results" \
             --allow-no-abc
 
@@ -166,67 +166,67 @@ jobs:
 
       - name: Run lightweight joint region/interface discovery with ABC
         run: |
-          python scripts/run_joint_region_interface_discovery.py \
+          python -m scripts.recoverability.run_joint_region_interface_discovery \
             --mode controlled \
             --max-real-seeds 0 \
             --output-dir "$RUNNER_TEMP/joint_results" \
             --bench-dir "$RUNNER_TEMP/joint_bench"
-          python scripts/check_joint_region_interface_results.py \
+          python -m scripts.validation.check_joint_region_interface_results \
             --output-dir "$RUNNER_TEMP/joint_results"
 
       - name: Run lightweight semantic functional refactoring with ABC
         run: |
-          python scripts/run_semantic_functional_refactoring.py \
+          python -m scripts.recoverability.run_semantic_functional_refactoring \
             --mode controlled \
             --output-dir "$RUNNER_TEMP/functional_results" \
             --bench-dir "$RUNNER_TEMP/functional_bench"
-          python scripts/check_semantic_functional_refactoring_results.py \
+          python -m scripts.validation.check_semantic_functional_refactoring_results \
             --output-dir "$RUNNER_TEMP/functional_results"
 
       - name: Run lightweight semantic recoverability frontier with ABC
         run: |
-          python scripts/run_semantic_recoverability_frontier.py \
+          python -m scripts.recoverability.run_semantic_recoverability_frontier \
             --mode all \
             --output-dir "$RUNNER_TEMP/recoverability_results" \
             --bench-dir "$RUNNER_TEMP/recoverability_bench"
-          python scripts/check_semantic_recoverability_results.py \
+          python -m scripts.validation.check_semantic_recoverability_results \
             --output-dir "$RUNNER_TEMP/recoverability_results"
 
       - name: Run lightweight active source-counterpart refactoring with ABC
         run: |
-          python scripts/run_active_source_counterpart_refactoring.py \
+          python -m scripts.recoverability.run_active_source_counterpart_refactoring \
             --mode controlled \
             --output-dir "$RUNNER_TEMP/active_results" \
             --bench-dir "$RUNNER_TEMP/active_bench"
-          python scripts/check_active_source_counterpart_results.py \
+          python -m scripts.validation.check_active_source_counterpart_results \
             --output-dir "$RUNNER_TEMP/active_results"
 
       - name: Run lightweight cross-netlist cut transplantation with ABC
         run: |
-          python scripts/run_cross_netlist_cut_transplantation.py \
+          python -m scripts.recoverability.run_cross_netlist_cut_transplantation \
             --mode controlled \
             --output-dir "$RUNNER_TEMP/cross_results" \
             --bench-dir "$RUNNER_TEMP/cross_bench"
-          python scripts/check_cross_netlist_transplant_results.py \
+          python -m scripts.validation.check_cross_netlist_transplant_results \
             --output-dir "$RUNNER_TEMP/cross_results"
 
       - name: Run lightweight formal locality certificates with ABC
         run: |
-          python scripts/run_formal_locality_barriers.py \
+          python -m scripts.recoverability.run_formal_locality_barriers \
             --mode controlled \
             --output-dir "$RUNNER_TEMP/locality_results"
-          python scripts/check_formal_locality_barrier_results.py \
+          python -m scripts.validation.check_formal_locality_barrier_results \
             --output-dir "$RUNNER_TEMP/locality_results"
 
       - name: Run lightweight necessity-first targets with ABC
         run: |
-          python scripts/run_necessity_first_targets.py \
+          python -m scripts.recoverability.run_necessity_first_targets \
             --mode all \
             --audit-dir "$RUNNER_TEMP/provenance_audit" \
             --output-dir "$RUNNER_TEMP/necessity_results"
-          python scripts/check_provenance_eligibility_results.py \
+          python -m scripts.validation.check_provenance_eligibility_results \
             --output-dir "$RUNNER_TEMP/provenance_audit"
-          python scripts/check_necessity_first_target_results.py \
+          python -m scripts.validation.check_necessity_first_target_results \
             --output-dir "$RUNNER_TEMP/necessity_results"
 
       - name: Verify worktree stayed clean

@@ -1,46 +1,28 @@
-#!/usr/bin/env python3
-"""Validate semantic graft evidence categories."""
+"""Compatibility adapter for :mod:`scripts.validation.check_semantic_graft_results`.
+
+The research codebase now keeps implementation modules in logical script
+subpackages.  This root-level file is intentionally tiny: it preserves the
+long-standing `python scripts/check_semantic_graft_results.py` command used in old notes, Makefile
+targets, CI logs, and external reproductions while delegating all real work to
+`python -m scripts.validation.check_semantic_graft_results`.
+"""
 
 from __future__ import annotations
 
-import csv
-import sys
-from pathlib import Path
+import importlib as _importlib
+import runpy as _runpy
+import sys as _sys
+from pathlib import Path as _Path
 
-ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "results" / "semantic_grafting"
+_REPO_ROOT = _Path(__file__).resolve().parents[1]
+if str(_REPO_ROOT) not in _sys.path:
+    _sys.path.insert(0, str(_REPO_ROOT))
 
-
-def rows(path: Path) -> list[dict[str, str]]:
-    with path.open(newline="", encoding="utf-8") as fh:
-        return list(csv.DictReader(fh))
-
-
-def main() -> int:
-    path = OUT / "semantic_graft_funnel.csv"
-    if not path.exists():
-        print("missing semantic_graft_funnel.csv", file=sys.stderr)
-        return 1
-    problems = []
-    for row in rows(path):
-        if row["accepted"] == "true" and row["global_cec_status"] != "passed":
-            problems.append(f"{row['graft_id']}: accepted without global CEC")
-        if row["accepted"] != "true" and row["boundary_utility"] == "usable_frontier":
-            problems.append(f"{row['graft_id']}: disconnected/unaccepted row labelled usable")
-    attempts = OUT / "graft_placement_attempts.csv"
-    if attempts.exists():
-        with attempts.open(newline="", encoding="utf-8") as fh:
-            for row in csv.DictReader(fh):
-                if row["acceptance_status"] == "accepted" and row["graph_active"] != "true":
-                    problems.append(f"{row['attempt_id']}: accepted without graph_active")
-                if row["acceptance_status"] == "accepted" and row["global_cec_status"] not in {"passed", "not_applicable_contextual_scope"}:
-                    problems.append(f"{row['attempt_id']}: accepted without required proof status")
-    if problems:
-        print("\n".join(problems), file=sys.stderr)
-        return 1
-    print("Semantic graft result checks passed")
-    return 0
-
+_TARGET_MODULE = "scripts.validation.check_semantic_graft_results"
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    _runpy.run_module(_TARGET_MODULE, run_name="__main__")
+else:
+    _module = _importlib.import_module(_TARGET_MODULE)
+    globals().update({name: value for name, value in vars(_module).items() if not name.startswith("__")})
+    __all__ = [name for name in globals() if not name.startswith("_")]

@@ -1,71 +1,28 @@
-#!/usr/bin/env python3
-"""Validate extended-boundary result schemas and identity regression."""
+"""Compatibility adapter for :mod:`scripts.validation.check_extended_boundary_results`.
+
+The research codebase now keeps implementation modules in logical script
+subpackages.  This root-level file is intentionally tiny: it preserves the
+long-standing `python scripts/check_extended_boundary_results.py` command used in old notes, Makefile
+targets, CI logs, and external reproductions while delegating all real work to
+`python -m scripts.validation.check_extended_boundary_results`.
+"""
 
 from __future__ import annotations
 
-import csv
-import sys
-from pathlib import Path
+import importlib as _importlib
+import runpy as _runpy
+import sys as _sys
+from pathlib import Path as _Path
 
-ROOT = Path(__file__).resolve().parents[1]
-OUT_DIR = ROOT / "results" / "extended_boundary_search"
+_REPO_ROOT = _Path(__file__).resolve().parents[1]
+if str(_REPO_ROOT) not in _sys.path:
+    _sys.path.insert(0, str(_REPO_ROOT))
 
-REQUIRED = {
-    "extended_boundary_cases.csv": {
-        "case_id",
-        "anchor_mode",
-        "search_mode",
-        "validation_profile",
-        "success",
-        "contains_original_coi",
-        "valid_ebi_cut",
-        "valid_ebo_cut",
-        "incoming_bypass_count",
-        "outgoing_bypass_count",
-        "all_boundary_nodes_formally_anchored",
-        "cycle_free",
-        "whole_design_boundary",
-        "original_ebi_exact_match",
-        "original_ebo_exact_match",
-        "original_region_exact_match",
-        "classification",
-    },
-    "search_strategy_comparison.csv": {"benchmark", "optimization", "anchor_mode", "search_mode", "successes", "success_rate"},
-    "remaining_failure_analysis.csv": {"case_id", "old_failure_reason", "classification", "success"},
-    "anchor_usage.csv": {"anchor_mode", "search_mode", "selected_sat_cec_anchor_count"},
-    "search_budget_statistics.csv": {"anchor_mode", "search_mode", "total_search_states", "max_search_states"},
-}
-
-
-def main() -> int:
-    for name, cols in REQUIRED.items():
-        path = OUT_DIR / name
-        if not path.exists():
-            raise SystemExit(f"missing {path}")
-        with path.open(newline="", encoding="utf-8") as fh:
-            reader = csv.DictReader(fh)
-            missing = cols - set(reader.fieldnames or [])
-            if missing:
-                raise SystemExit(f"{name} missing columns: {sorted(missing)}")
-            rows = list(reader)
-            if name == "extended_boundary_cases.csv" and not rows:
-                raise SystemExit("extended_boundary_cases.csv is empty")
-    identity_path = ROOT / "results" / "boundary_recovery_semantics" / "identity_exact_match_results.csv"
-    with identity_path.open(newline="", encoding="utf-8") as fh:
-        identity = list(csv.DictReader(fh))
-    if len(identity) != 14:
-        raise SystemExit(f"expected 14 identity rows, found {len(identity)}")
-    for row in identity:
-        if row.get("top_level_classification") != "success":
-            raise SystemExit(f"identity row failed: {row.get('case_id')}")
-        if row.get("boundary_extension_ratio") not in {"0", "0.0"}:
-            raise SystemExit(f"identity row has nonzero extension: {row.get('case_id')}")
-        for col in ["ebi_exact_match", "ebo_exact_match", "region_exact_match"]:
-            if row.get(col) != "True":
-                raise SystemExit(f"identity row has false {col}: {row.get('case_id')}")
-    print("Extended-boundary result check: OK")
-    return 0
-
+_TARGET_MODULE = "scripts.validation.check_extended_boundary_results"
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    _runpy.run_module(_TARGET_MODULE, run_name="__main__")
+else:
+    _module = _importlib.import_module(_TARGET_MODULE)
+    globals().update({name: value for name, value in vars(_module).items() if not name.startswith("__")})
+    __all__ = [name for name in globals() if not name.startswith("_")]

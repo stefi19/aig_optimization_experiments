@@ -27,7 +27,7 @@ install-z3:
 
 check-z3: install-z3
 	@echo "Checking Z3 bit-vector solver"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/check_z3.py
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.validation.check_z3
 
 # Build ABC locally under .abc_build/abc_repo
 build-abc:
@@ -48,12 +48,12 @@ check-abc: build-abc
 # Generate synthetic BLIF benchmarks under benchmarks/generated/
 generate-benchmarks:
 	@echo "Generating synthetic benchmarks → benchmarks/generated/"
-	@$(PYTHON) scripts/generate_synthetic_benchmarks.py
+	@$(PYTHON) -m scripts.benchmarks.generate_synthetic_benchmarks
 
 # Convert Verilog sources to BLIF (requires Yosys); gracefully skips if Yosys is absent
 real-benchmarks:
 	@echo "Converting Verilog examples → BLIF (benchmarks/real/verilog_examples/)"
-	@$(PYTHON) scripts/import_real_benchmarks.py --verilog benchmarks/real/verilog_examples/
+	@$(PYTHON) -m scripts.benchmarks.import_real_benchmarks --verilog benchmarks/real/verilog_examples/
 
 # Both synthetic and real benchmarks in one shot
 generate-all-benchmarks: generate-benchmarks real-benchmarks
@@ -61,120 +61,120 @@ generate-all-benchmarks: generate-benchmarks real-benchmarks
 # Generate source-level semantic-recovery benchmark cases and bounded BLIF/ABC variants.
 semantic-benchmarks:
 	@echo "Generating semantic-recovery benchmark suite"
-	@PYTHONDONTWRITEBYTECODE=1 ABC=$${ABC:-$(PWD)/$(ABC_BIN)} $(PYTHON) scripts/generate_semantic_recovery_benchmarks.py
+	@PYTHONDONTWRITEBYTECODE=1 ABC=$${ABC:-$(PWD)/$(ABC_BIN)} $(PYTHON) -m scripts.benchmarks.generate_semantic_recovery_benchmarks
 
 semantic-benchmarks-check:
 	@echo "Checking semantic-recovery benchmark suite"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_semantic_recovery_benchmarks.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.benchmarks.check_semantic_recovery_benchmarks
 
 semantic-regions: semantic-benchmarks semantic-benchmarks-check
 	@echo "Building canonical semantic regions"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/build_semantic_regions.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.semantic.build_semantic_regions
 
 semantic-interfaces: semantic-regions
 	@echo "Extracting canonical scalar semantic interfaces"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/extract_semantic_interfaces.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.semantic.extract_semantic_interfaces
 
 semantic-region-comparison: semantic-interfaces
 	@echo "Comparing semantic region sources"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/compare_semantic_region_sources.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.semantic.compare_semantic_region_sources
 
 semantic-region-plots: semantic-region-comparison
 	@echo "Generating semantic region/interface plots"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/semantic_region_plots.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.visualization.semantic_region_plots
 
 check-semantic-regions:
 	@echo "Checking semantic region/interface outputs"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_semantic_regions.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_semantic_regions
 
 semantic-regions-all: semantic-benchmarks semantic-benchmarks-check semantic-regions semantic-interfaces semantic-region-comparison semantic-region-plots check-semantic-regions
 	@echo "Semantic region and interface pipeline complete."
 
 semantic-bus-inference: semantic-regions-all
 	@echo "Inferring semantic bus hypotheses from scalar interfaces"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/infer_semantic_buses.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.semantic.infer_semantic_buses
 
 semantic-dependency: semantic-bus-inference
 	@echo "Computing semantic dependency matrices and geometry features"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/compute_semantic_dependencies.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.semantic.compute_semantic_dependencies
 
 semantic-family-ranking: semantic-dependency
 	@echo "Ranking broad semantic families from bus/dependency features"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/rank_semantic_families.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.semantic.rank_semantic_families
 
 semantic-bus-ablation: semantic-family-ranking
 	@echo "Comparing semantic bus and family-ranking ablations"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/compare_semantic_bus_ablations.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.semantic.compare_semantic_bus_ablations
 
 semantic-dependency-plots: semantic-bus-ablation
 	@echo "Generating semantic bus/dependency plots"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/semantic_dependency_plots.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.visualization.semantic_dependency_plots
 
 check-semantic-bus-dependency:
 	@echo "Checking semantic bus/dependency outputs"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_semantic_bus_dependency_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_semantic_bus_dependency_results
 
 semantic-bus-dependency-all: semantic-regions-all semantic-bus-inference semantic-dependency semantic-family-ranking semantic-bus-ablation semantic-dependency-plots check-semantic-bus-dependency
 	@echo "Semantic bus inference and dependency geometry pipeline complete."
 
 semantic-direct-candidates: semantic-bus-dependency-all
 	@echo "Generating typed direct semantic template candidates"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/generate_semantic_direct_candidates.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.semantic.generate_semantic_direct_candidates
 
 semantic-direct-simulation: semantic-direct-candidates
 	@echo "Simulating direct semantic candidates with deterministic semantic patterns"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/simulate_semantic_candidates.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.semantic.simulate_semantic_candidates
 
 semantic-direct-verification: semantic-direct-simulation
 	@echo "Formally verifying simulation-surviving direct semantic candidates"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/verify_semantic_candidates.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.semantic.verify_semantic_candidates
 
 semantic-direct-selection: semantic-direct-verification
 	@echo "Selecting best formally verified direct semantic expressions"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/select_semantic_expressions.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.semantic.select_semantic_expressions
 
 semantic-direct-ablation: semantic-direct-selection
 	@echo "Comparing direct semantic recovery ablations"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/compare_semantic_direct_ablations.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.semantic.compare_semantic_direct_ablations
 
 semantic-direct-plots: semantic-direct-ablation
 	@echo "Generating direct semantic recovery plots"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/semantic_direct_plots.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.visualization.semantic_direct_plots
 
 check-semantic-direct-results:
 	@echo "Checking direct semantic recovery outputs"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_semantic_direct_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_semantic_direct_results
 
 semantic-direct-recovery-all: semantic-benchmarks semantic-benchmarks-check semantic-regions-all semantic-bus-dependency-all semantic-direct-candidates semantic-direct-simulation semantic-direct-verification semantic-direct-selection semantic-direct-ablation semantic-direct-plots check-semantic-direct-results
 	@echo "Direct semantic template recovery pipeline complete."
 
 blind-semantic-audit:
 	@echo "Auditing inference-time semantic ground-truth leakage"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_blind_semantic_cegis.py audit
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.semantic.run_blind_semantic_cegis audit
 
 blind-semantic-buses: blind-semantic-audit
 	@echo "Inferring source-blind bus/interface hypotheses"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_blind_semantic_cegis.py buses
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.semantic.run_blind_semantic_cegis buses
 
 semantic-parametric-candidates: blind-semantic-buses
 	@echo "Enumerating blind parametric semantic candidates"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_blind_semantic_cegis.py cegis
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.semantic.run_blind_semantic_cegis cegis
 
 semantic-cegis: semantic-parametric-candidates
 	@echo "Running bounded blind CEGIS loop"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_blind_semantic_cegis.py cegis
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.semantic.run_blind_semantic_cegis cegis
 
 semantic-smt-proofs: semantic-cegis
 	@echo "Checking formal proof metadata"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_blind_semantic_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_blind_semantic_results
 
 semantic-z3-crosscheck: check-z3 semantic-cegis
 	@echo "Cross-checking Z3 region proofs against exhaustive verification"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/semantic_z3_crosscheck.py
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.semantic.semantic_z3_crosscheck
 
 semantic-z3-cegis: semantic-z3-crosscheck
 	@echo "Running Z3-backed blind and oracle-bus CEGIS"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/semantic_z3_cegis_experiment.py
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.semantic.semantic_z3_cegis_experiment
 
 semantic-blind-oracle-ablation: semantic-z3-cegis
 	@echo "Blind/oracle Z3 CEGIS comparison written to results/blind_semantic_cegis/z3_blind_oracle_comparison.csv"
@@ -190,23 +190,23 @@ blind-semantic-cegis-scalable-all: semantic-z3-crosscheck semantic-z3-cegis sema
 
 check-semantic-z3-results:
 	@echo "Checking Z3 semantic result outputs"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_blind_semantic_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_blind_semantic_results
 
 semantic-cegis-evaluation: semantic-smt-proofs
 	@echo "Joining evaluation-only labels after blind predictions"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_blind_semantic_cegis.py evaluate
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.semantic.run_blind_semantic_cegis evaluate
 
 semantic-graft-targets: semantic-cegis-evaluation
 	@echo "Selecting boundary-utility-aware semantic graft targets"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_semantic_grafting.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.semantic.run_semantic_grafting
 
 semantic-graft-build: semantic-graft-targets
 	@echo "Building semantic graft candidates"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_semantic_grafting.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.semantic.run_semantic_grafting
 
 semantic-graft-proofs: semantic-graft-build
 	@echo "Checking semantic graft proof funnel"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_semantic_graft_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_semantic_graft_results
 
 semantic-graft-boundary-recovery: semantic-graft-proofs
 	@echo "Semantic graft boundary-recovery rows are in results/semantic_grafting/"
@@ -240,7 +240,7 @@ semantic-graft-all: semantic-graft-strategy-ablation semantic-graft-plots check-
 
 semantic-region-candidates:
 	@echo "Enumerating semantic replacement regions"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_region_replacement.py
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.semantic.run_semantic_region_replacement
 
 semantic-region-closure: semantic-region-candidates
 	@echo "Closed-region validation complete."
@@ -268,282 +268,282 @@ semantic-replacement-ablation: semantic-boundary-restore
 
 semantic-replacement-plots: semantic-replacement-ablation
 	@echo "Generating semantic replacement plots"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/semantic_region_replacement_plots.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.visualization.semantic_region_replacement_plots
 
 check-semantic-replacement-results:
 	@echo "Checking semantic region replacement results"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_semantic_replacement_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_semantic_replacement_results
 
 semantic-region-replacement-all: semantic-region-candidates semantic-region-closure semantic-compositional-cegis semantic-module-proofs semantic-module-synthesis semantic-region-replace semantic-replacement-cec semantic-boundary-restore semantic-replacement-ablation semantic-replacement-plots check-semantic-replacement-results
 	@echo "Semantic region replacement pipeline complete."
 
 joint-region-interface:
 	@echo "Running joint region/interface discovery"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_joint_region_interface_discovery.py --mode all
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_joint_region_interface_discovery --mode all
 
 joint-region-interface-controlled:
 	@echo "Running controlled joint region/interface discovery"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_joint_region_interface_discovery.py --mode controlled --max-real-seeds 0
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_joint_region_interface_discovery --mode controlled --max-real-seeds 0
 
 joint-region-interface-real:
 	@echo "Revisiting real isolated-anchor failures with bounded joint search"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_joint_region_interface_discovery.py --mode real --max-real-seeds 46
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_joint_region_interface_discovery --mode real --max-real-seeds 46
 
 joint-region-interface-heldout:
 	@echo "Writing deterministic dev/heldout joint-discovery split"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_joint_region_interface_discovery.py --mode heldout --max-real-seeds 46
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_joint_region_interface_discovery --mode heldout --max-real-seeds 46
 
 joint-region-interface-ablations: joint-region-interface
 	@echo "Joint region/interface ablations are in results/joint_region_interface_discovery/ablations.csv"
 
 joint-region-interface-plots: joint-region-interface
 	@echo "Generating joint region/interface plots"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/joint_region_interface_plots.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.visualization.joint_region_interface_plots
 
 check-joint-region-interface-results:
 	@echo "Checking joint region/interface discovery results"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/check_joint_region_interface_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.validation.check_joint_region_interface_results
 
 joint-region-interface-all: joint-region-interface joint-region-interface-ablations joint-region-interface-plots check-joint-region-interface-results
 	@echo "Joint region/interface discovery pipeline complete."
 
 semantic-functional-refactoring-controlled:
 	@echo "Running controlled semantic functional refactoring"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_functional_refactoring.py --mode controlled
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_semantic_functional_refactoring --mode controlled
 
 semantic-functional-refactoring-development:
 	@echo "Running development semantic functional refactoring accounting"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_functional_refactoring.py --mode development
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_semantic_functional_refactoring --mode development
 
 semantic-functional-refactoring-heldout:
 	@echo "Running held-out semantic functional refactoring accounting"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_functional_refactoring.py --mode heldout
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_semantic_functional_refactoring --mode heldout
 
 semantic-functional-refactoring-ablations:
 	@echo "Running semantic functional refactoring ablations"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_functional_refactoring.py --mode all
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_semantic_functional_refactoring --mode all
 
 semantic-functional-refactoring-plots: semantic-functional-refactoring-ablations
 	@echo "Generating semantic functional refactoring plots"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/semantic_functional_refactoring_plots.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.visualization.semantic_functional_refactoring_plots
 
 check-semantic-functional-refactoring-results:
 	@echo "Checking semantic functional refactoring results"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/check_semantic_functional_refactoring_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.validation.check_semantic_functional_refactoring_results
 
 semantic-functional-refactoring-all: semantic-functional-refactoring-ablations semantic-functional-refactoring-plots check-semantic-functional-refactoring-results
 	@echo "Semantic functional refactoring pipeline complete."
 
 semantic-recoverability-benchmarks:
 	@echo "Generating semantic recoverability benchmark manifest"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_recoverability_frontier.py --mode controlled
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_semantic_recoverability_frontier --mode controlled
 
 semantic-recoverability-trajectories:
 	@echo "Generating semantic recoverability synthesis trajectories"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_recoverability_frontier.py --mode all
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_semantic_recoverability_frontier --mode all
 
 semantic-recoverability-controlled:
 	@echo "Running controlled semantic recoverability frontier"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_recoverability_frontier.py --mode controlled
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_semantic_recoverability_frontier --mode controlled
 
 semantic-recoverability-development:
 	@echo "Running development semantic recoverability frontier"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_recoverability_frontier.py --mode development
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_semantic_recoverability_frontier --mode development
 
 semantic-recoverability-heldout:
 	@echo "Running held-out semantic recoverability frontier"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_recoverability_frontier.py --mode heldout
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_semantic_recoverability_frontier --mode heldout
 
 semantic-recoverability-oracle:
 	@echo "Running oracle diagnostic semantic recoverability frontier"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_recoverability_frontier.py --mode oracle
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_semantic_recoverability_frontier --mode oracle
 
 semantic-recoverability-pass-ablations:
 	@echo "Running semantic recoverability pass ablations"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_recoverability_frontier.py --mode pass-ablations
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_semantic_recoverability_frontier --mode pass-ablations
 
 semantic-recoverability-durability:
 	@echo "Running semantic recoverability durability diagnostics"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_semantic_recoverability_frontier.py --mode durability
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_semantic_recoverability_frontier --mode durability
 
 semantic-recoverability-plots: semantic-recoverability-trajectories
 	@echo "Generating semantic recoverability frontier plots"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/semantic_recoverability_plots.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.visualization.semantic_recoverability_plots
 
 check-semantic-recoverability-results:
 	@echo "Checking semantic recoverability frontier results"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/check_semantic_recoverability_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.validation.check_semantic_recoverability_results
 
 semantic-recoverability-all: semantic-recoverability-trajectories semantic-recoverability-plots check-semantic-recoverability-results
 	@echo "Semantic recoverability frontier pipeline complete."
 
 active-source-counterparts-controlled:
 	@echo "Running controlled active source-counterpart refactoring"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_active_source_counterpart_refactoring.py --mode controlled
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_active_source_counterpart_refactoring --mode controlled
 
 active-source-counterparts-development:
 	@echo "Revisiting development active source-counterpart targets"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_active_source_counterpart_refactoring.py --mode development
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_active_source_counterpart_refactoring --mode development
 
 active-source-counterparts-heldout:
 	@echo "Running held-out active source-counterpart accounting"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_active_source_counterpart_refactoring.py --mode heldout
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_active_source_counterpart_refactoring --mode heldout
 
 active-source-counterparts-durability:
 	@echo "Running active source-counterpart durability strategies"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_active_source_counterpart_refactoring.py --mode durability
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_active_source_counterpart_refactoring --mode durability
 
 active-source-counterparts-ablations:
 	@echo "Running active source-counterpart baselines and ablations"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_active_source_counterpart_refactoring.py --mode all
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_active_source_counterpart_refactoring --mode all
 
 active-source-counterparts-plots: active-source-counterparts-ablations
 	@echo "Generating active source-counterpart plots"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/active_source_counterpart_plots.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.visualization.active_source_counterpart_plots
 
 check-active-source-counterpart-results:
 	@echo "Checking active source-counterpart results"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/check_active_source_counterpart_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.validation.check_active_source_counterpart_results
 
 active-source-counterparts-all: active-source-counterparts-ablations active-source-counterparts-plots check-active-source-counterpart-results
 	@echo "Active source-counterpart refactoring pipeline complete."
 
 cross-netlist-transplant-controlled:
 	@echo "Running controlled cross-netlist cut transplantation"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_cross_netlist_cut_transplantation.py --mode controlled
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_cross_netlist_cut_transplantation --mode controlled
 
 cross-netlist-transplant-development:
 	@echo "Revisiting real cross-netlist cut transplantation targets"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_cross_netlist_cut_transplantation.py --mode development
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_cross_netlist_cut_transplantation --mode development
 
 cross-netlist-transplant-heldout:
 	@echo "Running held-out cross-netlist cut transplantation accounting"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_cross_netlist_cut_transplantation.py --mode heldout
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_cross_netlist_cut_transplantation --mode heldout
 
 cross-netlist-transplant-oracle:
 	@echo "Running cross-netlist oracle-ladder diagnostics"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_cross_netlist_cut_transplantation.py --mode oracle
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_cross_netlist_cut_transplantation --mode oracle
 
 cross-netlist-transplant-durability:
 	@echo "Running cross-netlist transplant durability strategies"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_cross_netlist_cut_transplantation.py --mode durability
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_cross_netlist_cut_transplantation --mode durability
 
 cross-netlist-transplant-ablations:
 	@echo "Running cross-netlist transplant baselines and ablations"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_cross_netlist_cut_transplantation.py --mode all
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_cross_netlist_cut_transplantation --mode all
 
 cross-netlist-transplant-plots: cross-netlist-transplant-ablations
 	@echo "Generating cross-netlist transplant plots"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/cross_netlist_transplant_plots.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.visualization.cross_netlist_transplant_plots
 
 check-cross-netlist-transplant-results:
 	@echo "Checking cross-netlist transplant results"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/check_cross_netlist_transplant_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.validation.check_cross_netlist_transplant_results
 
 cross-netlist-transplant-all: cross-netlist-transplant-ablations cross-netlist-transplant-plots check-cross-netlist-transplant-results
 	@echo "Cross-netlist cut transplantation pipeline complete."
 
 formal-locality-controlled:
 	@echo "Running controlled formal locality-barrier certificates"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_formal_locality_barriers.py --mode controlled
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_formal_locality_barriers --mode controlled
 
 formal-locality-development:
 	@echo "Running development formal locality-barrier analysis"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_formal_locality_barriers.py --mode development
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_formal_locality_barriers --mode development
 
 formal-locality-heldout:
 	@echo "Running held-out formal locality-barrier analysis"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_formal_locality_barriers.py --mode heldout
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_formal_locality_barriers --mode heldout
 
 formal-locality-input:
 	@echo "Running input-interface locality certificates"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_formal_locality_barriers.py --mode input
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_formal_locality_barriers --mode input
 
 formal-locality-output:
 	@echo "Running output/window locality certificates"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_formal_locality_barriers.py --mode output
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_formal_locality_barriers --mode output
 
 formal-locality-whole-design-diagnostic:
 	@echo "Running whole-design PI locality diagnostics"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_formal_locality_barriers.py --mode whole-design
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_formal_locality_barriers --mode whole-design
 
 formal-locality-transplant:
 	@echo "Running certificate-guided transplant accounting"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_formal_locality_barriers.py --mode transplant
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_formal_locality_barriers --mode transplant
 
 formal-locality-ablations:
 	@echo "Running formal locality baselines and ablations"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/run_formal_locality_barriers.py --mode all
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.recoverability.run_formal_locality_barriers --mode all
 
 formal-locality-plots: formal-locality-ablations
 	@echo "Generating formal locality-barrier plots"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/formal_locality_barrier_plots.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.visualization.formal_locality_barrier_plots
 
 check-formal-locality-results:
 	@echo "Checking formal locality-barrier result artifacts"
-	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) scripts/check_formal_locality_barrier_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(Z3_PYTHON) -m scripts.validation.check_formal_locality_barrier_results
 
 formal-locality-all: formal-locality-ablations formal-locality-plots check-formal-locality-results
 	@echo "Formal locality-barrier pipeline complete."
 
 provenance-eligibility-audit:
 	@echo "Auditing historical provenance and denominator eligibility"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_necessity_first_targets.py --mode audit
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.recoverability.run_necessity_first_targets --mode audit
 
 necessity-targets-controlled:
 	@echo "Running controlled necessity-first target checks"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_necessity_first_targets.py --mode controlled
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.recoverability.run_necessity_first_targets --mode controlled
 
 necessity-targets-historical:
 	@echo "Reconstructing historical target provenance"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_necessity_first_targets.py --mode historical
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.recoverability.run_necessity_first_targets --mode historical
 
 necessity-targets-development:
 	@echo "Running necessity-first development target discovery"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_necessity_first_targets.py --mode development
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.recoverability.run_necessity_first_targets --mode development
 
 necessity-targets-heldout:
 	@echo "Running necessity-first held-out target discovery"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_necessity_first_targets.py --mode heldout
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.recoverability.run_necessity_first_targets --mode heldout
 
 necessity-targets-locality:
 	@echo "Running locality analysis for necessity-first eligible targets"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_necessity_first_targets.py --mode locality
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.recoverability.run_necessity_first_targets --mode locality
 
 necessity-targets-transplant:
 	@echo "Running eligible-target transplant accounting"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_necessity_first_targets.py --mode transplant
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.recoverability.run_necessity_first_targets --mode transplant
 
 necessity-targets-ablations:
 	@echo "Running necessity-first target ablations"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_necessity_first_targets.py --mode ablations
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.recoverability.run_necessity_first_targets --mode ablations
 
 necessity-targets-plots: necessity-targets-ablations
 	@echo "Generating necessity-first target plots"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/necessity_first_target_plots.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.visualization.necessity_first_target_plots
 
 check-provenance-eligibility-results:
 	@echo "Checking provenance eligibility audit artifacts"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_provenance_eligibility_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_provenance_eligibility_results
 
 check-necessity-target-results:
 	@echo "Checking necessity-first target artifacts"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_necessity_first_target_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_necessity_first_target_results
 
 necessity-targets-all: necessity-targets-ablations necessity-targets-plots check-provenance-eligibility-results check-necessity-target-results
 	@echo "Necessity-first target discovery pipeline complete."
 
 semantic-graft-plots: semantic-graft-ablation
 	@echo "Generating blind CEGIS and semantic graft plots"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/blind_semantic_plots.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.visualization.blind_semantic_plots
 
 check-blind-semantic-results:
 	@echo "Checking blind semantic CEGIS outputs"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_blind_semantic_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_blind_semantic_results
 
 check-semantic-graft-results:
 	@echo "Checking semantic graft outputs"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_semantic_graft_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_semantic_graft_results
 
 blind-semantic-cegis-all: blind-semantic-audit blind-semantic-buses semantic-parametric-candidates semantic-cegis semantic-smt-proofs semantic-cegis-evaluation check-blind-semantic-results
 	@echo "Blind semantic CEGIS pipeline complete."
@@ -555,7 +555,7 @@ semantic-grafting-all: blind-semantic-cegis-all semantic-graft-targets semantic-
 
 # List external benchmarks currently placed under benchmarks/external/
 list-external:
-	@$(PYTHON) scripts/import_external_benchmarks.py --list
+	@$(PYTHON) -m scripts.benchmarks.import_external_benchmarks --list
 
 # Import external benchmarks from a local dir (no downloads). Example:
 #   make import-external FAMILY=iscas85 INPUT_DIR=/path/to/iscas85_blifs
@@ -565,12 +565,12 @@ import-external:
 		echo "Usage: make import-external FAMILY=<iscas85|epfl> INPUT_DIR=<dir> [ARGS=--convert-aiger]"; \
 		exit 1; \
 	fi
-	@$(PYTHON) scripts/import_external_benchmarks.py --family $(FAMILY) --input-dir $(INPUT_DIR) $(ARGS)
+	@$(PYTHON) -m scripts.benchmarks.import_external_benchmarks --family $(FAMILY) --input-dir $(INPUT_DIR) $(ARGS)
 
 # Write results/benchmark_manifest.csv describing every benchmark file present
 benchmark-manifest:
 	@echo "Building benchmark manifest → results/benchmark_manifest.csv"
-	@$(PYTHON) scripts/build_benchmark_manifest.py
+	@$(PYTHON) -m scripts.benchmarks.build_benchmark_manifest
 
 # Generate optimized BLIF variants using the built ABC
 generate-variants: build-abc
@@ -583,7 +583,7 @@ analyze:
 
 check-results:
 	@echo "Checking result CSV freshness"
-	@$(PYTHON) scripts/check_results_freshness.py
+	@$(PYTHON) -m scripts.validation.check_results_freshness
 
 plot:
 	@echo "Generating plots"
@@ -595,7 +595,7 @@ test:
 
 smoke:
 	@echo "Running smoke checks"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_z3.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_z3
 	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m pytest -q \
 		tests/test_z3_backend.py \
 		tests/test_blind_semantic_cegis.py \
@@ -611,21 +611,21 @@ portable-no-abc:
 		tests/test_joint_region_interface.py \
 		tests/test_semantic_functional_refactoring.py \
 		tests/test_semantic_recoverability_frontier.py
-	@AIG_ABC=/tmp/aig_missing_abc PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_blind_semantic_results.py
-	@AIG_ABC=/tmp/aig_missing_abc PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_results_freshness.py
+	@AIG_ABC=/tmp/aig_missing_abc PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_blind_semantic_results
+	@AIG_ABC=/tmp/aig_missing_abc PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_results_freshness
 
 formal-abc: check-abc check-z3
 	@echo "Running full formal ABC regression suite"
 	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m pytest tests/ -q
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_artifact_claims.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_artifact_claims
 
 research-wow:
 	@echo "Building research-facing demo, taxonomy, ablations, tables, and figure"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/build_research_wow.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.evidence.build_research_wow
 
 check-research-wow: research-wow
 	@echo "Checking research-facing derived artifacts"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_research_wow.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_research_wow
 
 demo-wow: research-wow
 	@echo "Printing reviewer-safe demo report"
@@ -633,39 +633,39 @@ demo-wow: research-wow
 
 evidence-advancement:
 	@echo "Building evidence-advancement artifacts"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/build_evidence_advancement.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.evidence.build_evidence_advancement
 
 check-evidence-advancement: evidence-advancement
 	@echo "Checking evidence-advancement artifacts"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_evidence_advancement.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_evidence_advancement
 
 paper-pdf: research-wow check-evidence-advancement
 	@echo "Compiling paper PDF"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/build_paper_pdf.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.publication.build_paper_pdf
 
 build-artifact-manifest: evidence-advancement
 	@echo "Building canonical artifact manifest"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/build_artifact_manifest.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.publication.build_artifact_manifest
 
 artifact-check: research-wow check-evidence-advancement build-artifact-manifest
 	@echo "Running reviewer-safe artifact checks"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_results_freshness.py
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_blind_semantic_results.py
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_active_source_counterpart_results.py
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_cross_netlist_transplant_results.py
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_formal_locality_barrier_results.py
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_provenance_eligibility_results.py
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_necessity_first_target_results.py
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_research_wow.py
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_evidence_advancement.py
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_artifact_claims.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_results_freshness
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_blind_semantic_results
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_active_source_counterpart_results
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_cross_netlist_transplant_results
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_formal_locality_barrier_results
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_provenance_eligibility_results
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_necessity_first_target_results
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_research_wow
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_evidence_advancement
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_artifact_claims
 
 reproduce-paper-tables: research-wow check-evidence-advancement build-artifact-manifest
 	@echo "Validating committed paper tables and claims"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_results_freshness.py
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_research_wow.py
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_evidence_advancement.py
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_artifact_claims.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_results_freshness
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_research_wow
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_evidence_advancement
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_artifact_claims
 
 sat-refine: build-abc
 	@echo "Running ABC equivalence check on high-confidence candidates"
@@ -721,7 +721,7 @@ abc-sweep-probe:
 		echo "ABC binary not found. Run 'make build-abc' or set ABC=/path/to/abc"; \
 		exit 1; \
 	fi
-	@PYTHONDONTWRITEBYTECODE=1 ABC=$${ABC:-$(PWD)/$(ABC_BIN)} $(PYTHON) scripts/probe_abc_sat_sweeping.py
+	@PYTHONDONTWRITEBYTECODE=1 ABC=$${ABC:-$(PWD)/$(ABC_BIN)} $(PYTHON) -m scripts.abc.probe_abc_sat_sweeping
 
 abc-sweep-baseline: abc-sweep-probe
 	@echo "Running lightweight ABC-native SAT sweeping / FRAIG baseline"
@@ -729,11 +729,11 @@ abc-sweep-baseline: abc-sweep-probe
 		echo "ABC binary not found. Run 'make build-abc' or set ABC=/path/to/abc"; \
 		exit 1; \
 	fi
-	@PYTHONDONTWRITEBYTECODE=1 ABC=$${ABC:-$(PWD)/$(ABC_BIN)} $(PYTHON) scripts/abc_native_sat_sweep_baseline.py
+	@PYTHONDONTWRITEBYTECODE=1 ABC=$${ABC:-$(PWD)/$(ABC_BIN)} $(PYTHON) -m scripts.abc.abc_native_sat_sweep_baseline
 
 abc-sweep-compare:
 	@echo "Comparing ABC-native sweep baseline with custom correspondence results"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/compare_abc_native_vs_custom.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.abc.compare_abc_native_vs_custom
 
 abc-provenance:
 	@echo "Investigating ABC-native FRAIG provenance / equivalence-class visibility"
@@ -741,7 +741,7 @@ abc-provenance:
 		echo "ABC binary not found. Run 'make build-abc' or set ABC=/path/to/abc"; \
 		exit 1; \
 	fi
-	@PYTHONDONTWRITEBYTECODE=1 ABC=$${ABC:-$(PWD)/$(ABC_BIN)} $(PYTHON) scripts/investigate_abc_provenance.py
+	@PYTHONDONTWRITEBYTECODE=1 ABC=$${ABC:-$(PWD)/$(ABC_BIN)} $(PYTHON) -m scripts.abc.investigate_abc_provenance
 
 abc-timing-probe:
 	@echo "Probing ABC timing / delay / level command support"
@@ -749,7 +749,7 @@ abc-timing-probe:
 		echo "ABC binary not found. Run 'make build-abc' or set ABC=/path/to/abc"; \
 		exit 1; \
 	fi
-	@PYTHONDONTWRITEBYTECODE=1 ABC=$${ABC:-$(PWD)/$(ABC_BIN)} $(PYTHON) scripts/probe_abc_timing_commands.py
+	@PYTHONDONTWRITEBYTECODE=1 ABC=$${ABC:-$(PWD)/$(ABC_BIN)} $(PYTHON) -m scripts.abc.probe_abc_timing_commands
 
 research-plots:
 	@echo "Generating research plots → results/plots/"
@@ -757,17 +757,17 @@ research-plots:
 
 iscas-analysis:
 	@echo "Analyzing SAT/CEC-proven ISCAS-85 structural-mismatch matches"
-	@$(PYTHON) scripts/analyze_iscas_verified_matches.py
+	@$(PYTHON) -m scripts.analysis.analyze_iscas_verified_matches
 
 # Regenerates variants first because the distance script evaluates candidate
 # nodes directly from the original and optimized BLIF files.
 approx-distance: generate-variants
 	@echo "Computing approximate node distances for ISCAS-85 candidates"
-	@$(PYTHON) scripts/approximate_node_distance.py
+	@$(PYTHON) -m scripts.analysis.approximate_node_distance
 
 approx-sampling-calibration:
 	@echo "Calibrating sampled approximate-distance estimates against exact rows"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/calibrate_approximate_distance_sampling.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.analysis.calibrate_approximate_distance_sampling
 
 odc-probe:
 	@echo "Running tiny ODC-aware matching probe"
@@ -775,11 +775,11 @@ odc-probe:
 		echo "ABC binary not found. Run 'make build-abc' or set ABC=/path/to/abc"; \
 		exit 1; \
 	fi
-	@PYTHONDONTWRITEBYTECODE=1 ABC=$${ABC:-$(PWD)/$(ABC_BIN)} $(PYTHON) scripts/odc_aware_match_probe.py
+	@PYTHONDONTWRITEBYTECODE=1 ABC=$${ABC:-$(PWD)/$(ABC_BIN)} $(PYTHON) -m scripts.abc.odc_aware_match_probe
 
 critical-path-map: approx-distance
 	@echo "Mapping structural critical paths back to original ISCAS-85 nodes"
-	@$(PYTHON) scripts/critical_path_back_mapping.py
+	@$(PYTHON) -m scripts.analysis.critical_path_back_mapping
 
 timing-path-probe:
 	@echo "Comparing structural and delay-weighted critical-path back-mapping"
@@ -787,23 +787,23 @@ timing-path-probe:
 		echo "ABC binary not found. Run 'make build-abc' or set ABC=/path/to/abc"; \
 		exit 1; \
 	fi
-	@PYTHONDONTWRITEBYTECODE=1 ABC=$${ABC:-$(PWD)/$(ABC_BIN)} $(PYTHON) scripts/timing_aware_path_probe.py
+	@PYTHONDONTWRITEBYTECODE=1 ABC=$${ABC:-$(PWD)/$(ABC_BIN)} $(PYTHON) -m scripts.analysis.timing_aware_path_probe
 
 yosys-source-probe:
 	@echo "Probing Yosys RTL/source metadata preservation"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/probe_yosys_source_metadata.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.abc.probe_yosys_source_metadata
 
 source-map-prototype:
 	@echo "Building tiny RTL/source-map prototype"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/build_source_map_prototype.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.abc.build_source_map_prototype
 
 register-suggestions:
 	@echo "Suggesting engineer-review register insertion points from mapped critical paths"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/suggest_register_insertion_points.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.analysis.suggest_register_insertion_points
 
 contextual-error-analysis:
 	@echo "Running contextual formal/error-metric correspondence analysis"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/contextual_correspondence_analysis.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.analysis.contextual_correspondence_analysis
 
 contextual-critical-path-map: contextual-error-analysis
 	@echo "Contextual critical-path mapping written to results/contextual_critical_path_mapping.*"
@@ -813,22 +813,22 @@ contextual-research-plots: contextual-error-analysis
 
 cofactor-sensitivity-analysis:
 	@echo "Computing Shannon-cofactor and sensitivity ranking features"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/cofactor_sensitivity_correspondence_analysis.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.analysis.cofactor_sensitivity_correspondence_analysis
 
 functional-ranking-ablation: cofactor-sensitivity-analysis
 	@echo "Comparing functional ranking ablations"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/compare_functional_ranking_ablations.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.analysis.compare_functional_ranking_ablations
 
 functional-ranking-plots: functional-ranking-ablation
 	@echo "Functional ranking plots written to results/plots/functional_*"
 
 enhanced-critical-path-map: cofactor-sensitivity-analysis
 	@echo "Joining enhanced ranking features onto critical-path mappings"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/enhanced_critical_path_mapping.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.analysis.enhanced_critical_path_mapping
 
 check-functional-ranking-results:
 	@echo "Checking functional ranking result schemas"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_functional_ranking_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_functional_ranking_results
 
 boundary-recovery-benchmarks:
 	@echo "Boundary recovery COI specs available under benchmarks/coi_specs/"
@@ -836,168 +836,168 @@ boundary-recovery-benchmarks:
 
 boundary-recovery-analysis: boundary-recovery-benchmarks
 	@echo "Running equivalence-anchored boundary recovery"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/recover_equivalence_anchored_boundaries.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.boundary.recover_equivalence_anchored_boundaries
 
 boundary-recovery-critical-path: boundary-recovery-analysis
 	@echo "Checking critical-path nodes enclosed by recovered regions"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/boundary_recovery_critical_path.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.analysis.boundary_recovery_critical_path
 
 boundary-recovery-plots: boundary-recovery-critical-path
 	@echo "Boundary recovery plots written to results/plots/boundary_*"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/boundary_recovery_plots.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.visualization.boundary_recovery_plots
 
 check-boundary-recovery-results:
 	@echo "Checking boundary recovery result schemas"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_boundary_recovery_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_boundary_recovery_results
 
 boundary-recovery: boundary-recovery-analysis boundary-recovery-critical-path boundary-recovery-plots check-boundary-recovery-results
 	@echo "Boundary recovery pipeline complete."
 
 boundary-recovery-identity: boundary-recovery-benchmarks
 	@echo "Running identity S-versus-S boundary recovery baseline"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_boundary_recovery_identity_baseline.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.boundary.run_boundary_recovery_identity_baseline
 
 boundary-recovery-diagnosis: boundary-recovery
 	@echo "Diagnosing boundary-recovery failures and anchor coverage"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/diagnose_boundary_recovery_failures.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.boundary.diagnose_boundary_recovery_failures
 
 boundary-recovery-critical-path-cois:
 	@echo "Generating bounded critical-path diagnostic COIs"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/generate_critical_path_cois.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.analysis.generate_critical_path_cois
 
 boundary-recovery-diagnosis-plots: boundary-recovery-diagnosis
 	@echo "Generating boundary diagnosis plots"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/boundary_diagnosis_plots.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.visualization.boundary_diagnosis_plots
 
 check-boundary-recovery-diagnosis:
 	@echo "Checking boundary diagnosis result schemas"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_boundary_diagnosis_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_boundary_diagnosis_results
 
 boundary-recovery-diagnosis-all: boundary-recovery-identity boundary-recovery-diagnosis boundary-recovery-critical-path-cois boundary-recovery-diagnosis-plots check-boundary-recovery-diagnosis
 	@echo "Boundary recovery diagnosis pipeline complete."
 
 boundary-recovery-micro-benchmarks:
 	@echo "Generating boundary-recovery micro benchmarks and COIs"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/generate_boundary_recovery_micro_benchmarks.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.boundary.generate_boundary_recovery_micro_benchmarks
 
 boundary-recovery-repair-cois: boundary-recovery-micro-benchmarks
 	@echo "Repairing and normalizing COIs under canonical semantics"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/repair_boundary_recovery_cois.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.boundary.repair_boundary_recovery_cois
 
 boundary-recovery-check-circuits: boundary-recovery-repair-cois
 	@echo "Checking canonical COI circuit availability"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_boundary_recovery_circuits.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_boundary_recovery_circuits
 
 boundary-recovery-identity-fixed: boundary-recovery-check-circuits
 	@echo "Running fixed exact identity boundary recovery"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_boundary_recovery_identity_fixed.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.boundary.run_boundary_recovery_identity_fixed
 
 boundary-recovery-corrected-analysis: boundary-recovery-identity-fixed
 	@echo "Running corrected optimized boundary recovery over eligible COIs"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_boundary_recovery_corrected_analysis.py
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/summarize_boundary_recovery_semantics.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.boundary.run_boundary_recovery_corrected_analysis
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.boundary.summarize_boundary_recovery_semantics
 
 boundary-recovery-critical-path-fixed: boundary-recovery-identity-fixed
 	@echo "Generating canonical critical-path COI validation rows"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_boundary_recovery_critical_path_fixed.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.boundary.run_boundary_recovery_critical_path_fixed
 
 boundary-recovery-semantics-plots: boundary-recovery-corrected-analysis boundary-recovery-critical-path-fixed
 	@echo "Generating repaired boundary semantics plots"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/summarize_boundary_recovery_semantics.py
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/boundary_recovery_semantics_plots.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.boundary.summarize_boundary_recovery_semantics
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.visualization.boundary_recovery_semantics_plots
 
 check-boundary-recovery-semantics:
 	@echo "Checking repaired boundary semantics outputs"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_boundary_recovery_semantics.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_boundary_recovery_semantics
 
 boundary-recovery-semantics-all: boundary-recovery-micro-benchmarks boundary-recovery-repair-cois boundary-recovery-check-circuits boundary-recovery-identity-fixed boundary-recovery-corrected-analysis boundary-recovery-critical-path-fixed boundary-recovery-semantics-plots check-boundary-recovery-semantics
 	@echo "Boundary recovery semantics repair pipeline complete."
 
 extended-boundary-validation: boundary-recovery-identity-fixed boundary-recovery-corrected-analysis
 	@echo "Evaluating first-frontier and cost-guided extended-boundary validity"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/evaluate_extended_boundary_correctness.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.boundary.evaluate_extended_boundary_correctness
 
 extended-boundary-search: boundary-recovery-identity-fixed boundary-recovery-corrected-analysis
 	@echo "Running cost-guided extended-boundary search"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/evaluate_extended_boundary_correctness.py --search-mode all
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.boundary.evaluate_extended_boundary_correctness --search-mode all
 
 extended-boundary-comparison: extended-boundary-search
 	@echo "Comparing extended-boundary search strategies"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/compare_boundary_search_strategies.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.boundary.compare_boundary_search_strategies
 
 extended-boundary-plots: extended-boundary-comparison
 	@echo "Generating extended-boundary plots"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/extended_boundary_plots.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.visualization.extended_boundary_plots
 
 check-extended-boundary-results:
 	@echo "Checking extended-boundary results"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_extended_boundary_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_extended_boundary_results
 
 extended-boundary-all: boundary-recovery-semantics-all extended-boundary-validation extended-boundary-search extended-boundary-comparison extended-boundary-plots check-extended-boundary-results
 	@echo "Extended-boundary recovery pipeline complete."
 
 odc-anchor-candidates: extended-boundary-all
 	@echo "Generating formal ODC anchor candidates"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/generate_odc_anchor_candidates.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.materialization.generate_odc_anchor_candidates
 
 odc-anchor-proofs: odc-anchor-candidates
 	@echo "Proving formal ODC anchor candidates"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/prove_odc_anchors.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.materialization.prove_odc_anchors
 
 odc-boundary-recovery: odc-anchor-proofs
 	@echo "Running boundary recovery with formal ODC anchors"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_odc_boundary_recovery.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.boundary.run_odc_boundary_recovery
 
 odc-anchor-comparison: odc-boundary-recovery
 	@echo "Comparing ODC anchor modes"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/compare_odc_anchor_modes.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.materialization.compare_odc_anchor_modes
 
 odc-anchor-plots: odc-anchor-comparison
 	@echo "Generating ODC anchor plots"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/odc_anchor_plots.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.visualization.odc_anchor_plots
 
 check-odc-anchor-results:
 	@echo "Checking ODC anchor results"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_odc_anchor_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_odc_anchor_results
 
 odc-anchor-all: odc-anchor-candidates odc-anchor-proofs odc-boundary-recovery odc-anchor-comparison odc-anchor-plots check-odc-anchor-results
 	@echo "ODC anchor generation pipeline complete."
 
 materialization-targets: extended-boundary-all
 	@echo "Selecting unmatched optimized-side targets for anchored-cut materialization"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/select_materialization_targets.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.materialization.select_materialization_targets
 
 anchored-cuts: materialization-targets
 	@echo "Enumerating globally anchored optimized-side cuts"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/enumerate_anchored_cuts.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.materialization.enumerate_anchored_cuts
 
 anchored-cut-functions: anchored-cuts
 	@echo "Extracting exact target functions over anchored cuts"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/extract_anchored_cut_functions.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.materialization.extract_anchored_cut_functions
 
 materialized-wires: anchored-cut-functions
 	@echo "Materializing additive original-side redundant wires"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/materialize_original_wires.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.materialization.materialize_original_wires
 
 materialized-anchor-proofs: materialized-wires
 	@echo "Formally proving materialized-wire anchors"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/prove_materialized_anchors.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.materialization.prove_materialized_anchors
 
 materialized-boundary-recovery: materialized-anchor-proofs
 	@echo "Rerunning boundary recovery with materialized anchors"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/run_materialized_boundary_recovery.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.materialization.run_materialized_boundary_recovery
 
 materialized-ablation: materialized-boundary-recovery
 	@echo "Comparing materialization ablations and utility"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/compare_materialization_ablations.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.materialization.compare_materialization_ablations
 
 materialized-plots: materialized-ablation
 	@echo "Generating materialized correspondence plots"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/materialized_correspondence_plots.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.visualization.materialized_correspondence_plots
 
 check-materialized-results:
 	@echo "Checking materialized correspondence outputs"
-	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check_materialized_correspondence_results.py
+	@PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m scripts.validation.check_materialized_correspondence_results
 
 materialized-correspondence-all: extended-boundary-all materialization-targets anchored-cuts anchored-cut-functions materialized-wires materialized-anchor-proofs materialized-boundary-recovery materialized-ablation materialized-plots check-materialized-results
 	@echo "Anchored-cut materialized correspondence pipeline complete."

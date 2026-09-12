@@ -4,6 +4,9 @@ This repository is a research prototype and artifact for internal
 correspondence recovery after logic synthesis. The artifact is organized around
 committed evidence tables under `results/`, reproducibility scripts under
 `scripts/`, and focused checkers that reject stale or overclaimed results.
+The maintained script implementations are grouped by responsibility under
+`scripts/<category>/`; root-level `scripts/*.py` files remain only as stable
+compatibility adapters for older reproduction commands.
 
 ## Quick Start
 
@@ -47,6 +50,23 @@ rerunning every expensive experiment.
 - Yosys is optional for the committed BLIF-only artifact. The repository now
   includes a tiny pinned CC0 RTL corpus with source-location metadata, but local
   validation records Yosys lowering as `tool_missing` unless Yosys is installed.
+
+## Script Organization
+
+New research automation should prefer package execution, for example
+`python -m scripts.evidence.build_evidence_advancement` and
+`python -m scripts.validation.check_evidence_advancement`.  The most important
+categories are:
+
+- `scripts/recoverability/`: production experiment drivers for active
+  source-counterparts, cross-netlist transplantation, locality barriers, and
+  necessity-first targets.
+- `scripts/evidence/`: derived evidence synthesis for the paper-facing layer.
+- `scripts/validation/`: independent artifact checkers that recompute claims
+  from committed tables and proof objects.
+- `scripts/publication/`: artifact manifest and paper/PDF build helpers.
+
+See `scripts/README.md` for the full category map.
 
 ## Committed Evidence Policy
 

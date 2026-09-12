@@ -1,24 +1,28 @@
-#!/usr/bin/env python3
-"""Generate boundary anchor-coverage diagnostics."""
+"""Compatibility adapter for :mod:`scripts.analysis.analyze_boundary_anchor_coverage`.
+
+The research codebase now keeps implementation modules in logical script
+subpackages.  This root-level file is intentionally tiny: it preserves the
+long-standing `python scripts/analyze_boundary_anchor_coverage.py` command used in old notes, Makefile
+targets, CI logs, and external reproductions while delegating all real work to
+`python -m scripts.analysis.analyze_boundary_anchor_coverage`.
+"""
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
+import importlib as _importlib
+import runpy as _runpy
+import sys as _sys
+from pathlib import Path as _Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+_REPO_ROOT = _Path(__file__).resolve().parents[1]
+if str(_REPO_ROOT) not in _sys.path:
+    _sys.path.insert(0, str(_REPO_ROOT))
 
-from boundary_diagnosis import COVERAGE_COLUMNS, DIAG_RESULTS, run_diagnostic_suite, write_csv  # noqa: E402
-
-
-def main() -> int:
-    DIAG_RESULTS.mkdir(parents=True, exist_ok=True)
-    bundle = run_diagnostic_suite()
-    write_csv(DIAG_RESULTS / "boundary_anchor_coverage.csv", bundle.coverage, COVERAGE_COLUMNS)
-    print(f"Boundary anchor coverage rows: {len(bundle.coverage)}")
-    return 0
-
+_TARGET_MODULE = "scripts.analysis.analyze_boundary_anchor_coverage"
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    _runpy.run_module(_TARGET_MODULE, run_name="__main__")
+else:
+    _module = _importlib.import_module(_TARGET_MODULE)
+    globals().update({name: value for name, value in vars(_module).items() if not name.startswith("__")})
+    __all__ = [name for name in globals() if not name.startswith("_")]

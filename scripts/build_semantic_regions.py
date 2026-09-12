@@ -1,55 +1,28 @@
-#!/usr/bin/env python3
-"""Build canonical semantic regions from Phase 1 benchmark manifests."""
+"""Compatibility adapter for :mod:`scripts.semantic.build_semantic_regions`.
+
+The research codebase now keeps implementation modules in logical script
+subpackages.  This root-level file is intentionally tiny: it preserves the
+long-standing `python scripts/build_semantic_regions.py` command used in old notes, Makefile
+targets, CI logs, and external reproductions while delegating all real work to
+`python -m scripts.semantic.build_semantic_regions`.
+"""
 
 from __future__ import annotations
 
-import sys
-import argparse
-from pathlib import Path
+import importlib as _importlib
+import runpy as _runpy
+import sys as _sys
+from pathlib import Path as _Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+_REPO_ROOT = _Path(__file__).resolve().parents[1]
+if str(_REPO_ROOT) not in _sys.path:
+    _sys.path.insert(0, str(_REPO_ROOT))
 
-from semantic_region_pipeline import build_regions, write_region_outputs
-
-
-def csv_set(value: str | None) -> set[str] | None:
-    if not value:
-        return None
-    return {part.strip() for part in value.split(",") if part.strip()}
-
-
-def int_csv_set(value: str | None) -> set[int] | None:
-    if not value:
-        return None
-    return {int(part.strip()) for part in value.split(",") if part.strip()}
-
-
-def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--source-type", action="append", choices=["ground_truth_region", "whole_output_cone"], help="Region source type to build. Repeat to select multiple; default builds active sources.")
-    parser.add_argument("--families", help="Comma-separated family filter.")
-    parser.add_argument("--operators", help="Comma-separated operator filter.")
-    parser.add_argument("--widths", help="Comma-separated input/output width filter.")
-    parser.add_argument("--optimizations", help="Comma-separated optimization-flow filter.")
-    parser.add_argument("--include-output-cones", action="store_true", help="Include whole-output-cone rows when --source-type filters are used.")
-    args = parser.parse_args()
-
-    source_types = tuple(args.source_type or ("ground_truth_region", "whole_output_cone"))
-    if args.include_output_cones and "whole_output_cone" not in source_types:
-        source_types = tuple(source_types) + ("whole_output_cone",)
-
-    regions, validations = build_regions(
-        source_types=source_types,
-        families=csv_set(args.families),
-        operators=csv_set(args.operators),
-        widths=int_csv_set(args.widths),
-        optimizations=csv_set(args.optimizations),
-    )
-    write_region_outputs(regions, validations)
-    print(f"Wrote {len(regions)} semantic region rows")
-    return 0
-
+_TARGET_MODULE = "scripts.semantic.build_semantic_regions"
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    _runpy.run_module(_TARGET_MODULE, run_name="__main__")
+else:
+    _module = _importlib.import_module(_TARGET_MODULE)
+    globals().update({name: value for name, value in vars(_module).items() if not name.startswith("__")})
+    __all__ = [name for name in globals() if not name.startswith("_")]

@@ -1,54 +1,28 @@
-#!/usr/bin/env python3
-"""Check ODC anchor result schemas and evidence semantics."""
+"""Compatibility adapter for :mod:`scripts.validation.check_odc_anchor_results`.
+
+The research codebase now keeps implementation modules in logical script
+subpackages.  This root-level file is intentionally tiny: it preserves the
+long-standing `python scripts/check_odc_anchor_results.py` command used in old notes, Makefile
+targets, CI logs, and external reproductions while delegating all real work to
+`python -m scripts.validation.check_odc_anchor_results`.
+"""
 
 from __future__ import annotations
 
-import csv
-from pathlib import Path
+import importlib as _importlib
+import runpy as _runpy
+import sys as _sys
+from pathlib import Path as _Path
 
-ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "results" / "odc_anchor_generation"
+_REPO_ROOT = _Path(__file__).resolve().parents[1]
+if str(_REPO_ROOT) not in _sys.path:
+    _sys.path.insert(0, str(_REPO_ROOT))
 
-REQUIRED = {
-    "odc_candidate_features.csv": {"case_id", "spec_node", "impl_node", "simulation_filter_status", "sampled_mismatch_rate"},
-    "odc_formal_proofs.csv": {"case_id", "proof_status", "mapping_category", "evidence_level", "equivalence_scope", "context_mode"},
-    "odc_proven_anchors.csv": {"spec_node", "impl_node", "mapping_category", "evidence_level", "equivalence_scope", "proof_status"},
-    "odc_boundary_recovery_cases.csv": {"case_id", "anchor_mode", "context_mode", "success", "selected_odc_anchor_count", "boundary_contextual_validation_status"},
-    "odc_anchor_usage.csv": {"context_mode", "anchor_mode", "search_mode", "successes", "selected_odc_anchor_count"},
-}
-
-
-def main() -> int:
-    for name, cols in REQUIRED.items():
-        path = OUT / name
-        if not path.exists():
-            raise SystemExit(f"missing {path}")
-        with path.open(newline="", encoding="utf-8") as fh:
-            reader = csv.DictReader(fh)
-            missing = cols - set(reader.fieldnames or [])
-            if missing:
-                raise SystemExit(f"{name} missing columns {sorted(missing)}")
-            rows = list(reader)
-        if name == "odc_formal_proofs.csv":
-            for row in rows:
-                if row["proof_status"] != "proven_odc_valid" and row["evidence_level"] == "formal_contextual":
-                    raise SystemExit("non-proven ODC row labeled formal_contextual")
-                if row["mapping_category"] == "formal_odc_valid_anchor" and row["equivalence_scope"] != "contextual":
-                    raise SystemExit("ODC anchor mislabeled as non-contextual")
-        if name == "odc_proven_anchors.csv":
-            for row in rows:
-                if row["proof_status"] != "proven_odc_valid":
-                    raise SystemExit("unproven row in odc_proven_anchors.csv")
-                if row["mapping_category"] != "formal_odc_valid_anchor":
-                    raise SystemExit("proven ODC anchor has wrong category")
-    identity_path = ROOT / "results" / "boundary_recovery_semantics" / "identity_exact_match_results.csv"
-    with identity_path.open(newline="", encoding="utf-8") as fh:
-        identity = list(csv.DictReader(fh))
-    if len(identity) != 14 or any(r["top_level_classification"] != "success" for r in identity):
-        raise SystemExit("identity regression is not perfect")
-    print("ODC anchor result check: OK")
-    return 0
-
+_TARGET_MODULE = "scripts.validation.check_odc_anchor_results"
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    _runpy.run_module(_TARGET_MODULE, run_name="__main__")
+else:
+    _module = _importlib.import_module(_TARGET_MODULE)
+    globals().update({name: value for name, value in vars(_module).items() if not name.startswith("__")})
+    __all__ = [name for name in globals() if not name.startswith("_")]

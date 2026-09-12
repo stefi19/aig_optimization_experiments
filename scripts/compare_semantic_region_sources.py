@@ -1,23 +1,28 @@
-#!/usr/bin/env python3
-"""Compare ground-truth semantic regions against whole-output-cone regions."""
+"""Compatibility adapter for :mod:`scripts.semantic.compare_semantic_region_sources`.
+
+The research codebase now keeps implementation modules in logical script
+subpackages.  This root-level file is intentionally tiny: it preserves the
+long-standing `python scripts/compare_semantic_region_sources.py` command used in old notes, Makefile
+targets, CI logs, and external reproductions while delegating all real work to
+`python -m scripts.semantic.compare_semantic_region_sources`.
+"""
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
+import importlib as _importlib
+import runpy as _runpy
+import sys as _sys
+from pathlib import Path as _Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+_REPO_ROOT = _Path(__file__).resolve().parents[1]
+if str(_REPO_ROOT) not in _sys.path:
+    _sys.path.insert(0, str(_REPO_ROOT))
 
-from semantic_region_pipeline import compare_region_sources, summarize_regions
-
-
-def main() -> int:
-    rows = compare_region_sources()
-    summarize_regions()
-    print(f"Wrote {len(rows)} semantic region source-comparison rows")
-    return 0
-
+_TARGET_MODULE = "scripts.semantic.compare_semantic_region_sources"
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    _runpy.run_module(_TARGET_MODULE, run_name="__main__")
+else:
+    _module = _importlib.import_module(_TARGET_MODULE)
+    globals().update({name: value for name, value in vars(_module).items() if not name.startswith("__")})
+    __all__ = [name for name in globals() if not name.startswith("_")]
