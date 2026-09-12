@@ -17,7 +17,7 @@ graph artifact, tool metadata, or CEC obligation is present.
 | Direction | Promoted rows | Interpretation |
 |---|---:|---|
 | Source-blind source-side counterpart inference | 14 / 56 | Exact-node source-blind placement remains 0/56, but bounded window/expression placement promotes 14/56 with emitted graph-active rewrites and both CEC scopes. The checker now replays each non-empty expression witness against the source and optimized BLIF truth vectors, selected support, target hash, and source-graph-only policy. The remaining prior semantic rows are 3 identical-driver no-ops and 3 no-expression-under-bound failures. |
-| Graph-active rewrites from compact exact generated interfaces | 22 / 48 | 31 compact exact interfaces emit valid rewrite artifacts; bounded fanout-frontier expansion promotes 4 additional rows, while 9 emitted artifacts remain identical-driver non-active rewrites. |
+| Graph-active rewrites from compact exact generated interfaces | 22 / 48 | 31 compact exact interfaces emit valid rewrite artifacts; bounded fanout-frontier expansion promotes 4 additional rows, while 9 emitted artifacts remain identical-driver non-active rewrites. The evidence checker cross-links each row to necessity-first provenance, graph-rewrite, boundary, and CEC-scope tables, and revalidates emitted BLIF artifacts. |
 | Bounded CEGIS grammar completeness | 4 / 12 | Only `sign_extend` and `zero_extend` are complete for attempted blind and oracle-bus rows. |
 | Pinned redistributable RTL corpus | 3 / 3 | Three CC0 Verilog modules are committed with source-location metadata; local Yosys lowering is recorded as `tool_missing`. |
 | ODC-aware placement | 0 / 10 | Ten formal contextual ODC anchors exist, but none is graph-active or globally CEC-backed. |
@@ -30,6 +30,9 @@ graph artifact, tool metadata, or CEC obligation is present.
   witness over source graph signals only, matching the optimized target truth
   vector under the declared bounded support.
 - Compact exact locality is not graph rewrite emission.
+- Compact-interface graph-rewrite promotion must remain consistent with the
+  necessity-first provenance, graph-rewrite, boundary-recovery, and global-CEC
+  source tables.
 - A bounded grammar is marked complete only for an operator/mode group where all
   attempted rows are recovered.
 - A pinned RTL source is not a lowered netlist unless the Yosys command succeeds

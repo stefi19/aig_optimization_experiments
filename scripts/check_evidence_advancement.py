@@ -18,6 +18,8 @@ sys.path.insert(0, str(ROOT))
 
 from analyze_blif_matches import BlifNetwork, parse_blif  # noqa: E402
 from formal_locality_barriers import all_assignments, scalar_eval_exact, structural_supports, vector_eval  # noqa: E402
+from necessity_first_rewrites import validate_rewritten_graph  # noqa: E402
+from semantic_region import file_hash  # noqa: E402
 
 
 def main() -> int:
@@ -273,6 +275,19 @@ def _check_counterpart(rows: list[dict[str, str]], placement: list[dict[str, str
 def _check_rewrites(rows: list[dict[str, str]], errors: list[str]) -> None:
     if len(rows) != 48:
         errors.append(f"compact-interface rewrite denominator drifted: {len(rows)} != 48")
+    graph_rewrites = _source_index(
+        "results/necessity_first_target_discovery/graph_rewrites.csv", "stable_target_id", errors
+    )
+    provenance = _source_index(
+        "results/necessity_first_target_discovery/target_provenance.csv", "stable_target_id", errors
+    )
+    boundary = _source_index(
+        "results/necessity_first_target_discovery/boundary_recovery.csv", "stable_target_id", errors
+    )
+    cec_rows = _source_rows("results/necessity_first_target_discovery/global_cec.csv", errors)
+    cec: dict[str, dict[str, str]] = {}
+    for cec_row in cec_rows:
+        cec.setdefault(cec_row.get("stable_target_id", ""), {})[cec_row.get("scope", "")] = cec_row.get("status", "")
     compact = [r for r in rows if r.get("compact_interface") == "true"]
     emitted = [r for r in rows if r.get("rewrite_emitted") == "true"]
     graph_active = [r for r in rows if r.get("graph_active") == "true"]
@@ -286,6 +301,7 @@ def _check_rewrites(rows: list[dict[str, str]], errors: list[str]) -> None:
     if len(new_boundary) != 22:
         errors.append(f"CEC-backed new-boundary count drifted: {len(new_boundary)} != 22")
     for row in rows:
+        _check_compact_rewrite_sources(row, graph_rewrites, provenance, boundary, cec, errors)
         if row.get("compact_interface") == "true" and row.get("rewrite_emitted") != "true":
             errors.append(f"compact row did not emit a rewrite artifact: {row.get('stable_target_id')}")
         if row.get("rewrite_emitted") == "true":
@@ -301,6 +317,62 @@ def _check_rewrites(rows: list[dict[str, str]], errors: list[str]) -> None:
                 errors.append(f"new-boundary row has wrong promotion: {row.get('stable_target_id')}")
         if row.get("rewrite_emitted") != "true" and row.get("global_cec_status") != "not_claimed":
             errors.append(f"non-emitted rewrite row claims CEC status: {row.get('stable_target_id')}")
+
+
+def _check_compact_rewrite_sources(
+    row: dict[str, str],
+    graph_rewrites: dict[str, dict[str, str]],
+    provenance: dict[str, dict[str, str]],
+    boundary: dict[str, dict[str, str]],
+    cec: dict[str, dict[str, str]],
+    errors: list[str],
+) -> None:
+    sid = row.get("stable_target_id", "")
+    graph = graph_rewrites.get(sid)
+    prov = provenance.get(sid)
+    boundary_row = boundary.get(sid)
+    cec_scopes = cec.get(sid, {})
+    if graph is None:
+        errors.append(f"compact rewrite row lacks source graph-rewrite accounting: {sid}")
+        return
+    if prov is None:
+        errors.append(f"compact rewrite row lacks target provenance: {sid}")
+    if boundary_row is None:
+        errors.append(f"compact rewrite row lacks boundary recovery accounting: {sid}")
+
+    for key in ("rewrite_emitted", "graph_active", "rewrite_artifact"):
+        if row.get(key) != graph.get(key):
+            errors.append(f"compact rewrite row disagrees with graph_rewrites.{key}: {sid}")
+    if boundary_row is not None and row.get("new_boundary") != boundary_row.get("new_boundary"):
+        errors.append(f"compact rewrite row disagrees with boundary recovery: {sid}")
+    if row.get("source_vs_rewrite_cec") != cec_scopes.get("S_vs_Sprime", "not_run"):
+        errors.append(f"compact rewrite row disagrees with S_vs_Sprime CEC: {sid}")
+    if row.get("rewrite_vs_optimized_cec") != cec_scopes.get("Sprime_vs_I", "not_run"):
+        errors.append(f"compact rewrite row disagrees with Sprime_vs_I CEC: {sid}")
+
+    if prov is not None:
+        source_path = ROOT / prov.get("source_file", "")
+        optimized_path = ROOT / prov.get("optimized_artifact", "")
+        if not source_path.exists():
+            errors.append(f"compact rewrite provenance source file missing: {sid}")
+        elif file_hash(source_path) != prov.get("source_artifact_hash", ""):
+            errors.append(f"compact rewrite provenance source hash mismatch: {sid}")
+        if not optimized_path.exists():
+            errors.append(f"compact rewrite provenance optimized artifact missing: {sid}")
+        elif file_hash(optimized_path) != prov.get("optimized_artifact_hash", ""):
+            errors.append(f"compact rewrite provenance optimized artifact hash mismatch: {sid}")
+        if prov.get("source_optimized_cec_status") != "equivalent":
+            errors.append(f"compact rewrite provenance lacks source/optimized CEC: {sid}")
+
+    if row.get("rewrite_artifact"):
+        artifact = ROOT / row.get("rewrite_artifact", "")
+        if artifact.exists() and prov is not None:
+            target = prov.get("optimized_target_node", "")
+            actual_status = validate_rewritten_graph(artifact, target)
+            if actual_status != graph.get("status"):
+                errors.append(f"compact rewrite artifact graph validation mismatch: {sid} {actual_status} != {graph.get('status')}")
+            if row.get("rewrite_emitted") == "true" and actual_status != "valid":
+                errors.append(f"compact rewrite emitted artifact is not valid: {sid} {actual_status}")
 
 
 def _check_grammar(rows: list[dict[str, str]], errors: list[str]) -> None:
@@ -438,6 +510,15 @@ def _source_index(rel_path: str, key: str, errors: list[str]) -> dict[str, dict[
         return {}
     with path.open(newline="", encoding="utf-8") as fh:
         return {row[key]: row for row in csv.DictReader(fh)}
+
+
+def _source_rows(rel_path: str, errors: list[str]) -> list[dict[str, str]]:
+    path = ROOT / rel_path
+    if not path.exists():
+        errors.append(f"missing source table: {rel_path}")
+        return []
+    with path.open(newline="", encoding="utf-8") as fh:
+        return list(csv.DictReader(fh))
 
 
 def _rows(name: str, errors: list[str]) -> list[dict[str, str]]:

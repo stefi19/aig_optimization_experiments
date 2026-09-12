@@ -182,3 +182,31 @@ def test_checker_rejects_tampered_source_blind_selected_support() -> None:
         assert result.returncode != 0
     finally:
         _write_rows(path, original)
+
+
+def test_checker_rejects_compact_rewrite_artifact_drift() -> None:
+    path = ROOT / "results/evidence_advancement/compact_interface_rewrite_attempts.csv"
+    rows = list(csv.DictReader(path.open()))
+    original = [dict(row) for row in rows]
+    emitted = [r for r in rows if r["rewrite_emitted"] == "true"]
+    emitted[0]["rewrite_artifact"] = emitted[1]["rewrite_artifact"]
+    try:
+        _write_rows(path, rows)
+        result = subprocess.run([sys.executable, str(ROOT / "scripts" / "check_evidence_advancement.py")], cwd=ROOT)
+        assert result.returncode != 0
+    finally:
+        _write_rows(path, original)
+
+
+def test_checker_rejects_compact_rewrite_cec_scope_drift() -> None:
+    path = ROOT / "results/evidence_advancement/compact_interface_rewrite_attempts.csv"
+    rows = list(csv.DictReader(path.open()))
+    original = [dict(row) for row in rows]
+    row = next(r for r in rows if r["rewrite_emitted"] == "true" and r["new_boundary"] == "false")
+    row["source_vs_rewrite_cec"] = "not_run"
+    try:
+        _write_rows(path, rows)
+        result = subprocess.run([sys.executable, str(ROOT / "scripts" / "check_evidence_advancement.py")], cwd=ROOT)
+        assert result.returncode != 0
+    finally:
+        _write_rows(path, original)
