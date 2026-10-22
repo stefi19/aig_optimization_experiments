@@ -73,5 +73,16 @@
   "legacy_previous_next": "passed",
   "home_mobile_horizontal_overflow": false,
   "research_validation": "make check-approx-correspondence: 74 cases / 1078 candidate rows / 540 reconstruction rows / 1 distinct graph freshly CEC-replayed",
-  "targeted_regression": "16 passed"
+  "targeted_regression": "16 passed",
+  "projector_viewport": [
+    1366,
+    768
+  ],
+  "projector_slides_checked": 34,
+  "projector_oversize_slides": [],
+  "legacy_artifact_checks": [
+    "Research-wow artifacts validated",
+    "Artifact claims validated",
+    "Evidence advancement artifacts validated"
+  ]
 }

@@ -1,19 +1,70 @@
 {
   "website": "https://stefi19.github.io/aig_optimization_experiments/",
   "presentation": "https://stefi19.github.io/aig_optimization_experiments/presentation/",
-  "verified_material_commit": "766bbae05ca51b3da5379ee3cc577893c71c6a57",
+  "verified_material_commit": "f0e932d853ad8aedf9aab4c7e4fb24020341615f",
   "pages_status": "built",
   "public_pdf_status": 200,
-  "public_pdf_sha256": "b74949da80a2b12baf8db24f9938625c5bf085eec6972f286136d16a237f1f30",
+  "public_pdf_sha256": "61a8087f95e5e79a9a1871bcca57ef02c673eb7078e787946711d30a5fe7e3ad",
   "public_pdf_matches_local": true,
+  "public_file_hashes": [
+    {
+      "path": "presentation/",
+      "matches_local": true,
+      "public_sha256": "ae9e33458934ba8a31c3d7c9f63254195fcd2c63262d3702eeed771d24ecd238"
+    },
+    {
+      "path": "presentation/approximate.css",
+      "matches_local": true,
+      "public_sha256": "cb9c5223669a5f97ca36d852d7530efdb436b9798bbe285b0dcb7dacfd188bae"
+    },
+    {
+      "path": "presentation/approximate.js",
+      "matches_local": true,
+      "public_sha256": "23cf8545fc615c825480012360a1272f9c64c710ced81875088f95f856bbcd8f"
+    },
+    {
+      "path": "presentation/assets/approximate/verified_examples.json",
+      "matches_local": true,
+      "public_sha256": "47fb08f7e0ee6e3fc5433d0d3aed81e634610f4db51d56bbfba7a3c4c6357c04"
+    },
+    {
+      "path": "publications/approximate_computing_aig_correspondence_research.pdf",
+      "matches_local": true,
+      "public_sha256": "61a8087f95e5e79a9a1871bcca57ef02c673eb7078e787946711d30a5fe7e3ad"
+    }
+  ],
   "browser_verified": true,
   "browser_images_loaded": 3,
-  "all_local_slides_navigated": 16,
+  "all_local_slides_navigated": 34,
+  "desktop_viewports": [
+    [
+      1440,
+      900
+    ],
+    [
+      1366,
+      768
+    ]
+  ],
+  "mobile_viewport": [
+    390,
+    844
+  ],
+  "public_carmine_slides_and_notes_verified": true,
+  "console_errors": [],
   "asset_crawl": {
     "base_url": "https://stefi19.github.io/aig_optimization_experiments/",
     "pages": 4,
-    "assets": 119,
-    "requests": 123,
-    "status": "passed"
-  }
+    "assets": 121,
+    "requests": 125,
+    "status": "passed",
+    "publication": {
+      "slides": 34,
+      "artifact_examples": 2,
+      "assignments_per_example": 256,
+      "status": "passed"
+    }
+  },
+  "github_ci_status_at_verification": "queued",
+  "github_ci_run": "https://github.com/stefi19/aig_optimization_experiments/actions/runs/39794087569"
 }
