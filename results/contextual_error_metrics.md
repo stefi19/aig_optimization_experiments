@@ -1,3 +1,12 @@
+> **Measurement supersession (22 October 2026):** the old shared simulator and
+> Z3 encoder ignored output-0 BLIF covers. Historical quantitative-distance,
+> fingerprint-derived, and approximate-path measurements on this page require a
+> separately versioned full regeneration. A frozen 32-row audit establishes the
+> evaluator defect and its correction; it does not revalidate the whole old pool.
+> See `docs/approximate_computing_correspondence_research.md` and
+> `results/formal_approximate_correspondence/audit/replay.csv` from the repository
+> root. Historical tables remain unchanged.
+
 # Contextual Error Metrics
 
 This experiment compares global internal-node distance with output error after contextual substitution.

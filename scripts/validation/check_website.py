@@ -56,6 +56,7 @@ def crawl(base):
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("--base-url")
+    parser.add_argument("--report",type=Path)
     args=parser.parse_args()
     summary=ROOT/"results/formal_approximate_correspondence/publication_summary.json"
     assert json.loads(summary.read_text())==json.loads((ROOT/"docs/research-evidence.json").read_text())
@@ -75,8 +76,9 @@ def main():
                 thread.start()
                 report=crawl(f"http://127.0.0.1:{server.server_port}/aig_optimization_experiments/")
                 server.shutdown()
-    output=ROOT/"results/formal_approximate_correspondence/website_asset_check.json"
-    output.write_text(json.dumps(report,indent=2)+"\n")
+    if args.report is not None:
+        args.report.parent.mkdir(parents=True,exist_ok=True)
+        args.report.write_text(json.dumps(report,indent=2)+"\n")
     print(json.dumps(report))
 
 
