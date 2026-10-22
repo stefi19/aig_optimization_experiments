@@ -227,7 +227,7 @@ def main() -> int:
 def _certificate_path(recorded: str, digest: str) -> Path | None:
     path = Path(recorded)
     candidates = [path if path.is_absolute() else ROOT / path]
-    if ROOT.name in path.parts:
+    if digest and ROOT.name in path.parts:
         position = len(path.parts) - 1 - list(reversed(path.parts)).index(ROOT.name)
         candidates.append(ROOT.joinpath(*path.parts[position + 1:]))
     for candidate in candidates:

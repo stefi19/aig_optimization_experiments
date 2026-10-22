@@ -128,3 +128,4 @@ def test_relocated_historical_certificate_requires_matching_hash(tmp_path,monkey
     recorded="/old/workspace/aig_optimization_experiments/source.blif"
     assert checker._certificate_path(recorded,file_hash(artifact))==artifact
     assert checker._certificate_path(recorded,"bad_hash") is None
+    assert checker._certificate_path(recorded,"") is None
