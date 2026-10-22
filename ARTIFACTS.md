@@ -171,3 +171,33 @@ This writes:
 
 The dedicated guide is
 [`docs/evidence_advancement_next_steps.md`](docs/evidence_advancement_next_steps.md).
+
+## Formal approximate-correspondence extension
+
+```bash
+make approx-correspondence
+make check-approx-correspondence
+make approx-correspondence-pdf
+make website
+make website-check
+```
+
+This is a separate versioned result family under
+`results/formal_approximate_correspondence/`. It retains exact/sample labels,
+pointwise uncertainty, independent scalar checks, fixed candidate-pool hashes,
+all failure rows, and CEC-backed graph artifacts. The historical ISCAS distance
+CSVs are unchanged and explicitly superseded for new quantitative conclusions.
+
+The PDF source template is
+`paper/approximate_computing_correspondence.md.in`; the build saves the complete
+CSV-populated Markdown and produces
+`output/pdf/approximate_computing_aig_correspondence_research.pdf`. The website
+builder copies a byte-identical PDF into `docs/publications/` and local figures
+into the presentation assets. `website-check` serves the site under the GitHub
+repository subpath and fetches all linked local routes/assets, including the
+preserved historical deck. Actual browser navigation is additionally recorded
+in the implementation report.
+
+The CEC staging helper supports space-containing paths. The old locality checker
+can relocate recorded absolute paths into the current checkout only when their
+recorded content hashes match. Historical proof rows are not rewritten.

@@ -8,6 +8,14 @@ fontsize: 9pt
 link-citations: true
 ---
 
+> **Follow-up study (22 October 2026).** The separate report
+> `approximate_computing_correspondence.md` audits and repairs output-0 BLIF
+> evaluation in the shared simulator and encoder. Historical quantitative
+> approximate-distance and fingerprint-derived conclusions require a separately
+> versioned full regeneration before reuse. The new study keeps its controlled
+> lineage, path diagnostics, and reconstruction denominators separate from this
+> paper's existing proof-carrying recovery counts.
+
 # Abstract
 
 Logic synthesis preserves input-output behavior while deliberately changing the

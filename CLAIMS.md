@@ -48,3 +48,24 @@ correspondence, observability don't-care reasoning, formal approximate
 matching, and source-level back-mapping. The current contribution is the
 evidence discipline around what can be proved, what is only diagnostic, and
 where bounded source-blind recovery fails.
+
+## Formal approximate-correspondence extension (22 October 2026)
+
+The old approximate-distance CSVs are preserved historical measurements. Their
+shared evaluator ignored output-0 BLIF covers. Treat the old quantitative
+approximate-distance, fingerprint-derived, and approximate-path conclusions as
+requiring a separately versioned full regeneration; the new audit replays a
+fixed 32-row subset only.
+
+| New supported claim | Evidence under `results/formal_approximate_correspondence/` | Checker |
+|---|---|---|
+| All 32 selected legacy values reproduce; 16 selected verified rows correct to zero and pass fresh CEC. | `audit/replay.csv`, `audit/*_cec.log` | `make check-approx-correspondence` |
+| The 48 controlled algebraic-rewrite cases contain 472 candidate rows; low distance does not establish lineage. | `cases.csv`, `candidates.csv`, `ranking_queries.csv`, `ranking_summary.csv` | Independent scalar oracle and exact-status/counterexample replay |
+| Held-out structural P@1 is 10/24; hybrid/contextual is 6/24; global is 4/24. | `ranking_summary.csv`, `paired_comparisons.csv` | Frozen same-pool comparison; designated algebraic lineage independent of score |
+| The 26 path diagnostics include one context-only exact candidate and zero additional nonzero near matches within 5%. | `critical_path_diagnostics.csv` | Exact bounded PI enumeration; no ancestry precision claim |
+| Guided ordering reaches one accepted target per flow split at budget one; full-budget accepted sets are unchanged. | `reconstruction.csv`, `reconstruction/*.blif` | Identical pools and budgets, exact equality, graph activity, both ABC CEC scopes |
+| The two accepted flow instances share one distinct graph artifact; no full-budget new boundary or runtime advantage is claimed. | `reconstruction.csv`, artifact SHA-256 fields | Independent expression/graph replay and fresh CEC per distinct graph |
+
+The new rows are not added to any previous source-side counterpart, transplant,
+necessity-first boundary, or virtual-anchor denominator. Full methodology and
+limitations: `docs/approximate_computing_correspondence_research.md`.

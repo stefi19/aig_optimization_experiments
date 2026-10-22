@@ -1,0 +1,332 @@
+---
+title: "From Approximate Computing to Formal Approximate Correspondence Recovery in Optimized Logic Networks"
+subtitle: "A reproducible study of functional error, observability, lineage, and exact reconstruction"
+author: "AIG Correspondence Research Artifact"
+date: "22 October 2026"
+lang: en-US
+fontsize: 11pt
+geometry: [margin=25mm]
+colorlinks: true
+linkcolor: teal
+urlcolor: teal
+toc: true
+toc-depth: 1
+header-includes:
+  - \usepackage{microtype}
+  - \usepackage{fancyhdr}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \fancyhead[L]{\small Approximate Correspondence in Optimized Logic}
+  - \fancyfoot[R]{\thepage}
+  - \setlength{\headheight}{14pt}
+  - \setlength{\emergencystretch}{3em}
+---
+
+\clearpage
+
+# Abstract {.unnumbered}
+
+Approximate computing asks how far an implementation deviates from its specification. Internal correspondence recovery can use the same question without relaxing circuit correctness: quantify the distance between source and optimized internal functions, use the consumer context to determine which differences matter, and retain exact proof obligations for every accepted reconstruction. This report implements that connection in an existing AIG correspondence artifact. It first repairs a measurement defect: output-0 BLIF covers were ignored by the packed simulator and symbolic encoder. A fixed stratified replay reproduces 32 historical measurements; all 16 formerly verified examples become zero-distance pairs and pass fresh ABC equivalence checking after correction. A controlled 48-case study separates known algebraic lineage from functional proximity, while a separate 26-node structural-path diagnostic has no historical-lineage labels. Approximate similarity is often misleading as ancestry evidence. An optional sampled ordering of the existing source-expression reconstruction search improves acceptance under small exact-check budgets on the frozen generated targets, but yields no additional accepted targets at the complete restricted-pool budget. The accepted target instances share one graph artifact. The result is a validated quantitative analysis and a bounded search-ordering result, not a general solution to RTL back-mapping or a demonstrated speedup.
+
+# Motivation and scope
+
+Logic synthesis preserves primary-output behavior while rewriting internal functions. An original term $ab+ac$ can become $a(b+c)$; the two networks need not contain the same internal nodes. Exact SAT sweeping answers whether a particular pair of functions is equal. It does not explain how different they are when equality fails, nor whether a disagreement is observable at an output.
+
+The motivating question from Carmine Rizzi was whether the connection with approximate computing had been investigated. This work gives an operational answer: error metrics can characterize candidate correspondences and prioritize exact search, while consumer-context proofs determine whether an apparently approximate relationship supports an exact replacement. The implementation never accepts an erroneous circuit because its error is small.
+
+The application remains optimized-path explanation and eventual source/RTL back-mapping. This report evaluates combinational BLIF networks associated with AIG synthesis. BLIF may contain multi-input covers rather than only two-input AIG nodes. The measured longest paths are graph-depth proxies, not physical static timing analysis. No new external RTL recovery claim is made.
+
+# Relationship to prior work
+
+Vašíček studies exact error analysis for approximate circuits using formal techniques, including BDD and satisfiability-based algorithms [@vasicek_2019]. The present study transfers the error-analysis viewpoint to internal candidate relationships while keeping exact whole-circuit behavior as a hard acceptance constraint. Exhaustive counting is used for nonzero probabilities here; ordinary SAT is used for equality and counterexamples, not as an arbitrary probability oracle.
+
+ABC combines AIG-based synthesis and formal verification [@brayton_abc_2010]. DAG-aware rewriting explains why a functionally equivalent output network can have different intermediate representations [@mishchenko_dag_aware_2006]. Don't-care-based resynthesis motivates analysis in the actual consumer context [@mishchenko_dont_care_2011]. Z3 supplies the symbolic equality checks in this extension [@de_moura_z3_2008]. The Monte Carlo intervals use the classical bounded-variable concentration inequality [@hoeffding_1963].
+
+The repository already implements exact matching, ODC anchors, semantic reconstruction, functional decomposition, source-blind expression placement, virtual anchors, and cross-netlist transplantation. This extension reuses those implementations and preserves their evidence hierarchy. Its contribution is the corrected evaluator, an independently replayed error/observability study, and an optional, matched-pool experiment inside the existing reconstruction backend. No claim of novelty for Boolean distance, observability, Hoeffding bounds, SAT, or candidate ordering is made.
+
+# Formal definitions
+
+## Aligned functions and probability domains
+
+Let $S$ and $O$ be deterministic combinational networks with aligned primary-input names $X$ and explicitly ordered primary outputs $Y$. For optimized internal target $t$ and source candidate $s$, let $f_t(X)$ and $g_s(X)$ be their Boolean functions. The principal distribution in every completed experiment is the uniform distribution over all primary-input assignments:
+
+$$d(t,s)=2^{-|X|}\sum_{x\in\{0,1\}^{|X|}}[f_t(x)\ne g_s(x)].$$
+
+Boolean distance is the normalized Hamming distance between truth vectors. Complement-aware distance is
+
+$$d_{\pm}(t,s)=\min\{d(t,s),1-d(t,s)\}.$$
+
+The chosen polarity must remain explicit when constructing a replacement. A complement-aware zero does not prove direct equality. A workload distribution $\mu$ would instead define $\mathbb{E}_{x\sim\mu}[f_t(x)\ne g_s(x)]$; no application workload is assumed or evaluated here.
+
+Exhaustive enumeration over a pair's union support is equivalent to full uniform-PI enumeration for that pair because every unused PI contributes equal multiplicity. The historical audit uses that projection. Contextual error is measured over the full circuit input domain, since inputs outside the pair's support can affect observability. No auxiliary SAT variables are counted as input assignments.
+
+## Valid contextual substitution
+
+Write $O[t\leftarrow g_s]$ for the optimized network after cloning the source candidate's PI-derived cone and replacing the target driver. This preserves the optimized consumers, allows reconvergence, and cannot introduce a target-dependent cycle. The implementation rejects unsupported interfaces and output/PI targets rather than silently rewiring them.
+
+Define any-output error and mean output Hamming error as
+
+$$E(t,s)=\Pr[O(X)\ne O[t\leftarrow g_s](X)],$$
+$$H(t,s)=\mathbb{E}\!\left[\sum_{j=0}^{|Y|-1}[Y_j(X)\ne Y'_j(X)]\right].$$
+
+For a declared unsigned output encoding $V(Y)=\sum_j2^jY_j$, the implementation also computes
+
+$$\operatorname{MAE}=\mathbb{E}|V(Y)-V(Y')|,\qquad
+\operatorname{WCE}=\max_x|V(Y(x))-V(Y'(x))|.$$
+
+The controlled suite declares $(y,aux)$ as a synthetic unsigned vector with $y$ in bit 0. These numerical errors are well defined but are not arithmetic-application quality metrics. For diagnostic BLIF output order, the values describe only that declared encoding. A sampled maximum is an observed maximum, not a formal worst-case bound.
+
+## Observability and exact ODC interchangeability
+
+For a single internal Boolean target, define pointwise observability by toggling that node while keeping its actual consumer context:
+
+$$o_t(x)=[O(x)\ne O[t\leftarrow 1-f_t](x)].$$
+
+Let $D_{t,s}(x)=[f_t(x)\ne g_s(x)]$. Since a Boolean replacement either retains or toggles the target value, the following identity holds even with reconvergent fanout:
+
+$$[O(x)\ne O[t\leftarrow g_s](x)]=D_{t,s}(x)\,o_t(x).$$
+
+Therefore $E=\mathbb{E}[Do]$, $E\le d$, and $E\le\Pr[o=1]$. The product $d\Pr[o=1]$ is generally wrong because disagreement and observability need not be independent. The conditional value $\Pr[o=1\mid D=1]=E/d$ is reported when $d>0$; zero disagreement uses a documented zero convention.
+
+A globally unequal candidate is exactly ODC-interchangeable when $d>0$ and $E=0$. Exhaustive enumeration or an UNSAT output miter can establish that condition. A sampled zero cannot establish it. Multiple simultaneous substitutions require joint analysis; this single-target identity is not a license to compose independently valid substitutions.
+
+## Influence, locality, and limitations of proxies
+
+Observability is the Boolean influence of the internal target on the output vector in its reachable PI context. The implementation measures it directly by target toggling and validates the identity above with an independent scalar oracle. Source locality is represented by PI-support Jaccard overlap and depth proximity. These are syntactic locality features, not minimum sufficient interfaces. The repository's two-copy locality certificates remain the appropriate exact test for interface sufficiency. This extension does not replace them with a similarity threshold.
+
+# Measurement audit before new conclusions
+
+The old approximate-distance summary contained 82 exact-mode verified rows whose mean reported distance was about 0.136, contradicting direct functional equivalence. The defect lies in shared evaluation semantics: the packed simulator skipped every nonconstant cover row with output value 0; the Z3 cover encoder did the same. ABC can represent a Boolean function by its off-set, for example `.names a b f` followed by `11 0` represents NAND, not constant zero.
+
+The repaired evaluator unions all cover cubes and complements their union for a homogeneous off-set. The symbolic encoder uses the same validated cover contract. Empty covers, constants, and ordinary on-sets are handled explicitly; malformed widths and mixed cover polarity are rejected. The independent scalar oracle has separate cover logic, and unit tests cross-check packed values against symbolic evaluation.
+
+The historical ISCAS variant files are missing in this checkout. The audit regenerates selected source/optimized pairs from committed input BLIFs with the pinned ABC revision and the original explicit flow strings. It records current hashes, commands, selected nodes, and fresh CEC logs. Because historical variant hashes were never recorded, these are reproducible regenerated replays, not cryptographic proof that every historical graph is identical.
+
+Selection is frozen as the first eight rows in each of four strata: exact/sampled crossed with verified/rejected. No post-correction row filtering occurs. The old on-set-only evaluator is replayed alongside the corrected evaluator and the independent scalar evaluator on the same assignments. All 32 old measurements reproduce. The 16 verified examples become zero-distance and freshly CEC-equivalent; the rejected controls retain nonzero differences and are freshly disproved. This identifies a real evaluator error rather than complement polarity, input alignment, or reinterpretation of the SAT label for these examples.
+
+The historical CSVs are retained unchanged and marked superseded for quantitative-distance conclusions. The full historical 2,609-row pool is not remeasured by this extension, and the prior 76.5% path-mapping headline is not reused as a validated result of this study. Reproducing selected rejected distances does not validate the original candidate-generation process or its complete benchmark denominator.
+
+# Research questions and experimental design
+
+The five questions are: whether close counterparts exist without exact nodes (RQ1); whether context changes candidate usefulness (RQ2); whether proximity helps important-path explanation (RQ3); whether approximation can prioritize exact reconstruction (RQ4); and when similarity misleads (RQ5).
+
+## Controlled algebraic rewrites
+
+The suite contains 48 cases: six families, four deterministic replicates, and two widths. Six-input cases form development; eight-input cases form a width holdout. Families and generator design are shared, so this is not an unseen-family test. The ranking weights are fixed design choices, not fitted parameters. All cases are disclosed and rerunnable.
+
+Each case contains two equivalent circuits, a designated optimized target, a shuffled pool of source candidate functions, and a lineage label established by the generator's algebraic rewrite. Ranking consumes candidate functions and structural features; the label is attached only for scoring. The label records this controlled construction, not an independently observed industrial synthesis history. Four cases per split have no designated ancestor and test abstention. They are not treated as positive lineage examples.
+
+The families are masked factoring, reconvergent masking, complement preservation, rare fully observable disagreement, exact factoring, and missing representation. Decoys include simple functions and seeded biased/random truth functions. Distractors participate in an auxiliary output. The main output carries the controlled rewrite witness. This deliberately adversarial design is useful for counterexamples but cannot estimate natural workload prevalence.
+
+## Standard and generated netlist diagnostics
+
+A separate diagnostic applies actual ABC `balance` and `dc2` flows to the committed generated 4-bit adder, 2-bit multiplier, and ISCAS c17 netlists. It selects internal nodes along one longest structural path and evaluates the full source-internal candidate pool. These 26 targets have no trusted historical-ancestor labels. Their metrics describe exact availability, nearest functional distance, and contextual interchangeability. Precision or historical-lineage accuracy is not computed for them.
+
+## Baselines, ablations, and metrics
+
+All ranking methods see the same pool. Structural ranking uses support overlap and depth proximity. The fingerprint baseline reuses the repository's maintained weighted simulation/support/depth score (0.55/0.35/0.10), evaluated exactly on these bounded domains. SAT-only prioritizes directly equivalent candidates, then structural score. Further methods rank by direct distance, complement-aware distance, contextual error, and a fixed hybrid.
+
+The hybrid score combines contextual error, complement distance, conditional observability, support mismatch, and structural score with coefficients 1, 0.35, 0.10, 0.10, and -0.05. Named ablations remove one contribution while retaining the pool and other terms. The complement ablation uses direct-polarity error. Formal-verification ablation holds ranking fixed and contrasts a near-distance filter with an exact contextual gate. Several feature ablations produce identical rankings; those null results are retained.
+
+Precision@1 averages the correctness of the first candidate over all 24 queries per split, including queries without a designated ancestor. Precision@5 divides relevant candidates by five, so a query with one relevant ancestor has maximum 0.2. MRR assigns zero to missing-ancestor queries. Top-5 coverage uses only the 20 positive queries per split. Candidate counts and positive-query denominators are explicit. Coverage-versus-abstention curves use fixed complement-distance thresholds; accepting a suggestion there is distinct from accepting an exact graph rewrite.
+
+## Exact and scalable measurement
+
+The completed study uses exhaustive truth vectors on its bounded full-PI domains, Z3 direct/complement/output miters with 5,000 ms timeouts, and a separate recursive scalar oracle. Every controlled candidate's global error, contextual error, Hamming error, observability, MAE, and WCE is checked independently. SAT counterexamples are serialized as named PI assignments and replayed.
+
+For scalable estimates, 1,024 IID uniform samples are drawn at each of seeds 7, 19, and 41. A pointwise 95% Hoeffding interval is
+
+$$\left[\max(0,\hat d-\epsilon),\min(1,\hat d+\epsilon)\right],\qquad
+\epsilon=\sqrt{\frac{\log(2/0.05)}{2N}}.$$
+
+The guarantee is probabilistic over independent draws for a prespecified candidate, under the uniform model and pseudorandom-sampling assumption. It is not a formal equivalence proof or a simultaneous guarantee over adaptively selected candidates. Simultaneous selection would require an appropriate multiple-comparison bound or an independent evaluation sample. Exact nonzero counts here come from enumeration, not from counting solver models or auxiliary assignments.
+
+# Implemented reconstruction integration
+
+The optional feature enters `attempt_source_blind_window_expression_placement`, preserving its default search. The experimental language is a restricted subset of the existing grammar: negation of one source signal and six binary operators on two source signals. Up to eight source signals, selected by the existing support/name policy, yield at most 176 proposals. The support bound remains six PIs. MUX and nested-literal families remain available in the default implementation but are outside this matched-budget experiment.
+
+Both orderings first construct the identical proposal pool and record its hash. Enumeration retains the existing unary/binary order. Guided ordering uses disagreement on eight sampled input assignments, with replacement, and stable original-order ties. It then runs exactly the same exhaustive equality checks. Budgets are 1, 4, 16, 64, and 176 exact candidate checks, each repeated at the three frozen seeds.
+
+This implementation already computes bounded exhaustive proposal vectors, inherited from the original exact backend. Sampling determines the order; it is not an asymptotically scalable search implementation. Reported exact-check savings exclude pool construction from the check denominator, while wall-clock measurements include it. The distinction prevents an unfair speedup claim.
+
+An accepted expression must match the target exactly, be functional over the selected support, emit a nonidentical graph driver with a real consumer, pass graph validation, preserve the source outputs under ABC CEC, and pass rewritten-versus-optimized ABC CEC. Missing ABC, timeout, unknown, direct bypass, and identical-driver edits do not count. Accepted expressions are source-derived and independently replayed; no optimized cone is transplanted as a hidden oracle.
+
+The evaluation deduplicates the 20 previous historical window rows by target identity into 18 unique source-blind generated target IDs. Development contains ten `dc2` target IDs; holdout contains eight `resyn2` IDs. These are selected existing targets, not a newly sampled benchmark population, and overlapping flows can share functions and artifacts. All 540 target/seed/budget/ordering rows are retained, including failures. A source-side boundary construction is not claimed: this backend replaces an optimized driver with a source-derived exact function. It demonstrates a source-derived, graph-active optimized-network anchor.
+
+# Validated results
+
+## Audit and exact measurement integrity
+
+The replay covers 32 historical pairs. All 32 old values reproduce, and all 16 selected verified rows correct to zero and pass fresh CEC. The selected rejected controls remain disproved. The exact global/complement/contextual SMT queries have 0 unknown results in the controlled suite.
+
+| Old label   | Mode    |   Rows |   Old_mean |   Corrected_mean |
+|:------------|:--------|-------:|-----------:|-----------------:|
+| rejected    | exact   |      8 |      0.011 |            0.011 |
+| rejected    | sampled |      8 |      0.001 |            0.001 |
+| verified    | exact   |      8 |      0.125 |            0.000 |
+| verified    | sampled |      8 |      0.028 |            0.000 |
+
+These sampled audit rows reuse their historical 4,096-pattern streams; the separate calibration experiment uses 1,024 patterns.
+
+## Known-lineage ranking
+
+**Development: 24 queries, 20 positive lineage queries.**
+
+| Method      |   P@1 |   P@5 |   MRR |   Top-5 coverage |
+|:------------|------:|------:|------:|-----------------:|
+| structural  | 0.375 | 0.167 | 0.542 |            1.000 |
+| fingerprint | 0.167 | 0.167 | 0.463 |            1.000 |
+| sat_only    | 0.333 | 0.167 | 0.521 |            1.000 |
+| global      | 0.167 | 0.133 | 0.392 |            0.800 |
+| complement  | 0.208 | 0.133 | 0.397 |            0.800 |
+| contextual  | 0.208 | 0.167 | 0.431 |            1.000 |
+| hybrid      | 0.208 | 0.167 | 0.431 |            1.000 |
+
+**Heldout: 24 queries, 20 positive lineage queries.**
+
+| Method      |   P@1 |   P@5 |   MRR |   Top-5 coverage |
+|:------------|------:|------:|------:|-----------------:|
+| structural  | 0.417 | 0.167 | 0.569 |            1.000 |
+| fingerprint | 0.333 | 0.167 | 0.566 |            1.000 |
+| sat_only    | 0.333 | 0.167 | 0.514 |            1.000 |
+| global      | 0.167 | 0.125 | 0.382 |            0.750 |
+| complement  | 0.250 | 0.133 | 0.423 |            0.800 |
+| contextual  | 0.250 | 0.167 | 0.458 |            1.000 |
+| hybrid      | 0.250 | 0.167 | 0.458 |            1.000 |
+
+![Held-out lineage ranking. All methods use the same source-candidate pools.](figures/approximate_correspondence/lineage_ranking.png){width=90%}
+
+The hybrid falls below the structural baseline in held-out Precision@1; added functional features do not improve lineage accuracy on this suite. Complement handling improves some rankings relative to direct distance, but contextual and observability features do not independently improve this suite's headline ranking. Single-feature ablations remain in the full per-family CSVs.
+
+## Context, observability, and formal-gate ablation
+
+![Global versus contextual error for all controlled candidates. Multiple points overlap.](figures/approximate_correspondence/global_contextual.png){width=80%}
+
+| Split       |   Near rows |   Unsafe |   Exact context |   No global match |
+|:------------|------------:|---------:|----------------:|------------------:|
+| development |          40 |        8 |              32 |                 8 |
+| heldout     |          44 |       12 |              32 |                12 |
+
+Near means complement distance at most 5%; unsafe means nonzero best-polarity contextual output error. Removing the formal gate admits these unsafe near rows even though their distance passes the filter. This is candidate-level accounting, not a count of accepted graph rewrites.
+
+## Path diagnostics and sampling calibration
+
+The separate path diagnostic contains 26 targets: 1 lacks any exact or complemented source node in its full internal pool. None adds a nonzero near match within 5%, while 1 has a zero-context-error candidate despite lacking a globally equal/complemented candidate. This gives a small contextual observation and a null result for global near-match path coverage. These targets have no lineage labels.
+
+Across 3,234 pointwise intervals, empirical coverage is 98.98%. Shared cases and streams make these intervals dependent; this percentage is a calibration diagnostic, not a coverage theorem or evidence of exact equality. Error estimates and all seeds are available in the sampling table.
+
+## Matched-budget exact reconstruction
+
+| Split       |   Budget | Enumeration   | Guided    |
+|:------------|---------:|:--------------|:----------|
+| development |        1 | 0--0 / 10     | 1--1 / 10 |
+| development |        4 | 0--0 / 10     | 1--1 / 10 |
+| development |       16 | 0--0 / 10     | 1--1 / 10 |
+| development |       64 | 1--1 / 10     | 1--1 / 10 |
+| development |      176 | 1--1 / 10     | 1--1 / 10 |
+| heldout     |        1 | 0--0 / 8      | 1--1 / 8  |
+| heldout     |        4 | 0--0 / 8      | 1--1 / 8  |
+| heldout     |       16 | 0--0 / 8      | 1--1 / 8  |
+| heldout     |       64 | 1--1 / 8      | 1--1 / 8  |
+| heldout     |      176 | 1--1 / 8      | 1--1 / 8  |
+
+Counts are the minimum--maximum accepted target counts across the three seeds, with unique target IDs as denominator. At budget one, guided ordering accepts one target in each flow split and enumeration accepts zero. At budgets 64 and 176, both methods accept the same one target per split. Across flows these two target instances share one identical graph artifact (SHA-256 begins `8601cd0c46bd`).
+
+![Exact-check budget versus accepted target instances; shaded ranges show minimum and maximum over three ordering seeds.](figures/approximate_correspondence/reconstruction_budget.png){width=98%}
+
+| Ordering         |   Exact_checks |   CEC_calls |   Total_seconds |
+|:-----------------|---------------:|------------:|----------------:|
+| enumeration      |           8379 |          12 |           1.230 |
+| sampled_distance |           7417 |          12 |           1.238 |
+
+These totals include both flow splits and all three seeds. Exact-check counts fall, while total time remains effectively unchanged at this scale; no runtime advantage is claimed. Every emitted accepted artifact passed both ABC CEC scopes, and the independent checker replays each distinct graph. Most targets remain unresolved under the eight-signal unary/binary pool, or hit a graph-activity gate.
+
+## Paired uncertainty
+
+| Outcome          | A          | B           |    A-B |   95% low |   95% high |
+|:-----------------|:-----------|:------------|-------:|----------:|-----------:|
+| Lineage P@1      | hybrid     | structural  | -0.167 |    -0.333 |     -0.042 |
+| Lineage P@1      | hybrid     | global      |  0.083 |     0.000 |      0.208 |
+| Lineage P@1      | complement | global      |  0.083 |     0.000 |      0.208 |
+| Graph acceptance | guided     | enumeration |  0.125 |     0.000 |      0.375 |
+
+Bootstrap intervals use 2,000 deterministic paired resamples. Reconstruction first averages ordering seeds within target, so seed repetition does not inflate the independent-unit count. With only eight held-out target IDs, the tight-budget interval includes zero. The finite-suite effect should not be interpreted as a statistically established population improvement.
+
+## Toolchain
+
+The recorded run uses Python 3.11.15, Z3 4.16.0, ABC revision `bcfdf592289a`, uniform PI inputs, and the frozen configuration hash recorded in `provenance.json`. Timeouts are 5 seconds per SMT query and 30 seconds per ABC call. Full version and artifact digests remain machine readable.
+
+
+# Case studies and formal counterexamples
+
+## Large disagreement with zero contextual error
+
+Let the designated source ancestor be $s=a\oplus b$, optimized target $t=a$, and the main output be $y=t\land\neg b$. The source implementation uses $y=s\land\neg b$. The circuits are equivalent: on $b=0$, $s=a$; on $b=1$, the output is masked. Under independent uniform inputs, $d(t,s)=1/2$ but $E(t,s)=0$. The target is observable only when $b=0$, exactly where the candidate agrees. Multiplying mean observability by global distance would incorrectly predict error $1/4$.
+
+This is contextual interchangeability, not direct node equivalence. An unrelated exact candidate $a$, if present in the source graph, can outrank the designated ancestor under functional similarity. Neither functional metric identifies the historical rewrite by itself.
+
+## Rare differences can be completely observable
+
+Let $r$ be the conjunction of the remaining $n-2$ inputs, $s=a\oplus r$, and $t=a$. The source output is $s$, while the optimized output is $t\oplus r$. The original and optimized circuits are equal. Replacing $t$ by $s$ changes the output on every assignment where $r=1$; thus $E=d=2^{-(n-2)}$ and conditional observability is one.
+
+In eight-input holdout cases, the designated ancestor differs on $1/64$ of inputs. A distractor $a\oplus(r\land b)$ differs on only $1/128$, yet is not the designated ancestor and still causes observable errors. A low error rate is neither historical-lineage evidence nor exact rewrite permission. A concrete counterexample sets the relevant conjunction inputs to one; the committed tables store the actual named PI witnesses.
+
+## Complement preservation
+
+For $s=\neg a$ and $t=a$, direct distance is one, while complement distance is zero. Inverting the cloned source cone yields an exact replacement in the corresponding controlled context. Reusing a complement-aware score without propagating its polarity would be a correctness error; the implementation measures and constructs both orientations explicitly.
+
+## Missing representation and bounded failure
+
+The missing-representation cases construct an optimized internal parity term used by a gated output while the designated source candidate pool contains no historical ancestor label. A near match remains a suggestion. The absence of a match in that pool does not prove that no source expression can reconstruct the target. Likewise, a failed restricted reconstruction search establishes exhaustion under its declared language, signal cap, and check budget only.
+
+# Interpretation relative to exact recovery
+
+The quantitative layer adds information to a SAT rejection: a pair can disagree rarely or frequently, and its disagreements can be masked or fully observed. That information is useful for explanation and candidate scheduling. It does not weaken the exact acceptance gates of the earlier semantic, locality, or proof-carrying pipelines.
+
+The strongest positive result is a reproducible, matched-pool search-ordering improvement at tight check budgets with an emitted graph artifact and both CEC scopes. The strongest negative result is that functional proximity does not establish ancestry. At full restricted-pool budget, approximation changes neither the accepted target set nor the distinct rewritten graph count. Contextual and hybrid ranking fail to beat the structural baseline in lineage Precision@1 on this controlled suite. No end-to-end speedup, general new boundary recovery rate, or broad external-netlist gain is demonstrated.
+
+Earlier repository counts (controlled counterparts, transplants, necessity-first targets, and virtual anchors) belong to their own experiments and proof scopes. This report neither adds these candidate rows to those denominators nor inflates their headline claims. The old ISCAS distance summary is explicitly separated from the new corrected evidence.
+
+# Threats to validity and limitations
+
+**Constructed lineage.** Controlled labels follow disclosed algebraic construction. Random/biased distractors and simple injected exact functions deliberately stress functional metrics. Their frequency is not representative of real synthesis. Width holdout reuses generator families, and flow holdout reuses the existing generated designs.
+
+**Small independent sample.** Reconstruction has 18 target IDs and one distinct accepted graph. Three seeds repeat the ordering experiment; they are not 54 independent circuits. Paired bootstrap intervals average seeds within target before resampling. They are descriptive finite-suite uncertainty estimates and do not support population significance claims. The target-level interval for the tight-budget gain includes zero.
+
+**Incomplete historical provenance.** Reconstructed audit netlists lack old hashes, and only 32 of 2,609 historical distance rows are replayed. The exact root cause is established for those replays; this does not certify every historical result. Old fingerprint tables were generated through the affected evaluator and require a separately versioned full regeneration before fresh quantitative reuse.
+
+**Representation and complexity.** Ranking comparisons share exhaustive feature extraction; they do not equalize the acquisition cost of each method's features. The matched-budget reconstruction separately records candidate checks and total runtime. Truth-vector enumeration grows exponentially. A source or candidate cap changes the search problem. There is no BDD backend, projected approximate counter, or industrial-scale evaluation in this extension. The SMT encoder supports the declared combinational BLIF subset, rejecting unsupported cover forms; latches and arbitrary BLIF directives are outside scope.
+
+**Timing and numerical semantics.** Structural paths are not STA paths, and the selected output encoding is not a physical or application-specific loss function. Signed arithmetic and application workloads require explicit metadata and independent validation.
+
+**Formal scope.** UNSAT statuses are solver results, not independently checkable proof traces. The independent exhaustive oracle and fresh ABC checks provide separate validation on the completed bounded domains. They do not imply complete proof logging for arbitrary large circuits. Joint substitutions and sequential contexts need new proof obligations.
+
+# Reproducibility and artifacts
+
+The implementation follows the maintained `scripts/analysis`, `scripts/abc`, `scripts/validation`, and `scripts/publication` packages. Root compatibility adapters are retained. Frozen configuration, seeds, tool versions, config hash, source/optimized hashes, generated BLIF artifacts, candidate tables, counterexamples, sampling intervals, reconstruction pool hashes, failure statuses, and CEC logs are committed under the new result family.
+
+The independent checker validates exact counts with a separately implemented scalar evaluator, replays named counterexamples, verifies proposal-pool equality across paired orderings, checks graph differences and output equality, and optionally reruns ABC on each distinct accepted artifact. Publication tables and figures are generated from those CSVs; no chart uses invented measurements. PDF and website assets are built from the same checked summary.
+
+```bash
+make approx-correspondence
+make check-approx-correspondence
+make approx-correspondence-figures
+make approx-correspondence-pdf
+make website-check
+```
+
+Use Python 3.11+ with the repository requirements, pinned ABC, Pandoc, and pdfLaTeX. The run provenance records the concrete tool versions. The PDF build does not rerun historical evidence generators or change earlier claims. The historical-data supersession notice, claim-to-evidence ledger, and concise professor-facing note accompany this report.
+
+# Next experiments
+
+The most valuable next experiment is a larger synthesis-checkpoint corpus with independently recorded node lineage, disjoint design-family holdout, and matched wall-clock budgets. It should compare sampled candidate ordering with the existing exact-hash lookup or symbolic pruning, not only serial exhaustive enumeration. Such a study can determine whether approximation saves total computation rather than merely reordering exact tests.
+
+A second direction is to rank source cuts for the existing two-copy functional-sufficiency prover. That can produce a less tautological test of approximate guidance: candidate similarity may help choose an interface even when no exact candidate function is already present. Every accepted interface still needs sufficiency, graph activity, source preservation, and cross-design CEC where applicable. Projected counting, explicit workload distributions, joint observability, and physical timing reports remain proposed extensions.
+
+# Conclusion
+
+The approximate-computing connection is now implemented and tested as quantitative reasoning about internal relationships under an exact correctness contract. It explains why unequal nodes can be exactly interchangeable in context, why rare differences can remain unacceptable, and why proximity cannot establish synthesis ancestry. A corrected evaluator and independent oracle make those conclusions reproducible. Sampled ordering helps a restricted exact search reach the same accepted artifacts sooner in candidate order, with no demonstrated increase in full-budget recoverability or total runtime advantage.
+
+\clearpage
+
+# References {.unnumbered}

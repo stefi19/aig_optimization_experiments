@@ -1,5 +1,39 @@
 # AIG Optimization Correspondence Experiments
 
+## New: formal approximate-correspondence study
+
+The completed [research guide](docs/approximate_computing_correspondence_research.md),
+[academic PDF](output/pdf/approximate_computing_aig_correspondence_research.pdf),
+and [16-slide presentation](docs/presentation/index.html) connect approximate
+computing to internal correspondence under exact proof obligations.
+The new study includes 48 controlled cases, 26 separate path diagnostics, and a
+matched-budget reconstruction comparison over 18 existing generated target IDs.
+It reports a tight-budget ordering benefit, unchanged full-budget recoverability,
+and negative lineage-ranking results.
+
+**Historical measurement correction:** output-0 BLIF covers were ignored by the
+old shared simulator/encoder. The fixed 32-row audit reproduces all old values;
+all 16 selected verified pairs correct to zero and pass fresh CEC. Earlier
+approximate-distance, fingerprint-derived, and approximate-path statistics below
+are retained as historical context and need full regeneration before fresh
+quantitative reuse. See the [audit and evidence ledger](docs/approximate_computing_correspondence_research.md).
+
+```bash
+make approx-correspondence
+make check-approx-correspondence
+make approx-correspondence-pdf
+make website
+make website-check
+make serve-website
+```
+
+Local preview: [http://127.0.0.1:8765/](http://127.0.0.1:8765/).
+The static site uses relative routes, local assets, and `.nojekyll`.
+GitHub Pages serves `main /docs`; no Sites registration or alternate hosting is
+required. The previous deck is retained as
+[an explicitly historical presentation](docs/presentation/legacy.html).
+
+
 > **Status:** Research prototype — a small-scale study of how internal circuit nodes change
 > under common logic synthesis optimizations, and how well we can still match them up afterwards.
 
@@ -90,7 +124,7 @@ To compile the paper, run `make paper-pdf`. The output is
 
 ## Web presentation
 
-Once GitHub Pages is enabled from `main /docs`, the project website will be available at:
+GitHub Pages is configured to serve `main /docs`. The project website is:
 
 https://stefi19.github.io/aig_optimization_experiments/
 

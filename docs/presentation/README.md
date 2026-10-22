@@ -1,47 +1,30 @@
-# HTML Research Presentation
+# Research presentation
 
-This folder contains an offline HTML slide deck for the project:
+The default `index.html` is the 16-slide formal approximate-correspondence study.
+It uses local CSS, JavaScript, figures, and a local publication PDF link.
+The original extended presentation is preserved as `legacy.html` with a
+supersession notice for historical quantitative distances.
 
-```text
-Exact and Approximate Internal Correspondence Recovery After Logic Synthesis Optimization
-```
-
-## How to open
-
-Open `docs/presentation/index.html` in a browser.
-
-From the repository root on macOS:
+From the repository root:
 
 ```bash
-open docs/presentation/index.html
+make approx-correspondence-pdf
+make website
+make website-check
+make serve-website
 ```
 
-No internet connection or external CDN is required. The deck uses local
-HTML/CSS/JavaScript and local copies of the selected plot images under
-`docs/presentation/assets/plots/`, so opening `index.html` directly should show
-the figures.
+Visit `http://127.0.0.1:8765/presentation/`.
+GitHub Pages uses `main /docs` and the same relative routes under the repository
+subpath. `.nojekyll` preserves static filenames. Deploy by pushing the checked
+commit to `main`, then inspect the Pages build for that exact commit.
 
-## Controls
+Controls: Prev/Next, ArrowLeft/ArrowRight, Space, PageUp/PageDown, Home/End, N or
+Notes, and Overview. Direct links such as `#slide-13` open the selected slide.
+All 16 slides were navigated in a browser; images, notes, overview, and hash
+navigation were verified. The HTTP checker also traverses the legacy deck.
 
-- `ArrowRight` or `Space`: next slide
-- `ArrowLeft`: previous slide
-- `Home`: first slide
-- `End`: last slide
-- `N` or the `Notes` button: toggle speaker notes
-
-## How to present this
-
-Use the first slides to motivate the problem with the compiler analogy, then
-slow down through the beginner theory section: digital circuits, gates, internal
-nodes, RTL, BLIF, ABC, truth tables, support, signatures, SAT/CEC, and the match
-types. The small `a`, `b`, `c` circuit is used as a running example.
-
-The middle slides are the research results. Emphasize the story change from small
-benchmarks to ISCAS-85: non-exact recovery exists, but heuristics are noisy and
-need SAT validation. Then explain approximate distance as a bridge from "not
-equivalent" to "still close", and end with the critical-path prototype as the
-first end-to-end use case.
-
-Use the limitations slide to be precise: the current critical path is structural,
-sampled approximate distance is not formal, and RTL/timing/register insertion
-are future work.
+Generated HTML content comes from
+`scripts/publication/build_approximate_website.py`; edit content there and edit
+`approximate.css` / `approximate.js` directly. Publication metrics come from
+checked CSVs, not hand-entered result estimates.

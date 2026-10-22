@@ -183,3 +183,17 @@ Reproducible plotting scripts for figures, presentation assets, and result dashb
 - `semantic_recoverability_plots.py`
 - `semantic_region_plots.py`
 - `semantic_region_replacement_plots.py`
+
+## Formal approximate-correspondence extension
+
+- `analysis/approximate_correspondence.py`: reusable exact/sample metrics and ranking.
+- `analysis/run_formal_approximate_correspondence.py`: frozen controlled and path experiments.
+- `analysis/audit_approximate_distance.py`: fixed historical evaluator replay.
+- `analysis/run_approximation_guided_reconstruction.py`: optional same-pool search ordering.
+- `abc/cec.py`: space-safe staged CEC without interpreting failure as proof.
+- `validation/approximate_oracle.py`: independent recursive scalar oracle.
+- `validation/check_formal_approximate_correspondence.py`: measurement, counterexample, pool, and graph checks.
+- `validation/check_website.py`: real HTTP route and asset traversal under the Pages subpath.
+- `publication/summarize_approximate_correspondence.py`: CSV-derived statistics and scientific figures.
+- `publication/build_approximate_correspondence_pdf.py`: editable source and academic PDF.
+- `publication/build_approximate_website.py`: synchronized HTML deck and publication assets.
