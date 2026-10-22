@@ -53,9 +53,9 @@ def main():
     sub=summary[(summary.family=="all") & (summary.split=="heldout")].set_index("method").loc[labels]
     ax.bar(range(len(labels)),sub.precision1,color=["#8a98a8"]*3+["#c08755"]*2+["#277a77"]*2)
     ax.set_xticks(range(len(labels)),[x.replace("_"," ") for x in labels],rotation=25,ha="right")
-    ax.set_ylabel("Lineage Precision@1 (24 held-out cases)")
+    ax.set_ylabel("Ancestor Precision@1 (24 controlled holdout queries)")
     ax.set_ylim(0,1)
-    ax.set_title("Functional proximity does not identify synthesis lineage")
+    ax.set_title("Structural ranking leads on controlled ancestor labels")
     fig.tight_layout();fig.savefig(FIG/"lineage_ranking.png");plt.close(fig)
     fig,ax=plt.subplots(figsize=(6.5,4))
     for family,group in c.groupby("family"):

@@ -1,0 +1,244 @@
+{
+  "reconvergent_mask": {
+    "case_id": "heldout_reconvergent_mask_0",
+    "a": "x3",
+    "b": "x5",
+    "rest": [
+      "x0",
+      "x1",
+      "x2",
+      "x4",
+      "x6",
+      "x7"
+    ],
+    "ancestor": "s001",
+    "selected": "s000",
+    "assignments": 256,
+    "stats": {
+      "s001": {
+        "distance_count": 128,
+        "contextual_count": 0,
+        "witness": {}
+      },
+      "s000": {
+        "distance_count": 0,
+        "contextual_count": 0,
+        "witness": {}
+      }
+    },
+    "table": [
+      {
+        "a": 0,
+        "b": 0,
+        "r": -1,
+        "t": 0,
+        "ancestor": 0,
+        "selected": 0,
+        "y": 0,
+        "y_ancestor": 0,
+        "y_selected": 0,
+        "multiplicity": 64
+      },
+      {
+        "a": 0,
+        "b": 1,
+        "r": -1,
+        "t": 0,
+        "ancestor": 1,
+        "selected": 0,
+        "y": 0,
+        "y_ancestor": 0,
+        "y_selected": 0,
+        "multiplicity": 64
+      },
+      {
+        "a": 1,
+        "b": 0,
+        "r": -1,
+        "t": 1,
+        "ancestor": 1,
+        "selected": 1,
+        "y": 1,
+        "y_ancestor": 1,
+        "y_selected": 1,
+        "multiplicity": 64
+      },
+      {
+        "a": 1,
+        "b": 1,
+        "r": -1,
+        "t": 1,
+        "ancestor": 0,
+        "selected": 1,
+        "y": 0,
+        "y_ancestor": 0,
+        "y_selected": 0,
+        "multiplicity": 64
+      }
+    ],
+    "artifacts": {
+      "source": {
+        "path": "results/formal_approximate_correspondence/artifacts/heldout_reconvergent_mask_0.source.blif",
+        "sha256": "9f27e141784e9face39b4e52f609f16756ac84ed8af03bbc3772c831b349041e"
+      },
+      "optimized": {
+        "path": "results/formal_approximate_correspondence/artifacts/heldout_reconvergent_mask_0.optimized.blif",
+        "sha256": "6573b9611472f2b500d425cdb5533afe9efd9bb349f3c5aa092317e7fe57add9"
+      }
+    }
+  },
+  "rare_observable": {
+    "case_id": "heldout_rare_observable_0",
+    "a": "x0",
+    "b": "x1",
+    "rest": [
+      "x2",
+      "x3",
+      "x4",
+      "x5",
+      "x6",
+      "x7"
+    ],
+    "ancestor": "s002",
+    "selected": "s007",
+    "assignments": 256,
+    "stats": {
+      "s002": {
+        "distance_count": 4,
+        "contextual_count": 4,
+        "witness": {
+          "x0": 0,
+          "x1": 0,
+          "x2": 1,
+          "x3": 1,
+          "x4": 1,
+          "x5": 1,
+          "x6": 1,
+          "x7": 1
+        }
+      },
+      "s007": {
+        "distance_count": 2,
+        "contextual_count": 2,
+        "witness": {
+          "x0": 1,
+          "x1": 1,
+          "x2": 1,
+          "x3": 1,
+          "x4": 1,
+          "x5": 1,
+          "x6": 1,
+          "x7": 1
+        }
+      }
+    },
+    "table": [
+      {
+        "a": 0,
+        "b": 0,
+        "r": 0,
+        "t": 0,
+        "ancestor": 0,
+        "selected": 0,
+        "y": 0,
+        "y_ancestor": 0,
+        "y_selected": 0,
+        "multiplicity": 63
+      },
+      {
+        "a": 0,
+        "b": 0,
+        "r": 1,
+        "t": 0,
+        "ancestor": 1,
+        "selected": 0,
+        "y": 1,
+        "y_ancestor": 0,
+        "y_selected": 1,
+        "multiplicity": 1
+      },
+      {
+        "a": 0,
+        "b": 1,
+        "r": 0,
+        "t": 0,
+        "ancestor": 0,
+        "selected": 0,
+        "y": 0,
+        "y_ancestor": 0,
+        "y_selected": 0,
+        "multiplicity": 63
+      },
+      {
+        "a": 0,
+        "b": 1,
+        "r": 1,
+        "t": 0,
+        "ancestor": 1,
+        "selected": 1,
+        "y": 1,
+        "y_ancestor": 0,
+        "y_selected": 0,
+        "multiplicity": 1
+      },
+      {
+        "a": 1,
+        "b": 0,
+        "r": 0,
+        "t": 1,
+        "ancestor": 1,
+        "selected": 1,
+        "y": 1,
+        "y_ancestor": 1,
+        "y_selected": 1,
+        "multiplicity": 63
+      },
+      {
+        "a": 1,
+        "b": 0,
+        "r": 1,
+        "t": 1,
+        "ancestor": 0,
+        "selected": 1,
+        "y": 0,
+        "y_ancestor": 1,
+        "y_selected": 0,
+        "multiplicity": 1
+      },
+      {
+        "a": 1,
+        "b": 1,
+        "r": 0,
+        "t": 1,
+        "ancestor": 1,
+        "selected": 1,
+        "y": 1,
+        "y_ancestor": 1,
+        "y_selected": 1,
+        "multiplicity": 63
+      },
+      {
+        "a": 1,
+        "b": 1,
+        "r": 1,
+        "t": 1,
+        "ancestor": 0,
+        "selected": 0,
+        "y": 0,
+        "y_ancestor": 1,
+        "y_selected": 1,
+        "multiplicity": 1
+      }
+    ],
+    "artifacts": {
+      "source": {
+        "path": "results/formal_approximate_correspondence/artifacts/heldout_rare_observable_0.source.blif",
+        "sha256": "e96eebefbc2516d949ee3b96e2736fb1c1e6b34e0774f3627fe96281c993835e"
+      },
+      "optimized": {
+        "path": "results/formal_approximate_correspondence/artifacts/heldout_rare_observable_0.optimized.blif",
+        "sha256": "c1c49effacee6d7084f88df7119e8bc84725ebe9d5da0e5f6dec1c127eb9a15a"
+      }
+    }
+  }
+}

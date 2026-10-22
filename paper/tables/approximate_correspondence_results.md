@@ -84,6 +84,8 @@ Counts are the minimum--maximum accepted target counts across the three seeds, w
 
 These totals include both flow splits and all three seeds. Exact-check counts fall, while total time remains effectively unchanged at this scale; no runtime advantage is claimed. Every emitted accepted artifact passed both ABC CEC scopes, and the independent checker replays each distinct graph. Most targets remain unresolved under the eight-signal unary/binary pool, or hit a graph-activity gate.
 
+\newpage
+
 ## Paired uncertainty
 
 | Outcome          | A          | B           |    A-B |   95% low |   95% high |

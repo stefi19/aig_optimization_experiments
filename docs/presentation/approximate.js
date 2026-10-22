@@ -24,6 +24,7 @@
     notes.textContent = slides[current].querySelector('.notes')?.textContent || '';
     document.querySelector('.progress-bar').style.width = `${100 * (current + 1) / slides.length}%`;
     document.title = `${current + 1}. ${slides[current].dataset.title} | AIG Correspondence`;
+    if (!deck.classList.contains('overview')) window.scrollTo(0, 0);
     if (updateHash) history.replaceState(null, '', `#slide-${current + 1}`);
   }
   function toggleNotes() {

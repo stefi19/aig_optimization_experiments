@@ -171,6 +171,34 @@ Let $r$ be the conjunction of the remaining $n-2$ inputs, $s=a\oplus r$, and $t=
 
 In eight-input holdout cases, the designated ancestor differs on $1/64$ of inputs. A distractor $a\oplus(r\land b)$ differs on only $1/128$, yet is not the designated ancestor and still causes observable errors. A low error rate is neither historical-lineage evidence nor exact rewrite permission. A concrete counterexample sets the relevant conjunction inputs to one; the committed tables store the actual named PI witnesses.
 
+## Artifact-backed examples and assignment weights
+
+The preceding examples are not only schematic formulas. In the committed case
+`heldout_reconvergent_mask_0`, $a=x_3$, $b=x_5$, and the designated source ancestor
+is `s001`. The unrelated source candidate `s000` equals $a$ exactly: it has zero
+distance and ranks first under global distance, ahead of the designated ancestor
+at distance $1/2$. This is a concrete failure of interpreting an exact functional
+match as proof of ancestry. The four $(a,b)$ truth-table rows each represent 64
+full-PI assignments. Both original outputs agree on all 256 assignments; the
+auxiliary output is unaffected by replacing target `t`.
+
+In `heldout_rare_observable_0`, $a=x_0$, $b=x_1$, and
+$r=x_2\land x_3\land x_4\land x_5\land x_6\land x_7$.
+The designated ancestor `s002` is $a\oplus r$, while global ranking selects
+`s007`, equal to $a\oplus(r\land b)$. Independent scalar enumeration gives
+4/256 disagreements and output failures for `s002`, versus 2/256 for `s007`.
+Structural ranking selects `s002` in this case. The closer distractor fails exact
+replacement on the stored all-one primary-input witness: the original optimized
+output is 0 and the substituted output is 1. The stored ancestor witness has
+$x_0=x_1=0$ and all six conjunction inputs equal to 1.
+
+The rare predicate must not be treated as an independent fair input. For each
+fixed $(a,b)$, $r=0$ represents 63 assignments and $r=1$ represents one. The
+presentation's machine-readable `verified_examples.json` retains all grouped
+truth-table multiplicities, both artifact digests, and replayed named witnesses.
+Its builder independently recomputes these facts from the committed BLIFs and
+checks them against `candidates.csv` and `ranking_queries.csv`.
+
 ## Complement preservation
 
 For $s=\neg a$ and $t=a$, direct distance is one, while complement distance is zero. Inverting the cloned source cone yields an exact replacement in the corresponding controlled context. Reusing a complement-aware score without propagating its polarity would be a correctness error; the implementation measures and constructs both orientations explicitly.
@@ -186,6 +214,50 @@ The quantitative layer adds information to a SAT rejection: a pair can disagree 
 The strongest positive result is a reproducible, matched-pool search-ordering improvement at tight check budgets with an emitted graph artifact and both CEC scopes. The strongest negative result is that functional proximity does not establish ancestry. At full restricted-pool budget, approximation changes neither the accepted target set nor the distinct rewritten graph count. Contextual and hybrid ranking fail to beat the structural baseline in lineage Precision@1 on this controlled suite. No end-to-end speedup, general new boundary recovery rate, or broad external-netlist gain is demonstrated.
 
 Earlier repository counts (controlled counterparts, transplants, necessity-first targets, and virtual anchors) belong to their own experiments and proof scopes. This report neither adds these candidate rows to those denominators nor inflates their headline claims. The old ISCAS distance summary is explicitly separated from the new corrected evidence.
+
+## Motivating expectations and what survived
+
+These are retrospective interpretations of the motivating expectations, not
+preregistered hypotheses. The expectation that functional proximity would improve
+source-ancestor ranking is contradicted on this controlled suite: held-out
+structural Precision@1 is 10/24, hybrid and contextual ranking are 6/24, and
+global-distance ranking is 4/24. Four of the 24 queries have no designated
+ancestor. The result does not establish a universal ordering of methods on real
+synthesis histories, particularly because distractors are intentionally
+adversarial and width holdout retains the same generator families.
+
+The expectation that observability explains harmless internal differences is
+supported by independently checked single-substitution examples. A real ancestor
+can nevertheless be unsafe as a direct replacement when its role changes, as in
+the rare-observable case. Historical origin, functional equality, and contextual
+substitutability therefore need separate labels and proof obligations.
+
+The expectation that approximation helps schedule exact reconstruction has only
+preliminary support: the selected target set exhibits a tight-check-budget gain,
+with one distinct accepted graph. The stronger expectations of greater
+full-budget recoverability or lower total runtime are not demonstrated. Most
+single-feature ablations leave the headline ranking unchanged, and no stronger
+exact-hash or symbolic-pruning reconstruction baseline was evaluated.
+
+## Contribution and levels of certainty
+
+The concrete contribution is a corrected, independently checked quantitative
+reasoning layer for internal correspondence, plus a bounded integration with
+exact graph reconstruction. Boolean distance, observability don't-cares, SAT
+miters, and heuristic search ordering are established techniques; no novelty is
+claimed for them. Unlike ordinary approximate computing that permits specified
+output error in exchange for implementation cost, this workflow uses error only
+to explain candidates or choose the next proof. Every accepted graph retains the
+exact acceptance contract.
+
+Established results apply to the disclosed bounded evidence: repaired semantics,
+replayed measurements, the controlled ranking comparison, and the separation of
+global from contextual error. The tight-budget search benefit is a preliminary
+observation on selected targets. Total-cost savings, independently new boundary
+recoveries, industrial scalability, and generalization to unseen design families
+remain future hypotheses. A defensible claim is that sampled ordering reaches
+the same exact graph at smaller candidate-check budgets here, without a
+demonstrated runtime or full-budget recovery improvement.
 
 # Threats to validity and limitations
 
@@ -217,11 +289,63 @@ make website-check
 
 Use Python 3.11+ with the repository requirements, pinned ABC, Pandoc, and pdfLaTeX. The run provenance records the concrete tool versions. The PDF build does not rerun historical evidence generators or change earlier claims. The historical-data supersession notice, claim-to-evidence ledger, and concise professor-facing note accompany this report.
 
-# Next experiments
+# Where do we go from here? Proposed experiments
 
-The most valuable next experiment is a larger synthesis-checkpoint corpus with independently recorded node lineage, disjoint design-family holdout, and matched wall-clock budgets. It should compare sampled candidate ordering with the existing exact-hash lookup or symbolic pruning, not only serial exhaustive enumeration. Such a study can determine whether approximation saves total computation rather than merely reordering exact tests.
+## Independently instrumented checkpoint corpus
 
-A second direction is to rank source cuts for the existing two-copy functional-sufficiency prover. That can produce a less tautological test of approximate guidance: candidate similarity may help choose an interface even when no exact candidate function is already present. Every accepted interface still needs sufficiency, graph activity, source preservation, and cross-design CEC where applicable. Projected counting, explicit workload distributions, joint observability, and physical timing reports remain proposed extensions.
+The next question is whether approximate guidance buys useful exact
+reconstruction on unseen design families at matched total computational cost.
+Build a synthesis-checkpoint corpus with node-lineage ground truth recorded
+independently of the metric. Retain transformation witnesses, intermediate
+graphs, hashes, and tool versions. Represent inversion, many-to-many merges,
+deletions, and ambiguous or missing descendants rather than assuming every
+optimized node has one source counterpart. Audit a sample independently and
+freeze labels before scoring. Truth-vector equality alone is not lineage ground
+truth. Partition complete design families, including near-duplicate variants,
+into development and untouched holdout sets.
+
+Compare approximate-guided search with structural ranking, exact hashing,
+symbolic pruning, and the existing enumeration strategy. Freeze common candidate
+spaces, grammar, caps, and exact acceptance gates. Match wall-clock budgets and
+proof-call caps on the same hardware; report feature extraction, truth-vector
+construction, indexing, sampling, ranking, and verification costs, with explicit
+amortization assumptions. Randomize run order and repeat timings. Candidate
+checks are a diagnostic, not the sole cost denominator. Exact hashing is crucial
+where full truth vectors are already available.
+
+Measure independent source-correspondence accuracy, time to first formally
+accepted reconstruction (including censored timeouts), independently verified
+recoveries after deduplicating graphs and related targets, critical-path
+relevance under declared structural or physical timing evidence, unseen-family
+generalization, and failure categories. Keep wrong lineage separate from a safe
+alternative reconstruction. Log missing representation, restricted-pool
+exhaustion, graph inactivity, proof timeout, and other failures for every method.
+Use paired targets and family-level uncertainty; choose meaningful effect sizes
+and analysis rules using development data before opening the holdout.
+
+A supporting outcome would be lower total time to a formally accepted recovery
+or more independent verified recoveries at equal cost on unseen families, beyond
+strong exact baselines. The practical hypothesis would fail under this protocol
+if the advantage disappears after feature costs, exact hashing or symbolic
+pruning matches or wins, or apparent gains depend on leaked families or repeated
+artifacts. Better ranking alone is insufficient. A null result would constrain
+this tested practical claim, not prove that every approximate heuristic is
+useless.
+
+## Similarity-guided source cuts for sufficiency
+
+A second proposed experiment ranks source cuts for the existing two-copy
+functional-sufficiency prover. Its query asks whether two primary-input
+assignments can agree on the cut signals while disagreeing on the target.
+UNSAT establishes target determination by that interface under the modeled
+domain. Similarity would prioritize cuts without relaxing the proof obligation.
+Compare against structural cut selection and the existing pipeline at matched
+time and proof calls, measuring newly verified interfaces rather than already
+available exact target functions. Sufficiency alone is not graph activity:
+construction and both global CEC scopes remain required where applicable.
+Neither proposed experiment is implemented in this extension. Projected counting,
+explicit workload distributions, joint observability, and physical timing
+reports also remain future work.
 
 # Conclusion
 

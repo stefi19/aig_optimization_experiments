@@ -1,0 +1,77 @@
+{
+  "status": "passed",
+  "local_url": "http://127.0.0.1:8765/presentation/",
+  "desktop_viewport": [
+    1440,
+    900
+  ],
+  "mobile_viewport": [
+    390,
+    844
+  ],
+  "desktop_slides": 34,
+  "mobile_slides": 34,
+  "desktop_horizontal_overflow": [],
+  "desktop_oversize_slides": [],
+  "mobile_horizontal_overflow": [],
+  "mobile_failed_images": [],
+  "all_notes_present": true,
+  "console_errors": [],
+  "interactions": [
+    {
+      "check": "notes button",
+      "passed": true
+    },
+    {
+      "check": "N closes notes",
+      "passed": true
+    },
+    {
+      "check": "Home and first boundary",
+      "passed": true
+    },
+    {
+      "check": "right arrow after button focus",
+      "passed": true
+    },
+    {
+      "check": "prev and next buttons",
+      "passed": true
+    },
+    {
+      "check": "PageUp PageDown left",
+      "passed": true
+    },
+    {
+      "check": "space preserves native focused button action",
+      "passed": true
+    },
+    {
+      "check": "space advances from slide",
+      "passed": true
+    },
+    {
+      "check": "direct hash",
+      "passed": true
+    },
+    {
+      "check": "overview all 34",
+      "passed": true
+    },
+    {
+      "check": "End and last boundary",
+      "passed": true
+    }
+  ],
+  "publication": {
+    "slides": 34,
+    "artifact_examples": 2,
+    "assignments_per_example": 256,
+    "status": "passed"
+  },
+  "layout_review": "All desktop and mobile full-page slide captures inspected as contact sheets; mobile tall slides scroll vertically.",
+  "legacy_previous_next": "passed",
+  "home_mobile_horizontal_overflow": false,
+  "research_validation": "make check-approx-correspondence: 74 cases / 1078 candidate rows / 540 reconstruction rows / 1 distinct graph freshly CEC-replayed",
+  "targeted_regression": "16 passed"
+}

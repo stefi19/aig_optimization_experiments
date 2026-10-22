@@ -10,6 +10,7 @@ from urllib.parse import urljoin,urlparse,urldefrag
 from urllib.request import urlopen
 
 from scripts.analysis.audit_approximate_distance import ROOT,sha
+from scripts.validation.check_approximate_publication import check as check_publication
 
 
 class Links(HTMLParser):
@@ -61,6 +62,7 @@ def main():
     summary=ROOT/"results/formal_approximate_correspondence/publication_summary.json"
     assert json.loads(summary.read_text())==json.loads((ROOT/"docs/research-evidence.json").read_text())
     assert sha(ROOT/"output/pdf/approximate_computing_aig_correspondence_research.pdf")==sha(ROOT/"docs/publications/approximate_computing_aig_correspondence_research.pdf")
+    publication = check_publication()
     if args.base_url:
         report=crawl(args.base_url)
     else:
@@ -76,6 +78,7 @@ def main():
                 thread.start()
                 report=crawl(f"http://127.0.0.1:{server.server_port}/aig_optimization_experiments/")
                 server.shutdown()
+    report["publication"] = publication
     if args.report is not None:
         args.report.parent.mkdir(parents=True,exist_ok=True)
         args.report.write_text(json.dumps(report,indent=2)+"\n")
