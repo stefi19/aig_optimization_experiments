@@ -195,43 +195,45 @@ def make_input_patterns(inputs):
     return values, mask, total_patterns, exact
 
 
-def eval_cover(node, values, mask):
-    """Evaluate one .names node as a sum of product cubes."""
-
-    # Constant node case.
-    if len(node.inputs) == 0:
-        for row in node.cover:
-            if row.strip() == "1":
-                return mask
-        return 0
-
-    result = 0
-
-    for row in node.cover:
-        parts = row.split()
-
-        # BLIF rows can be written as either "pattern 1" or just "1" for constants.
-        pattern = parts[0]
-        out_value = parts[1] if len(parts) > 1 else "1"
-
-        if out_value != "1":
+def cover_rows(node_inputs, cover):
+    rows = []
+    for raw in cover:
+        parts = raw.split()
+        if not parts:
             continue
+        if not node_inputs:
+            if parts not in (["0"], ["1"]):
+                raise ValueError("invalid constant BLIF cover")
+            rows.append(("", parts[0]))
+            continue
+        pattern = parts[0]
+        output = parts[1] if len(parts) == 2 else "1"
+        if len(parts) > 2 or len(pattern) != len(node_inputs):
+            raise ValueError("BLIF cube width does not match fanins")
+        if set(pattern) - set("01-") or output not in {"0", "1"}:
+            raise ValueError("unsupported BLIF cover value")
+        rows.append((pattern, output))
+    if len({output for _, output in rows}) > 1:
+        raise ValueError("mixed on-set and off-set BLIF covers are unsupported")
+    return rows
 
+
+def eval_cover(node, values, mask):
+    rows = cover_rows(node.inputs, node.cover)
+    if not rows:
+        return 0
+    if not node.inputs:
+        return mask if rows[0][1] == "1" else 0
+    result = 0
+    for pattern, _ in rows:
         cube_bits = mask
-
         for bit_char, input_name in zip(pattern, node.inputs):
             if bit_char == "1":
                 cube_bits &= values[input_name]
             elif bit_char == "0":
                 cube_bits &= (~values[input_name]) & mask
-            elif bit_char == "-":
-                pass
-            else:
-                raise ValueError(f"Unsupported BLIF cover character: {bit_char}")
-
         result |= cube_bits
-
-    return result
+    return result if rows[0][1] == "1" else mask ^ result
 
 
 def analyze_network(path):

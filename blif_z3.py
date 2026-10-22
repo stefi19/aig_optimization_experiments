@@ -13,7 +13,7 @@ try:  # pragma: no cover - exercised by check-z3 when installed
 except Exception:  # pragma: no cover
     z3 = None  # type: ignore[assignment]
 
-from analyze_blif_matches import BlifNetwork, parse_blif
+from analyze_blif_matches import BlifNetwork, cover_rows, parse_blif
 
 
 BLIF_Z3_SCHEMA_VERSION = "blif_z3_v1"
@@ -49,29 +49,22 @@ def stable_symbol(name: str) -> str:
 def encode_cover(inputs: list[object], cover: list[str]) -> object:
     if z3 is None:
         raise RuntimeError("z3 is not installed")
+    rows = cover_rows(inputs, cover)
+    if not rows:
+        return z3.BoolVal(False)
     if not inputs:
-        return z3.BoolVal(any(row.strip() == "1" for row in cover))
+        return z3.BoolVal(rows[0][1] == "1")
     cubes = []
-    for raw in cover:
-        parts = raw.split()
-        if not parts:
-            continue
-        pattern = parts[0]
-        out = parts[1] if len(parts) > 1 else "1"
-        if out != "1":
-            continue
+    for pattern, _ in rows:
         terms = []
         for char, value in zip(pattern, inputs):
             if char == "1":
                 terms.append(value)
             elif char == "0":
                 terms.append(z3.Not(value))
-            elif char == "-":
-                continue
-            else:
-                raise ValueError(f"unsupported BLIF cover character: {char}")
         cubes.append(z3.And(*terms) if terms else z3.BoolVal(True))
-    return z3.Or(*cubes) if cubes else z3.BoolVal(False)
+    result = z3.Or(*cubes)
+    return result if rows[0][1] == "1" else z3.Not(result)
 
 
 def encode_blif(path: Path) -> BlifZ3Encoding:

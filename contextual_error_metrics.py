@@ -208,6 +208,7 @@ def clone_candidate_cone(
     optimized_inputs: set[str],
     forbidden_names: set[str] | None = None,
     prefix: str = "__ctx_orig_",
+    invert: bool = False,
 ) -> tuple[list[BlifNode], str, str]:
     """Clone the candidate's transitive fanin cone into an optimized network context."""
     by_output = {node.output: node for node in original.nodes}
@@ -240,7 +241,7 @@ def clone_candidate_cone(
         return cloned_output
 
     cloned_candidate = visit(candidate_node)
-    replacement = BlifNode(output=target_output, inputs=[cloned_candidate], cover=["1 1"])
+    replacement = BlifNode(output=target_output, inputs=[cloned_candidate], cover=["0 1" if invert else "1 1"])
     return cloned + [replacement], target_output, ""
 
 
@@ -249,6 +250,7 @@ def substitute_candidate(
     original: BlifNetwork,
     optimized_node: str,
     candidate_original_node: str,
+    invert: bool = False,
 ) -> SubstitutionResult:
     """Return optimized network with `optimized_node` replaced by candidate's original cone."""
     if not optimized.outputs:
@@ -275,6 +277,7 @@ def substitute_candidate(
             optimized_node,
             set(optimized.inputs),
             existing_names,
+            invert=invert,
         )
     except ValueError as exc:
         return SubstitutionResult("skipped", str(exc), None)

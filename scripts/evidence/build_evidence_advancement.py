@@ -1004,18 +1004,9 @@ def _emit_replacement(net: BlifNetwork, target: str, replacement: BlifNode, outp
 
 
 def _abc_cec(abc_path: Path | None, left: Path, right: Path) -> str:
-    if abc_path is None or not abc_path.exists():
-        return "abc_unavailable"
-    try:
-        proc = subprocess.run([str(abc_path), "-c", f"cec {left} {right}"], text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=30, check=False)
-    except subprocess.TimeoutExpired:
-        return "timeout"
-    text = proc.stdout
-    if "Networks are equivalent" in text or "Networks are equivalent after" in text:
-        return "equivalent"
-    if "Networks are NOT EQUIVALENT" in text or "not equivalent" in text.lower():
-        return "disproved"
-    return "unknown"
+    from scripts.abc.cec import staged_cec
+
+    return staged_cec(abc_path, left, right)[0]
 
 
 def _cec_blocker(source_cec: str, rewrite_cec: str) -> str:

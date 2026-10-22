@@ -221,7 +221,11 @@ def evaluate_candidate_distance(
     if mode == "skipped":
         return make_result_row(row, "skipped", "support_too_large", len(union_support), None, None)
 
-    net_inputs = sorted(set(parse_blif(original_path).inputs) | set(parse_blif(optimized_path).inputs))
+    original_inputs = parse_blif(original_path).inputs
+    optimized_inputs = parse_blif(optimized_path).inputs
+    if set(original_inputs) != set(optimized_inputs):
+        return make_result_row(row, "skipped", "pi_alignment_failure", len(union_support), None, None)
+    net_inputs = sorted(original_inputs)
     if mode == "exact":
         values, mask, pattern_count = exact_pattern_values(net_inputs, union_support)
     else:
@@ -272,6 +276,8 @@ def make_result_row(
         "union_support_size": union_support_size,
         "pattern_count": pattern_count,
         "distance": distance,
+        "complement_distance": None if distance is None else min(distance, 1.0 - distance),
+        "measurement_schema": "blif_offset_corrected_v2",
         "similarity": similarity,
         "is_formal_distance": mode == "exact",
     }

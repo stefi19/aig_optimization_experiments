@@ -12,6 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
+from semantic_region import file_hash
 from formal_locality_barriers import prove_interface_sufficiency  # noqa: E402
 
 
@@ -223,13 +224,22 @@ def main() -> int:
     return 0
 
 
+def _certificate_path(recorded: str, digest: str) -> Path | None:
+    path = Path(recorded)
+    candidates = [path if path.is_absolute() else ROOT / path]
+    if ROOT.name in path.parts:
+        position = len(path.parts) - 1 - list(reversed(path.parts)).index(ROOT.name)
+        candidates.append(ROOT.joinpath(*path.parts[position + 1:]))
+    for candidate in candidates:
+        if candidate.is_file() and (not digest or file_hash(candidate) == digest):
+            return candidate
+    return None
+
+
 def _rerun_small_sufficiency(row: dict[str, str], errors: list[str]) -> None:
-    source = ROOT / row["source_path"]
-    optimized = ROOT / row["optimized_path"]
-    if not source.exists() or not optimized.exists():
-        source = Path(row["source_path"])
-        optimized = Path(row["optimized_path"])
-    if not source.exists() or not optimized.exists():
+    source = _certificate_path(row["source_path"], row.get("source_hash", ""))
+    optimized = _certificate_path(row["optimized_path"], row.get("optimized_hash", ""))
+    if source is None or optimized is None:
         errors.append(f"cannot replay exact certificate paths: {row['certificate_id']}")
         return
     proof = prove_interface_sufficiency(

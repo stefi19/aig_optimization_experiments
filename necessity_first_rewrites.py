@@ -377,15 +377,9 @@ def _multi_output_tables(source: BlifNetwork, optimized: BlifNetwork, inputs: tu
 
 
 def _abc_cec(abc_path: Path, left: Path, right: Path) -> tuple[str, str]:
-    if not abc_path.exists():
-        return "abc_unavailable", ""
-    proc = subprocess.run([str(abc_path), "-c", f"cec {left} {right}"], text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=10, check=False)
-    text = proc.stdout
-    if "Networks are equivalent" in text or "Networks are equivalent after" in text:
-        return "equivalent", text
-    if "Networks are NOT EQUIVALENT" in text or "not equivalent" in text.lower():
-        return "disproved", text
-    return "unknown", text
+    from scripts.abc.cec import staged_cec
+
+    return staged_cec(abc_path, left, right, timeout=10)
 
 
 def _result(

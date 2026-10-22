@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import subprocess
+import time
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -181,6 +182,7 @@ def attempt_source_blind_window_expression_placement(
     abc_path: Path | None,
     max_support_inputs: int = 6,
     max_candidate_signals: int = 64,
+    search_options: dict[str, object] | None = None,
 ) -> SourceBlindWindowExpressionResult:
     source = parse_blif(source_path)
     optimized = parse_blif(optimized_path)
@@ -193,7 +195,7 @@ def attempt_source_blind_window_expression_placement(
 
     target_vector = _bit_vector(optimized, optimized_target_node)
     candidates = _expression_candidates(source, max_support_inputs, max_candidate_signals)
-    match = _find_expression_match(target_vector, candidates, max_support_inputs)
+    match = _find_expression_match(target_vector, candidates, max_support_inputs, search_options)
     features: dict[str, object] = {
         "candidate_signals": len(candidates),
         "max_candidate_signals": max_candidate_signals,
@@ -202,6 +204,8 @@ def attempt_source_blind_window_expression_placement(
         "search_order": ("not", "binary", "mux", "literal_binary", "literal_mux"),
         "candidate_source": "source_graph_signals_only",
     }
+    if search_options is not None:
+        features.update(search_options)
     if match is None:
         return _window_result(target_id, (), "bounded_source_expression", "", features, semantic_counterpart_status, output_path, False, False, "not_claimed", "no_source_window_expression_under_bound", "not_run", "not_run", root)
 
@@ -258,7 +262,11 @@ def _source_candidate_nodes(net: BlifNetwork) -> tuple[str, ...]:
 
 
 def _bit_vector(net: BlifNetwork, node: str) -> tuple[int, ...]:
-    return tuple(vector_eval(net, (node,), assignment)[0] for assignment in all_assignments(tuple(net.inputs)))
+    from contextual_error_metrics import exact_patterns, evaluate_network
+
+    patterns = exact_patterns(net.inputs)
+    packed = evaluate_network(net, patterns)[node]
+    return tuple((packed >> i) & 1 for i in range(patterns.pattern_count))
 
 
 def _truth_table(net: BlifNetwork, node: str, support: tuple[str, ...]) -> dict[tuple[int, ...], int]:
@@ -313,13 +321,17 @@ def _is_direct_bypass(node: BlifNode) -> bool:
 
 def _expression_candidates(net: BlifNetwork, max_support_inputs: int, max_candidate_signals: int) -> list[dict[str, object]]:
     support_by_node = structural_supports(net)
+    from contextual_error_metrics import exact_patterns, evaluate_network
+
+    patterns = exact_patterns(net.inputs)
+    packed_values = evaluate_network(net, patterns)
     candidates = []
     for signal in _source_candidate_nodes(net) + tuple(net.inputs):
         support = (signal,) if signal in net.inputs else tuple(name for name in sorted(support_by_node.get(signal, ())) if name in net.inputs)
         if len(support) > max_support_inputs:
             continue
         try:
-            vector = _bit_vector(net, signal)
+            vector = tuple((packed_values[signal] >> i) & 1 for i in range(patterns.pattern_count))
         except KeyError:
             continue
         candidates.append({"name": signal, "support": support, "vector": vector})
@@ -327,7 +339,9 @@ def _expression_candidates(net: BlifNetwork, max_support_inputs: int, max_candid
     return sorted(deduped, key=lambda item: (len(item["support"]), str(item["name"])))[:max_candidate_signals]
 
 
-def _find_expression_match(target_vector: tuple[int, ...], candidates: list[dict[str, object]], max_support_inputs: int) -> dict[str, object] | None:
+def _find_expression_match(target_vector: tuple[int, ...], candidates: list[dict[str, object]], max_support_inputs: int, search_options: dict[str, object] | None = None) -> dict[str, object] | None:
+    if search_options is not None:
+        return _bounded_expression_match(target_vector, candidates, max_support_inputs, search_options)
     for candidate in candidates:
         vector = candidate["vector"]
         if _invert(vector) == target_vector:
@@ -468,18 +482,9 @@ def _hash_vector(vector: tuple[int, ...]) -> str:
 
 
 def _abc_cec(abc_path: Path | None, left: Path, right: Path) -> str:
-    if abc_path is None or not abc_path.exists():
-        return "abc_unavailable"
-    try:
-        proc = subprocess.run([str(abc_path), "-c", f"cec {left} {right}"], text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=30, check=False)
-    except subprocess.TimeoutExpired:
-        return "timeout"
-    text = proc.stdout
-    if "Networks are equivalent" in text or "Networks are equivalent after" in text:
-        return "equivalent"
-    if "Networks are NOT EQUIVALENT" in text or "not equivalent" in text.lower():
-        return "disproved"
-    return "unknown"
+    from scripts.abc.cec import staged_cec
+
+    return staged_cec(abc_path, left, right)[0]
 
 
 def _cec_blocker(source_cec: str, rewrite_cec: str) -> str:
@@ -564,3 +569,43 @@ def _display_path(path: Path, root: Path) -> str:
         return str(path.relative_to(root))
     except ValueError:
         return str(path)
+
+
+def _bounded_expression_match(target_vector, candidates, max_support_inputs, options):
+    from scripts.analysis.approximate_correspondence import sampled_order
+
+    started = time.perf_counter()
+    proposals = []
+    for candidate in candidates:
+        proposals.append(dict(language="not", expression=f"not({candidate['name']})", window=(str(candidate["name"]),), support=candidate["support"], vector=_invert(candidate["vector"])))
+    operators = dict(and_=lambda a,b:a & b, or_=lambda a,b:a | b, xor=lambda a,b:a ^ b,
+                     xnor=lambda a,b:1 ^ a ^ b, nand=lambda a,b:1-(a & b), nor=lambda a,b:1-(a | b))
+    for i, left in enumerate(candidates):
+        for right in candidates[i+1:]:
+            support = _union_support(left["support"], right["support"])
+            if len(support) > max_support_inputs:
+                continue
+            for name, operation in operators.items():
+                name = name.rstrip("_")
+                vector = tuple(operation(a,b) for a,b in zip(left["vector"], right["vector"], strict=True))
+                proposals.append(dict(language=name, expression=f"{name}({left['name']},{right['name']})", window=(str(left["name"]),str(right["name"])), support=support, vector=vector))
+    for i, proposal in enumerate(proposals):
+        proposal["ordinal"] = i
+    options["candidate_pool_hash"] = hashlib.sha256(json.dumps([p["expression"] for p in proposals]).encode()).hexdigest()
+    options["candidate_pool_size"] = len(proposals)
+    options["proposal_generation_seconds"] = time.perf_counter() - started
+    rank_start = time.perf_counter()
+    if options.get("ordering", "enumeration") == "sampled_distance":
+        proposals = sampled_order(proposals, target_vector, int(options["seed"]), int(options["sample_count"]))
+    elif options.get("ordering", "enumeration") != "enumeration":
+        raise ValueError("unsupported expression ordering")
+    options["ranking_seconds"] = time.perf_counter() - rank_start
+    options["exact_checks"] = 0
+    options["language"] = "not_binary_subset_of_existing_grammar"
+    for proposal in proposals[:int(options["budget"])]:
+        options["exact_checks"] += 1
+        if proposal["vector"] == target_vector:
+            options["time_to_first_exact_seconds"] = time.perf_counter() - started
+            return {k: v for k, v in proposal.items() if k not in {"vector", "ordinal"}}
+    options["time_to_first_exact_seconds"] = ""
+    return None
