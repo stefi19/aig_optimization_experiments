@@ -1,0 +1,21 @@
+{
+  "schema": "approximate_publication_v1",
+  "controlled_cases": 48,
+  "controlled_candidates": 472,
+  "diagnostics": 26,
+  "diagnostic_unmatched": 1,
+  "diagnostic_near_5pct": 0,
+  "diagnostic_odc_only": 1,
+  "audited_rows": 32,
+  "audit_historical_verified": 16,
+  "audit_verified_corrected_zero": 16,
+  "audit_legacy_reproductions": 32,
+  "audit_fresh_cec_matches": 16,
+  "unknown_proofs": 0,
+  "sampled_intervals": 3234,
+  "pointwise_coverage": 0.9897959183673469,
+  "reconstruction_unique_targets": 18,
+  "reconstruction_rows": 540,
+  "reconstruction_development_targets": 10,
+  "reconstruction_heldout_targets": 8
+}

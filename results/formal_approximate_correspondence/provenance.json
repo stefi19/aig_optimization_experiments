@@ -1,0 +1,24 @@
+{
+  "schema": "formal_approximate_correspondence_v1",
+  "python": "3.11.15",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "z3": "4.16.0",
+  "abc_revision": "bcfdf592289a408cd67ec19260f8a60a37b085b6",
+  "git_base": "d65fc87f6fb87ccf015d1934435220ac4ea42f09",
+  "config_sha256": "92d80ec6421aa682315a58c6de067ab5a3b0a5695106bfe34f10466c0e1744c5",
+  "seed": 20261022,
+  "sample_count": 1024,
+  "sampling_seeds": [
+    7,
+    19,
+    41
+  ],
+  "solver_timeout_ms": 5000,
+  "abc_timeout_seconds": 30,
+  "distribution": "uniform independent primary inputs",
+  "numeric_encoding": "unsigned synthetic vector: y bit0, aux bit1; diagnostic values are declared BLIF-order encodings, not application arithmetic",
+  "runtime_seconds": 81.61852820900094,
+  "runtime_scope": "candidate_analysis_reusing_previously_measured_reconstruction_and_audit",
+  "reconstruction_reused": true,
+  "audit_reused": true
+}

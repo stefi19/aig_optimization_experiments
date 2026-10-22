@@ -1,0 +1,95 @@
+{
+  "schema": "formal_approximate_correspondence_v1",
+  "seed": 20261022,
+  "sampling_seeds": [
+    7,
+    19,
+    41
+  ],
+  "sample_count": 1024,
+  "confidence_alpha": 0.05,
+  "development_width": 6,
+  "heldout_width": 8,
+  "replicates": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "families": [
+    "odc_factor",
+    "reconvergent_mask",
+    "complement",
+    "rare_observable",
+    "exact_factor",
+    "missing_representation"
+  ],
+  "candidate_decoys": 9,
+  "solver_timeout_ms": 5000,
+  "abc_timeout_seconds": 30,
+  "abstention_thresholds": [
+    0.0,
+    0.01,
+    0.05,
+    0.1,
+    0.5
+  ],
+  "methods": [
+    "structural",
+    "fingerprint",
+    "sat_only",
+    "global",
+    "complement",
+    "contextual",
+    "hybrid",
+    "no_global",
+    "no_context",
+    "no_complement",
+    "no_observability",
+    "no_structure",
+    "no_locality",
+    "no_formal"
+  ],
+  "reconstruction": {
+    "max_candidate_signals": 8,
+    "sample_count": 8,
+    "budgets": [
+      1,
+      4,
+      16,
+      64,
+      176
+    ],
+    "language": "not_binary",
+    "max_support_inputs": 6,
+    "development_flow": "dc2",
+    "heldout_flow": "resyn2"
+  },
+  "diagnostics": [
+    {
+      "benchmark": "generated_adder_4",
+      "source": "variants/generated_adder_4_original.blif",
+      "flows": [
+        "balance",
+        "dc2"
+      ]
+    },
+    {
+      "benchmark": "generated_multiplier_2",
+      "source": "variants/generated_multiplier_2_original.blif",
+      "flows": [
+        "balance",
+        "dc2"
+      ]
+    },
+    {
+      "benchmark": "c17",
+      "source": "benchmarks/external/iscas85/c17.blif",
+      "flows": [
+        "balance",
+        "dc2"
+      ]
+    }
+  ],
+  "historical_replay_per_stratum": 8
+}

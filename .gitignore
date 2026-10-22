@@ -38,3 +38,5 @@ venv/
 # variants/ and logs/ are committed intentionally
 results/abc_native_inputs/
 results/abc_native_swept/
+
+/tmp/

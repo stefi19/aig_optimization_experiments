@@ -1057,3 +1057,26 @@ clean-results:
 # Equivalent to running start.sh but usable as a make target.
 start:
 	@bash ./start.sh
+
+.PHONY: approx-correspondence check-approx-correspondence approx-correspondence-figures approx-correspondence-pdf website website-check serve-website
+
+approx-correspondence:
+	@$(Z3_PYTHON) -m scripts.analysis.run_formal_approximate_correspondence
+
+check-approx-correspondence:
+	@$(Z3_PYTHON) -m scripts.validation.check_formal_approximate_correspondence $(if $(wildcard $(ABC_BIN)),--with-abc,)
+
+approx-correspondence-figures:
+	@$(Z3_PYTHON) -m scripts.publication.summarize_approximate_correspondence
+
+approx-correspondence-pdf: approx-correspondence-figures
+	@$(Z3_PYTHON) -m scripts.publication.build_approximate_correspondence_pdf
+
+website:
+	@$(Z3_PYTHON) -m scripts.publication.build_approximate_website
+
+website-check:
+	@$(Z3_PYTHON) -m scripts.validation.check_website
+
+serve-website:
+	@$(PYTHON) -m http.server 8765 --bind 127.0.0.1 --directory docs

@@ -1,0 +1,17 @@
+experiment,split,method_a,method_b,budget,unit,units,difference,lower,upper
+lineage_precision1,development,hybrid,structural,,controlled_case,24,-0.16666666666666666,-0.3333333333333333,-0.041666666666666664
+lineage_precision1,development,hybrid,global,,controlled_case,24,0.041666666666666664,0.0,0.125
+lineage_precision1,development,complement,global,,controlled_case,24,0.041666666666666664,0.0,0.125
+lineage_precision1,heldout,hybrid,structural,,controlled_case,24,-0.16666666666666666,-0.3333333333333333,-0.041666666666666664
+lineage_precision1,heldout,hybrid,global,,controlled_case,24,0.08333333333333333,0.0,0.20833333333333334
+lineage_precision1,heldout,complement,global,,controlled_case,24,0.08333333333333333,0.0,0.20833333333333334
+graph_active_acceptance,development,sampled_distance,enumeration,1,unique_target_averaged_over_seeds,10,0.1,0.0,0.3
+graph_active_acceptance,development,sampled_distance,enumeration,4,unique_target_averaged_over_seeds,10,0.1,0.0,0.3
+graph_active_acceptance,development,sampled_distance,enumeration,16,unique_target_averaged_over_seeds,10,0.1,0.0,0.3
+graph_active_acceptance,development,sampled_distance,enumeration,64,unique_target_averaged_over_seeds,10,0.0,0.0,0.0
+graph_active_acceptance,development,sampled_distance,enumeration,176,unique_target_averaged_over_seeds,10,0.0,0.0,0.0
+graph_active_acceptance,heldout,sampled_distance,enumeration,1,unique_target_averaged_over_seeds,8,0.125,0.0,0.375
+graph_active_acceptance,heldout,sampled_distance,enumeration,4,unique_target_averaged_over_seeds,8,0.125,0.0,0.375
+graph_active_acceptance,heldout,sampled_distance,enumeration,16,unique_target_averaged_over_seeds,8,0.125,0.0,0.375
+graph_active_acceptance,heldout,sampled_distance,enumeration,64,unique_target_averaged_over_seeds,8,0.0,0.0,0.0
+graph_active_acceptance,heldout,sampled_distance,enumeration,176,unique_target_averaged_over_seeds,8,0.0,0.0,0.0
